@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python para Pensadores - Taller de Programación</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variables de colores azules */
+        :root {
+            --azul-oscuro: #0a2463;
+            --azul-medio: #1e3a8a;
+            --azul-claro: #3b82f6;
+            --azul-cielo: #60a5fa;
+            --azul-pastel: #93c5fd;
+            --azul-humo: #dbeafe;
+            --blanco: #ffffff;
+            --gris-claro: #f8fafc;
+            --gris: #64748b;
+        }
+
+        /* Reset y estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--gris-claro);
+            color: var(--azul-oscuro);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Encabezado */
+        header {
+            background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-medio));
+            color: var(--blanco);
+            padding: 2rem 0;
+            text-align: center;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: 0 4px 12px rgba(10, 36, 99, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%231e3a8a' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.2;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-top: 1rem;
+            opacity: 0.8;
+        }
+
+        /* Secciones principales */
+        .section {
+            background-color: var(--blanco);
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin: 2.5rem 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid var(--azul-claro);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: var(--azul-medio);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 i {
+            color: var(--azul-claro);
+        }
+
+        h3 {
+            color: var(--azul-claro);
+            margin: 1.5rem 0 1rem;
+            font-size: 1.5rem;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            font-size: 1.1rem;
+        }
+
+        .highlight {
+            background-color: var(--azul-humo);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--azul-cielo);
+        }
+
+        .highlight p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Listas */
+        ul,
+        ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.8rem;
+        }
+
+        .concept-list li {
+            background-color: var(--azul-humo);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 3px solid var(--azul-pastel);
+        }
+
+        /* Objetivo de aprendizaje */
+        .objetivo {
+            background: linear-gradient(to right, var(--azul-humo), var(--blanco));
+            padding: 2rem;
+            border-radius: 12px;
+            border: 2px solid var(--azul-pastel);
+            margin: 2rem 0;
+        }
+
+        .objetivo h2 {
+            color: var(--azul-oscuro);
+        }
+
+        /* Reto final */
+        .reto {
+            background-color: var(--azul-humo);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 2px dashed var(--azul-claro);
+            margin: 2rem 0;
+        }
+
+        .reto h2 {
+            color: var(--azul-oscuro);
+        }
+
+        /* Juego */
+        .juego-section {
+            background: linear-gradient(135deg, var(--azul-pastel), var(--azul-cielo));
+            padding: 2.5rem;
+            border-radius: 15px;
+            margin: 2.5rem 0;
+            color: var(--azul-oscuro);
+        }
+
+        .juego-container {
+            background-color: var(--blanco);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-top: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .juego-pregunta {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--azul-medio);
+        }
+
+        .juego-opciones {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        .juego-opcion {
+            background-color: var(--azul-humo);
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .juego-opcion:hover {
+            background-color: var(--azul-pastel);
+            transform: translateY(-3px);
+        }
+
+        .juego-opcion.seleccionada {
+            background-color: var(--azul-cielo);
+            border-color: var(--azul-claro);
+        }
+
+        .juego-opcion.correcta {
+            background-color: #d1fae5;
+            border-color: #10b981;
+        }
+
+        .juego-opcion.incorrecta {
+            background-color: #fee2e2;
+            border-color: #ef4444;
+        }
+
+        .juego-boton {
+            background-color: var(--azul-medio);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .juego-boton:hover {
+            background-color: var(--azul-oscuro);
+        }
+
+        .juego-resultado {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+        }
+
+        .juego-resultado.correcto {
+            background-color: #d1fae5;
+            color: #065f46;
+            display: block;
+        }
+
+        .juego-resultado.incorrecto {
+            background-color: #fee2e2;
+            color: #991b1b;
+            display: block;
+        }
+
+        .juego-puntaje {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            color: var(--azul-medio);
+        }
+
+        /* Pie de página */
+        footer {
+            background-color: var(--azul-oscuro);
+            color: var(--blanco);
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .footer-heart {
+            color: #f87171;
+            animation: latido 1.5s infinite;
+        }
+
+        @keyframes latido {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.7rem;
+            }
+
+            .juego-opciones {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Efectos visuales adicionales */
+        .code-block {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            border-left: 5px solid var(--azul-claro);
+        }
+
+        .filosofia {
+            font-style: italic;
+            text-align: center;
+            padding: 1.5rem;
+            background-color: var(--azul-humo);
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            color: var(--azul-medio);
+            border: 1px solid var(--azul-pastel);
+        }
+
+        .consejo-docente {
+            background-color: var(--azul-humo);
+            padding: 1.2rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 5px solid var(--azul-cielo);
+            position: relative;
+        }
+
+        .consejo-docente::before {
+            content: "💡";
+            position: absolute;
+            left: -10px;
+            top: -10px;
+            background-color: var(--blanco);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .paso-actividad {
+            background-color: #f0f9ff;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border: 1px solid var(--azul-pastel);
+        }
+
+        .paso-actividad h4 {
+            color: var(--azul-medio);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1><i class="fas fa-code"></i> Python para Pensadores</h1>
+                <p class="subtitle">Lenguajes de Programación-Despertando al Programador Interior</p>
+                <p class="tagline">Taller diseñado con el corazón de un docente y la mente de un programador</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Objetivo de aprendizaje -->
+        <section class="section">
+            <h2><i class="fas fa-bullseye"></i> Objetivo de Aprendizaje</h2>
+            <div class="objetivo">
+                <p>Desarrollar competencias técnicas en fundamentos de programación mediante la comprensión de
+                    lenguajes, compiladores e interpretes, y la aplicación de la programación estructurada con Python,
+                    fomentando el pensamiento algorítmico, la resolución de problemas y la capacidad de abstracción,
+                    para que los estudiantes puedan crear soluciones digitales a problemas de su entorno, cultivando una
+                    mentalidad ética, colaborativa y de aprendizaje continuo que les permita adaptarse a las demandas
+                    tecnológicas del siglo XXI.</p>
+            </div>
+        </section>
+
+        <!-- Introducción -->
+        <section class="section">
+            <h2><i class="fas fa-door-open"></i> Introducción: El Lenguaje de las Máquinas</h2>
+            <p>Imagina que cada mañana, al despertar, sigues una secuencia de acciones: abrir los ojos, estirarte,
+                levantarte de la cama. Sin darte cuenta, estás ejecutando un algoritmo, un conjunto ordenado de pasos
+                para lograr un objetivo. Así funciona la programación: es el arte de comunicarnos con las máquinas
+                mediante instrucciones precisas.</p>
+
+            <div class="consejo-docente">
+                <p>Cuando programamos, no solo escribimos código; entrenamos nuestra mente para pensar de manera
+                    estructurada, descomponer problemas complejos en partes manejables y diseñar soluciones creativas.
+                    Esta habilidad trasciende la computadora: nos convierte en arquitectos de soluciones.</p>
+            </div>
+
+            <p>En este taller, no solo aprenderás conceptos técnicos; descubrirás cómo la lógica de la programación ya
+                está presente en tu vida diaria: desde la aplicación que usas para chatear hasta el semáforo que regula
+                el tráfico. Te invito a ver el mundo con ojos de programador.</p>
+        </section>
+
+        <!-- Desarrollo de la actividad -->
+        <section class="section">
+            <h2><i class="fas fa-cogs"></i> Desarrollo de la Actividad</h2>
+
+            <h3>¿Qué es programar?</h3>
+            <p>Programar es el proceso de crear instrucciones detalladas para que una computadora realice tareas
+                específicas. Es como dar recetas de cocina a un robot chef: cada paso debe ser claro, preciso y en el
+                orden correcto.</p>
+
+            <div class="paso-actividad">
+                <h4><i class="fas fa-flask"></i> Experimentación práctica</h4>
+                <p>Intenta describir el proceso de preparar un sandwich de jamón y queso con tanto detalle que incluso
+                    alguien que nunca haya cocinado pueda seguirlo. Notarás que debes ser específico: "tomar dos
+                    rebanadas de pan" en lugar de simplemente "tomar pan". Así es como debemos comunicarnos con las
+                    computadoras.</p>
+            </div>
+
+            <h3>Lenguajes de programación: alto y bajo nivel</h3>
+            <p>Los lenguajes de bajo nivel (como el lenguaje máquina) son los que las computadoras entienden
+                directamente, mientras que los lenguajes de alto nivel (como Python) están diseñados para que los
+                humanos los comprendan más fácilmente.</p>
+
+            <div class="code-block">
+                // Ejemplo de diferencia entre niveles<br>
+                // Lenguaje de bajo nivel (Assembly):<br>
+                MOV AX, 5<br>
+                ADD AX, 3<br>
+                <br>
+                // Lenguaje de alto nivel (Python):<br>
+                resultado = 5 + 3
+            </div>
+
+            <h3>Compiladores e intérpretes</h3>
+            <p>Un <strong>compilador</strong> traduce todo el programa de una vez, como un traductor que convierte un
+                libro completo a otro idioma. Un <strong>intérprete</strong> traduce línea por línea durante la
+                ejecución, como un intérprete humano en una conferencia.</p>
+
+            <div class="concept-list">
+                <ul>
+                    <li><strong>Compilación:</strong> Traducción completa → archivo ejecutable → más rápido en
+                        ejecución.</li>
+                    <li><strong>Interpretación:</strong> Traducción línea por línea → más flexible para depuración.</li>
+                </ul>
+            </div>
+
+            <h3>Programación estructurada</h3>
+            <p>La programación estructurada organiza el código en tres estructuras básicas:</p>
+            <ol>
+                <li><strong>Secuencia:</strong> Instrucciones que se ejecutan en orden.</li>
+                <li><strong>Selección:</strong> Decisiones (if/else) que permiten caminos diferentes.</li>
+                <li><strong>Repetición:</strong> Bucles (for/while) para tareas repetitivas.</li>
+            </ol>
+
+            <div class="code-block">
+                # Ejemplo de programación estructurada en Python<br>
+                # SECUENCIA<br>
+                nombre = input("¿Cómo te llamas? ")<br>
+                edad = int(input("¿Cuántos años tienes? "))<br>
+                <br>
+                # SELECCIÓN<br>
+                if edad >= 18:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;print(f"Hola {nombre}, eres mayor de edad")<br>
+                else:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;print(f"Hola {nombre}, eres menor de edad")<br>
+                <br>
+                # REPETICIÓN<br>
+                for i in range(3):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;print(f"Este es el mensaje número {i+1}")
+            </div>
+
+            <div class="filosofia">
+                <p>"La programación no se trata de escribir líneas de código, sino de cultivar una mente lógica,
+                    paciente y creativa. Cada error es una oportunidad para aprender, cada algoritmo una pequeña obra de
+                    arte lógica."</p>
+            </div>
+        </section>
+
+        <!-- Juego educativo -->
+        <section class="juego-section">
+            <h2><i class="fas fa-gamepad"></i> Juego: El Camino del Programador</h2>
+            <p>Pon a prueba lo aprendido con este juego interactivo. Responde correctamente para avanzar en tu camino
+                como programador.</p>
+
+            <div class="juego-container">
+                <div class="juego-pregunta" id="pregunta">¿Qué es un lenguaje de programación de alto nivel?</div>
+
+                <div class="juego-opciones" id="opciones">
+                    <!-- Las opciones se llenarán con JavaScript -->
+                </div>
+
+                <button class="juego-boton" id="verificar">Verificar respuesta</button>
+                <button class="juego-boton" id="siguiente" style="display: none;">Siguiente pregunta</button>
+
+                <div class="juego-resultado" id="resultado"></div>
+                <div class="juego-puntaje">Puntaje: <span id="puntaje">0</span> / 5</div>
+            </div>
+        </section>
+
+        <!-- El reto final -->
+        <section class="section">
+            <h2><i class="fas fa-flag-checkered"></i> El Reto Final</h2>
+            <div class="reto">
+                <h3>Desafío: Creador de Hábitos Digitales</h3>
+                <p>Tu misión es diseñar un programa en pseudocódigo que ayude a un estudiante a organizar su semana
+                    académica. El programa debe:</p>
+
+                <ol>
+                    <li>Solicitar al usuario las materias que cursa y las horas de estudio semanales recomendadas para
+                        cada una.</li>
+                    <li>Preguntar por las actividades extracurriculares y el tiempo que dedica a cada una.</li>
+                    <li>Calcular el tiempo total de dedicación académica y el tiempo disponible para descanso.</li>
+                    <li>Mostrar recomendaciones personalizadas usando estructuras de selección (ej: "Necesitas más
+                        tiempo para matemáticas" o "Tu distribución es equilibrada").</li>
+                    <li>Usar un bucle para mostrar un resumen día por día de las actividades.</li>
+                </ol>
+
+                <div class="consejo-docente">
+                    <p>Reflexiona: ¿cómo asegurarías que tu programa sea ético y no cree ansiedad en el usuario? ¿Qué
+                        estructuras de programación utilizarías para hacerlo amigable y comprensible? La tecnología debe
+                        servir al ser humano, no al revés.</p>
+                </div>
+
+                <p>Entrega: Presenta tu pseudocódigo en papel o digitalmente, explicando cada estructura utilizada
+                    (secuencia, selección, repetición) y justificando tus decisiones de diseño.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Taller diseñado con el corazón de un docente y la mente de un programador</p>
+            <p>Con la filosofía estoica de que <em>"no es lo que ocurre, sino cómo respondemos"</em></p>
+            <p>Diseñado por: Edwin Méndez Játiva <span class="footer-heart">❤</span></p>
+        </div>
+    </footer>
+
+    <script>
+        // Datos para el juego
+        const preguntas = [
+            {
+                pregunta: "¿Qué es un lenguaje de programación de alto nivel?",
+                opciones: [
+                    "Un lenguaje que la computadora entiende directamente (código binario)",
+                    "Un lenguaje cercano al lenguaje humano, fácil de leer y escribir",
+                    "Un lenguaje que solo funciona en computadoras antiguas",
+                    "Un lenguaje que no necesita traducirse para ejecutarse"
+                ],
+                respuestaCorrecta: 1
+            },
+            {
+                pregunta: "¿Cuál es la principal función de un compilador?",
+                opciones: [
+                    "Ejecutar un programa línea por línea",
+                    "Traducir todo el código fuente a código máquina de una vez",
+                    "Detectar errores de lógica en el programa",
+                    "Diseñar interfaces de usuario atractivas"
+                ],
+                respuestaCorrecta: 1
+            },
+            {
+                pregunta: "¿Cuál de estas es una estructura de la programación estructurada?",
+                opciones: [
+                    "Desorganización",
+                    "Secuencia",
+                    "Aleatoriedad",
+                    "Complejidad"
+                ],
+                respuestaCorrecta: 1
+            },
+            {
+                pregunta: "¿Qué estructura de control usarías para repetir una acción 10 veces?",
+                opciones: [
+                    "Secuencia",
+                    "Selección (if/else)",
+                    "Repetición (bucle)",
+                    "Compilación"
+                ],
+                respuestaCorrecta: 2
+            },
+            {
+                pregunta: "Un intérprete se diferencia de un compilador porque:",
+                opciones: [
+                    "Traduce el programa completo antes de ejecutarlo",
+                    "Ejecuta el programa traduciéndolo línea por línea",
+                    "Solo funciona con lenguajes de bajo nivel",
+                    "Crea un archivo ejecutable permanente"
+                ],
+                respuestaCorrecta: 1
+            }
+        ];
+
+        // Variables del juego
+        let preguntaActual = 0;
+        let puntaje = 0;
+        let opcionSeleccionada = null;
+
+        // Elementos del DOM
+        const elementoPregunta = document.getElementById('pregunta');
+        const elementoOpciones = document.getElementById('opciones');
+        const elementoVerificar = document.getElementById('verificar');
+        const elementoSiguiente = document.getElementById('siguiente');
+        const elementoResultado = document.getElementById('resultado');
+        const elementoPuntaje = document.getElementById('puntaje');
+
+        // Inicializar juego
+        function cargarPregunta() {
+            const pregunta = preguntas[preguntaActual];
+            elementoPregunta.textContent = pregunta.pregunta;
+
+            // Limpiar opciones anteriores
+            elementoOpciones.innerHTML = '';
+
+            // Cargar nuevas opciones
+            pregunta.opciones.forEach((opcion, index) => {
+                const botonOpcion = document.createElement('div');
+                botonOpcion.className = 'juego-opcion';
+                botonOpcion.textContent = opcion;
+                botonOpcion.dataset.indice = index;
+
+                botonOpcion.addEventListener('click', function () {
+                    // Remover selección anterior
+                    document.querySelectorAll('.juego-opcion').forEach(opc => {
+                        opc.classList.remove('seleccionada');
+                    });
+
+                    // Seleccionar esta opción
+                    this.classList.add('seleccionada');
+                    opcionSeleccionada = parseInt(this.dataset.indice);
+                });
+
+                elementoOpciones.appendChild(botonOpcion);
+            });
+
+            // Reiniciar estado de botones
+            elementoVerificar.style.display = 'inline-block';
+            elementoSiguiente.style.display = 'none';
+            elementoResultado.style.display = 'none';
+            elementoResultado.className = 'juego-resultado';
+        }
+
+        // Verificar respuesta
+        elementoVerificar.addEventListener('click', function () {
+            if (opcionSeleccionada === null) {
+                elementoResultado.textContent = 'Por favor, selecciona una opción';
+                elementoResultado.className = 'juego-resultado incorrecto';
+                elementoResultado.style.display = 'block';
+                return;
+            }
+
+            const pregunta = preguntas[preguntaActual];
+            const opciones = document.querySelectorAll('.juego-opcion');
+
+            // Mostrar respuestas correctas/incorrectas
+            opciones.forEach((opcion, index) => {
+                if (index === pregunta.respuestaCorrecta) {
+                    opcion.classList.add('correcta');
+                } else if (index === opcionSeleccionada && index !== pregunta.respuestaCorrecta) {
+                    opcion.classList.add('incorrecta');
+                }
+            });
+
+            // Verificar si es correcta
+            if (opcionSeleccionada === pregunta.respuestaCorrecta) {
+                elementoResultado.textContent = '¡Correcto! Has comprendido bien el concepto.';
+                elementoResultado.className = 'juego-resultado correcto';
+                puntaje++;
+                elementoPuntaje.textContent = puntaje;
+            } else {
+                elementoResultado.textContent = 'Buena oportunidad para repasar. Sigue practicando.';
+                elementoResultado.className = 'juego-resultado incorrecto';
+            }
+
+            elementoResultado.style.display = 'block';
+            elementoVerificar.style.display = 'none';
+            elementoSiguiente.style.display = 'inline-block';
+        });
+
+        // Siguiente pregunta
+        elementoSiguiente.addEventListener('click', function () {
+            preguntaActual++;
+
+            if (preguntaActual < preguntas.length) {
+                opcionSeleccionada = null;
+                cargarPregunta();
+            } else {
+                // Fin del juego
+                elementoPregunta.textContent = '¡Juego completado!';
+                elementoOpciones.innerHTML = `<p>Has respondido ${puntaje} de ${preguntas.length} preguntas correctamente.</p>`;
+                elementoVerificar.style.display = 'none';
+                elementoSiguiente.style.display = 'none';
+                elementoResultado.textContent = puntaje >= 3
+                    ? '¡Excelente! Demuestras una buena comprensión de los conceptos.'
+                    : 'Bien hecho. Te recomiendo repasar los conceptos y volver a intentarlo.';
+                elementoResultado.className = puntaje >= 3 ? 'juego-resultado correcto' : 'juego-resultado incorrecto';
+                elementoResultado.style.display = 'block';
+            }
+        });
+
+        // Iniciar juego al cargar la página
+        document.addEventListener('DOMContentLoaded', cargarPregunta);
+    </script>
+</body>
+
+</html>
