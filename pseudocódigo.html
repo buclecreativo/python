@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python para pensadores: El Arte del Pseudocódigo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --azul-noche: #0c2036;
+            --azul-profundo: #1a365c;
+            --azul-intenso: #2a4d80;
+            --azul-ardor: #3d6cb9;
+            --azul-luz: #5a9cf5;
+            --azul-neon: #7dc1ff;
+            --azul-suave: #e8f2ff;
+            --blanco-puro: #ffffff;
+            --sombra-profunda: rgba(12, 32, 54, 0.12);
+            --gradiente-azul: linear-gradient(135deg, var(--azul-noche) 0%, var(--azul-intenso) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: var(--azul-suave);
+            color: var(--azul-noche);
+            line-height: 1.8;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        @supports (background: paint(something)) {
+            body {
+                background-image:
+                    radial-gradient(circle at 15% 50%, rgba(90, 156, 245, 0.08) 0%, transparent 55%),
+                    radial-gradient(circle at 85% 30%, rgba(125, 193, 255, 0.05) 0%, transparent 55%);
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 25px;
+        }
+
+        /* Encabezado con efecto de partículas */
+        .hero-header {
+            background: var(--gradiente-azul);
+            color: var(--blanco-puro);
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(12, 32, 54, 0.25);
+        }
+
+        .hero-header::before {
+            content: "";
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background:
+                radial-gradient(circle, rgba(125, 193, 255, 0.1) 1px, transparent 1px),
+                radial-gradient(circle, rgba(90, 156, 245, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px, 100px 100px;
+            animation: float 20s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            100% {
+                transform: translate(-50px, -50px) rotate(0.5deg);
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            text-shadow: 3px 3px 12px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(90deg, var(--azul-luz), var(--azul-neon));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 2rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1.5rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-description {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        /* Navegación inteligente */
+        .smart-nav {
+            background-color: var(--azul-intenso);
+            padding: 1.2rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 5px 20px var(--sombra-profunda);
+            backdrop-filter: blur(10px);
+            background-color: rgba(42, 77, 128, 0.95);
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--blanco-puro);
+        }
+
+        .nav-brand-icon {
+            color: var(--azul-neon);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--blanco-puro);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--azul-neon), transparent);
+            transition: left 0.6s;
+        }
+
+        .nav-link:hover {
+            background-color: var(--azul-ardor);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(61, 108, 185, 0.3);
+        }
+
+        .nav-link:hover::before {
+            left: 100%;
+        }
+
+        .nav-link i {
+            margin-right: 8px;
+        }
+
+        /* Tarjetas de contenido con efecto 3D */
+        .content-card {
+            background: var(--blanco-puro);
+            margin: 3rem 0;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow:
+                0 15px 35px var(--sombra-profunda),
+                0 5px 15px rgba(0, 0, 0, 0.07);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(90, 156, 245, 0.1);
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--azul-luz), var(--azul-ardor), var(--azul-intenso));
+        }
+
+        .content-card:hover {
+            transform: translateY(-10px) perspective(1000px) rotateX(2deg);
+            box-shadow:
+                0 25px 50px rgba(12, 32, 54, 0.2),
+                0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--azul-suave);
+            position: relative;
+        }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--azul-luz), var(--azul-ardor));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 2rem;
+            color: var(--blanco-puro);
+            font-size: 2.5rem;
+            box-shadow: 0 10px 25px rgba(90, 156, 245, 0.3);
+            flex-shrink: 0;
+        }
+
+        .card-title {
+            color: var(--azul-intenso);
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            background: linear-gradient(90deg, var(--azul-intenso), var(--azul-ardor));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Contenido educativo */
+        .educational-content {
+            font-size: 1.15rem;
+            line-height: 1.9;
+        }
+
+        .educational-content h3 {
+            color: var(--azul-ardor);
+            font-size: 1.8rem;
+            margin: 2.5rem 0 1.2rem 0;
+            padding-bottom: 0.7rem;
+            border-bottom: 2px solid var(--azul-suave);
+            position: relative;
+        }
+
+        .educational-content h3::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--azul-luz);
+        }
+
+        .educational-content p {
+            margin-bottom: 1.5rem;
+            color: #33475b;
+        }
+
+        /* Bloques de pseudocódigo */
+        .pseudocode-block {
+            background: linear-gradient(135deg, #1a1f2e 0%, #2a3147 100%);
+            border-left: 5px solid var(--azul-luz);
+            padding: 2.5rem;
+            border-radius: 15px;
+            margin: 2.5rem 0;
+            color: #e4e6f0;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pseudocode-block::before {
+            content: 'PSEUDOCÓDIGO';
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 0.8rem;
+            color: var(--azul-neon);
+            opacity: 0.5;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .pseudocode-line {
+            margin-bottom: 0.8rem;
+            padding-left: 1rem;
+            position: relative;
+            counter-increment: line;
+        }
+
+        .pseudocode-line::before {
+            content: counter(line) ".";
+            position: absolute;
+            left: -2rem;
+            color: var(--azul-luz);
+            font-weight: bold;
+            opacity: 0.7;
+        }
+
+        .pseudocode-keyword {
+            color: #ff6b9d;
+            font-weight: bold;
+        }
+
+        .pseudocode-comment {
+            color: #6cffa4;
+            font-style: italic;
+        }
+
+        .pseudocode-variable {
+            color: #7dc1ff;
+        }
+
+        .pseudocode-string {
+            color: #ffd166;
+        }
+
+        /* Ejemplos comparativos */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin: 2.5rem 0;
+        }
+
+        .comparison-card {
+            background: var(--blanco-puro);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+            border-top: 5px solid var(--azul-luz);
+        }
+
+        .comparison-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .comparison-title {
+            color: var(--azul-intenso);
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .comparison-title i {
+            color: var(--azul-luz);
+        }
+
+        /* Laboratorio interactivo */
+        .pseudocode-lab {
+            background: linear-gradient(135deg, #f8fbff 0%, #eef5ff 100%);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 3rem 0;
+            border: 2px solid var(--azul-suave);
+            position: relative;
+        }
+
+        .lab-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .lab-title {
+            color: var(--azul-intenso);
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .lab-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 992px) {
+            .lab-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .code-editor {
+            background: #1e1e1e;
+            border-radius: 12px;
+            padding: 2rem;
+            font-family: 'Consolas', monospace;
+            color: #d4d4d4;
+            min-height: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #404040;
+        }
+
+        .editor-title {
+            color: #fff;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .editor-line-numbers {
+            position: absolute;
+            left: 0;
+            top: 70px;
+            bottom: 20px;
+            width: 40px;
+            background: #252525;
+            padding-top: 10px;
+            text-align: right;
+            padding-right: 15px;
+            color: #858585;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            user-select: none;
+        }
+
+        .editor-content {
+            margin-left: 50px;
+            line-height: 1.6;
+            font-size: 1rem;
+            white-space: pre-wrap;
+            tab-size: 2;
+            outline: none;
+            min-height: 300px;
+            padding: 10px;
+            background: transparent;
+            color: inherit;
+            border: none;
+            resize: none;
+            width: calc(100% - 50px);
+            font-family: inherit;
+        }
+
+        .editor-content:focus {
+            outline: none;
+        }
+
+        .output-panel {
+            background: #2d2d2d;
+            border-radius: 12px;
+            padding: 2rem;
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .output-title {
+            color: #fff;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .output-content {
+            background: #1e1e1e;
+            padding: 1.5rem;
+            border-radius: 8px;
+            min-height: 300px;
+            font-family: 'Consolas', monospace;
+            line-height: 1.6;
+            overflow-y: auto;
+        }
+
+        .lab-controls {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        /* Botones mejorados */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--azul-ardor), var(--azul-intenso));
+            color: var(--blanco-puro);
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            font-size: 1.1rem;
+            box-shadow: 0 8px 25px rgba(61, 108, 185, 0.3);
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        .btn:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(61, 108, 185, 0.4);
+            background: linear-gradient(135deg, var(--azul-luz), var(--azul-ardor));
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
+        }
+
+        /* Desafío final */
+        .challenge-section {
+            background: linear-gradient(135deg, var(--azul-intenso) 0%, var(--azul-profundo) 100%);
+            color: var(--blanco-puro);
+            padding: 4rem;
+            border-radius: 25px;
+            margin: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .challenge-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%235a9cf5' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.1;
+        }
+
+        .challenge-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .challenge-title {
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 900;
+            color: var(--azul-neon);
+        }
+
+        .challenge-badge {
+            display: inline-block;
+            background: var(--azul-neon);
+            color: var(--azul-noche);
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        /* Pie de página */
+        .footer {
+            background: var(--azul-noche);
+            color: var(--blanco-puro);
+            padding: 4rem 0;
+            text-align: center;
+            margin-top: 4rem;
+            position: relative;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--azul-luz), var(--azul-neon), var(--azul-ardor));
+        }
+
+        .footer-content p {
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-highlight {
+            color: var(--azul-neon);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .copyright {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .hero-title {
+                font-size: 2.8rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.7rem;
+            }
+
+            .nav-wrapper {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.3rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.4rem;
+            }
+
+            .content-card {
+                padding: 2rem;
+            }
+
+            .card-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+            }
+
+            .card-icon {
+                margin-right: 0;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .challenge-section {
+                padding: 2.5rem;
+            }
+
+            .challenge-title {
+                font-size: 2.2rem;
+            }
+
+            .lab-header {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .card-title {
+                font-size: 2rem;
+            }
+
+            .nav-menu {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+
+            .nav-link {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Encabezado hero -->
+    <header class="hero-header">
+        <div class="container hero-content">
+            <h1 class="hero-title"> Python para pensadores</h1>
+            <h2 class="hero-subtitle">Taller diseñado con el corazón de un docente y la mente de un programador</h2>
+            <p class="hero-description">El pseudocódigo: donde las ideas toman forma antes de convertirse en código.
+                Aprende a pensar como programador sin las restricciones de la sintaxis.</p>
+        </div>
+    </header>
+
+    <!-- Navegación -->
+    <nav class="smart-nav">
+        <div class="container nav-wrapper">
+            <div class="nav-brand">
+                <i class="fas fa-brain nav-brand-icon"></i>
+                <span>PseudoLab</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#esencia" class="nav-link"><i class="fas fa-seedling"></i> La Esencia</a></li>
+                <li><a href="#sintaxis" class="nav-link"><i class="fas fa-language"></i> Sintaxis Libre</a></li>
+                <li><a href="#patrones" class="nav-link"><i class="fas fa-chess-board"></i> Patrones</a></li>
+                <li><a href="#laboratorio" class="nav-link"><i class="fas fa-flask"></i> Laboratorio</a></li>
+                <li><a href="#desafio" class="nav-link"><i class="fas fa-mountain"></i> Gran Desafío</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="container">
+        <!-- La Esencia del Pseudocódigo -->
+        <section id="esencia" class="content-card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-seedling"></i>
+                </div>
+                <h2 class="card-title">La Esencia del Pseudocódigo: Pensar en Español, Programar en Python</h2>
+            </div>
+            <div class="educational-content">
+                <p>Imagina que quieres explicarle a un amigo cómo preparar tu bebida favorita. No le das instrucciones
+                    en un lenguaje técnico de barista, sino en español claro: "Toma una taza, añade dos cucharadas de
+                    cacao, vierte leche caliente, revuelve suavemente". El pseudocódigo es exactamente eso:
+                    instrucciones claras para la computadora, escritas en un lenguaje que tú y yo entendemos.</p>
+
+                <div class="pseudocode-block">
+                    <div class="pseudocode-line"><span class="pseudocode-keyword">Algoritmo</span> <span
+                            class="pseudocode-variable">PrepararBebidaFavorita</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-comment">// Este es pseudocódigo: legible para
+                            humanos</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Inicio</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Tomar</span>(taza)</div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Añadir</span>(cacao, 2 <span
+                            class="pseudocode-string">"cucharadas"</span>)</div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Verter</span>(leche_caliente)</div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Revolver</span>(<span
+                            class="pseudocode-string">"suavemente"</span>)</div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Mostrar</span>(<span
+                            class="pseudocode-string">"¡Bebida lista!"</span>)</div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Fin</span></div>
+                </div>
+
+                <h3>¿Por qué aprender pseudocódigo primero?</h3>
+                <p>Porque separa la lógica de la sintaxis. Muchos estudiantes se frustran cuando un punto y coma
+                    olvidado detiene su programa. Con pseudocódigo, te concentras únicamente en la lógica: ¿qué debe
+                    hacer el programa? ¿en qué orden? ¿qué decisiones debe tomar?</p>
+
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <div class="comparison-title">
+                            <i class="fas fa-brain"></i> Pseudocódigo
+                        </div>
+                        <p>• Libre de sintaxis compleja</p>
+                        <p>• Se escribe en lenguaje natural</p>
+                        <p>• Enfocado en la lógica pura</p>
+                        <p>• No requiere compilación</p>
+                        <p>• Universalmente comprensible</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <div class="comparison-title">
+                            <i class="fas fa-laptop-code"></i> Código Real
+                        </div>
+                        <p>• Sintaxis estricta y precisa</p>
+                        <p>• Lenguaje específico (Python, Java, etc.)</p>
+                        <p>• Requiere conocimiento técnico</p>
+                        <p>• Necesita compilación/interpretación</p>
+                        <p>• Específico del lenguaje</p>
+                    </div>
+                </div>
+
+                <div class="pseudocode-block">
+                    <div class="pseudocode-line"><span class="pseudocode-comment">// Reflexión estoica para
+                            programadores:</span></div>
+                    <div class="pseudocode-line"><span class="pseudocode-comment">// "Domina primero el pensamiento,
+                            luego la herramienta.</span></div>
+                    <div class="pseudocode-line"><span class="pseudocode-comment">// Un buen carpintero no culpa a sus
+                            herramientas,</span></div>
+                    <div class="pseudocode-line"><span class="pseudocode-comment">// y un buen programador no se pierde
+                            en la sintaxis."</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sintaxis Libre -->
+        <section id="sintaxis" class="content-card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-language"></i>
+                </div>
+                <h2 class="card-title">Sintaxis Libre: Las Convenciones que Liberan tu Creatividad</h2>
+            </div>
+            <div class="educational-content">
+                <p>Aunque el pseudocódigo es flexible, sigue ciertas convenciones que lo hacen útil y comprensible para
+                    otros programadores. Piensa en ellas como reglas de cortesía en una conversación: no son
+                    obligatorias por ley, pero hacen la comunicación más efectiva.</p>
+
+                <h3>Estructura básica de un pseudocódigo</h3>
+
+                <div class="pseudocode-block">
+                    <div class="pseudocode-line"><span class="pseudocode-keyword">Algoritmo</span> <span
+                            class="pseudocode-variable">NombreDelAlgoritmo</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-comment">// Sección de definición de variables
+                            (opcional pero recomendado)</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Variables</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-variable">nombre</span>: <span
+                            class="pseudocode-keyword">cadena</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-variable">edad</span>: <span
+                            class="pseudocode-keyword">entero</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-variable">promedio</span>: <span
+                            class="pseudocode-keyword">real</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Inicio</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-comment">// Cuerpo principal del
+                            algoritmo</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Escribir</span>(<span
+                            class="pseudocode-string">"Ingresa tu nombre: "</span>)</div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Leer</span>(nombre)</div>
+                    <div class="pseudocode-line"> </div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Si</span> longitud(nombre) > 0 <span
+                            class="pseudocode-keyword">Entonces</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Escribir</span>(<span
+                            class="pseudocode-string">"Hola, "</span>, nombre)</div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Sino</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Escribir</span>(<span
+                            class="pseudocode-string">"No ingresaste un nombre válido"</span>)</div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">FinSi</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Fin</span></div>
+                </div>
+
+                <h3>Palabras clave comunes en pseudocódigo</h3>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <div class="comparison-title">
+                            <i class="fas fa-cogs"></i> Estructuras de Control
+                        </div>
+                        <p><span class="pseudocode-keyword">Si...Entonces...Sino...FinSi</span> - Para decisiones</p>
+                        <p><span class="pseudocode-keyword">Mientras...Hacer...FinMientras</span> - Para bucles
+                            condicionales</p>
+                        <p><span class="pseudocode-keyword">Para...Hasta...Con Paso...Hacer</span> - Para bucles
+                            contados</p>
+                        <p><span class="pseudocode-keyword">Repetir...Hasta Que</span> - Para bucles posteriores</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <div class="comparison-title">
+                            <i class="fas fa-exchange-alt"></i> Entrada/Salida
+                        </div>
+                        <p><span class="pseudocode-keyword">Leer</span> - Para obtener datos del usuario</p>
+                        <p><span class="pseudocode-keyword">Escribir</span> - Para mostrar información</p>
+                        <p><span class="pseudocode-keyword">Mostrar</span> - Alternativa a Escribir</p>
+                        <p><span class="pseudocode-keyword">Imprimir</span> - Otra alternativa común</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <div class="comparison-title">
+                            <i class="fas fa-box"></i> Manejo de Datos
+                        </div>
+                        <p><span class="pseudocode-keyword">Asignar</span> o ← - Para asignar valores</p>
+                        <p><span class="pseudocode-keyword">Variables</span> - Para declarar variables</p>
+                        <p><span class="pseudocode-keyword">Constantes</span> - Para valores fijos</p>
+                        <p><span class="pseudocode-keyword">Arreglo</span> - Para colecciones de datos</p>
+                    </div>
+                </div>
+
+                <div class="pseudocode-block">
+                    <div class="pseudocode-line"><span class="pseudocode-comment">// Consejo pedagógico:</span></div>
+                    <div class="pseudocode-line"><span class="pseudocode-comment">// No te preocupes por ser perfecto en
+                            pseudocódigo.</span></div>
+                    <div class="pseudocode-line"><span class="pseudocode-comment">// Lo importante es que tú y otros
+                            puedan entender la lógica.</span></div>
+                    <div class="pseudocode-line"><span class="pseudocode-comment">// La elegancia viene con la
+                            práctica.</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Patrones Fundamentales -->
+        <section id="patrones" class="content-card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-chess-board"></i>
+                </div>
+                <h2 class="card-title">Patrones Fundamentales: Los 7 Hábitos del Programador Efectivo</h2>
+            </div>
+            <div class="educational-content">
+                <p>La programación, como cualquier arte, tiene patrones recurrentes. Reconocer estos patrones en
+                    pseudocódigo te permitirá resolver problemas más complejos con elegancia y eficiencia.</p>
+
+                <h3>1. El Patrón Acumulador</h3>
+                <div class="pseudocode-block">
+                    <div class="pseudocode-line"><span class="pseudocode-keyword">Algoritmo</span> <span
+                            class="pseudocode-variable">SumarNumeros</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Variables</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-variable">suma</span>, <span
+                            class="pseudocode-variable">numero</span>: <span class="pseudocode-keyword">entero</span>
+                    </div>
+                    <div class="pseudocode-line"> <span class="pseudocode-variable">contador</span>: <span
+                            class="pseudocode-keyword">entero</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Inicio</span></div>
+                    <div class="pseudocode-line"> suma ← 0 <span class="pseudocode-comment">// Inicializar
+                            acumulador</span></div>
+                    <div class="pseudocode-line"> </div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Para</span> contador ← 1 <span
+                            class="pseudocode-keyword">Hasta</span> 10 <span class="pseudocode-keyword">Hacer</span>
+                    </div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Escribir</span>(<span
+                            class="pseudocode-string">"Ingrese número "</span>, contador, <span
+                            class="pseudocode-string">": "</span>)</div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Leer</span>(numero)</div>
+                    <div class="pseudocode-line"> suma ← suma + numero <span class="pseudocode-comment">//
+                            Acumular</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">FinPara</span></div>
+                    <div class="pseudocode-line"> </div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Escribir</span>(<span
+                            class="pseudocode-string">"La suma total es: "</span>, suma)</div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Fin</span></div>
+                </div>
+
+                <h3>2. El Patrón Validación</h3>
+                <div class="pseudocode-block">
+                    <div class="pseudocode-line"><span class="pseudocode-keyword">Algoritmo</span> <span
+                            class="pseudocode-variable">ValidarEdad</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Variables</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-variable">edad</span>: <span
+                            class="pseudocode-keyword">entero</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-variable">edad_valida</span>: <span
+                            class="pseudocode-keyword">logico</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Inicio</span></div>
+                    <div class="pseudocode-line"> edad_valida ← falso</div>
+                    <div class="pseudocode-line"> </div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Repetir</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Escribir</span>(<span
+                            class="pseudocode-string">"Ingrese su edad (1-120): "</span>)</div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Leer</span>(edad)</div>
+                    <div class="pseudocode-line"> </div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Si</span> edad >= 1 <span
+                            class="pseudocode-keyword">Y</span> edad <= 120 <span class="pseudocode-keyword">
+                            Entonces</span></div>
+                    <div class="pseudocode-line"> edad_valida ← verdadero</div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Escribir</span>(<span
+                            class="pseudocode-string">"Edad válida registrada"</span>)</div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Sino</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Escribir</span>(<span
+                            class="pseudocode-string">"Error: La edad debe estar entre 1 y 120"</span>)</div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">FinSi</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Hasta Que</span> edad_valida =
+                        verdadero</div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Fin</span></div>
+                </div>
+
+                <h3>3. El Patrón Búsqueda</h3>
+                <div class="pseudocode-block">
+                    <div class="pseudocode-line"><span class="pseudocode-keyword">Algoritmo</span> <span
+                            class="pseudocode-variable">BuscarEnLista</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Variables</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-variable">nombres</span>: <span
+                            class="pseudocode-keyword">arreglo</span>[10] <span class="pseudocode-keyword">de</span>
+                        <span class="pseudocode-keyword">cadena</span>
+                    </div>
+                    <div class="pseudocode-line"> <span class="pseudocode-variable">buscado</span>, <span
+                            class="pseudocode-variable">nombre_actual</span>: <span
+                            class="pseudocode-keyword">cadena</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-variable">encontrado</span>: <span
+                            class="pseudocode-keyword">logico</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-variable">indice</span>: <span
+                            class="pseudocode-keyword">entero</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Inicio</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-comment">// Suponemos que el arreglo ya tiene
+                            datos</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Escribir</span>(<span
+                            class="pseudocode-string">"Nombre a buscar: "</span>)</div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Leer</span>(buscado)</div>
+                    <div class="pseudocode-line"> </div>
+                    <div class="pseudocode-line"> encontrado ← falso</div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Para</span> indice ← 0 <span
+                            class="pseudocode-keyword">Hasta</span> 9 <span class="pseudocode-keyword">Hacer</span>
+                    </div>
+                    <div class="pseudocode-line"> nombre_actual ← nombres[indice]</div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Si</span> nombre_actual = buscado
+                        <span class="pseudocode-keyword">Entonces</span>
+                    </div>
+                    <div class="pseudocode-line"> encontrado ← verdadero</div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Escribir</span>(<span
+                            class="pseudocode-string">"¡Encontrado en posición "</span>, indice, <span
+                            class="pseudocode-string">"!"</span>)</div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Salir del bucle</span> <span
+                            class="pseudocode-comment">// Terminar bucle temprano</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">FinSi</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">FinPara</span></div>
+                    <div class="pseudocode-line"> </div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Si</span> encontrado = falso <span
+                            class="pseudocode-keyword">Entonces</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Escribir</span>(<span
+                            class="pseudocode-string">"Nombre no encontrado"</span>)</div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">FinSi</span></div>
+                    <div class="pseudocode-line"> <span class="pseudocode-keyword">Fin</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Laboratorio Interactivo -->
+        <section id="laboratorio" class="content-card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-flask"></i>
+                </div>
+                <h2 class="card-title">Laboratorio Interactivo: Traduce, Ejecuta, Aprende</h2>
+            </div>
+            <div class="educational-content">
+                <p>Ahora es tu turno. En este laboratorio, escribirás pseudocódigo y verás cómo se traduce a Python. No
+                    te preocupes por los errores de sintaxis - aquí solo importa la lógica.</p>
+
+                <div class="pseudocode-lab">
+                    <div class="lab-header">
+                        <h3 class="lab-title">Traductor Pseudocódigo → Python</h3>
+                        <button id="toggleHelp" class="btn btn-secondary">
+                            <i class="fas fa-question-circle"></i> Ver Ayuda
+                        </button>
+                    </div>
+
+                    <div class="lab-container">
+                        <div class="code-editor">
+                            <div class="editor-header">
+                                <div class="editor-title">
+                                    <i class="fas fa-pencil-alt"></i> Tu Pseudocódigo
+                                </div>
+                                <div style="color: #aaa; font-size: 0.9rem;">
+                                    <i class="fas fa-lightbulb"></i> Escribe en lenguaje natural
+                                </div>
+                            </div>
+                            <div class="editor-line-numbers" id="lineNumbers">
+                                1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15
+                            </div>
+                            <textarea class="editor-content" id="pseudocodeInput"
+                                placeholder="Escribe tu pseudocódigo aquí...">Algoritmo CalcularPromedio
+Variables
+  notas: arreglo[5] de real
+  suma, promedio: real
+  i: entero
+
+Inicio
+  suma ← 0
+  
+  Para i ← 0 Hasta 4 Hacer
+    Escribir("Ingrese nota ", i+1, ": ")
+    Leer(notas[i])
+    suma ← suma + notas[i]
+  FinPara
+  
+  promedio ← suma / 5
+  Escribir("El promedio es: ", promedio)
+Fin</textarea>
+                        </div>
+
+                        <div class="output-panel">
+                            <div class="output-title">
+                                <i class="fas fa-code"></i> Código Python Generado
+                            </div>
+                            <div class="output-content" id="pythonOutput">
+                                # Tu código Python aparecerá aquí
+                                # Después de hacer clic en "Traducir a Python"
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lab-controls">
+                        <button id="translateBtn" class="btn btn-success">
+                            <i class="fas fa-sync-alt"></i> Traducir a Python
+                        </button>
+                        <button id="clearBtn" class="btn">
+                            <i class="fas fa-broom"></i> Limpiar Todo
+                        </button>
+                        <button id="runBtn" class="btn">
+                            <i class="fas fa-play"></i> Ejecutar Python
+                        </button>
+                    </div>
+
+                    <div id="helpPanel"
+                        style="display: none; margin-top: 2rem; padding: 1.5rem; background: rgba(90, 156, 245, 0.1); border-radius: 10px;">
+                        <h4 style="color: var(--azul-intenso); margin-bottom: 1rem;"><i class="fas fa-life-ring"></i>
+                            Ayuda para escribir pseudocódigo</h4>
+                        <ul style="color: #33475b;">
+                            <li>Usa <strong>Algoritmo NombreDelAlgoritmo</strong> para empezar</li>
+                            <li>Declara variables con <strong>Variables</strong> seguido de lista</li>
+                            <li>Usa <strong>←</strong> o <strong>=</strong> para asignaciones</li>
+                            <li>Para bucles: <strong>Para i ← inicio Hasta fin Hacer</strong></li>
+                            <li>Para decisiones: <strong>Si condición Entonces ... Sino ... FinSi</strong></li>
+                            <li>Para entrada/salida: <strong>Leer(variable)</strong> y <strong>Escribir(texto)</strong>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 3rem;">Ejercicios para practicar</h3>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <div class="comparison-title">
+                            <i class="fas fa-calculator"></i> Ejercicio 1: Calculadora Simple
+                        </div>
+                        <p><strong>Descripción:</strong> Escribe un pseudocódigo para una calculadora que pueda sumar,
+                            restar, multiplicar y dividir dos números según la operación elegida por el usuario.</p>
+                        <p><strong>Reto adicional:</strong> Añade validación para evitar división entre cero.</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <div class="comparison-title">
+                            <i class="fas fa-gamepad"></i> Ejercicio 2: Adivina el Número
+                        </div>
+                        <p><strong>Descripción:</strong> Crea un juego donde la computadora piense un número aleatorio
+                            entre 1 y 100, y el usuario deba adivinarlo con pistas de "más alto" o "más bajo".</p>
+                        <p><strong>Reto adicional:</strong> Limita a 10 intentos máximo.</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <div class="comparison-title">
+                            <i class="fas fa-user-friends"></i> Ejercicio 3: Gestor de Estudiantes
+                        </div>
+                        <p><strong>Descripción:</strong> Diseña un pseudocódigo para gestionar notas de estudiantes:
+                            agregar, calcular promedios, encontrar el más alto y mostrar estudiantes aprobados (nota ≥
+                            7).</p>
+                        <p><strong>Reto adicional:</strong> Permite guardar y cargar datos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gran Desafío -->
+        <section id="desafio" class="challenge-section">
+            <div class="challenge-content">
+                <div class="challenge-badge">
+                    <i class="fas fa-trophy"></i> Desafío Final
+                </div>
+                <h2 class="challenge-title">El Gran Desafío: Sistema de Gestión de Biblioteca</h2>
+
+                <p style="font-size: 1.2rem; margin-bottom: 2rem; color: rgba(255, 255, 255, 0.9);">
+                    Imagina que la biblioteca de tu colegio necesita un sistema digital. Tu tarea es diseñar el
+                    pseudocódigo COMPLETO para gestionar libros, préstamos y usuarios.
+                </p>
+
+                <div style="background: rgba(0, 0, 0, 0.2); padding: 2rem; border-radius: 15px; margin: 2rem 0;">
+                    <h3 style="color: var(--azul-neon); margin-bottom: 1.5rem;">Requisitos del sistema:</h3>
+
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                        <div>
+                            <h4 style="color: #fff; margin-bottom: 0.8rem;"><i class="fas fa-book"></i> Gestión de
+                                Libros</h4>
+                            <ul style="color: rgba(255, 255, 255, 0.85);">
+                                <li>Agregar nuevos libros (título, autor, ISBN, cantidad)</li>
+                                <li>Buscar libros por título o autor</li>
+                                <li>Mostrar libros disponibles</li>
+                                <li>Actualizar cantidad de ejemplares</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 style="color: #fff; margin-bottom: 0.8rem;"><i class="fas fa-users"></i> Gestión de
+                                Usuarios</h4>
+                            <ul style="color: rgba(255, 255, 255, 0.85);">
+                                <li>Registrar nuevos usuarios (nombre, ID, contacto)</li>
+                                <li>Buscar usuarios por nombre o ID</li>
+                                <li>Ver historial de préstamos por usuario</li>
+                                <li>Control de morosidad (libros atrasados)</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 style="color: #fff; margin-bottom: 0.8rem;"><i class="fas fa-exchange-alt"></i> Sistema
+                                de Préstamos</h4>
+                            <ul style="color: rgba(255, 255, 255, 0.85);">
+                                <li>Registrar préstamo (usuario, libro, fecha)</li>
+                                <li>Registrar devolución</li>
+                                <li>Cálculo automático de multas por retraso</li>
+                                <li>Validar que el libro esté disponible</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 2rem; border-radius: 15px;">
+                    <h3 style="color: #fff; margin-bottom: 1.5rem;"><i class="fas fa-lightbulb"></i> Pistas para el
+                        éxito:</h3>
+                    <ol style="color: rgba(255, 255, 255, 0.9); padding-left: 1.5rem;">
+                        <li><strong>Divide y vencerás:</strong> Comienza con un módulo simple (solo libros), luego añade
+                            usuarios, finalmente préstamos.</li>
+                        <li><strong>Piensa en estructuras de datos:</strong> ¿Usarás arreglos? ¿Listas? ¿Cómo
+                            relacionarás libros con usuarios?</li>
+                        <li><strong>Valida siempre:</strong> Un libro no puede prestarse si no hay ejemplares
+                            disponibles.</li>
+                        <li><strong>Maneja errores:</strong> ¿Qué pasa si un usuario no existe? ¿O si un libro no se
+                            encuentra?</li>
+                        <li><strong>Sé creativo:</strong> Añade funcionalidades extra que consideres útiles para una
+                            biblioteca real.</li>
+                    </ol>
+                </div>
+
+                <div style="text-align: center; margin-top: 3rem;">
+                    <button id="startChallenge" class="btn" style="font-size: 1.3rem; padding: 1.2rem 3rem;">
+                        <i class="fas fa-rocket"></i> ¡Aceptar el Desafío!
+                    </button>
+                    <p style="color: rgba(255, 255, 255, 0.7); margin-top: 1.5rem;">
+                        Tiempo estimado: 2-3 horas. Trabaja en equipo, discute soluciones, ¡y recuerda que el
+                        pseudocódigo es para comunicar ideas!
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Pie de página -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <p><strong>Python para pensadores</strong></p>
+            <p class="footer-highlight">Taller diseñado con el corazón de un docente y la mente de un programador</p>
+            <p>El pseudocódigo es el puente entre el pensamiento humano y la lógica computacional</p>
+            <p class="copyright">Diseñado por: Edwin Méndez Játiva</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Navegación suave con efectos
+            document.querySelectorAll('nav a').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+
+                    // Quitar activo de todos
+                    document.querySelectorAll('nav a').forEach(link => {
+                        link.style.background = '';
+                        link.style.color = '';
+                    });
+
+                    // Marcar como activo
+                    this.style.background = 'linear-gradient(135deg, var(--azul-luz), var(--azul-ardor))';
+                    this.style.color = 'var(--azul-noche)';
+
+                    // Scroll suave
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // Laboratorio interactivo
+            const pseudocodeInput = document.getElementById('pseudocodeInput');
+            const pythonOutput = document.getElementById('pythonOutput');
+            const translateBtn = document.getElementById('translateBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const runBtn = document.getElementById('runBtn');
+            const toggleHelpBtn = document.getElementById('toggleHelp');
+            const helpPanel = document.getElementById('helpPanel');
+            const startChallengeBtn = document.getElementById('startChallenge');
+
+            // Diccionario de traducción pseudocódigo → Python
+            const translationRules = {
+                // Palabras clave
+                'Algoritmo': '# Algoritmo:',
+                'Variables': '# Variables:',
+                'Inicio': 'def main():',
+                'Fin': '',
+                'FinSi': '',
+                'FinPara': '',
+                'FinMientras': '',
+                'FinRepetir': '',
+                'Hasta Que': '',
+
+                // Estructuras de control
+                'Si (.*?) Entonces': 'if $1:',
+                'Sino': 'else:',
+                'Para (.*?) ← (.*?) Hasta (.*?) Hacer': 'for $1 in range($2, $3 + 1):',
+                'Mientras (.*?) Hacer': 'while $1:',
+                'Repetir': 'while True:',
+                'Hasta Que (.*?)': '    if $1: break',
+
+                // Operadores
+                '←': '=',
+                '=': '==',
+                'Y': 'and',
+                'O': 'or',
+                'No': 'not',
+
+                // Funciones
+                'Escribir\\((.*?)\\)': 'print($1)',
+                'Leer\\((.*?)\\)': '$1 = input()',
+                'Mostrar\\((.*?)\\)': 'print($1)',
+                'Imprimir\\((.*?)\\)': 'print($1)',
+
+                // Tipos de datos
+                'entero': 'int',
+                'real': 'float',
+                'cadena': 'str',
+                'logico': 'bool',
+                'arreglo\\[(.*?)\\] de (.*?)': '[$2] * $1',
+
+                // Comentarios
+                '// (.*)': '# $1'
+            };
+
+            // Traducir pseudocódigo a Python
+            translateBtn.addEventListener('click', function () {
+                let pseudocode = pseudocodeInput.value;
+                let pythonCode = pseudocode;
+
+                // Aplicar reglas de traducción
+                for (const [pattern, replacement] of Object.entries(translationRules)) {
+                    const regex = new RegExp(pattern, 'gi');
+                    pythonCode = pythonCode.replace(regex, replacement);
+                }
+
+                // Post-procesamiento para mejorar el formato
+                pythonCode = pythonCode.replace(/^\s*$/gm, ''); // Eliminar líneas vacías
+                pythonCode = pythonCode.replace(/^(\s*)#/gm, '$1#'); // Ajustar indentación de comentarios
+
+                // Añadir importaciones comunes
+                pythonCode = '# Traducido automáticamente de pseudocódigo\n' +
+                    '# Nota: Esta traducción es aproximada y puede requerir ajustes\n\n' +
+                    pythonCode + '\n\n' +
+                    '# Ejecutar la función principal\n' +
+                    'if __name__ == "__main__":\n' +
+                    '    main()';
+
+                // Mostrar el código Python
+                pythonOutput.textContent = pythonCode;
+                pythonOutput.style.color = '#d4d4d4';
+
+                // Efecto visual
+                this.innerHTML = '<i class="fas fa-check"></i> ¡Traducido!';
+                this.style.background = 'linear-gradient(135deg, #00b09b, #96c93d)';
+
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-sync-alt"></i> Traducir a Python';
+                    this.style.background = '';
+                }, 2000);
+            });
+
+            // Limpiar editor
+            clearBtn.addEventListener('click', function () {
+                pseudocodeInput.value = '';
+                pythonOutput.textContent = '# Tu código Python aparecerá aquí\n# Después de hacer clic en "Traducir a Python"';
+                pythonOutput.style.color = '#d4d4d4';
+
+                // Efecto visual
+                this.innerHTML = '<i class="fas fa-check"></i> ¡Limpiado!';
+
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-broom"></i> Limpiar Todo';
+                }, 1500);
+            });
+
+            // Ejecutar código Python (simulado)
+            runBtn.addEventListener('click', function () {
+                const pythonCode = pythonOutput.textContent;
+
+                if (pythonCode.includes('# Tu código Python aparecerá aquí')) {
+                    pythonOutput.innerHTML = '<span style="color: #ff6b6b;">Error: Primero traduce tu pseudocódigo a Python</span>';
+                    return;
+                }
+
+                // Simular ejecución con diferentes casos
+                const testCases = [
+                    { input: '10\n8\n9\n7\n6', output: 'El promedio es: 8.0' },
+                    { input: '5\n5\n5\n5\n5', output: 'El promedio es: 5.0' },
+                    { input: '0\n10\n7\n8\n9', output: 'El promedio es: 6.8' }
+                ];
+
+                const randomCase = testCases[Math.floor(Math.random() * testCases.length)];
+
+                pythonOutput.innerHTML =
+                    '<span style="color: #6cffa4;">=== EJECUCIÓN SIMULADA ===</span>\n\n' +
+                    '<span style="color: #7dc1ff;">Entrada del usuario:</span>\n' +
+                    randomCase.input.replace(/\n/g, '<br>') + '\n\n' +
+                    '<span style="color: #7dc1ff;">Salida del programa:</span>\n' +
+                    randomCase.output + '\n\n' +
+                    '<span style="color: #6cffa4;">=== EJECUCIÓN COMPLETADA ===</span>';
+
+                // Efecto visual
+                this.innerHTML = '<i class="fas fa-check"></i> ¡Ejecutado!';
+                this.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
+
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-play"></i> Ejecutar Python';
+                    this.style.background = '';
+                }, 2000);
+            });
+
+            // Mostrar/ocultar ayuda
+            toggleHelpBtn.addEventListener('click', function () {
+                if (helpPanel.style.display === 'none') {
+                    helpPanel.style.display = 'block';
+                    this.innerHTML = '<i class="fas fa-times-circle"></i> Ocultar Ayuda';
+                } else {
+                    helpPanel.style.display = 'none';
+                    this.innerHTML = '<i class="fas fa-question-circle"></i> Ver Ayuda';
+                }
+            });
+
+            // Iniciar desafío
+            startChallengeBtn.addEventListener('click', function () {
+                // Crear plantilla para el desafío
+                const challengeTemplate = `Algoritmo SistemaBiblioteca
+Variables
+  # Define aquí tus estructuras de datos
+  # Ejemplo: libros: arreglo[100] de cadena
+  #          usuarios: arreglo[50] de cadena
+  
+  opcion: entero
+  continuar: logico
+
+Inicio
+  continuar ← verdadero
+  
+  Mientras continuar = verdadero Hacer
+    # Menú principal
+    Escribir("=== SISTEMA DE BIBLIOTECA ===")
+    Escribir("1. Gestión de Libros")
+    Escribir("2. Gestión de Usuarios")
+    Escribir("3. Sistema de Préstamos")
+    Escribir("4. Reportes")
+    Escribir("5. Salir")
+    Escribir("Seleccione una opción: ")
+    Leer(opcion)
+    
+    Segun opcion Hacer
+      Caso 1:
+        # Tu código para gestión de libros aquí
+        Escribir("Módulo de libros - ¡Implementa esta funcionalidad!")
+      Caso 2:
+        # Tu código para gestión de usuarios aquí
+        Escribir("Módulo de usuarios - ¡Implementa esta funcionalidad!")
+      Caso 3:
+        # Tu código para préstamos aquí
+        Escribir("Módulo de préstamos - ¡Implementa esta funcionalidad!")
+      Caso 4:
+        # Tu código para reportes aquí
+        Escribir("Módulo de reportes - ¡Implementa esta funcionalidad!")
+      Caso 5:
+        continuar ← falso
+        Escribir("¡Gracias por usar el sistema!")
+      Otro:
+        Escribir("Opción no válida. Intente nuevamente.")
+    FinSegun
+  FinMientras
+Fin`;
+
+                // Poblar el editor con la plantilla
+                pseudocodeInput.value = challengeTemplate;
+
+                // Scroll al laboratorio
+                document.querySelector('#laboratorio').scrollIntoView({
+                    behavior: 'smooth'
+                });
+
+                // Efecto visual
+                this.innerHTML = '<i class="fas fa-check"></i> ¡Desafío Cargado!';
+
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-rocket"></i> ¡Aceptar el Desafío!';
+                }, 3000);
+            });
+
+            // Efecto de entrada para las tarjetas
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+
+                        // Añadir animación específica para tarjetas
+                        if (entry.target.classList.contains('content-card')) {
+                            entry.target.style.animation = 'none';
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            // Aplicar efectos iniciales
+            document.querySelectorAll('.content-card, .comparison-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+
+            // Efecto de escritura en el título principal
+            const heroTitle = document.querySelector('.hero-title');
+            const originalText = heroTitle.innerHTML;
+            heroTitle.innerHTML = '';
+
+            let i = 0;
+            function typeWriter() {
+                if (i < originalText.length) {
+                    heroTitle.innerHTML += originalText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 50);
+                }
+            }
+
+            // Iniciar efecto de escritura después de un breve retraso
+            setTimeout(typeWriter, 500);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python para pensadores: Taller de Algoritmos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --azul-oscuro: #0a1a2d;
+            --azul-medio: #1a3a5f;
+            --azul-claro: #2a5a8c;
+            --azul-cielo: #4a8bc2;
+            --azul-brillante: #7abfff;
+            --gris-claro: #f0f5ff;
+            --blanco: #ffffff;
+            --sombra: rgba(10, 26, 45, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--gris-claro);
+            color: var(--azul-oscuro);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Encabezado */
+        header {
+            background: linear-gradient(135deg, var(--azul-oscuro) 0%, var(--azul-medio) 100%);
+            color: var(--blanco);
+            padding: 2rem 0;
+            text-align: center;
+            border-bottom: 5px solid var(--azul-brillante);
+            box-shadow: 0 5px 15px var(--sombra);
+        }
+
+        .header-content h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-content h2 {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: var(--azul-brillante);
+            margin-bottom: 1rem;
+        }
+
+        .header-content p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Navegación */
+        nav {
+            background-color: var(--azul-claro);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 3px 10px var(--sombra);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: var(--blanco);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: var(--azul-brillante);
+            color: var(--azul-oscuro);
+        }
+
+        /* Secciones principales */
+        section {
+            background-color: var(--blanco);
+            margin: 2rem 0;
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px var(--sombra);
+            transition: transform 0.3s ease;
+        }
+
+        section:hover {
+            transform: translateY(-5px);
+        }
+
+        section h2 {
+            color: var(--azul-medio);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid var(--azul-brillante);
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        section h2 i {
+            margin-right: 10px;
+            color: var(--azul-brillante);
+        }
+
+        section h3 {
+            color: var(--azul-claro);
+            margin: 1.5rem 0 1rem 0;
+            font-size: 1.5rem;
+        }
+
+        section p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .highlight {
+            background-color: rgba(122, 191, 255, 0.1);
+            border-left: 4px solid var(--azul-brillante);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .objective {
+            background-color: rgba(74, 139, 194, 0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .example-card {
+            background-color: rgba(74, 139, 194, 0.05);
+            border: 1px solid var(--azul-brillante);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .example-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(74, 139, 194, 0.2);
+        }
+
+        .example-card h4 {
+            color: var(--azul-claro);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .example-card i {
+            margin-right: 10px;
+            color: var(--azul-brillante);
+        }
+
+        /* Juego */
+        #juego {
+            background: linear-gradient(135deg, var(--gris-claro) 0%, #e6eeff 100%);
+        }
+
+        .game-container {
+            background-color: var(--blanco);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-top: 1.5rem;
+            box-shadow: 0 5px 15px var(--sombra);
+        }
+
+        .game-instructions {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .algorithm-step {
+            background-color: rgba(122, 191, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .step-number {
+            background-color: var(--azul-brillante);
+            color: var(--azul-oscuro);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex-grow: 1;
+        }
+
+        .step-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .step-actions button {
+            background-color: var(--azul-medio);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .step-actions button:hover {
+            background-color: var(--azul-claro);
+        }
+
+        .step-actions button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .game-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+
+        .algorithm-problem {
+            background-color: rgba(26, 58, 95, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .problem-title {
+            color: var(--azul-medio);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Botones */
+        .btn {
+            display: inline-block;
+            background-color: var(--azul-medio);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--azul-claro);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-brillante {
+            background-color: var(--azul-brillante);
+            color: var(--azul-oscuro);
+        }
+
+        /* Pie de página */
+        footer {
+            background-color: var(--azul-oscuro);
+            color: var(--blanco);
+            padding: 2.5rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .footer-content p {
+            margin-bottom: 0.5rem;
+        }
+
+        .copyright {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content h1 {
+                font-size: 2rem;
+            }
+
+            .header-content h2 {
+                font-size: 1.2rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav ul li {
+                margin: 5px 0;
+            }
+
+            section {
+                padding: 1.5rem;
+            }
+
+            .examples-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .game-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .game-controls .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado -->
+    <header>
+        <div class="container header-content">
+            <h1><i class="fas fa-brain"></i> Python para pensadores</h1>
+            <h2>Taller diseñado con el corazón de un docente y la mente de un programador</h2>
+            <p>Un viaje educativo para dominar los algoritmos y transformar problemas en soluciones elegantes</p>
+        </div>
+    </header>
+
+    <!-- Navegación -->
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#objetivo"><i class="fas fa-bullseye"></i> Objetivo</a></li>
+                <li><a href="#introduccion"><i class="fas fa-door-open"></i> Introducción</a></li>
+                <li><a href="#desarrollo"><i class="fas fa-code"></i> Desarrollo</a></li>
+                <li><a href="#reto"><i class="fas fa-flag-checkered"></i> El Reto</a></li>
+                <li><a href="#juego"><i class="fas fa-gamepad"></i> Juego</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Objetivo -->
+        <section id="objetivo">
+            <h2><i class="fas fa-bullseye"></i> Objetivo de Aprendizaje</h2>
+            <div class="objective">
+                <p>Dominar la conceptualización, diseño e implementación de algoritmos eficientes mediante el análisis de problemas cotidianos, la exploración de diferentes enfoques de solución y la aplicación de principios de optimización, para desarrollar competencias técnicas en la construcción de procedimientos lógicos, habilidades cognitivas en el pensamiento crítico y abstracto, y actitudes de perseverancia, colaboración y ética profesional, con el fin de formar programadores capaces de transformar desafíos complejos en soluciones de software elegantes y efectivas.</p>
+            </div>
+        </section>
+
+        <!-- Introducción -->
+        <section id="introduccion">
+            <h2><i class="fas fa-door-open"></i> Introducción: El Lenguaje Oculta del Mundo</h2>
+            <p>Imagina que cada mañana, al preparar tu desayuno, estás ejecutando un algoritmo. Los pasos que sigues -calentar agua, preparar el café, tostar el pan- conforman un procedimiento ordenado para alcanzar un objetivo. Así funcionan los algoritmos: son recetas precisas que, cuando se ejecutan correctamente, transforman ingredientes dispersos en resultados valiosos.</p>
+            
+            <div class="highlight">
+                <p>Desde que te levantas hasta que te acuestas, estás rodeado de algoritmos. Tu aplicación de música decide qué canción reproducir, el GPS calcula la ruta más eficiente, hasta tu mente organiza pensamientos mediante patrones algorítmicos. En este taller, descubriremos cómo estos procesos invisibles gobiernan nuestro mundo digital y aprenderemos a crear los nuestros.</p>
+            </div>
+            
+            <p>La programación no es solo escribir código; es el arte de descomponer problemas complejos en pasos simples y ejecutables. Como un maestro artesano que transforma materia prima en obra de arte, tú aprenderás a convertir problemas en soluciones mediante la lógica pura y la creatividad disciplinada.</p>
+        </section>
+
+        <!-- Desarrollo -->
+        <section id="desarrollo">
+            <h2><i class="fas fa-code"></i> Desarrollo: Construyendo Pensamiento Algorítmico</h2>
+            
+            <h3>¿Qué es un algoritmo?</h3>
+            <p>Un algoritmo es una secuencia finita de instrucciones bien definidas y ordenadas que permite resolver un problema o realizar una tarea. Piensa en él como un mapa paso a paso que te guía desde un punto inicial hasta una solución final.</p>
+            
+            <h3>Características de un buen algoritmo</h3>
+            <p>Un algoritmo efectivo debe ser:</p>
+            <ul>
+                <li><strong>Preciso:</strong> Cada instrucción debe ser clara e inequívoca.</li>
+                <li><strong>Finito:</strong> Debe terminar en un número determinado de pasos.</li>
+                <li><strong>Eficiente:</strong> Debe utilizar recursos (tiempo, memoria) de manera óptima.</li>
+                <li><strong>General:</strong> Debe resolver una clase de problemas, no solo un caso específico.</li>
+                <li><strong>Correcto:</strong> Debe producir el resultado esperado para todas las entradas válidas.</li>
+            </ul>
+            
+            <h3>Tipos de algoritmos</h3>
+            <p>Existen múltiples formas de clasificar los algoritmos según su enfoque:</p>
+            <div class="examples-grid">
+                <div class="example-card">
+                    <h4><i class="fas fa-sort-amount-down"></i> Algoritmos Secuenciales</h4>
+                    <p>Instrucciones que se ejecutan en orden, una después de otra, como seguir una receta de cocina paso a paso.</p>
+                </div>
+                <div class="example-card">
+                    <h4><i class="fas fa-code-branch"></i> Algoritmos Condicionales</h4>
+                    <p>Incluyen decisiones (si-entonces) que cambian el flujo según condiciones específicas, como decidir qué ropa usar según el clima.</p>
+                </div>
+                <div class="example-card">
+                    <h4><i class="fas fa-redo"></i> Algoritmos Iterativos</h4>
+                    <p>Repiten acciones hasta que se cumple una condición, como lavar platos hasta que no quede ninguno sucio.</p>
+                </div>
+            </div>
+            
+            <h3>Importancia en el desarrollo de software</h3>
+            <p>Los algoritmos son el corazón de cualquier programa. Determinan cómo una aplicación responde a entradas, procesa datos y entrega resultados. Un algoritmo bien diseñado puede significar la diferencia entre una aplicación ágil y una que se congela con cantidades modestas de datos.</p>
+            
+            <h3>Ejemplos cotidianos de procesos algorítmicos</h3>
+            <div class="examples-grid">
+                <div class="example-card">
+                    <h4><i class="fas fa-utensils"></i> Preparar un sándwich</h4>
+                    <p>1. Tomar dos rebanadas de pan<br>2. Untar mantequilla<br>3. Agregar ingredientes<br>4. Unir las rebanadas<br>Un proceso secuencial con pasos claros.</p>
+                </div>
+                <div class="example-card">
+                    <h4><i class="fas fa-route"></i> Encontrar el camino más corto</h4>
+                    <p>Cuando decides qué ruta tomar al colegio, inconscientemente evalúas distancia, tráfico y tiempo, aplicando un algoritmo de optimización.</p>
+                </div>
+                <div class="example-card">
+                    <h4><i class="fas fa-search"></i> Buscar una palabra en el diccionario</h4>
+                    <p>Abrir en la mitad, comparar palabras, descartar mitad incorrecta y repetir. ¡Es la búsqueda binaria en acción!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reto -->
+        <section id="reto">
+            <h2><i class="fas fa-flag-checkered"></i> El Reto: El Algoritmo de la Vida Cotidiana</h2>
+            
+            <div class="algorithm-problem">
+                <div class="problem-title">Tu misión:</div>
+                <p>Identifica un proceso de tu vida diaria que sea ineficiente o tedioso y diseña un algoritmo para optimizarlo. Puede ser desde organizar tu mochila hasta planificar tu semana de estudio.</p>
+            </div>
+            
+            <h3>Instrucciones</h3>
+            <ol>
+                <li><strong>Selecciona un proceso:</strong> Elige una actividad que realices regularmente y que creas que podría ser más eficiente.</li>
+                <li><strong>Descríbelo:</strong> Documenta cada paso que actualmente sigues para completar esta actividad.</li>
+                <li><strong>Analiza:</strong> Identifica cuellos de botella, pasos redundantes o oportunidades de mejora.</li>
+                <li><strong>Rediseña:</strong> Crea un nuevo algoritmo optimizado para esta actividad.</li>
+                <li><strong>Evalúa:</strong> Compara tu nuevo algoritmo con el anterior. ¿Qué ventajas ofrece?</li>
+                <li><strong>Comparte:</strong> Presenta tu algoritmo a la clase y recibe feedback.</li>
+            </ol>
+            
+            <div class="highlight">
+                <p><strong>Pistas para el éxito:</strong> Considera principios como "divide y vencerás" (separar problemas grandes en pequeños), "prueba y error" (iterar hasta encontrar la mejor solución) y "parsimonia" (lograr el máximo resultado con el mínimo esfuerzo).</p>
+            </div>
+            
+            <p>Este reto no solo te preparará para escribir código, sino que cultivará una mentalidad algorítmica que transformará cómo abordas problemas en cualquier ámbito de tu vida.</p>
+        </section>
+
+        <!-- Juego -->
+        <section id="juego">
+            <h2><i class="fas fa-gamepad"></i> Juego: Ordena los Pasos</h2>
+            <p>Practica tu pensamiento algorítmico organizando los pasos para resolver problemas cotidianos. Arrastra y suelta los pasos en el orden correcto.</p>
+            
+            <div class="game-container">
+                <div class="game-instructions">
+                    <h3>Problema: Preparar un café perfecto</h3>
+                    <p>Ordena los pasos en la secuencia lógica correcta. Al completar correctamente, descubrirás un principio importante de los algoritmos.</p>
+                </div>
+                
+                <div id="steps-container">
+                    <!-- Los pasos se generarán con JavaScript -->
+                </div>
+                
+                <div class="game-controls">
+                    <button id="check-btn" class="btn"><i class="fas fa-check-circle"></i> Verificar orden</button>
+                    <button id="reset-btn" class="btn btn-brillante"><i class="fas fa-redo"></i> Reiniciar juego</button>
+                    <button id="hint-btn" class="btn"><i class="fas fa-lightbulb"></i> Pista</button>
+                </div>
+                
+                <div id="feedback" style="margin-top: 1.5rem; padding: 1rem; border-radius: 8px; display: none;"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Pie de página -->
+    <footer>
+        <div class="container footer-content">
+            <p><strong>Python para pensadores</strong></p>
+            <p>Taller diseñado con el corazón de un docente y la mente de un programador</p>
+            <p class="copyright">Diseñado por: Edwin Méndez Játiva</p>
+        </div>
+    </footer>
+
+    <script>
+        // Juego: Ordena los Pasos
+        document.addEventListener('DOMContentLoaded', function() {
+            const stepsContainer = document.getElementById('steps-container');
+            const checkBtn = document.getElementById('check-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const hintBtn = document.getElementById('hint-btn');
+            const feedback = document.getElementById('feedback');
+            
+            // Pasos del algoritmo para preparar café (en orden desorganizado)
+            const steps = [
+                { id: 1, text: "Calentar agua en la tetera", correctOrder: 2 },
+                { id: 2, text: "Colocar el café en el filtro", correctOrder: 3 },
+                { id: 3, text: "Servir el café en la taza", correctOrder: 6 },
+                { id: 4, text: "Verter agua caliente sobre el café", correctOrder: 4 },
+                { id: 5, text: "Tomar la tetera y el filtro", correctOrder: 1 },
+                { id: 6, text: "Esperar a que termine de filtrarse", correctOrder: 5 }
+            ];
+            
+            // Estado del juego
+            let currentOrder = [0, 1, 2, 3, 4, 5]; // Índices en orden inicial
+            let gameCompleted = false;
+            
+            // Inicializar el juego
+            function initGame() {
+                stepsContainer.innerHTML = '';
+                currentOrder = shuffleArray([...Array(steps.length).keys()]);
+                gameCompleted = false;
+                feedback.style.display = 'none';
+                
+                // Crear elementos de paso
+                currentOrder.forEach((stepIndex, position) => {
+                    const step = steps[stepIndex];
+                    const stepElement = document.createElement('div');
+                    stepElement.className = 'algorithm-step';
+                    stepElement.dataset.id = step.id;
+                    stepElement.dataset.correctOrder = step.correctOrder;
+                    
+                    stepElement.innerHTML = `
+                        <div class="step-number">${position + 1}</div>
+                        <div class="step-content">${step.text}</div>
+                        <div class="step-actions">
+                            <button class="move-up" ${position === 0 ? 'disabled' : ''}><i class="fas fa-arrow-up"></i></button>
+                            <button class="move-down" ${position === steps.length - 1 ? 'disabled' : ''}><i class="fas fa-arrow-down"></i></button>
+                        </div>
+                    `;
+                    
+                    stepsContainer.appendChild(stepElement);
+                });
+                
+                // Agregar event listeners a los botones
+                document.querySelectorAll('.move-up').forEach(btn => {
+                    btn.addEventListener('click', moveStepUp);
+                });
+                
+                document.querySelectorAll('.move-down').forEach(btn => {
+                    btn.addEventListener('click', moveStepDown);
+                });
+            }
+            
+            // Función para mezclar un array (algoritmo de Fisher-Yates)
+            function shuffleArray(array) {
+                const newArray = [...array];
+                for (let i = newArray.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+                }
+                return newArray;
+            }
+            
+            // Mover paso hacia arriba
+            function moveStepUp(e) {
+                if (gameCompleted) return;
+                
+                const stepElement = e.target.closest('.algorithm-step');
+                const currentIndex = Array.from(stepsContainer.children).indexOf(stepElement);
+                
+                if (currentIndex > 0) {
+                    // Intercambiar con el elemento anterior
+                    stepsContainer.insertBefore(stepElement, stepsContainer.children[currentIndex - 1]);
+                    
+                    // Actualizar números de paso y habilitar/deshabilitar botones
+                    updateStepNumbers();
+                }
+            }
+            
+            // Mover paso hacia abajo
+            function moveStepDown(e) {
+                if (gameCompleted) return;
+                
+                const stepElement = e.target.closest('.algorithm-step');
+                const currentIndex = Array.from(stepsContainer.children).indexOf(stepElement);
+                
+                if (currentIndex < stepsContainer.children.length - 1) {
+                    // Intercambiar con el elemento siguiente
+                    if (currentIndex === stepsContainer.children.length - 2) {
+                        stepsContainer.appendChild(stepElement);
+                    } else {
+                        stepsContainer.insertBefore(stepElement, stepsContainer.children[currentIndex + 2]);
+                    }
+                    
+                    // Actualizar números de paso y habilitar/deshabilitar botones
+                    updateStepNumbers();
+                }
+            }
+            
+            // Actualizar números de paso y estado de botones
+            function updateStepNumbers() {
+                Array.from(stepsContainer.children).forEach((stepElement, index) => {
+                    stepElement.querySelector('.step-number').textContent = index + 1;
+                    
+                    // Actualizar botones
+                    const upBtn = stepElement.querySelector('.move-up');
+                    const downBtn = stepElement.querySelector('.move-down');
+                    
+                    upBtn.disabled = index === 0;
+                    downBtn.disabled = index === stepsContainer.children.length - 1;
+                });
+            }
+            
+            // Verificar el orden
+            function checkOrder() {
+                if (gameCompleted) return;
+                
+                const currentSteps = Array.from(stepsContainer.children);
+                let correctCount = 0;
+                
+                currentSteps.forEach((stepElement, index) => {
+                    const stepId = parseInt(stepElement.dataset.id);
+                    const step = steps.find(s => s.id === stepId);
+                    
+                    // Verificar si está en la posición correcta
+                    if (step.correctOrder === index + 1) {
+                        stepElement.style.backgroundColor = 'rgba(0, 200, 100, 0.2)';
+                        correctCount++;
+                    } else {
+                        stepElement.style.backgroundColor = 'rgba(255, 100, 100, 0.2)';
+                    }
+                });
+                
+                // Mostrar feedback
+                feedback.style.display = 'block';
+                
+                if (correctCount === steps.length) {
+                    feedback.innerHTML = `
+                        <div style="color: #0a5; font-weight: bold;">
+                            <i class="fas fa-check-circle"></i> ¡Perfecto! Has ordenado correctamente todos los pasos.
+                        </div>
+                        <p style="margin-top: 10px;">Este ejercicio demuestra la importancia de la <strong>secuencialidad</strong> en los algoritmos: cada paso debe ejecutarse en el orden correcto para obtener el resultado esperado.</p>
+                    `;
+                    feedback.style.backgroundColor = 'rgba(0, 200, 100, 0.1)';
+                    feedback.style.borderLeft = '4px solid #0a5';
+                    gameCompleted = true;
+                } else {
+                    feedback.innerHTML = `
+                        <div style="color: #d00; font-weight: bold;">
+                            <i class="fas fa-exclamation-circle"></i> Tienes ${correctCount} de ${steps.length} pasos en el orden correcto.
+                        </div>
+                        <p style="margin-top: 10px;">Revisa los pasos marcados en rojo. Recuerda que un algoritmo debe tener una <strong>secuencia lógica</strong> para ser efectivo.</p>
+                    `;
+                    feedback.style.backgroundColor = 'rgba(255, 100, 100, 0.1)';
+                    feedback.style.borderLeft = '4px solid #d00';
+                }
+            }
+            
+            // Proporcionar una pista
+            function giveHint() {
+                if (gameCompleted) return;
+                
+                const currentSteps = Array.from(stepsContainer.children);
+                
+                // Encontrar el primer paso incorrecto
+                for (let i = 0; i < currentSteps.length; i++) {
+                    const stepElement = currentSteps[i];
+                    const stepId = parseInt(stepElement.dataset.id);
+                    const step = steps.find(s => s.id === stepId);
+                    
+                    if (step.correctOrder !== i + 1) {
+                        // Resaltar este paso
+                        stepElement.style.backgroundColor = 'rgba(255, 200, 50, 0.3)';
+                        stepElement.style.border = '2px solid #fa0';
+                        
+                        // Mostrar mensaje de pista
+                        feedback.style.display = 'block';
+                        feedback.innerHTML = `
+                            <div style="color: #fa0; font-weight: bold;">
+                                <i class="fas fa-lightbulb"></i> Pista: El paso "${step.text}" debería estar en la posición ${step.correctOrder}.
+                            </div>
+                        `;
+                        feedback.style.backgroundColor = 'rgba(255, 200, 50, 0.1)';
+                        feedback.style.borderLeft = '4px solid #fa0';
+                        
+                        // Quitar resaltado después de 3 segundos
+                        setTimeout(() => {
+                            stepElement.style.backgroundColor = '';
+                            stepElement.style.border = '';
+                        }, 3000);
+                        
+                        break;
+                    }
+                }
+            }
+            
+            // Event listeners para botones del juego
+            checkBtn.addEventListener('click', checkOrder);
+            resetBtn.addEventListener('click', initGame);
+            hintBtn.addEventListener('click', giveHint);
+            
+            // Inicializar el juego al cargar la página
+            initGame();
+            
+            // Navegación suave
+            document.querySelectorAll('nav a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
