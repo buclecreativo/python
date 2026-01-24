@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python para Pensadores: Jerarquía de Operaciones</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --azul-claro: #e6f7ff;
+            --azul-medio: #b3e0ff;
+            --azul-profundo: #3399ff;
+            --verde-claro: #e6fff2;
+            --verde-medio: #99e6b3;
+            --verde-profundo: #33cc66;
+            --gris-claro: #f5f7fa;
+            --gris-oscuro: #333;
+            --sombra: rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--gris-claro);
+            color: var(--gris-oscuro);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Encabezado */
+        header {
+            background: linear-gradient(135deg, var(--azul-claro) 0%, var(--verde-claro) 100%);
+            padding: 30px 0;
+            text-align: center;
+            box-shadow: 0 5px 15px var(--sombra);
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233399ff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        .titulo-principal {
+            color: var(--azul-profundo);
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .subtitulo {
+            color: var(--gris-oscuro);
+            font-size: 1.4rem;
+            font-weight: 400;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .marca {
+            display: block;
+            margin-top: 15px;
+            color: var(--verde-profundo);
+            font-weight: 600;
+            font-size: 1.1rem;
+            position: relative;
+        }
+        
+        /* Secciones principales */
+        section {
+            background-color: white;
+            margin: 30px 0;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px var(--sombra);
+            transition: transform 0.3s ease;
+        }
+        
+        section:hover {
+            transform: translateY(-5px);
+        }
+        
+        h2 {
+            color: var(--azul-profundo);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--verde-medio);
+            display: inline-block;
+        }
+        
+        h3 {
+            color: var(--verde-profundo);
+            margin: 25px 0 15px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .destacado {
+            background-color: var(--azul-claro);
+            padding: 20px;
+            border-left: 5px solid var(--azul-profundo);
+            border-radius: 0 10px 10px 0;
+            margin: 20px 0;
+        }
+        
+        .ejemplo {
+            background-color: var(--verde-claro);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            overflow-x: auto;
+        }
+        
+        .ejemplo .resultado {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--verde-medio);
+            color: var(--azul-profundo);
+            font-weight: bold;
+        }
+        
+        /* Juego interactivo */
+        .juego-container {
+            background: linear-gradient(to bottom, var(--azul-claro), var(--verde-claro));
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .juego-titulo {
+            color: var(--azul-profundo);
+            margin-bottom: 30px;
+        }
+        
+        .juego-explicacion {
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        
+        .juego-area {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .operacion {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px var(--sombra);
+            font-size: 1.5rem;
+            font-family: 'Courier New', monospace;
+            min-width: 250px;
+        }
+        
+        .opciones {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            min-width: 250px;
+        }
+        
+        .opcion {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+        }
+        
+        .opcion:hover {
+            background-color: var(--azul-medio);
+            transform: scale(1.05);
+        }
+        
+        .opcion.correcta {
+            background-color: var(--verde-medio);
+            border-color: var(--verde-profundo);
+        }
+        
+        .opcion.incorrecta {
+            background-color: #ffb3b3;
+            border-color: #ff3333;
+        }
+        
+        .juego-controls {
+            margin-top: 20px;
+        }
+        
+        button {
+            background-color: var(--azul-profundo);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background-color: var(--verde-profundo);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px var(--sombra);
+        }
+        
+        .juego-resultado {
+            margin-top: 20px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            min-height: 40px;
+        }
+        
+        .puntuacion {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            color: var(--azul-profundo);
+        }
+        
+        /* Pie de página */
+        footer {
+            background-color: var(--gris-oscuro);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            margin-top: 40px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+        
+        .autor {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            color: var(--verde-medio);
+        }
+        
+        .filosofia {
+            max-width: 800px;
+            margin: 20px auto;
+            font-style: italic;
+            color: #ccc;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .titulo-principal {
+                font-size: 2.2rem;
+            }
+            
+            section {
+                padding: 25px;
+            }
+            
+            .juego-area {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="titulo-principal">Python para pensadores</h1>
+            <p class="subtitulo">Jerarquía de Operaciones: El Orden que Transforma el Caos en Código</p>
+            <span class="marca">Taller diseñado con el corazón de un docente y la mente de un programador</span>
+        </div>
+    </header>
+    
+    <main class="container">
+        <section id="objetivo">
+            <h2><i class="fas fa-bullseye"></i> Objetivo de Aprendizaje</h2>
+            <p>Dominar la jerarquía de operaciones en Python mediante ejercicios prácticos y reflexivos, comprendiendo cómo Python interpreta y resuelve expresiones matemáticas complejas, para desarrollar competencias técnicas en programación, habilidades cognitivas de análisis lógico y pensamiento algorítmico, y actitudes de precisión, paciencia y curiosidad científica que permitan resolver problemas reales con rigor metodológico y creatividad.</p>
+        </section>
+        
+        <section id="introduccion">
+            <h2><i class="fas fa-seedling"></i> Introducción: El Orden en el Universo del Código</h2>
+            <p>Imagina que estás en la cocina siguiendo una receta: primero mezclas los ingredientes secos, luego agregas los líquidos, después horneas y finalmente decoras. Si cambias el orden, el resultado será desastroso. Así funciona Python con las operaciones matemáticas: tiene un orden específico para "cocinar" las expresiones, y si no lo respetamos, nuestro código producirá resultados inesperados.</p>
+            
+            <div class="destacado">
+                <p>En la vida, como en programación, el orden transforma el caos en armonía. Los estoicos comprendían que seguir el orden natural de las cosas era esencial para la serenidad. En Python, comprender la jerarquía de operaciones es esencial para escribir código preciso y confiable.</p>
+            </div>
+            
+            <p>Cuando escribes <code>3 + 5 * 2</code>, ¿obtienes 16 o 13? Depende del orden. En Python, como en matemáticas, la multiplicación tiene precedencia sobre la suma, por lo que el resultado es 13. Este taller te guiará para que no solo memorices reglas, sino que comprendas la lógica detrás de ellas, desarrollando una mentalidad analítica que te servirá tanto para programar como para tomar decisiones en la vida.</p>
+        </section>
+        
+        <section id="desarrollo">
+            <h2><i class="fas fa-code"></i> Desarrollo del Taller: Explorando la Jerarquía</h2>
+            
+            <h3>Los Niveles de la Jerarquía</h3>
+            <p>Python sigue el orden PEMDAS (Paréntesis, Exponentes, Multiplicación y División, Adición y Sustracción), pero con sutilezas importantes:</p>
+            
+            <div class="ejemplo">
+                <strong>Nivel 1: Paréntesis <code>()</code></strong><br>
+                <code>resultado = (3 + 2) * 4</code>
+                <div class="resultado">Resultado: 20 (primero suma 3+2=5, luego multiplica 5*4)</div>
+            </div>
+            
+            <div class="ejemplo">
+                <strong>Nivel 2: Exponentes <code>**</code></strong><br>
+                <code>resultado = 2 ** 3 + 1</code>
+                <div class="resultado">Resultado: 9 (primero calcula 2**3=8, luego suma 8+1)</div>
+            </div>
+            
+            <div class="ejemplo">
+                <strong>Nivel 3: Multiplicación <code>*</code>, División <code>/</code>, División entera <code>//</code> y Módulo <code>%</code></strong><br>
+                <code>resultado = 10 / 2 * 3</code>
+                <div class="resultado">Resultado: 15.0 (mismo nivel, se resuelve de izquierda a derecha: 10/2=5.0, luego 5.0*3=15.0)</div>
+            </div>
+            
+            <div class="ejemplo">
+                <strong>Nivel 4: Suma <code>+</code> y Resta <code>-</code></strong><br>
+                <code>resultado = 5 + 3 - 2</code>
+                <div class="resultado">Resultado: 6 (mismo nivel, de izquierda a derecha: 5+3=8, luego 8-2=6)</div>
+            </div>
+            
+            <h3>Experimento Práctico: ¿Qué Sucede Cuando?</h3>
+            <p>Prueba estas expresiones en tu mente o en un editor Python. Luego, verifica tus predicciones:</p>
+            
+            <div class="ejemplo">
+                <code>expresion_1 = 4 * 3 ** 2</code><br>
+                <code>expresion_2 = (4 * 3) ** 2</code><br>
+                <code>expresion_3 = 15 % 4 * 2</code><br>
+                <code>expresion_4 = 15 % (4 * 2)</code>
+            </div>
+            
+            <p><strong>Reflexión:</strong> ¿Por qué <code>expresion_1</code> y <code>expresion_2</code> dan resultados diferentes? ¿Qué nos enseña esto sobre la importancia de los paréntesis en la comunicación clara, tanto en programación como en la vida?</p>
+            
+            <div class="destacado">
+                <p>En programación, como en la vida, la claridad intencional evita malentendidos. Los paréntesis en Python son como pausas y aclaraciones en una conversación: no siempre son necesarios, pero cuando la situación es compleja, marcan la diferencia entre entenderse o no.</p>
+            </div>
+        </section>
+        
+        <section id="juego">
+            <div class="juego-container">
+                <h2 class="juego-titulo"><i class="fas fa-gamepad"></i> Juego: Ordena el Caos</h2>
+                <p class="juego-explicacion">Demuestra tu comprensión de la jerarquía de operaciones resolviendo estas expresiones. Selecciona la respuesta correcta entre las opciones.</p>
+                
+                <div class="juego-area">
+                    <div class="operacion" id="operacion">8 + 2 * 3</div>
+                    
+                    <div class="opciones">
+                        <div class="opcion" data-valor="30">30</div>
+                        <div class="opcion" data-valor="14">14</div>
+                        <div class="opcion" data-valor="26">26</div>
+                        <div class="opcion" data-valor="10">10</div>
+                    </div>
+                </div>
+                
+                <div class="juego-controls">
+                    <button id="verificar">Verificar Respuesta</button>
+                    <button id="siguiente">Siguiente Desafío</button>
+                </div>
+                
+                <div class="juego-resultado" id="resultado"></div>
+                <div class="puntuacion">Puntuación: <span id="puntuacion">0</span> / <span id="total">0</span></div>
+            </div>
+        </section>
+        
+        <section id="reto">
+            <h2><i class="fas fa-flag-checkered"></i> El Gran Reto: Calculadora de Presupuesto Familiar</h2>
+            <p>Ahora aplicarás todo lo aprendido en un contexto real. Imagina que ayudas a tu familia a calcular el presupuesto mensual. Debes crear un programa en Python que:</p>
+            
+            <div class="ejemplo">
+                <strong>Requisitos del programa:</strong><br>
+                1. Calcule el ingreso total familiar (suma de varios ingresos)<br>
+                2. Calcule el gasto total en diferentes categorías (alimentación, transporte, educación, etc.)<br>
+                3. Determine el porcentaje de cada categoría respecto al ingreso total<br>
+                4. Evalúe si hay ahorro (ingresos - gastos > 0) o déficit<br>
+                5. Use paréntesis apropiadamente para garantizar cálculos correctos
+            </div>
+            
+            <h3>Pistas para el diseño:</h3>
+            <p>Considera usar variables para cada concepto, aplica la jerarquía de operaciones correctamente, y muestra los resultados de forma clara. Por ejemplo:</p>
+            
+            <div class="ejemplo">
+                <code>ingreso_padre = 850</code><br>
+                <code>ingreso_madre = 750</code><br>
+                <code>gasto_alimentacion = 450</code><br>
+                <code>gasto_transporte = 180</code><br>
+                <code>gasto_educacion = 320</code><br><br>
+                
+                <code># Calcula el ingreso total</code><br>
+                <code>ingreso_total = ingreso_padre + ingreso_madre</code><br><br>
+                
+                <code># Calcula el gasto total</code><br>
+                <code>gasto_total = gasto_alimentacion + gasto_transporte + gasto_educacion</code><br><br>
+                
+                <code># Calcula el porcentaje de gasto en alimentación</code><br>
+                <code>porcentaje_alimentacion = (gasto_alimentacion / ingreso_total) * 100</code>
+            </div>
+            
+            <div class="destacado">
+                <p>Este reto no solo evalúa tu comprensión técnica, sino también tu capacidad para aplicar conceptos abstractos a situaciones cotidianas, desarrollando empatía al entender las finanzas familiares y responsabilidad al manejar datos sensibles con ética.</p>
+            </div>
+            
+            <h3>Para reflexionar:</h3>
+            <p>¿Cómo afectaría cambiar el orden de las operaciones en estos cálculos? ¿Qué consecuencias reales podría tener un error en el cálculo del presupuesto familiar? La precisión en programación tiene impacto en la vida real, y ese es el verdadero poder del pensamiento computacional.</p>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p class="filosofia">"No pretendamos que las cosas cambien si siempre hacemos lo mismo. La programación es un ejercicio de pensamiento que transforma problemas en soluciones, caos en orden, y aprendices en creadores."</p>
+            <p class="autor">Diseñado por: Edwin Méndez Játiva</p>
+            <p>Python para Pensadores - 2023</p>
+        </div>
+    </footer>
+
+    <script>
+        // Datos para el juego
+        const operaciones = [
+            { expresion: "8 + 2 * 3", opciones: ["30", "14", "26", "10"], correcta: 1 },
+            { expresion: "(8 + 2) * 3", opciones: ["30", "14", "26", "10"], correcta: 0 },
+            { expresion: "10 / 2 + 3", opciones: ["2", "5", "8", "6.5"], correcta: 2 },
+            { expresion: "10 / (2 + 3)", opciones: ["5", "2", "8", "2.5"], correcta: 1 },
+            { expresion: "2 ** 3 + 1", opciones: ["9", "16", "7", "8"], correcta: 0 },
+            { expresion: "2 ** (3 + 1)", opciones: ["9", "16", "7", "8"], correcta: 1 },
+            { expresion: "15 % 4 * 2", opciones: ["7", "6", "3", "2"], correcta: 3 },
+            { expresion: "15 % (4 * 2)", opciones: ["7", "6", "3", "2"], correcta: 0 },
+            { expresion: "5 + 3 * 2 ** 2", opciones: ["64", "32", "17", "26"], correcta: 2 },
+            { expresion: "(5 + 3) * 2 ** 2", opciones: ["64", "32", "17", "26"], correcta: 1 }
+        ];
+        
+        // Variables del juego
+        let indiceActual = 0;
+        let puntuacion = 0;
+        let totalPreguntas = 0;
+        let opcionSeleccionada = null;
+        
+        // Elementos del DOM
+        const operacionElement = document.getElementById('operacion');
+        const opcionesElements = document.querySelectorAll('.opcion');
+        const verificarBtn = document.getElementById('verificar');
+        const siguienteBtn = document.getElementById('siguiente');
+        const resultadoElement = document.getElementById('resultado');
+        const puntuacionElement = document.getElementById('puntuacion');
+        const totalElement = document.getElementById('total');
+        
+        // Inicializar juego
+        function cargarOperacion() {
+            const operacion = operaciones[indiceActual];
+            operacionElement.textContent = operacion.expresion;
+            
+            opcionesElements.forEach((opcion, index) => {
+                opcion.textContent = operacion.opciones[index];
+                opcion.dataset.valor = operacion.opciones[index];
+                opcion.classList.remove('correcta', 'incorrecta', 'seleccionada');
+            });
+            
+            resultadoElement.textContent = '';
+            opcionSeleccionada = null;
+            totalElement.textContent = totalPreguntas;
+        }
+        
+        // Seleccionar opción
+        opcionesElements.forEach(opcion => {
+            opcion.addEventListener('click', function() {
+                // Quitar selección previa
+                opcionesElements.forEach(o => o.classList.remove('seleccionada'));
+                
+                // Seleccionar nueva opción
+                this.classList.add('seleccionada');
+                opcionSeleccionada = this;
+            });
+        });
+        
+        // Verificar respuesta
+        verificarBtn.addEventListener('click', function() {
+            if (!opcionSeleccionada) {
+                resultadoElement.textContent = "Por favor, selecciona una respuesta primero.";
+                resultadoElement.style.color = "#ff3333";
+                return;
+            }
+            
+            const operacion = operaciones[indiceActual];
+            const indiceSeleccionado = Array.from(opcionesElements).indexOf(opcionSeleccionada);
+            const esCorrecta = indiceSeleccionado === operacion.correcta;
+            
+            // Mostrar resultado
+            if (esCorrecta) {
+                resultadoElement.textContent = "¡Correcto! Excelente razonamiento.";
+                resultadoElement.style.color = "#33cc66";
+                opcionSeleccionada.classList.add('correcta');
+                puntuacion++;
+            } else {
+                resultadoElement.textContent = `Casi. La respuesta correcta es ${operacion.opciones[operacion.correcta]}. Recuerda: ${obtenerExplicacion(indiceActual)}`;
+                resultadoElement.style.color = "#ff3333";
+                opcionSeleccionada.classList.add('incorrecta');
+                // Mostrar también la opción correcta
+                opcionesElements[operacion.correcta].classList.add('correcta');
+            }
+            
+            // Actualizar puntuación
+            totalPreguntas++;
+            puntuacionElement.textContent = puntuacion;
+            totalElement.textContent = totalPreguntas;
+        });
+        
+        // Siguiente desafío
+        siguienteBtn.addEventListener('click', function() {
+            indiceActual = (indiceActual + 1) % operaciones.length;
+            cargarOperacion();
+        });
+        
+        // Explicaciones para cada operación
+        function obtenerExplicacion(indice) {
+            const explicaciones = [
+                "Primero se multiplica (2*3=6), luego se suma (8+6=14).",
+                "Primero se resuelve el paréntesis (8+2=10), luego se multiplica (10*3=30).",
+                "Primero se divide (10/2=5), luego se suma (5+3=8).",
+                "Primero se resuelve el paréntesis (2+3=5), luego se divide (10/5=2).",
+                "Primero se calcula el exponente (2**3=8), luego se suma (8+1=9).",
+                "Primero se resuelve el paréntesis (3+1=4), luego se calcula el exponente (2**4=16).",
+                "Primero se calcula el módulo (15%4=3), luego se multiplica (3*2=6).",
+                "Primero se resuelve el paréntesis (4*2=8), luego se calcula el módulo (15%8=7).",
+                "Primero el exponente (2**2=4), luego multiplicación (3*4=12), luego suma (5+12=17).",
+                "Primero paréntesis (5+3=8), luego exponente (2**2=4), luego multiplicación (8*4=32)."
+            ];
+            
+            return explicaciones[indice];
+        }
+        
+        // Inicializar
+        cargarOperacion();
+        
+        // Efectos visuales adicionales
+        document.querySelectorAll('section').forEach(section => {
+            section.addEventListener('mouseenter', function() {
+                this.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.15)';
+            });
+            
+            section.addEventListener('mouseleave', function() {
+                this.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
+            });
+        });
+    </script>
+</body>
+</html>

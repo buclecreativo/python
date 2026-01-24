@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python para Pensadores: Prueba de Escritorio y Verificación</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --azul-claro: #e6f2ff;
+            --azul-medio: #80c1ff;
+            --azul-profundo: #0066cc;
+            --verde-claro: #e6ffed;
+            --verde-medio: #66cc99;
+            --verde-profundo: #00a859;
+            --naranja: #ff9900;
+            --gris-claro: #f8f9fa;
+            --gris-medio: #e9ecef;
+            --gris-oscuro: #343a40;
+            --sombra: rgba(0, 0, 0, 0.08);
+            --sombra-fuerte: rgba(0, 0, 0, 0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--azul-claro) 0%, var(--verde-claro) 100%);
+            color: var(--gris-oscuro);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Encabezado */
+        header {
+            background: linear-gradient(135deg, var(--azul-profundo) 0%, var(--verde-profundo) 100%);
+            padding: 40px 0;
+            text-align: center;
+            box-shadow: 0 6px 20px var(--sombra-fuerte);
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            position: relative;
+            overflow: hidden;
+            color: white;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+        
+        .titulo-principal {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .subtitulo {
+            font-size: 1.6rem;
+            font-weight: 300;
+            max-width: 900px;
+            margin: 0 auto 20px;
+            opacity: 0.95;
+            position: relative;
+        }
+        
+        .marca {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 25px;
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 1.1rem;
+            position: relative;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Contenido principal */
+        main {
+            padding: 40px 0;
+        }
+        
+        .seccion {
+            background-color: white;
+            margin: 30px 0;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px var(--sombra);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .seccion:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px var(--sombra-fuerte);
+        }
+        
+        .seccion::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 8px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--azul-profundo), var(--verde-profundo));
+        }
+        
+        h2 {
+            color: var(--azul-profundo);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--verde-medio);
+            font-size: 2.2rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        h2 i {
+            color: var(--verde-profundo);
+            font-size: 1.8rem;
+        }
+        
+        h3 {
+            color: var(--verde-profundo);
+            margin: 30px 0 15px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h3 i {
+            font-size: 1.3rem;
+        }
+        
+        p {
+            margin-bottom: 20px;
+            font-size: 1.15rem;
+            line-height: 1.7;
+        }
+        
+        .destacado {
+            background: linear-gradient(to right, var(--azul-claro), var(--verde-claro));
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            border-left: 6px solid var(--naranja);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .destacado p:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* Ejemplos de código */
+        .ejemplo {
+            background-color: var(--gris-claro);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border: 2px solid var(--gris-medio);
+            overflow-x: auto;
+            position: relative;
+        }
+        
+        .ejemplo h4 {
+            color: var(--azul-profundo);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .codigo {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--gris-oscuro);
+        }
+        
+        .comentario {
+            color: #228B22;
+            font-style: italic;
+        }
+        
+        .resultado {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px dashed var(--azul-medio);
+            color: var(--azul-profundo);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        /* Tabla de prueba de escritorio */
+        .tabla-container {
+            overflow-x: auto;
+            margin: 25px 0;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px var(--sombra);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+        
+        thead {
+            background: linear-gradient(to right, var(--azul-profundo), var(--verde-profundo));
+            color: white;
+        }
+        
+        th {
+            padding: 18px 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        tbody tr {
+            border-bottom: 1px solid var(--gris-medio);
+            transition: background-color 0.2s;
+        }
+        
+        tbody tr:hover {
+            background-color: var(--azul-claro);
+        }
+        
+        tbody tr:nth-child(even) {
+            background-color: var(--gris-claro);
+        }
+        
+        tbody tr:nth-child(even):hover {
+            background-color: var(--azul-claro);
+        }
+        
+        td {
+            padding: 15px;
+            font-size: 1.05rem;
+        }
+        
+        .variable {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: var(--azul-profundo);
+        }
+        
+        .valor {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: var(--verde-profundo);
+        }
+        
+        /* Simulador interactivo */
+        .simulador {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 35px;
+            border-radius: 20px;
+            margin: 40px 0;
+            box-shadow: 0 10px 30px var(--sombra);
+            border: 2px solid var(--azul-medio);
+        }
+        
+        .simulador-titulo {
+            text-align: center;
+            color: var(--azul-profundo);
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+        
+        .simulador-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+        
+        .algoritmo-select {
+            flex: 1;
+            min-width: 250px;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid var(--azul-medio);
+            font-size: 1.1rem;
+            background-color: white;
+            color: var(--gris-oscuro);
+        }
+        
+        .simulador-btn {
+            background: linear-gradient(to right, var(--azul-profundo), var(--verde-profundo));
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            min-width: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .simulador-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3);
+        }
+        
+        .simulador-btn:active {
+            transform: translateY(0);
+        }
+        
+        .simulador-pasos {
+            background-color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+            min-height: 200px;
+            border: 2px solid var(--gris-medio);
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            overflow-y: auto;
+            max-height: 400px;
+        }
+        
+        .paso-activo {
+            background-color: var(--azul-claro);
+            padding: 8px;
+            border-radius: 5px;
+            margin: 5px 0;
+            border-left: 4px solid var(--azul-profundo);
+            font-weight: bold;
+        }
+        
+        /* Reto final */
+        .reto {
+            background: linear-gradient(135deg, var(--verde-claro) 0%, var(--azul-claro) 100%);
+            padding: 40px;
+            border-radius: 20px;
+            margin: 40px 0;
+            border: 3px solid var(--verde-profundo);
+            box-shadow: 0 10px 30px rgba(0, 168, 89, 0.15);
+        }
+        
+        .reto h2 {
+            color: var(--verde-profundo);
+            border-bottom-color: var(--azul-profundo);
+        }
+        
+        .reto h3 {
+            color: var(--azul-profundo);
+        }
+        
+        /* Pie de página */
+        footer {
+            background-color: var(--gris-oscuro);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            margin-top: 60px;
+            border-top-left-radius: 25px;
+            border-top-right-radius: 25px;
+        }
+        
+        .filosofia {
+            max-width: 800px;
+            margin: 20px auto 30px;
+            font-style: italic;
+            color: #ccc;
+            font-size: 1.15rem;
+            line-height: 1.7;
+        }
+        
+        .autor {
+            font-size: 1.3rem;
+            margin-top: 15px;
+            color: var(--verde-medio);
+            font-weight: 600;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .titulo-principal {
+                font-size: 2.3rem;
+            }
+            
+            .subtitulo {
+                font-size: 1.3rem;
+            }
+            
+            .seccion {
+                padding: 25px;
+            }
+            
+            h2 {
+                font-size: 1.8rem;
+            }
+            
+            .simulador {
+                padding: 25px;
+            }
+            
+            .simulador-controls {
+                flex-direction: column;
+            }
+            
+            .algoritmo-select, .simulador-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="titulo-principal">Python para Pensadores</h1>
+            <p class="subtitulo">Prueba de Escritorio y Verificación de Algoritmos: El Arte de Pensar como la Máquina</p>
+            <div class="marca">Taller diseñado con el corazón de un docente y la mente de un programador</div>
+        </div>
+    </header>
+    
+    <main class="container">
+        <section class="seccion" id="objetivo">
+            <h2><i class="fas fa-bullseye"></i> Objetivo de Aprendizaje</h2>
+            <p>Desarrollar la capacidad de realizar pruebas de escritorio y verificar algoritmos mediante el seguimiento meticuloso de la ejecución paso a paso del código, comprendiendo cómo las variables cambian su valor durante la ejecución y cómo las estructuras de control dirigen el flujo del programa, para fortalecer competencias técnicas en depuración y análisis algorítmico, habilidades cognitivas de pensamiento sistémico y razonamiento lógico, y actitudes de paciencia, precisión y pensamiento crítico que permitan crear software confiable y eficiente.</p>
+        </section>
+        
+        <section class="seccion" id="introduccion">
+            <h2><i class="fas fa-microscope"></i> Introducción: El Detective del Código</h2>
+            <p>Imagina que eres un detective investigando un misterio: tienes todas las pistas (el código fuente) pero necesitas reconstruir lo que sucedió paso a paso. La prueba de escritorio es tu método de investigación, tu lupa para examinar cada detalle del comportamiento del algoritmo. No se trata de ejecutar el código en la computadora, sino de ejecutarlo en tu mente, siendo tú mismo el procesador que interpreta cada instrucción.</p>
+            
+            <div class="destacado">
+                <p>Los estoicos practicaban la "premeditatio malorum": anticipar mentalmente los desafíos para estar preparados. En programación, la prueba de escritorio es nuestra premeditatio: anticipamos cómo se comportará el código antes de ejecutarlo, preparándonos para posibles errores y comprendiendo profundamente el algoritmo.</p>
+            </div>
+            
+            <p>Cuando realizas una prueba de escritorio, te conviertes en un traductor entre dos mundos: el humano (que piensa en problemas y soluciones) y el computacional (que ejecuta instrucciones literales). Esta habilidad no solo te hará un mejor programador, sino un mejor pensador, capaz de descomponer problemas complejos en pasos manejables y predecir consecuencias de decisiones algorítmicas.</p>
+        </section>
+        
+        <section class="seccion" id="conceptos">
+            <h2><i class="fas fa-cogs"></i> Conceptos Fundamentales</h2>
+            
+            <h3><i class="fas fa-search"></i> ¿Qué es una Prueba de Escritorio?</h3>
+            <p>Una prueba de escritorio (o "desk checking") es un proceso manual donde simulas la ejecución de un algoritmo paso a paso, registrando los valores de las variables en cada momento. Es como representar una obra de teatro donde tú eres el director, los actores y el público simultáneamente.</p>
+            
+            <h3><i class="fas fa-check-circle"></i> ¿Por qué es Esencial?</h3>
+            <p>Porque desarrolla tu capacidad de pensar algorítmicamente. Cuando depuras un programa, el 90% del tiempo no estás escribiendo código, sino pensando en por qué el código no funciona como esperabas. La prueba de escritorio entrena esa habilidad de pensamiento.</p>
+            
+            <div class="ejemplo">
+                <h4>Ejemplo 1: Seguimiento de variables simples</h4>
+                <div class="codigo">
+                    # Inicialización de variables<br>
+                    a = 5<br>
+                    b = 10<br>
+                    <br>
+                    # Intercambio de valores<br>
+                    temporal = a<br>
+                    a = b<br>
+                    b = temporal<br>
+                    <br>
+                    # Resultado final<br>
+                    print(f"a = {a}, b = {b}")
+                </div>
+                <div class="resultado">
+                    Prueba de escritorio:<br>
+                    Paso 1: a = 5, b = 10, temporal = ?<br>
+                    Paso 2: a = 5, b = 10, temporal = 5<br>
+                    Paso 3: a = 10, b = 10, temporal = 5<br>
+                    Paso 4: a = 10, b = 5, temporal = 5<br>
+                    Resultado final: a = 10, b = 5
+                </div>
+            </div>
+            
+            <h3><i class="fas fa-project-diagram"></i> Estructuras de Control en Pruebas de Escritorio</h3>
+            <p>Las estructuras condicionales (if) y repetitivas (while, for) añaden complejidad a las pruebas de escritorio porque el flujo puede bifurcarse o repetirse. Aquí es donde la disciplina y meticulosidad se vuelven esenciales.</p>
+            
+            <div class="ejemplo">
+                <h4>Ejemplo 2: Condicional con seguimiento detallado</h4>
+                <div class="codigo">
+                    edad = 17<br>
+                    tiene_licencia = False<br>
+                    <br>
+                    if edad >= 18:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;if tiene_licencia:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;puede_conducir = True<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;else:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;puede_conducir = False<br>
+                    else:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;puede_conducir = False<br>
+                    <br>
+                    print(f"¿Puede conducir? {puede_conducir}")
+                </div>
+                <div class="resultado">
+                    Prueba de escritorio:<br>
+                    Paso 1: edad = 17, tiene_licencia = False, puede_conducir = ?<br>
+                    Paso 2: Evaluar condición (edad >= 18) → 17 >= 18 → False<br>
+                    Paso 3: Saltar al else (porque condición es False)<br>
+                    Paso 4: puede_conducir = False<br>
+                    Resultado final: ¿Puede conducir? False
+                </div>
+            </div>
+        </section>
+        
+        <section class="seccion" id="tabla-prueba">
+            <h2><i class="fas fa-table"></i> La Tabla de Prueba de Escritorio</h2>
+            <p>La forma más sistemática de realizar una prueba de escritorio es mediante una tabla donde cada fila representa un paso de ejecución y cada columna representa una variable o condición relevante.</p>
+            
+            <div class="ejemplo">
+                <h4>Algoritmo: Suma de los primeros N números naturales</h4>
+                <div class="codigo">
+                    n = 5<br>
+                    suma = 0<br>
+                    i = 1<br>
+                    <br>
+                    while i <= n:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;suma = suma + i<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;i = i + 1<br>
+                    <br>
+                    print(f"La suma de los primeros {n} números es {suma}")
+                </div>
+            </div>
+            
+            <div class="tabla-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Paso</th>
+                            <th>Línea</th>
+                            <th>n</th>
+                            <th>suma</th>
+                            <th>i</th>
+                            <th>Condición (i <= n)</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>1</td>
+                            <td class="valor">5</td>
+                            <td class="variable">?</td>
+                            <td class="variable">?</td>
+                            <td>-</td>
+                            <td>Inicialización</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>2</td>
+                            <td class="valor">5</td>
+                            <td class="valor">0</td>
+                            <td class="variable">?</td>
+                            <td>-</td>
+                            <td>Inicialización</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>3</td>
+                            <td class="valor">5</td>
+                            <td class="valor">0</td>
+                            <td class="valor">1</td>
+                            <td>-</td>
+                            <td>Inicialización</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>5</td>
+                            <td class="valor">5</td>
+                            <td class="valor">0</td>
+                            <td class="valor">1</td>
+                            <td class="valor">True</td>
+                            <td>Entra al ciclo</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>6</td>
+                            <td class="valor">5</td>
+                            <td class="valor">1</td>
+                            <td class="valor">1</td>
+                            <td class="valor">True</td>
+                            <td>suma = 0 + 1</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>7</td>
+                            <td class="valor">5</td>
+                            <td class="valor">1</td>
+                            <td class="valor">2</td>
+                            <td class="valor">True</td>
+                            <td>i = 1 + 1</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>5</td>
+                            <td class="valor">5</td>
+                            <td class="valor">1</td>
+                            <td class="valor">2</td>
+                            <td class="valor">True</td>
+                            <td>Continúa ciclo</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>6</td>
+                            <td class="valor">5</td>
+                            <td class="valor">3</td>
+                            <td class="valor">2</td>
+                            <td class="valor">True</td>
+                            <td>suma = 1 + 2</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>7</td>
+                            <td class="valor">5</td>
+                            <td class="valor">3</td>
+                            <td class="valor">3</td>
+                            <td class="valor">True</td>
+                            <td>i = 2 + 1</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>5</td>
+                            <td class="valor">5</td>
+                            <td class="valor">3</td>
+                            <td class="valor">3</td>
+                            <td class="valor">True</td>
+                            <td>Continúa ciclo</td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td>6</td>
+                            <td class="valor">5</td>
+                            <td class="valor">6</td>
+                            <td class="valor">3</td>
+                            <td class="valor">True</td>
+                            <td>suma = 3 + 3</td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td>7</td>
+                            <td class="valor">5</td>
+                            <td class="valor">6</td>
+                            <td class="valor">4</td>
+                            <td class="valor">True</td>
+                            <td>i = 3 + 1</td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td>5</td>
+                            <td class="valor">5</td>
+                            <td class="valor">6</td>
+                            <td class="valor">4</td>
+                            <td class="valor">True</td>
+                            <td>Continúa ciclo</td>
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td>6</td>
+                            <td class="valor">5</td>
+                            <td class="valor">10</td>
+                            <td class="valor">4</td>
+                            <td class="valor">True</td>
+                            <td>suma = 6 + 4</td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td>7</td>
+                            <td class="valor">5</td>
+                            <td class="valor">10</td>
+                            <td class="valor">5</td>
+                            <td class="valor">True</td>
+                            <td>i = 4 + 1</td>
+                        </tr>
+                        <tr>
+                            <td>16</td>
+                            <td>5</td>
+                            <td class="valor">5</td>
+                            <td class="valor">10</td>
+                            <td class="valor">5</td>
+                            <td class="valor">True</td>
+                            <td>Continúa ciclo</td>
+                        </tr>
+                        <tr>
+                            <td>17</td>
+                            <td>6</td>
+                            <td class="valor">5</td>
+                            <td class="valor">15</td>
+                            <td class="valor">5</td>
+                            <td class="valor">True</td>
+                            <td>suma = 10 + 5</td>
+                        </tr>
+                        <tr>
+                            <td>18</td>
+                            <td>7</td>
+                            <td class="valor">5</td>
+                            <td class="valor">15</td>
+                            <td class="valor">6</td>
+                            <td class="valor">False</td>
+                            <td>i = 5 + 1</td>
+                        </tr>
+                        <tr>
+                            <td>19</td>
+                            <td>5</td>
+                            <td class="valor">5</td>
+                            <td class="valor">15</td>
+                            <td class="valor">6</td>
+                            <td class="valor">False</td>
+                            <td>Sale del ciclo</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="destacado">
+                <p>Observa cómo la tabla nos permite visualizar claramente el patrón de ejecución: el ciclo se repite 5 veces (para i=1,2,3,4,5), suma acumula valores progresivamente, y la condición cambia de True a False cuando i supera a n. Esta visualización sistemática transforma un proceso dinámico en una estructura comprensible.</p>
+            </div>
+        </section>
+        
+        <section class="seccion" id="simulador">
+            <div class="simulador">
+                <h2 class="simulador-titulo"><i class="fas fa-laptop-code"></i> Simulador Interactivo de Prueba de Escritorio</h2>
+                <p>Practica tus habilidades con este simulador. Selecciona un algoritmo y sigue la ejecución paso a paso como si fueras el intérprete de Python.</p>
+                
+                <div class="simulador-controls">
+                    <select id="algoritmoSelect" class="algoritmo-select">
+                        <option value="1">Algoritmo 1: Cálculo de factorial</option>
+                        <option value="2">Algoritmo 2: Búsqueda del máximo</option>
+                        <option value="3">Algoritmo 3: Verificación de número primo</option>
+                        <option value="4">Algoritmo 4: Serie Fibonacci</option>
+                    </select>
+                    
+                    <button id="btnPaso" class="simulador-btn">
+                        <i class="fas fa-step-forward"></i> Ejecutar Paso
+                    </button>
+                    
+                    <button id="btnReiniciar" class="simulador-btn">
+                        <i class="fas fa-redo"></i> Reiniciar
+                    </button>
+                </div>
+                
+                <div class="simulador-pasos" id="simuladorPasos">
+                    Selecciona un algoritmo y haz clic en "Ejecutar Paso" para comenzar la prueba de escritorio.
+                </div>
+            </div>
+        </section>
+        
+        <section class="seccion" id="reto">
+            <div class="reto">
+                <h2><i class="fas fa-flag-checkered"></i> El Reto Final: El Verificador de Algoritmos</h2>
+                <p>Ahora aplicarás todo lo aprendido en un contexto real. Tu misión es verificar un algoritmo que gestiona las calificaciones de estudiantes y determina si aprueban o reprueban una materia.</p>
+                
+                <div class="ejemplo">
+                    <h4>Algoritmo: Sistema de Calificaciones</h4>
+                    <div class="codigo">
+                        # Sistema de calificaciones<br>
+                        calificaciones = [7.5, 8.0, 6.5, 9.0, 5.5, 7.0]<br>
+                        aprobados = 0<br>
+                        reprobados = 0<br>
+                        suma_calificaciones = 0<br>
+                        <br>
+                        for calificacion in calificaciones:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;suma_calificaciones = suma_calificaciones + calificacion<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;if calificacion >= 7.0:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aprobados = aprobados + 1<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;else:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reprobados = reprobados + 1<br>
+                        <br>
+                        promedio = suma_calificaciones / len(calificaciones)<br>
+                        <br>
+                        print(f"Aprobados: {aprobados}")<br>
+                        print(f"Reprobados: {reprobados}")<br>
+                        print(f"Promedio del grupo: {promedio:.2f}")<br>
+                        <br>
+                        if promedio >= 7.5:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;print("El grupo tiene rendimiento excelente")<br>
+                        elif promedio >= 6.0:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;print("El grupo tiene rendimiento aceptable")<br>
+                        else:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;print("El grupo necesita refuerzo académico")
+                    </div>
+                </div>
+                
+                <h3><i class="fas fa-tasks"></i> Tu Misión</h3>
+                <p>Realiza una prueba de escritorio completa para este algoritmo:</p>
+                
+                <ol>
+                    <li>Crea una tabla con las columnas: Iteración, calificacion, suma_calificaciones, aprobados, reprobados.</li>
+                    <li>Sigue la ejecución paso a paso para cada calificación en la lista.</li>
+                    <li>Calcula manualmente el promedio y verifica las condiciones finales.</li>
+                    <li>Identifica qué pasaría si agregamos una calificación de 10.0 al final de la lista.</li>
+                    <li>Reflexiona: ¿Este algoritmo es justo? ¿Considera situaciones especiales como estudiantes con discapacidad o dificultades temporales?</li>
+                </ol>
+                
+                <div class="destacado">
+                    <p>La verificación de algoritmos no es solo técnica; es también ética. Un algoritmo puede ser técnicamente correcto pero socialmente injusto. Como programadores éticos, debemos preguntarnos no solo "¿Funciona?" sino también "¿Es justo? ¿Qué impactos tiene en las personas?"</p>
+                </div>
+                
+                <h3><i class="fas fa-lightbulb"></i> Para Profundizar</h3>
+                <p>Una vez que completes la prueba de escritorio, considera estas preguntas:</p>
+                
+                <ul>
+                    <li>¿Cómo modificarías el algoritmo para que considere una calificación de recuperación?</li>
+                    <li>¿Qué sucede si la lista de calificaciones está vacía? ¿El algoritmo maneja este caso?</li>
+                    <li>¿Cómo podrías transformar este algoritmo en una función reutilizable?</li>
+                    <li>¿Qué aprendizajes de la prueba de escritorio puedes aplicar a otros aspectos de tu vida que requieran pensamiento sistemático?</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p class="filosofia">"La prueba de escritorio es el puente entre la intuición humana y la lógica computacional. Nos enseña que la paciencia meticulosa y la atención al detalle no son obstáculos para la creatividad, sino sus cimientos más sólidos. Programar no es solo escribir código; es cultivar una mente que piensa con claridad, actúa con precisión y diseña con humanidad."</p>
+            <p class="autor">Diseñado por: Edwin Méndez Játiva</p>
+            <p>Python para Pensadores - 2023</p>
+        </div>
+    </footer>
+
+    <script>
+        // Datos de los algoritmos para el simulador
+        const algoritmos = {
+            1: {
+                nombre: "Cálculo de factorial",
+                codigo: `n = 5
+factorial = 1
+i = 1
+
+while i <= n:
+    factorial = factorial * i
+    i = i + 1
+
+print(f"El factorial de {n} es {factorial}")`,
+                variables: ["n", "factorial", "i"],
+                pasos: [
+                    {linea: 1, n: 5, factorial: null, i: null, condicion: null, descripcion: "Inicialización: n = 5"},
+                    {linea: 2, n: 5, factorial: 1, i: null, condicion: null, descripcion: "Inicialización: factorial = 1"},
+                    {linea: 3, n: 5, factorial: 1, i: 1, condicion: null, descripcion: "Inicialización: i = 1"},
+                    {linea: 5, n: 5, factorial: 1, i: 1, condicion: "i <= n (1 <= 5) = True", descripcion: "Evaluación de condición: Entra al ciclo"},
+                    {linea: 6, n: 5, factorial: 1, i: 1, condicion: "True", descripcion: "factorial = 1 * 1 = 1"},
+                    {linea: 7, n: 5, factorial: 1, i: 2, condicion: "True", descripcion: "i = 1 + 1 = 2"},
+                    {linea: 5, n: 5, factorial: 1, i: 2, condicion: "i <= n (2 <= 5) = True", descripcion: "Evaluación: Continúa ciclo"},
+                    {linea: 6, n: 5, factorial: 2, i: 2, condicion: "True", descripcion: "factorial = 1 * 2 = 2"},
+                    {linea: 7, n: 5, factorial: 2, i: 3, condicion: "True", descripcion: "i = 2 + 1 = 3"},
+                    {linea: 5, n: 5, factorial: 2, i: 3, condicion: "i <= n (3 <= 5) = True", descripcion: "Evaluación: Continúa ciclo"},
+                    {linea: 6, n: 5, factorial: 6, i: 3, condicion: "True", descripcion: "factorial = 2 * 3 = 6"},
+                    {linea: 7, n: 5, factorial: 6, i: 4, condicion: "True", descripcion: "i = 3 + 1 = 4"},
+                    {linea: 5, n: 5, factorial: 6, i: 4, condicion: "i <= n (4 <= 5) = True", descripcion: "Evaluación: Continúa ciclo"},
+                    {linea: 6, n: 5, factorial: 24, i: 4, condicion: "True", descripcion: "factorial = 6 * 4 = 24"},
+                    {linea: 7, n: 5, factorial: 24, i: 5, condicion: "True", descripcion: "i = 4 + 1 = 5"},
+                    {linea: 5, n: 5, factorial: 24, i: 5, condicion: "i <= n (5 <= 5) = True", descripcion: "Evaluación: Continúa ciclo"},
+                    {linea: 6, n: 5, factorial: 120, i: 5, condicion: "True", descripcion: "factorial = 24 * 5 = 120"},
+                    {linea: 7, n: 5, factorial: 120, i: 6, condicion: "True", descripcion: "i = 5 + 1 = 6"},
+                    {linea: 5, n: 5, factorial: 120, i: 6, condicion: "i <= n (6 <= 5) = False", descripcion: "Evaluación: Sale del ciclo"},
+                    {linea: 9, n: 5, factorial: 120, i: 6, condicion: null, descripcion: "Resultado: El factorial de 5 es 120"}
+                ]
+            },
+            2: {
+                nombre: "Búsqueda del máximo",
+                codigo: `numeros = [12, 45, 23, 67, 34, 89, 15]
+maximo = numeros[0]
+
+for num in numeros:
+    if num > maximo:
+        maximo = num
+
+print(f"El valor máximo es: {maximo}")`,
+                variables: ["numeros", "maximo", "num"],
+                pasos: [
+                    {linea: 1, numeros: "[12,45,23,67,34,89,15]", maximo: null, num: null, descripcion: "Inicialización de lista"},
+                    {linea: 2, numeros: "[12,45,23,67,34,89,15]", maximo: 12, num: null, descripcion: "maximo = primer elemento (12)"},
+                    {linea: 4, numeros: "[12,45,23,67,34,89,15]", maximo: 12, num: 12, descripcion: "Primera iteración: num = 12"},
+                    {linea: 5, numeros: "[12,45,23,67,34,89,15]", maximo: 12, num: 12, condicion: "12 > 12 = False", descripcion: "Condición falsa, maximo sigue 12"},
+                    {linea: 4, numeros: "[12,45,23,67,34,89,15]", maximo: 12, num: 45, descripcion: "Segunda iteración: num = 45"},
+                    {linea: 5, numeros: "[12,45,23,67,34,89,15]", maximo: 45, num: 45, condicion: "45 > 12 = True", descripcion: "Condición verdadera, maximo = 45"},
+                    {linea: 4, numeros: "[12,45,23,67,34,89,15]", maximo: 45, num: 23, descripcion: "Tercera iteración: num = 23"},
+                    {linea: 5, numeros: "[12,45,23,67,34,89,15]", maximo: 45, num: 23, condicion: "23 > 45 = False", descripcion: "Condición falsa, maximo sigue 45"},
+                    {linea: 4, numeros: "[12,45,23,67,34,89,15]", maximo: 45, num: 67, descripcion: "Cuarta iteración: num = 67"},
+                    {linea: 5, numeros: "[12,45,23,67,34,89,15]", maximo: 67, num: 67, condicion: "67 > 45 = True", descripcion: "Condición verdadera, maximo = 67"},
+                    {linea: 4, numeros: "[12,45,23,67,34,89,15]", maximo: 67, num: 34, descripcion: "Quinta iteración: num = 34"},
+                    {linea: 5, numeros: "[12,45,23,67,34,89,15]", maximo: 67, num: 34, condicion: "34 > 67 = False", descripcion: "Condición falsa, maximo sigue 67"},
+                    {linea: 4, numeros: "[12,45,23,67,34,89,15]", maximo: 67, num: 89, descripcion: "Sexta iteración: num = 89"},
+                    {linea: 5, numeros: "[12,45,23,67,34,89,15]", maximo: 89, num: 89, condicion: "89 > 67 = True", descripcion: "Condición verdadera, maximo = 89"},
+                    {linea: 4, numeros: "[12,45,23,67,34,89,15]", maximo: 89, num: 15, descripcion: "Séptima iteración: num = 15"},
+                    {linea: 5, numeros: "[12,45,23,67,34,89,15]", maximo: 89, num: 15, condicion: "15 > 89 = False", descripcion: "Condición falsa, maximo sigue 89"},
+                    {linea: 7, numeros: "[12,45,23,67,34,89,15]", maximo: 89, num: 15, descripcion: "Resultado: El valor máximo es 89"}
+                ]
+            }
+        };
+        
+        // Variables del simulador
+        let algoritmoActual = 1;
+        let pasoActual = 0;
+        let ejecutando = false;
+        
+        // Elementos del DOM
+        const algoritmoSelect = document.getElementById('algoritmoSelect');
+        const btnPaso = document.getElementById('btnPaso');
+        const btnReiniciar = document.getElementById('btnReiniciar');
+        const simuladorPasos = document.getElementById('simuladorPasos');
+        
+        // Cargar algoritmo seleccionado
+        function cargarAlgoritmo() {
+            algoritmoActual = parseInt(algoritmoSelect.value);
+            pasoActual = 0;
+            mostrarEstadoInicial();
+        }
+        
+        // Mostrar estado inicial
+        function mostrarEstadoInicial() {
+            const algoritmo = algoritmos[algoritmoActual];
+            let html = `<div class="paso-activo"><strong>Algoritmo:</strong> ${algoritmo.nombre}</div>`;
+            html += `<div><strong>Código:</strong></div>`;
+            html += `<div style="background:#f5f5f5; padding:15px; border-radius:8px; margin:10px 0; font-family:monospace; white-space:pre-wrap;">${algoritmo.codigo}</div>`;
+            html += `<div><strong>Variables a seguir:</strong> ${algoritmo.variables.join(", ")}</div>`;
+            html += `<div style="margin-top:15px; color:#0066cc;"><i class="fas fa-info-circle"></i> Haz clic en "Ejecutar Paso" para comenzar la prueba de escritorio.</div>`;
+            
+            simuladorPasos.innerHTML = html;
+        }
+        
+        // Ejecutar un paso
+        function ejecutarPaso() {
+            const algoritmo = algoritmos[algoritmoActual];
+            
+            if (pasoActual >= algoritmo.pasos.length) {
+                simuladorPasos.innerHTML += `<div style="margin-top:15px; padding:15px; background:#e6ffed; border-radius:8px; border-left:4px solid #00a859;">
+                    <strong><i class="fas fa-flag-checkered"></i> ¡Prueba de escritorio completada!</strong><br>
+                    Haz clic en "Reiniciar" para comenzar con otro algoritmo o repetir este.
+                </div>`;
+                return;
+            }
+            
+            const paso = algoritmo.pasos[pasoActual];
+            let html = "";
+            
+            if (pasoActual === 0) {
+                html = `<div class="paso-activo"><strong>Paso ${pasoActual + 1}:</strong> ${paso.descripcion}</div>`;
+            } else {
+                html = `<div><strong>Paso ${pasoActual + 1}:</strong> ${paso.descripcion}</div>`;
+            }
+            
+            // Mostrar variables actualizadas
+            html += `<div style="margin:10px 0 15px 20px;">`;
+            for (const variable in paso) {
+                if (variable !== 'linea' && variable !== 'descripcion' && variable !== 'condicion' && paso[variable] !== null) {
+                    html += `<span style="display:inline-block; margin-right:20px;"><strong>${variable}:</strong> <span class="valor">${paso[variable]}</span></span>`;
+                }
+            }
+            
+            if (paso.condicion) {
+                html += `<br><span style="color:#ff9900;"><strong>Condición:</strong> ${paso.condicion}</span>`;
+            }
+            html += `</div>`;
+            
+            if (pasoActual === 0) {
+                simuladorPasos.innerHTML = html;
+            } else {
+                simuladorPasos.innerHTML += html;
+            }
+            
+            pasoActual++;
+            simuladorPasos.scrollTop = simuladorPasos.scrollHeight;
+        }
+        
+        // Event Listeners
+        algoritmoSelect.addEventListener('change', cargarAlgoritmo);
+        
+        btnPaso.addEventListener('click', function() {
+            if (!ejecutando) {
+                ejecutando = true;
+                cargarAlgoritmo();
+                ejecutando = false;
+            }
+            ejecutarPaso();
+        });
+        
+        btnReiniciar.addEventListener('click', function() {
+            pasoActual = 0;
+            mostrarEstadoInicial();
+        });
+        
+        // Inicializar
+        cargarAlgoritmo();
+        
+        // Efectos adicionales
+        document.querySelectorAll('.seccion').forEach(seccion => {
+            seccion.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px)';
+                this.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.15)';
+            });
+            
+            seccion.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.08)';
+            });
+        });
+        
+        // Resaltar filas de tabla al pasar el mouse
+        document.querySelectorAll('tbody tr').forEach(fila => {
+            fila.addEventListener('mouseenter', function() {
+                this.style.backgroundColor = '#e6f2ff';
+            });
+            
+            fila.addEventListener('mouseleave', function() {
+                if (Array.from(this.parentNode.children).indexOf(this) % 2 === 0) {
+                    this.style.backgroundColor = '#f8f9fa';
+                } else {
+                    this.style.backgroundColor = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
