@@ -1,0 +1,1574 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python para Pensadores - Los 4 Superpoderes del Pensamiento Computacional</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variables de colores - Tema heroico con acentos */
+        :root {
+            --azul-profundo: #1e40af;
+            --azul-heroe: #2563eb;
+            --azul-poder: #3b82f6;
+            --azul-claro: #60a5fa;
+            --azul-suave: #93c5fd;
+            --azul-humo: #dbeafe;
+            --poder-1: #10b981;    /* Descomposición - Verde */
+            --poder-2: #f59e0b;    /* Reconocimiento de patrones - Amarillo */
+            --poder-3: #8b5cf6;    /* Abstracción - Púrpura */
+            --poder-4: #ef4444;    /* Algoritmos - Rojo */
+            --blanco: #ffffff;
+            --gris-claro: #f8fafc;
+            --gris-medio: #e2e8f0;
+            --negro-suave: #334155;
+        }
+
+        /* Reset y estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--gris-claro);
+            color: var(--negro-suave);
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(219, 234, 254, 0.4) 0%, transparent 25%),
+                radial-gradient(circle at 90% 80%, rgba(219, 234, 254, 0.3) 0%, transparent 25%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Encabezado heroico */
+        header {
+            background: linear-gradient(135deg, var(--azul-profundo), var(--poder-3));
+            color: var(--blanco);
+            padding: 3rem 0;
+            text-align: center;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            box-shadow: 0 8px 25px rgba(30, 64, 175, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%238b5cf6' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E"),
+                linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            opacity: 0.3;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(to right, #ffffff, var(--azul-suave));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        .subtitle {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+            opacity: 0.95;
+            color: var(--azul-humo);
+        }
+
+        .tagline {
+            font-size: 1.3rem;
+            font-style: italic;
+            margin-top: 2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+            color: var(--azul-suave);
+        }
+
+        .header-icons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 2.5rem;
+            font-size: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .header-icon {
+            animation: flotar 4s ease-in-out infinite;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
+        }
+
+        .header-icon:nth-child(1) { color: var(--poder-1); animation-delay: 0s; }
+        .header-icon:nth-child(2) { color: var(--poder-2); animation-delay: 0.5s; }
+        .header-icon:nth-child(3) { color: var(--poder-3); animation-delay: 1s; }
+        .header-icon:nth-child(4) { color: var(--poder-4); animation-delay: 1.5s; }
+
+        @keyframes flotar {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-20px) scale(1.1); }
+        }
+
+        /* Secciones principales */
+        .section {
+            background-color: var(--blanco);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 2.5rem 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border-left: 6px solid var(--azul-poder);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--poder-1), var(--poder-2), var(--poder-3), var(--poder-4));
+        }
+
+        h2 {
+            color: var(--azul-profundo);
+            font-size: 2.4rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 2px solid var(--azul-humo);
+            padding-bottom: 12px;
+        }
+
+        h2 i {
+            color: var(--azul-poder);
+        }
+
+        h3 {
+            color: var(--azul-heroe);
+            margin: 2rem 0 1rem;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-left: 15px;
+            border-left: 4px solid var(--poder-1);
+        }
+
+        h3 i {
+            color: var(--poder-1);
+        }
+
+        h4 {
+            color: var(--negro-suave);
+            margin: 1.5rem 0 0.8rem;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        p {
+            margin-bottom: 1.3rem;
+            font-size: 1.2rem;
+            line-height: 1.7;
+        }
+
+        /* Estilos para contenido especial */
+        .highlight-box {
+            background: linear-gradient(135deg, var(--azul-humo), #f0fdf4);
+            padding: 2.5rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            border: 3px solid var(--poder-1);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.1);
+            position: relative;
+        }
+
+        .highlight-box::before {
+            content: "💡";
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            font-size: 2.5rem;
+            background: var(--blanco);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border: 3px solid var(--poder-1);
+        }
+
+        /* Los 4 superpoderes */
+        .superpoderes-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2.5rem 0;
+        }
+
+        .superpoder-card {
+            background: var(--blanco);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+            border-top: 6px solid;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .superpoder-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .superpoder-card.poder-1 { border-color: var(--poder-1); }
+        .superpoder-card.poder-2 { border-color: var(--poder-2); }
+        .superpoder-card.poder-3 { border-color: var(--poder-3); }
+        .superpoder-card.poder-4 { border-color: var(--poder-4); }
+
+        .superpoder-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+
+        .poder-1 .superpoder-icon { color: var(--poder-1); }
+        .poder-2 .superpoder-icon { color: var(--poder-2); }
+        .poder-3 .superpoder-icon { color: var(--poder-3); }
+        .poder-4 .superpoder-icon { color: var(--poder-4); }
+
+        .superpoder-titulo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--negro-suave);
+        }
+
+        .superpoder-descripcion {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .superpoder-ejemplo {
+            background-color: #f8fafc;
+            padding: 1.2rem;
+            border-radius: 10px;
+            border-left: 4px solid;
+            font-style: italic;
+            margin-top: 1rem;
+        }
+
+        .poder-1 .superpoder-ejemplo { border-left-color: var(--poder-1); }
+        .poder-2 .superpoder-ejemplo { border-left-color: var(--poder-2); }
+        .poder-3 .superpoder-ejemplo { border-left-color: var(--poder-3); }
+        .poder-4 .superpoder-ejemplo { border-left-color: var(--poder-4); }
+
+        /* Analogía visual */
+        .analogia-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            align-items: center;
+            justify-content: center;
+            margin: 3rem 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f0f9ff, #f5f3ff);
+            border-radius: 15px;
+            border: 3px solid var(--azul-suave);
+        }
+
+        .analogia-item {
+            text-align: center;
+            max-width: 250px;
+        }
+
+        .analogia-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: var(--azul-poder);
+        }
+
+        .analogia-titulo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: var(--azul-profundo);
+        }
+
+        /* Aplicaciones prácticas */
+        .aplicaciones-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .aplicacion-card {
+            background: var(--blanco);
+            border-radius: 12px;
+            padding: 1.8rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--azul-claro);
+            transition: transform 0.3s ease;
+        }
+
+        .aplicacion-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .aplicacion-icon {
+            font-size: 2.5rem;
+            color: var(--azul-poder);
+            margin-bottom: 1rem;
+        }
+
+        /* Reto interactivo */
+        .reto-interactivo {
+            background: linear-gradient(135deg, var(--azul-poder), var(--poder-3));
+            padding: 3rem;
+            border-radius: 20px;
+            margin: 3rem 0;
+            color: var(--blanco);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reto-interactivo::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.2;
+        }
+
+        .reto-container {
+            background-color: var(--blanco);
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin-top: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 1;
+            color: var(--negro-suave);
+        }
+
+        .reto-pasos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .reto-paso {
+            flex: 1;
+            min-width: 250px;
+            background: var(--azul-humo);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 5px solid var(--azul-poder);
+        }
+
+        .reto-paso-numero {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: var(--azul-poder);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        /* Juego de los superpoderes */
+        .juego-section {
+            background: linear-gradient(135deg, var(--poder-2), var(--poder-1));
+            padding: 3rem;
+            border-radius: 20px;
+            margin: 3rem 0;
+            color: var(--negro-suave);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .juego-container {
+            background-color: var(--blanco);
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin-top: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 1;
+        }
+
+        .juego-escenario {
+            background-color: #f8fafc;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 2px dashed var(--poder-2);
+        }
+
+        .juego-opciones {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .juego-opcion {
+            background-color: var(--azul-humo);
+            padding: 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .juego-opcion:hover {
+            background-color: var(--azul-suave);
+            transform: translateY(-5px);
+        }
+
+        .juego-opcion.seleccionada {
+            background-color: var(--azul-claro);
+            border-color: var(--azul-poder);
+        }
+
+        .juego-opcion-correcta {
+            background-color: #d1fae5 !important;
+            border-color: var(--poder-1) !important;
+        }
+
+        .juego-opcion-incorrecta {
+            background-color: #fee2e2 !important;
+            border-color: var(--poder-4) !important;
+        }
+
+        .juego-opcion-icono {
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: var(--blanco);
+        }
+
+        .juego-boton {
+            background-color: var(--azul-poder);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .juego-boton:hover {
+            background-color: var(--azul-profundo);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .juego-resultado {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 10px;
+            display: none;
+            animation: aparecer 0.5s ease;
+        }
+
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .juego-resultado.correcto {
+            background-color: #d1fae5;
+            color: #065f46;
+            display: block;
+            border-left: 5px solid var(--poder-1);
+        }
+
+        .juego-resultado.incorrecto {
+            background-color: #fee2e2;
+            color: #991b1b;
+            display: block;
+            border-left: 5px solid var(--poder-4);
+        }
+
+        .juego-puntaje {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-top: 1.5rem;
+            color: var(--azul-profundo);
+            background-color: var(--azul-humo);
+            padding: 1rem;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        /* Historia inspiradora */
+        .historia-container {
+            background: linear-gradient(135deg, #fef3c7, #fce7f3);
+            padding: 2.5rem;
+            border-radius: 15px;
+            margin: 2.5rem 0;
+            border: 3px solid var(--poder-2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .historia-container::before {
+            content: "📖";
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 3rem;
+            opacity: 0.2;
+        }
+
+        /* Pie de página */
+        footer {
+            background: linear-gradient(135deg, var(--azul-profundo), var(--poder-3));
+            color: var(--blanco);
+            text-align: center;
+            padding: 2.5rem 0;
+            margin-top: 4rem;
+            border-top-left-radius: 40px;
+            border-top-right-radius: 40px;
+        }
+
+        footer p {
+            margin-bottom: 0.8rem;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .footer-heart {
+            color: #f87171;
+            animation: latido 1.5s infinite;
+            display: inline-block;
+        }
+
+        @keyframes latido {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.5rem;
+            }
+            
+            .section {
+                padding: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .header-icons {
+                font-size: 3rem;
+                gap: 20px;
+            }
+            
+            .superpoderes-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .reto-interactivo,
+            .juego-section {
+                padding: 2rem;
+            }
+        }
+
+        /* Elementos especiales */
+        .consejo-docente {
+            background-color: #f0f9ff;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            border-left: 6px solid var(--poder-3);
+            position: relative;
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.1);
+        }
+
+        .consejo-docente::before {
+            content: "👨‍🏫";
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: var(--blanco);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border: 3px solid var(--poder-3);
+        }
+
+        .paso-actividad {
+            background-color: #f8fafc;
+            padding: 1.8rem;
+            border-radius: 12px;
+            margin: 1.8rem 0;
+            border: 2px solid var(--azul-suave);
+            position: relative;
+        }
+
+        .paso-actividad h4 {
+            color: var(--azul-poder);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .metodo-visual {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background-color: #f8fafc;
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+
+        .metodo-item {
+            text-align: center;
+            max-width: 200px;
+        }
+
+        .metodo-numero {
+            width: 50px;
+            height: 50px;
+            background-color: var(--azul-poder);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+        }
+
+        .pensamiento-diagrama {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 2px solid var(--azul-humo);
+        }
+
+        .diagrama-linea {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .diagrama-paso {
+            background-color: var(--azul-humo);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            min-width: 150px;
+            text-align: center;
+            position: relative;
+        }
+
+        .diagrama-paso::after {
+            content: "→";
+            position: absolute;
+            right: -25px;
+            color: var(--azul-poder);
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .diagrama-paso:last-child::after {
+            display: none;
+        }
+
+        .badge-superpoder {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .badge-poder-1 { background-color: var(--poder-1); }
+        .badge-poder-2 { background-color: var(--poder-2); }
+        .badge-poder-3 { background-color: var(--poder-3); }
+        .badge-poder-4 { background-color: var(--poder-4); }
+
+        .comparativa-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .comparativa-table th {
+            background-color: var(--azul-poder);
+            color: white;
+            padding: 1.2rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparativa-table td {
+            padding: 1.2rem;
+            border-bottom: 1px solid var(--gris-medio);
+        }
+
+        .comparativa-table tr:nth-child(even) {
+            background-color: var(--azul-humo);
+        }
+
+        .comparativa-table tr:hover {
+            background-color: #e0f2fe;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="header-icons">
+                    <i class="fas fa-puzzle-piece header-icon"></i>
+                    <i class="fas fa-search header-icon"></i>
+                    <i class="fas fa-layer-group header-icon"></i>
+                    <i class="fas fa-list-ol header-icon"></i>
+                </div>
+                <h1>Los 4 Superpoderes del Pensamiento Computacional</h1>
+                <p class="subtitle">Descubre cómo pensar como un programador sin escribir una sola línea de código</p>
+                <p class="tagline">Taller diseñado con el corazón de un docente y la mente de un programador | Transforma problemas complejos en soluciones simples</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Objetivo de aprendizaje -->
+        <section class="section">
+            <h2><i class="fas fa-bullseye"></i> Objetivo de Aprendizaje</h2>
+            <div class="objetivo">
+                <p>Desarrollar las competencias fundamentales del pensamiento computacional mediante la comprensión y aplicación de sus cuatro pilares esenciales (descomposición, reconocimiento de patrones, abstracción y diseño de algoritmos), cultivando la capacidad para analizar problemas complejos del mundo real, identificar soluciones sistemáticas y diseñar estrategias efectivas de resolución, con el fin de formar pensadores críticos, creativos y estratégicos capaces de enfrentar los desafíos del siglo XXI más allá del ámbito de la programación.</p>
+            </div>
+        </section>
+
+        <!-- ¿Qué es el pensamiento computacional? -->
+        <section class="section">
+            <h2><i class="fas fa-brain"></i> ¿Qué es el Pensamiento Computacional?</h2>
+            
+            <div class="highlight-box">
+                <p>El pensamiento computacional NO es pensar como una computadora. Es pensar como un <strong>resolvedor de problemas</strong>. Es un enfoque mental que nos permite descomponer problemas complejos en partes manejables, reconocer patrones, abstraer lo esencial y diseñar soluciones paso a paso.</p>
+            </div>
+            
+            <div class="consejo-docente">
+                <p>Imagina que el pensamiento computacional es como tener un "kit de superhéroe para resolver problemas". No necesitas capa ni superfuerza, solo estos cuatro superpoderes mentales que todos podemos desarrollar.</p>
+            </div>
+            
+            <h3><i class="fas fa-history"></i> Origen y Evolución</h3>
+            <p>El término fue popularizado por la profesora Jeannette Wing en 2006, pero sus raíces se remontan a pensadores como Alan Turing y Ada Lovelace. Wing argumentó que el pensamiento computacional debería ser una habilidad fundamental para todos, no solo para los programadores.</p>
+            
+            <div class="historia-container">
+                <h4><i class="fas fa-book-open"></i> Historia inspiradora:</h4>
+                <p>En 1843, Ada Lovelace describió el primer algoritmo destinado a ser procesado por una máquina. Ella no solo veía números, sino <strong>posibilidades</strong>. Su capacidad para abstraer problemas y diseñar soluciones sistemáticas fue un ejemplo temprano de pensamiento computacional, más de un siglo antes de que existieran las computadoras modernas.</p>
+            </div>
+            
+            <h3><i class="fas fa-lightbulb"></i> Por qué es importante para todos</h3>
+            
+            <div class="aplicaciones-grid">
+                <div class="aplicacion-card">
+                    <div class="aplicacion-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <h4>En la educación</h4>
+                    <p>Desarrolla habilidades de resolución de problemas que aplican a matemáticas, ciencias, y humanidades.</p>
+                </div>
+                
+                <div class="aplicacion-card">
+                    <div class="aplicacion-icon"><i class="fas fa-briefcase"></i></div>
+                    <h4>En el trabajo</h4>
+                    <p>Mejora la eficiencia en cualquier profesión al optimizar procesos y encontrar soluciones innovadoras.</p>
+                </div>
+                
+                <div class="aplicacion-card">
+                    <div class="aplicacion-icon"><i class="fas fa-home"></i></div>
+                    <h4>En la vida diaria</h4>
+                    <p>Ayuda a organizar tareas, planificar eventos y resolver problemas cotidianos de manera sistemática.</p>
+                </div>
+                
+                <div class="aplicacion-card">
+                    <div class="aplicacion-icon"><i class="fas fa-heart"></i></div>
+                    <h4>Para el futuro</h4>
+                    <p>Prepara a las personas para un mundo cada vez más digital y tecnológico.</p>
+                </div>
+            </div>
+            
+            <div class="metodo-visual">
+                <div class="metodo-item">
+                    <div class="metodo-numero">1</div>
+                    <h4>Problema Complejo</h4>
+                    <p>Comienza con un desafío aparentemente imposible</p>
+                </div>
+                
+                <div class="metodo-item">
+                    <div class="metodo-numero">2</div>
+                    <h4>Pensamiento Computacional</h4>
+                    <p>Aplica los 4 superpoderes</p>
+                </div>
+                
+                <div class="metodo-item">
+                    <div class="metodo-numero">3</div>
+                    <h4>Solución Efectiva</h4>
+                    <p>Obtén una solución clara y manejable</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Los 4 Superpoderes -->
+        <section class="section">
+            <h2><i class="fas fa-shield-alt"></i> Los 4 Superpoderes del Pensamiento Computacional</h2>
+            
+            <div class="consejo-docente">
+                <p>Estos cuatro superpoderes funcionan como un equipo de superhéroes. Cada uno tiene su especialidad, pero juntos son invencibles. Vamos a conocer a cada miembro del equipo.</p>
+            </div>
+            
+            <div class="superpoderes-container">
+                <!-- Superpoder 1: Descomposición -->
+                <div class="superpoder-card poder-1">
+                    <div class="superpoder-icon">
+                        <i class="fas fa-puzzle-piece"></i>
+                    </div>
+                    <h3 class="superpoder-titulo">1. Descomposición</h3>
+                    <p class="superpoder-descripcion">El arte de dividir problemas grandes y complejos en partes más pequeñas y manejables. Es como desarmar un rompecabezas gigante en piezas individuales que podemos resolver una por una.</p>
+                    
+                    <div class="superpoder-ejemplo">
+                        <strong>Ejemplo:</strong> Organizar una fiesta de cumpleaños se puede descomponer en: 1) Hacer lista de invitados, 2) Comprar decoraciones, 3) Preparar comida, 4) Organizar juegos.
+                    </div>
+                    
+                    <h4><i class="fas fa-tools"></i> Cómo practicarlo:</h4>
+                    <ul>
+                        <li>Identifica el problema principal</li>
+                        <li>Divide en subtareas más pequeñas</li>
+                        <li>Prioriza las partes más importantes</li>
+                        <li>Resuelve cada parte por separado</li>
+                    </ul>
+                </div>
+                
+                <!-- Superpoder 2: Reconocimiento de Patrones -->
+                <div class="superpoder-card poder-2">
+                    <div class="superpoder-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="superpoder-titulo">2. Reconocimiento de Patrones</h3>
+                    <p class="superpoder-descripcion">La habilidad de identificar similitudes, regularidades o tendencias dentro de los problemas. Es como ver la música en el ruido, encontrando estructura donde otros solo ven caos.</p>
+                    
+                    <div class="superpoder-ejemplo">
+                        <strong>Ejemplo:</strong> Al estudiar para exámenes, notas que siempre hay preguntas sobre ciertos temas, ciertos tipos de problemas se repiten, y ciertos errores son comunes.
+                    </div>
+                    
+                    <h4><i class="fas fa-tools"></i> Cómo practicarlo:</h4>
+                    <ul>
+                        <li>Busca similitudes entre problemas</li>
+                        <li>Identifica secuencias o repeticiones</li>
+                        <li>Compara con soluciones anteriores</li>
+                        <li>Anticipa lo que viene después</li>
+                    </ul>
+                </div>
+                
+                <!-- Superpoder 3: Abstracción -->
+                <div class="superpoder-card poder-3">
+                    <div class="superpoder-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h3 class="superpoder-titulo">3. Abstracción</h3>
+                    <p class="superpoder-descripcion">El proceso de ignorar los detalles irrelevantes y enfocarse en lo esencial. Es como hacer un mapa: no incluye cada árbol, pero sí las calles importantes para llegar a tu destino.</p>
+                    
+                    <div class="superpoder-ejemplo">
+                        <strong>Ejemplo:</strong> Para ir al colegio, no necesitas pensar en cada paso individual de cada pierna, solo necesitas la ruta general: casa → parada de bus → colegio.
+                    </div>
+                    
+                    <h4><i class="fas fa-tools"></i> Cómo practicarlo:</h4>
+                    <ul>
+                        <li>Identifica lo realmente importante</li>
+                        <li>Filtra información irrelevante</li>
+                        <li>Crea modelos simplificados</li>
+                        <li>Generaliza para aplicar a otros casos</li>
+                    </ul>
+                </div>
+                
+                <!-- Superpoder 4: Algoritmos -->
+                <div class="superpoder-card poder-4">
+                    <div class="superpoder-icon">
+                        <i class="fas fa-list-ol"></i>
+                    </div>
+                    <h3 class="superpoder-titulo">4. Diseño de Algoritmos</h3>
+                    <p class="superpoder-descripcion">La creación de instrucciones paso a paso para resolver un problema. Es como escribir una receta de cocina que cualquiera puede seguir para obtener el mismo resultado.</p>
+                    
+                    <div class="superpoder-ejemplo">
+                        <strong>Ejemplo:</strong> La receta para hacer un sandwich: 1) Tomar dos rebanadas de pan, 2) Untar mantequilla, 3) Agregar jamón, 4) Agregar queso, 5) Unir las rebanadas.
+                    </div>
+                    
+                    <h4><i class="fas fa-tools"></i> Cómo practicarlo:</h4>
+                    <ul>
+                        <li>Define pasos claros y secuenciales</li>
+                        <li>Asegúrate de que no falten pasos</li>
+                        <li>Prueba con casos simples primero</li>
+                        <li>Optimiza eliminando pasos innecesarios</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="pensamiento-diagrama">
+                <h4><i class="fas fa-project-diagram"></i> Cómo funcionan juntos los 4 superpoderes:</h4>
+                <div class="diagrama-linea">
+                    <div class="diagrama-paso">Problema Complejo</div>
+                    <div class="diagrama-paso" style="background-color: #d1fae5;">Descomposición</div>
+                    <div class="diagrama-paso" style="background-color: #fef3c7;">Reconocimiento de Patrones</div>
+                    <div class="diagrama-paso" style="background-color: #f5f3ff;">Abstracción</div>
+                    <div class="diagrama-paso" style="background-color: #fee2e2;">Diseño de Algoritmos</div>
+                    <div class="diagrama-paso" style="background-color: #bbf7d0;">Solución</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analogías del mundo real -->
+        <section class="section">
+            <h2><i class="fas fa-balance-scale"></i> Analogías del Mundo Real</h2>
+            
+            <div class="analogia-container">
+                <div class="analogia-item">
+                    <div class="analogia-icon"><i class="fas fa-utensils"></i></div>
+                    <h4 class="analogia-titulo">Cocinar una Receta</h4>
+                    <p><strong>Descomposición:</strong> Ingredientes y pasos separados</p>
+                    <p><strong>Patrones:</strong> Técnicas que se repiten</p>
+                    <p><strong>Abstracción:</strong> Receta general adaptable</p>
+                    <p><strong>Algoritmo:</strong> Instrucciones paso a paso</p>
+                </div>
+                
+                <div class="analogia-item">
+                    <div class="analogia-icon"><i class="fas fa-route"></i></div>
+                    <h4 class="analogia-titulo">Planificar un Viaje</h4>
+                    <p><strong>Descomposición:</strong> Transporte, alojamiento, actividades</p>
+                    <p><strong>Patrones:</strong> Horarios, rutas recurrentes</p>
+                    <p><strong>Abstracción:</strong> Itinerario general</p>
+                    <p><strong>Algoritmo:</strong> Secuencia de actividades</p>
+                </div>
+                
+                <div class="analogia-item">
+                    <div class="analogia-icon"><i class="fas fa-book"></i></div>
+                    <h4 class="analogia-titulo">Estudiar para un Examen</h4>
+                    <p><strong>Descomposición:</strong> Temas por capítulos</p>
+                    <p><strong>Patrones:</strong> Tipos de preguntas frecuentes</p>
+                    <p><strong>Abstracción:</strong> Conceptos clave</p>
+                    <p><strong>Algoritmo:</strong> Método de estudio</p>
+                </div>
+            </div>
+            
+            <div class="consejo-docente">
+                <p>El pensamiento computacional ya está en tu vida diaria, aunque no te des cuenta. Cada vez que organizas tu día, sigues una receta o planeas cómo estudiar, estás usando versiones básicas de estos superpoderes. Ahora vamos a fortalecerlos conscientemente.</p>
+            </div>
+        </section>
+
+        <!-- Juego interactivo: Aplica los superpoderes -->
+        <section class="juego-section">
+            <h2><i class="fas fa-gamepad"></i> Desafío: Aplica los Superpoderes</h2>
+            <p>Resuelve este problema usando los 4 superpoderes del pensamiento computacional. Selecciona la opción correcta en cada paso.</p>
+            
+            <div class="juego-container">
+                <div class="juego-escenario">
+                    <h3>Escenario: Organizar una Limpieza Comunitaria</h3>
+                    <p>Tu barrio necesita una limpieza comunitaria. Hay basura en parques, calles y áreas comunes. Tienes 50 voluntarios y un presupuesto limitado. ¿Cómo organizarías este evento?</p>
+                </div>
+                
+                <div class="juego-pregunta" id="pregunta-juego">Paso 1: ¿Cuál sería tu PRIMER superpoder a usar?</div>
+                
+                <div class="juego-opciones" id="opciones-juego">
+                    <!-- Las opciones se llenarán con JavaScript -->
+                </div>
+                
+                <div style="margin-top: 2rem; text-align: center;">
+                    <button class="juego-boton" id="verificar-juego">
+                        <i class="fas fa-check"></i> Verificar respuesta
+                    </button>
+                    <button class="juego-boton" id="siguiente-juego" style="display: none;">
+                        <i class="fas fa-arrow-right"></i> Siguiente paso
+                    </button>
+                </div>
+                
+                <div class="juego-resultado" id="resultado-juego"></div>
+                <div class="juego-puntaje">Superpoderes aplicados correctamente: <span id="puntaje-juego">0</span> / 4</div>
+            </div>
+        </section>
+
+        <!-- Ejemplo paso a paso -->
+        <section class="section">
+            <h2><i class="fas fa-footprints"></i> Ejemplo Paso a Paso: Planificar una Fiesta</h2>
+            
+            <div class="reto-interactivo">
+                <h3 style="color: white;">Vamos a ver cómo aplicar los 4 superpoderes a un problema real</h3>
+                
+                <div class="reto-container">
+                    <h4>Problema: Organizar una fiesta de cumpleaños sorpresa para un amigo</h4>
+                    
+                    <div class="reto-pasos">
+                        <div class="reto-paso">
+                            <div class="reto-paso-numero">1</div>
+                            <h5>Descomposición</h5>
+                            <p>Dividimos el problema grande en partes más pequeñas:</p>
+                            <ul>
+                                <li>Invitar a los amigos</li>
+                                <li>Comprar decoraciones</li>
+                                <li>Preparar comida y bebida</li>
+                                <li>Organizar la sorpresa</li>
+                                <li>Planificar juegos/actividades</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="reto-paso">
+                            <div class="reto-paso-numero">2</div>
+                            <h5>Reconocimiento de Patrones</h5>
+                            <p>Identificamos lo que sabemos de fiestas anteriores:</p>
+                            <ul>
+                                <li>A nuestro amigo le gusta la pizza</li>
+                                <li>Prefiere música de los 80s</li>
+                                <li>Siempre llega 10 minutos tarde</li>
+                                <li>Disfruta juegos de trivia</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="reto-paso">
+                            <div class="reto-paso-numero">3</div>
+                            <h5>Abstracción</h5>
+                            <p>Nos enfocamos en lo esencial e ignoramos detalles:</p>
+                            <ul>
+                                <li>No importa el color exacto de los globos</li>
+                                <li>Importa que haya suficiente comida</li>
+                                <li>No importa la marca de la bebida</li>
+                                <li>Importa mantener la sorpresa</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="reto-paso">
+                            <div class="reto-paso-numero">4</div>
+                            <h5>Diseño de Algoritmos</h5>
+                            <p>Creamos instrucciones paso a paso:</p>
+                            <ol>
+                                <li>Crear lista de invitados (2 días antes)</li>
+                                <li>Enviar invitaciones secretas (1 día antes)</li>
+                                <li>Comprar comida y decoraciones (el mismo día)</li>
+                                <li>Decorar lugar 1 hora antes</li>
+                                <li>Esconderse 10 minutos antes de que llegue</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="consejo-docente" style="margin-top: 2rem;">
+                        <p>Nota cómo cada superpoder construye sobre el anterior. Primero descompones, luego buscas patrones, después abstraes lo esencial, y finalmente diseñas el plan paso a paso. Esta secuencia es poderosa para cualquier problema.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparativa: Pensamiento tradicional vs. computacional -->
+        <section class="section">
+            <h2><i class="fas fa-exchange-alt"></i> Pensamiento Tradicional vs. Pensamiento Computacional</h2>
+            
+            <table class="comparativa-table">
+                <thead>
+                    <tr>
+                        <th>Situación</th>
+                        <th>Pensamiento Tradicional</th>
+                        <th>Pensamiento Computacional</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Tarea: Limpiar tu habitación</strong></td>
+                        <td>"Es un desastre, no sé por dónde empezar"</td>
+                        <td>
+                            <span class="badge-superpoder badge-poder-1">Descomposición</span> 
+                            Dividir en zonas: cama, escritorio, armario, piso
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Problema: Estudiar para 3 exámenes</strong></td>
+                        <td>"Tengo mucho que estudiar, estoy abrumado"</td>
+                        <td>
+                            <span class="badge-superpoder badge-poder-2">Patrones</span> 
+                            Identificar tipos de preguntas que se repiten en cada materia
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Reto: Ahorrar para comprar algo</strong></td>
+                        <td>"Es muy caro, nunca podré comprarlo"</td>
+                        <td>
+                            <span class="badge-superpoder badge-poder-3">Abstracción</span> 
+                            Ignorar gastos pequeños y enfocarse en ahorros grandes
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Proyecto: Hacer una presentación</strong></td>
+                        <td>"No sé cómo organizar toda esta información"</td>
+                        <td>
+                            <span class="badge-superpoder badge-poder-4">Algoritmo</span> 
+                            Crear pasos: 1) Investigar, 2) Hacer esquema, 3) Diseñar diapositivas, 4) Practicar
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="paso-actividad">
+                <h4><i class="fas fa-user-check"></i> Actividad de reflexión:</h4>
+                <p>Piensa en un problema que enfrentaste recientemente. ¿Cómo lo resolviste? Ahora imagina cómo lo hubieras abordado usando cada uno de los 4 superpoderes del pensamiento computacional. Escribe tus ideas.</p>
+            </div>
+        </section>
+
+        <!-- Aplicación en diferentes áreas -->
+        <section class="section">
+            <h2><i class="fas fa-globe-americas"></i> Aplicación en Diferentes Áreas</h2>
+            
+            <div class="aplicaciones-grid">
+                <div class="aplicacion-card">
+                    <div class="aplicacion-icon"><i class="fas fa-stethoscope"></i></div>
+                    <h4>Medicina</h4>
+                    <p>Diagnósticos (reconocimiento de patrones de síntomas), protocolos de tratamiento (algoritmos), investigación médica (análisis de datos).</p>
+                </div>
+                
+                <div class="aplicacion-card">
+                    <div class="aplicacion-icon"><i class="fas fa-balance-scale"></i></div>
+                    <h4>Derecho</h4>
+                    <p>Análisis de casos previos (patrones), estructuración de argumentos (descomposición), creación de contratos (algoritmos).</p>
+                </div>
+                
+                <div class="aplicacion-card">
+                    <div class="aplicacion-icon"><i class="fas fa-paint-brush"></i></div>
+                    <h4>Arte y Diseño</h4>
+                    <p>Composición visual (patrones), procesos creativos (algoritmos), simplificación de formas (abstracción).</p>
+                </div>
+                
+                <div class="aplicacion-card">
+                    <div class="aplicacion-icon"><i class="fas fa-futbol"></i></div>
+                    <h4>Deportes</h4>
+                    <p>Estrategias de juego (algoritmos), análisis de movimientos (patrones), rutinas de entrenamiento (descomposición).</p>
+                </div>
+            </div>
+            
+            <div class="consejo-docente">
+                <p>El pensamiento computacional no reemplaza el pensamiento creativo, crítico o ético. Los complementa. Es una herramienta más en tu caja de herramientas mentales, especialmente útil cuando enfrentas problemas complejos que requieren soluciones sistemáticas.</p>
+            </div>
+        </section>
+
+        <!-- Reto final: Proyecto de aplicación -->
+        <section class="section">
+            <h2><i class="fas fa-flag-checkered"></i> Reto Final: Tu Primer Proyecto de Pensamiento Computacional</h2>
+            <div class="reto-interactivo">
+                <h3 style="color: white;">Proyecto: Optimizar tu Semana de Estudio</h3>
+                
+                <div class="reto-container">
+                    <p>Tu misión es aplicar los 4 superpoderes del pensamiento computacional para crear un plan de estudio eficiente para la próxima semana. Sigue estos pasos:</p>
+                    
+                    <div class="reto-pasos">
+                        <div class="reto-paso">
+                            <div class="reto-paso-numero">1</div>
+                            <h5>Descomposición</h5>
+                            <p>Divide tu semana de estudio en:</p>
+                            <ul>
+                                <li>Materias a estudiar</li>
+                                <li>Temas por materia</li>
+                                <li>Tipo de estudio (lectura, ejercicios, repaso)</li>
+                                <li>Recursos necesarios</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="reto-paso">
+                            <div class="reto-paso-numero">2</div>
+                            <h5>Reconocimiento de Patrones</h5>
+                            <p>Identifica patrones en tu estudio:</p>
+                            <ul>
+                                <li>¿A qué hora estudias mejor?</li>
+                                <li>¿Qué tipo de ejercicios te cuestan más?</li>
+                                <li>¿Cuánto tiempo mantienes la concentración?</li>
+                                <li>¿Qué distracciones son más comunes?</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="reto-pasos">
+                        <div class="reto-paso">
+                            <div class="reto-paso-numero">3</div>
+                            <h5>Abstracción</h5>
+                            <p>Enfócate en lo esencial:</p>
+                            <ul>
+                                <li>Ignora detalles irrelevantes (color de los resaltadores)</li>
+                                <li>Identifica los conceptos más importantes</li>
+                                <li>Determina el objetivo principal de cada sesión</li>
+                                <li>Simplifica las metas</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="reto-paso">
+                            <div class="reto-paso-numero">4</div>
+                            <h5>Diseño de Algoritmos</h5>
+                            <p>Crea tu plan paso a paso:</p>
+                            <ol>
+                                <li>Lunes 4-6pm: Matemáticas - Ejercicios de álgebra</li>
+                                <li>Martes 5-7pm: Ciencias - Leer capítulo 3</li>
+                                <li>Miércoles 4-5pm: Repaso rápido de ambas</li>
+                                <li>Jueves 6-8pm: Lenguaje - Ensayo</li>
+                                <li>Viernes 4-6pm: Repaso general</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="paso-actividad" style="margin-top: 2rem;">
+                        <h4><i class="fas fa-tasks"></i> Tu turno:</h4>
+                        <p>Crea tu propio plan de estudio usando los 4 superpoderes. Documenta cada paso:</p>
+                        <ol>
+                            <li><strong>Descomposición:</strong> Lista tus materias y temas específicos</li>
+                            <li><strong>Patrones:</strong> Identifica tus hábitos de estudio efectivos</li>
+                            <li><strong>Abstracción:</strong> Determina lo esencial para cada materia</li>
+                            <li><strong>Algoritmo:</strong> Diseña un horario semanal detallado</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="consejo-docente" style="margin-top: 2rem;">
+                        <p>Reflexión final: El pensamiento computacional no es solo para resolver problemas, sino para <strong>transformar tu manera de pensar</strong>. Cada vez que enfrentes un desafío, pregúntate: ¿Cómo puedo descomponerlo? ¿Qué patrones veo? ¿Qué es lo esencial? ¿Qué pasos debo seguir?</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Taller diseñado con el corazón de un docente y la mente de un programador</p>
+            <p>Con la filosofía de que <em>"No se trata de pensar como computadoras, sino de pensar mejor que ellas"</em></p>
+            <p>Diseñado por: Edwin Méndez Játiva <span class="footer-heart">❤</span></p>
+            <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.7;">"El pensamiento computacional es el superpoder del siglo XXI - y ahora lo tienes"</p>
+        </div>
+    </footer>
+
+    <script>
+        // Datos para el juego interactivo
+        const pasosJuego = [
+            {
+                pregunta: "Paso 1: ¿Cuál sería tu PRIMER superpoder a usar?",
+                opciones: [
+                    {
+                        texto: "Descomposición - Dividir el problema grande en partes más pequeñas",
+                        correcta: true,
+                        explicacion: "¡Correcto! Lo primero es descomponer el problema grande en partes manejables como: áreas a limpiar, materiales necesarios, asignación de voluntarios."
+                    },
+                    {
+                        texto: "Reconocimiento de Patrones - Buscar cómo se han hecho limpiezas anteriores",
+                        correcta: false,
+                        explicacion: "Primero necesitas entender todas las partes del problema (descomposición), luego podrás buscar patrones."
+                    },
+                    {
+                        texto: "Abstracción - Enfocarse solo en la limpieza e ignorar otros aspectos",
+                        correcta: false,
+                        explicacion: "La abstracción viene después de entender todas las partes del problema. Primero necesitas descomponerlo."
+                    },
+                    {
+                        texto: "Diseño de Algoritmos - Crear pasos detallados inmediatamente",
+                        correcta: false,
+                        explicacion: "No puedes crear pasos detallados hasta que no entiendas todas las partes del problema. Empieza con descomposición."
+                    }
+                ]
+            },
+            {
+                pregunta: "Paso 2: Después de descomponer, ¿qué superpoder usarías?",
+                opciones: [
+                    {
+                        texto: "Reconocimiento de Patrones - Identificar áreas que siempre están sucias",
+                        correcta: true,
+                        explicacion: "¡Excelente! Después de descomponer, buscas patrones: qué áreas se ensucian más, qué días hay más basura, qué materiales son más efectivos."
+                    },
+                    {
+                        texto: "Volver a descomponer las partes ya identificadas",
+                        correcta: false,
+                        explicacion: "La descomposición ya se hizo. Ahora es momento de buscar patrones en esas partes identificadas."
+                    },
+                    {
+                        texto: "Saltar directamente al diseño de algoritmos",
+                        correcta: false,
+                        explicacion: "Falta un paso intermedio. Después de identificar las partes y sus patrones, necesitas abstraer lo esencial."
+                    },
+                    {
+                        texto: "Abstracción - Ignorar algunas áreas de limpieza",
+                        correcta: false,
+                        explicacion: "La abstracción viene después de identificar patrones. Primero encuentra qué se repite o es común."
+                    }
+                ]
+            },
+            {
+                pregunta: "Paso 3: Identificados los patrones, ¿qué sigue?",
+                opciones: [
+                    {
+                        texto: "Abstracción - Enfocarse en lo esencial e ignorar detalles",
+                        correcta: true,
+                        explicacion: "¡Perfecto! Ahora abstraes: no importa el color de los guantes, importa que haya suficientes; no importa la marca de las bolsas, importa que sean resistentes."
+                    },
+                    {
+                        texto: "Diseño de Algoritmos - Empezar a escribir instrucciones",
+                        correcta: false,
+                        explicacion: "Casi, pero primero necesitas decidir qué es esencial (abstracción) antes de crear los pasos detallados."
+                    },
+                    {
+                        texto: "Volver a buscar más patrones",
+                        correcta: false,
+                        explicacion: "Ya identificaste los patrones principales. Ahora es momento de enfocarse en lo esencial mediante la abstracción."
+                    },
+                    {
+                        texto: "Descomposición de los patrones encontrados",
+                        correcta: false,
+                        explicacion: "Los patrones ya están identificados. El siguiente paso es abstraer lo importante de esos patrones."
+                    }
+                ]
+            },
+            {
+                pregunta: "Paso 4: Finalmente, ¿qué superpoder completa el proceso?",
+                opciones: [
+                    {
+                        texto: "Diseño de Algoritmos - Crear instrucciones paso a paso",
+                        correcta: true,
+                        explicacion: "¡Excelente trabajo! El último paso es crear el algoritmo: 1) Reunir a voluntarios a las 8am, 2) Asignar áreas, 3) Repartir materiales, 4) Comenzar limpieza, 5) Recolectar basura, etc."
+                    },
+                    {
+                        texto: "Descomposición - Dividir el algoritmo en partes",
+                        correcta: false,
+                        explicacion: "El diseño de algoritmos es el paso final. Ya has descompuesto, identificado patrones y abstraído. Ahora creas los pasos."
+                    },
+                    {
+                        texto: "Reconocimiento de Patrones - Buscar patrones en el algoritmo",
+                        correcta: false,
+                        explicacion: "Los patrones ya se identificaron. Ahora es momento de crear el plan paso a paso (algoritmo)."
+                    },
+                    {
+                        texto: "Abstracción - Simplificar las instrucciones",
+                        correcta: false,
+                        explicacion: "La abstracción ya se hizo. Ahora concretamos esas ideas abstractas en pasos específicos (algoritmo)."
+                    }
+                ]
+            }
+        ];
+
+        // Variables del juego
+        let pasoActual = 0;
+        let puntajeJuego = 0;
+        let opcionSeleccionada = null;
+
+        // Elementos del DOM del juego
+        const elementoPregunta = document.getElementById('pregunta-juego');
+        const elementoOpciones = document.getElementById('opciones-juego');
+        const elementoVerificar = document.getElementById('verificar-juego');
+        const elementoSiguiente = document.getElementById('siguiente-juego');
+        const elementoResultado = document.getElementById('resultado-juego');
+        const elementoPuntaje = document.getElementById('puntaje-juego');
+
+        // Inicializar juego
+        function cargarPasoJuego() {
+            const paso = pasosJuego[pasoActual];
+            elementoPregunta.textContent = paso.pregunta;
+            
+            // Limpiar opciones anteriores
+            elementoOpciones.innerHTML = '';
+            
+            // Cargar nuevas opciones
+            paso.opciones.forEach((opcion, index) => {
+                const botonOpcion = document.createElement('div');
+                botonOpcion.className = 'juego-opcion';
+                botonOpcion.innerHTML = `
+                    <div class="juego-opcion-icono">${index + 1}</div>
+                    <div>${opcion.texto}</div>
+                `;
+                botonOpcion.dataset.indice = index;
+                botonOpcion.dataset.correcta = opcion.correcta;
+                
+                botonOpcion.addEventListener('click', function() {
+                    // Remover selección anterior
+                    document.querySelectorAll('.juego-opcion').forEach(opc => {
+                        opc.classList.remove('seleccionada');
+                    });
+                    
+                    // Seleccionar esta opción
+                    this.classList.add('seleccionada');
+                    opcionSeleccionada = parseInt(this.dataset.indice);
+                });
+                
+                elementoOpciones.appendChild(botonOpcion);
+            });
+            
+            // Reiniciar estado de botones
+            elementoVerificar.style.display = 'inline-block';
+            elementoSiguiente.style.display = 'none';
+            elementoResultado.style.display = 'none';
+            elementoResultado.className = 'juego-resultado';
+        }
+
+        // Verificar respuesta del juego
+        elementoVerificar.addEventListener('click', function() {
+            if (opcionSeleccionada === null) {
+                elementoResultado.textContent = 'Por favor, selecciona una opción antes de verificar';
+                elementoResultado.className = 'juego-resultado incorrecto';
+                elementoResultado.style.display = 'block';
+                return;
+            }
+            
+            const paso = pasosJuego[pasoActual];
+            const opcion = paso.opciones[opcionSeleccionada];
+            const opciones = document.querySelectorAll('.juego-opcion');
+            
+            // Mostrar respuestas correctas/incorrectas
+            opciones.forEach((opcionElement, index) => {
+                if (paso.opciones[index].correcta) {
+                    opcionElement.classList.add('juego-opcion-correcta');
+                } else if (index === opcionSeleccionada) {
+                    opcionElement.classList.add('juego-opcion-incorrecta');
+                }
+            });
+            
+            // Verificar si es correcta
+            if (opcion.correcta) {
+                elementoResultado.innerHTML = `<strong>¡Correcto!</strong> ${opcion.explicacion}`;
+                elementoResultado.className = 'juego-resultado correcto';
+                puntajeJuego++;
+                elementoPuntaje.textContent = puntajeJuego;
+            } else {
+                elementoResultado.innerHTML = `<strong>Respuesta incorrecta.</strong> ${opcion.explicacion}`;
+                elementoResultado.className = 'juego-resultado incorrecto';
+            }
+            
+            elementoResultado.style.display = 'block';
+            elementoVerificar.style.display = 'none';
+            elementoSiguiente.style.display = 'inline-block';
+        });
+
+        // Siguiente paso del juego
+        elementoSiguiente.addEventListener('click', function() {
+            pasoActual++;
+            
+            if (pasoActual < pasosJuego.length) {
+                opcionSeleccionada = null;
+                cargarPasoJuego();
+            } else {
+                // Fin del juego
+                elementoPregunta.textContent = '¡Desafío Completado!';
+                elementoOpciones.innerHTML = `
+                    <div style="text-align: center; padding: 2rem;">
+                        <h3 style="color: var(--azul-profundo); margin-bottom: 1rem;">Has aplicado los 4 superpoderes</h3>
+                        <div style="font-size: 4rem; margin: 1.5rem 0; color: ${puntajeJuego === 4 ? '#10b981' : puntajeJuego >= 2 ? '#f59e0b' : '#ef4444'}">
+                            ${puntajeJuego}/4
+                        </div>
+                        <p style="margin-bottom: 1.5rem; font-size: 1.2rem;">
+                            ${puntajeJuego === 4 ? '🏆 ¡Eres un maestro del pensamiento computacional! Sabes cómo aplicar los 4 superpoderes en secuencia.' : 
+                              puntajeJuego >= 3 ? '🎯 ¡Muy bien! Entiendes la mayoría de los conceptos, sigue practicando.' : 
+                              puntajeJuego >= 2 ? '👍 Buen comienzo, revisa los conceptos y vuelve a intentarlo.' : 
+                              '📚 Revisa los 4 superpoderes y cómo funcionan juntos, luego vuelve a intentar.'}
+                        </p>
+                        <button class="juego-boton" onclick="reiniciarJuego()" style="margin-top: 1rem;">
+                            <i class="fas fa-redo"></i> Reintentar desafío
+                        </button>
+                    </div>
+                `;
+                elementoVerificar.style.display = 'none';
+                elementoSiguiente.style.display = 'none';
+                elementoResultado.style.display = 'none';
+            }
+        });
+
+        // Función para reiniciar el juego
+        window.reiniciarJuego = function() {
+            pasoActual = 0;
+            puntajeJuego = 0;
+            elementoPuntaje.textContent = '0';
+            cargarPasoJuego();
+        };
+
+        // Iniciar juego al cargar la página
+        document.addEventListener('DOMContentLoaded', cargarPasoJuego);
+    </script>
+</body>
+</html>
