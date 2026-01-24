@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python para Pensadores - Diálogos con la Máquina</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variables de colores azules con acentos */
+        :root {
+            --azul-oscuro: #1e3a8a;
+            --azul-medio: #3b82f6;
+            --azul-claro: #60a5fa;
+            --azul-suave: #93c5fd;
+            --azul-humo: #dbeafe;
+            --azul-cyan: #06b6d4;
+            --verde-python: #10b981;
+            --amarillo-python: #f59e0b;
+            --rojo-python: #ef4444;
+            --blanco: #ffffff;
+            --gris-claro: #f8fafc;
+            --gris-medio: #e2e8f0;
+        }
+
+        /* Reset y estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--gris-claro);
+            color: var(--azul-oscuro);
+            line-height: 1.6;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(219, 234, 254, 0.3) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(219, 234, 254, 0.2) 0%, transparent 20%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Encabezado */
+        header {
+            background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-cyan));
+            color: var(--blanco);
+            padding: 2.5rem 0;
+            text-align: center;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            box-shadow: 0 8px 25px rgba(30, 58, 138, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%2306b6d4' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E"),
+                linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            opacity: 0.4;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 3.2rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(to right, #ffffff, var(--azul-humo));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        .subtitle {
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+            opacity: 0.95;
+            color: var(--azul-humo);
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-top: 1.5rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+            color: var(--azul-suave);
+        }
+
+        .header-icons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 2rem;
+            font-size: 3.5rem;
+        }
+
+        .header-icon {
+            animation: flotar 3s ease-in-out infinite;
+            color: var(--amarillo-python);
+        }
+
+        .header-icon:nth-child(1) {
+            animation-delay: 0s;
+            color: var(--azul-cyan);
+        }
+
+        .header-icon:nth-child(2) {
+            animation-delay: 0.5s;
+            color: var(--verde-python);
+        }
+
+        .header-icon:nth-child(3) {
+            animation-delay: 1s;
+            color: var(--rojo-python);
+        }
+
+        @keyframes flotar {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        /* Secciones principales */
+        .section {
+            background-color: var(--blanco);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 2.5rem 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border-left: 6px solid var(--azul-cyan);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--azul-cyan), var(--azul-medio), var(--verde-python));
+        }
+
+        h2 {
+            color: var(--azul-oscuro);
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--azul-humo);
+            padding-bottom: 10px;
+        }
+
+        h2 i {
+            color: var(--azul-cyan);
+        }
+
+        h3 {
+            color: var(--azul-medio);
+            margin: 2rem 0 1rem;
+            font-size: 1.7rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-left: 15px;
+            border-left: 4px solid var(--verde-python);
+        }
+
+        h3 i {
+            color: var(--verde-python);
+        }
+
+        p {
+            margin-bottom: 1.3rem;
+            font-size: 1.15rem;
+            line-height: 1.7;
+        }
+
+        /* Estilos para contenido especial */
+        .highlight-box {
+            background: linear-gradient(135deg, var(--azul-humo), #ecfeff);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            border: 2px solid var(--azul-cyan);
+            box-shadow: 0 5px 15px rgba(6, 182, 212, 0.1);
+            position: relative;
+        }
+
+        .highlight-box::before {
+            content: "💬";
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            font-size: 2rem;
+            background: var(--blanco);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--azul-cyan);
+        }
+
+        .code-container {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            padding: 2rem;
+            border-radius: 12px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            margin: 1.8rem 0;
+            overflow-x: auto;
+            border-left: 6px solid var(--amarillo-python);
+            position: relative;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .code-header {
+            background-color: #334155;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px 8px 0 0;
+            margin: -2rem -2rem 1.5rem -2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--azul-suave);
+            font-size: 0.9rem;
+        }
+
+        .code-copy {
+            background: var(--verde-python);
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .code-copy:hover {
+            background: var(--azul-medio);
+            transform: translateY(-2px);
+        }
+
+        .python-keyword {
+            color: #f87171;
+            font-weight: bold;
+        }
+
+        .python-string {
+            color: #34d399;
+        }
+
+        .python-comment {
+            color: #9ca3af;
+            font-style: italic;
+        }
+
+        .python-function {
+            color: #60a5fa;
+        }
+
+        .python-number {
+            color: #fbbf24;
+        }
+
+        /* Listas */
+        ul,
+        ol {
+            margin-left: 1.8rem;
+            margin-bottom: 1.8rem;
+        }
+
+        li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 5px;
+        }
+
+        .feature-list li {
+            background-color: var(--azul-humo);
+            padding: 12px 18px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--azul-cyan);
+            transition: transform 0.2s;
+        }
+
+        .feature-list li:hover {
+            transform: translateX(5px);
+            background-color: #ecfeff;
+        }
+
+        /* Objetivo de aprendizaje */
+        .objetivo {
+            background: linear-gradient(135deg, #ecfeff, #f0f9ff);
+            padding: 2.5rem;
+            border-radius: 18px;
+            border: 3px solid var(--azul-cyan);
+            margin: 2.5rem 0;
+            box-shadow: 0 10px 25px rgba(6, 182, 212, 0.15);
+        }
+
+        .objetivo h2 {
+            color: var(--azul-oscuro);
+            border-bottom: none;
+        }
+
+        /* Reto final */
+        .reto {
+            background: linear-gradient(135deg, #f0f9ff, var(--azul-humo));
+            padding: 2.5rem;
+            border-radius: 18px;
+            border: 3px dashed var(--amarillo-python);
+            margin: 2.5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reto::before {
+            content: "⚡";
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 3rem;
+            opacity: 0.2;
+            animation: girar 10s linear infinite;
+        }
+
+        @keyframes girar {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .reto h2 {
+            color: var(--azul-oscuro);
+        }
+
+        /* Simulador de código */
+        .simulador-section {
+            background: linear-gradient(135deg, var(--azul-cyan), var(--azul-medio));
+            padding: 3rem;
+            border-radius: 20px;
+            margin: 3rem 0;
+            color: var(--azul-oscuro);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .simulador-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        .simulador-container {
+            background-color: var(--blanco);
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin-top: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 1;
+        }
+
+        .simulador-codigo {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 10px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            border-left: 5px solid var(--amarillo-python);
+        }
+
+        .simulador-entrada {
+            margin-bottom: 1.5rem;
+        }
+
+        .simulador-entrada label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--azul-oscuro);
+        }
+
+        .simulador-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--azul-suave);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .simulador-input:focus {
+            outline: none;
+            border-color: var(--azul-cyan);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2);
+        }
+
+        .simulador-botones {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        .simulador-boton {
+            background-color: var(--verde-python);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .simulador-boton:hover {
+            background-color: var(--azul-medio);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .simulador-boton.reset {
+            background-color: var(--gris-medio);
+            color: var(--azul-oscuro);
+        }
+
+        .simulador-boton.reset:hover {
+            background-color: #cbd5e1;
+        }
+
+        .simulador-resultado {
+            background-color: var(--azul-humo);
+            padding: 1.5rem;
+            border-radius: 10px;
+            min-height: 80px;
+            border-left: 5px solid var(--azul-cyan);
+            font-family: 'Consolas', 'Monaco', monospace;
+            white-space: pre-wrap;
+            margin-top: 1rem;
+        }
+
+        .simulador-resultado.correcto {
+            background-color: #d1fae5;
+            border-left-color: var(--verde-python);
+        }
+
+        .simulador-resultado.error {
+            background-color: #fee2e2;
+            border-left-color: var(--rojo-python);
+        }
+
+        /* Desafío interactivo */
+        .desafio-section {
+            background: linear-gradient(135deg, var(--amarillo-python), #f59e0b);
+            padding: 3rem;
+            border-radius: 20px;
+            margin: 3rem 0;
+            color: var(--azul-oscuro);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .desafio-container {
+            background-color: var(--blanco);
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin-top: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 1;
+        }
+
+        .desafio-pregunta {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--azul-oscuro);
+            text-align: center;
+            padding: 1rem;
+            background-color: #fef3c7;
+            border-radius: 12px;
+            border-left: 5px solid var(--amarillo-python);
+        }
+
+        .desafio-opciones {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 18px;
+            margin-bottom: 2rem;
+        }
+
+        .desafio-opcion {
+            background-color: #fef3c7;
+            padding: 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .desafio-opcion:hover {
+            background-color: #fde68a;
+            transform: translateY(-5px);
+            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .desafio-opcion::before {
+            content: "○";
+            font-weight: bold;
+            color: var(--amarillo-python);
+        }
+
+        .desafio-opcion.seleccionada {
+            background-color: #fbbf24;
+            border-color: var(--amarillo-python);
+            color: var(--azul-oscuro);
+        }
+
+        .desafio-opcion.seleccionada::before {
+            content: "●";
+            color: var(--azul-oscuro);
+        }
+
+        .desafio-opcion.correcta {
+            background-color: #d1fae5;
+            border-color: var(--verde-python);
+        }
+
+        .desafio-opcion.incorrecta {
+            background-color: #fee2e2;
+            border-color: var(--rojo-python);
+        }
+
+        .desafio-botones {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 1.5rem;
+        }
+
+        .desafio-boton {
+            background-color: var(--azul-oscuro);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .desafio-boton:hover {
+            background-color: var(--azul-medio);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(30, 58, 138, 0.3);
+        }
+
+        .desafio-resultado {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+            font-size: 1.2rem;
+            animation: aparecer 0.5s ease;
+        }
+
+        @keyframes aparecer {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .desafio-resultado.correcto {
+            background-color: #d1fae5;
+            color: #065f46;
+            display: block;
+            border-left: 5px solid var(--verde-python);
+        }
+
+        .desafio-resultado.incorrecto {
+            background-color: #fee2e2;
+            color: #991b1b;
+            display: block;
+            border-left: 5px solid var(--rojo-python);
+        }
+
+        .desafio-progreso {
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: var(--azul-oscuro);
+            font-weight: 600;
+        }
+
+        .desafio-puntaje {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-top: 1.5rem;
+            color: var(--azul-oscuro);
+            background-color: #fef3c7;
+            padding: 1rem;
+            border-radius: 10px;
+            display: inline-block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Pie de página */
+        footer {
+            background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-cyan));
+            color: var(--blanco);
+            text-align: center;
+            padding: 2.5rem 0;
+            margin-top: 4rem;
+            border-top-left-radius: 40px;
+            border-top-right-radius: 40px;
+        }
+
+        footer p {
+            margin-bottom: 0.8rem;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .footer-heart {
+            color: #f87171;
+            animation: latido 1.5s infinite;
+            display: inline-block;
+        }
+
+        @keyframes latido {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.4rem;
+            }
+
+            .subtitle {
+                font-size: 1.3rem;
+            }
+
+            .section {
+                padding: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.9rem;
+            }
+
+            .header-icons {
+                font-size: 2.5rem;
+                gap: 20px;
+            }
+
+            .desafio-opciones,
+            .simulador-botones,
+            .desafio-botones {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .simulador-section,
+            .desafio-section {
+                padding: 2rem;
+            }
+        }
+
+        /* Elementos especiales */
+        .consejo-docente {
+            background-color: #f0f9ff;
+            padding: 1.8rem;
+            border-radius: 12px;
+            margin: 1.8rem 0;
+            border-left: 6px solid var(--amarillo-python);
+            position: relative;
+            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.1);
+        }
+
+        .consejo-docente::before {
+            content: "🎯";
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: var(--blanco);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--amarillo-python);
+        }
+
+        .paso-actividad {
+            background-color: #f8fafc;
+            padding: 1.8rem;
+            border-radius: 12px;
+            margin: 1.8rem 0;
+            border: 2px solid var(--azul-suave);
+            position: relative;
+        }
+
+        .paso-actividad h4 {
+            color: var(--azul-medio);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .diagrama-flujo {
+            background-color: #f8fafc;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            border: 2px dashed var(--azul-cyan);
+            text-align: center;
+        }
+
+        .diagrama-flujo img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: var(--azul-cyan);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .badge-print {
+            background-color: var(--azul-cyan);
+        }
+
+        .badge-input {
+            background-color: var(--verde-python);
+        }
+
+        .badge-if {
+            background-color: var(--amarillo-python);
+            color: var(--azul-oscuro);
+        }
+
+        .ejemplo-interactivo {
+            background-color: #fef3c7;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            border-left: 5px solid var(--amarillo-python);
+        }
+
+        .ejemplo-interactivo h4 {
+            color: var(--amarillo-python);
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="header-icons">
+                    <i class="fas fa-comment-dots header-icon"></i>
+                    <i class="fas fa-keyboard header-icon"></i>
+                    <i class="fas fa-code-branch header-icon"></i>
+                </div>
+                <h1>Diálogos con la Máquina</h1>
+                <p class="subtitle">print(), input() e if: Tus primeras conversaciones con Python</p>
+                <p class="tagline">Taller diseñado con el corazón de un docente y la mente de un programador | Aprende a
+                    comunicarte con las máquinas usando las tres herramientas más esenciales</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Objetivo de aprendizaje -->
+        <section class="section">
+            <h2><i class="fas fa-bullseye"></i> Objetivo de Aprendizaje</h2>
+            <div class="objetivo">
+                <p>Dominar las funciones fundamentales de comunicación en Python mediante el uso efectivo de print()
+                    para mostrar información, input() para recibir datos del usuario y estructuras condicionales
+                    if/elif/else para tomar decisiones, desarrollando la capacidad para crear programas interactivos que
+                    resuelvan problemas prácticos, fomentando el pensamiento lógico, la capacidad de análisis y la
+                    creatividad en el diseño de soluciones algorítmicas, con el fin de establecer bases sólidas para el
+                    desarrollo de software significativo y relevante para el contexto estudiantil.</p>
+            </div>
+        </section>
+
+        <!-- Introducción -->
+        <section class="section">
+            <h2><i class="fas fa-comments"></i> La Magia de la Comunicación Humano-Máquina</h2>
+
+            <div class="highlight-box">
+                <p>Imagina que estás enseñando a un robot a hacer un sandwich. Necesitarías decirle qué hacer (print),
+                    preguntarle sus preferencias (input), y decidir qué ingredientes usar según sus respuestas (if). Así
+                    es exactamente como funcionan estos tres elementos esenciales en Python.</p>
+            </div>
+
+            <div class="consejo-docente">
+                <p>La programación es el arte de la conversación con las máquinas. <code>print()</code> es tu voz,
+                    <code>input()</code> es tu oído, y <code>if</code> es tu capacidad de tomar decisiones. Juntos, te
+                    permiten crear diálogos inteligentes y útiles.</p>
+            </div>
+
+            <h3><i class="fas fa-volume-up"></i> print(): Tu Voz en el Mundo Digital</h3>
+            <p><code>print()</code> es la función que usas para que Python "hable" o muestre información. Es como el
+                altavoz de tu programa, permitiéndote comunicar resultados, mensajes o cualquier información al usuario.
+            </p>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <span>print_basico.py</span>
+                    <button class="code-copy" onclick="copiarCodigo(this)">Copiar código</button>
+                </div>
+                <span class="python-comment"># Ejemplos básicos de print()</span><br>
+                <span class="python-keyword">print</span>(<span class="python-string">"¡Hola, mundo!"</span>) <span
+                    class="python-comment"># Texto simple</span><br>
+                <span class="python-keyword">print</span>(<span class="python-string">"Mi nombre es Ana"</span>)<br>
+                <span class="python-keyword">print</span>(<span class="python-string">"Tengo"</span>, 17, <span
+                    class="python-string">"años"</span>) <span class="python-comment"># Múltiples elementos separados
+                    por comas</span><br>
+                <span class="python-keyword">print</span>(<span class="python-string">"La suma de 5 + 3 es:"</span>, 5 +
+                3) <span class="python-comment"># Incluye operaciones</span><br>
+                <br>
+                <span class="python-comment"># print() con formato</span><br>
+                nombre = <span class="python-string">"Carlos"</span><br>
+                edad = 16<br>
+                <span class="python-keyword">print</span>(<span class="python-string">f"Hola {nombre}, tienes {edad}
+                    años"</span>) <span class="python-comment"># f-string (Python 3.6+)</span>
+            </div>
+
+            <div class="ejemplo-interactivo">
+                <h4><i class="fas fa-flask"></i> Experimento:</h4>
+                <p>¿Qué pasa si escribes <code>print("Hola", "Mundo", sep="-")</code>? El parámetro <code>sep</code>
+                    define cómo separar los elementos. Pruébalo con diferentes separadores: ",", " | ", "\n" (salto de
+                    línea).</p>
+            </div>
+
+            <h3><i class="fas fa-ear-listen"></i> input(): Escuchando al Usuario</h3>
+            <p><code>input()</code> es la función que permite a tu programa "escuchar" al usuario. Pausa la ejecución,
+                espera a que el usuario escriba algo y presione Enter, luego devuelve ese texto como resultado.</p>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <span>input_basico.py</span>
+                    <button class="code-copy" onclick="copiarCodigo(this)">Copiar código</button>
+                </div>
+                <span class="python-comment"># Ejemplo básico de input()</span><br>
+                nombre = <span class="python-keyword">input</span>(<span class="python-string">"¿Cómo te llamas?
+                    "</span>)<br>
+                <span class="python-keyword">print</span>(<span class="python-string">f"¡Mucho gusto,
+                    {nombre}!"</span>)<br>
+                <br>
+                <span class="python-comment"># input() siempre devuelve texto (str)</span><br>
+                <span class="python-comment"># Para números, debemos convertir</span><br>
+                edad_texto = <span class="python-keyword">input</span>(<span class="python-string">"¿Cuántos años
+                    tienes? "</span>)<br>
+                edad = <span class="python-keyword">int</span>(edad_texto) <span class="python-comment"># Convertir a
+                    número entero</span><br>
+                <span class="python-keyword">print</span>(<span class="python-string">f"El año que viene tendrás {edad +
+                    1} años"</span>)<br>
+                <br>
+                <span class="python-comment"># Conversión directa (más común)</span><br>
+                altura = <span class="python-keyword">float</span>(<span class="python-keyword">input</span>(<span
+                    class="python-string">"¿Cuál es tu estatura en metros? "</span>))
+            </div>
+
+            <div class="consejo-docente">
+                <p>Recuerda: <code>input()</code> siempre devuelve texto (string). Si necesitas un número, debes
+                    convertirlo con <code>int()</code> o <code>float()</code>. Un error común es olvidar esta conversión
+                    y luego intentar hacer matemáticas con texto.</p>
+            </div>
+
+            <h3><i class="fas fa-code-branch"></i> if: El Punto de Decisión</h3>
+            <p>La estructura <code>if</code> permite a tu programa tomar decisiones basadas en condiciones. Es como una
+                encrucijada donde el programa elige qué camino seguir según lo que haya sucedido antes.</p>
+
+            <div class="diagrama-flujo">
+                <h4>Diagrama de flujo de una decisión if</h4>
+                <div
+                    style="background-color: white; padding: 20px; border-radius: 10px; display: inline-block; text-align: left; font-family: monospace;">
+                    <div style="margin-bottom: 10px;">¿Es mayor de edad? <span
+                            style="color: var(--verde-python); font-weight: bold;">if edad >= 18:</span></div>
+                    <div style="margin-left: 20px; margin-bottom: 10px; color: var(--verde-python);">↓ Si es VERDADERO
+                    </div>
+                    <div style="background-color: #d1fae5; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                        print("Puedes votar")</div>
+                    <div style="margin-left: 20px; color: var(--rojo-python);">↓ Si es FALSO</div>
+                    <div style="background-color: #fee2e2; padding: 10px; border-radius: 5px;">print("No puedes votar
+                        aún")</div>
+                </div>
+            </div>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <span>if_basico.py</span>
+                    <button class="code-copy" onclick="copiarCodigo(this)">Copiar código</button>
+                </div>
+                <span class="python-comment"># Estructura básica de if</span><br>
+                edad = <span class="python-keyword">int</span>(<span class="python-keyword">input</span>(<span
+                    class="python-string">"Ingresa tu edad: "</span>))<br>
+                <br>
+                <span class="python-keyword">if</span> edad >= 18:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="python-keyword">print</span>(<span class="python-string">"Eres
+                    mayor de edad"</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="python-keyword">print</span>(<span class="python-string">"Puedes
+                    votar en las elecciones"</span>)<br>
+                <span class="python-keyword">else</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="python-keyword">print</span>(<span class="python-string">"Eres
+                    menor de edad"</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="python-keyword">print</span>(<span class="python-string">"Aún no
+                    puedes votar"</span>)<br>
+                <br>
+                <span class="python-comment"># Nota: La indentación (4 espacios) define qué código está dentro del
+                    if/else</span>
+            </div>
+        </section>
+
+        <!-- Simulador interactivo -->
+        <section class="simulador-section">
+            <h2><i class="fas fa-laptop-code"></i> Simulador: Crea Tu Primer Diálogo</h2>
+            <p>Prueba cómo funcionan print, input e if juntos en este simulador interactivo. Escribe valores de entrada
+                y observa cómo responde el programa.</p>
+
+            <div class="simulador-container">
+                <div class="simulador-codigo" id="codigo-simulador">
+                    # Simulador de diálogo con Python
+                    print("=== BIENVENIDO AL SIMULADOR ===")
+                    nombre = input("¿Cuál es tu nombre? ")
+                    edad = int(input("¿Cuál es tu edad? "))
+
+                    print(f"\nHola {nombre}, gracias por usar el simulador.")
+
+                    if edad >= 18:
+                    print("Eres mayor de edad.")
+                    if edad >= 65:
+                    print("¡Eres parte de la tercera edad!")
+                    else:
+                    print("Eres un adulto joven.")
+                    else:
+                    print("Eres menor de edad.")
+                    años_para_votar = 18 - edad
+                    print(f"Te faltan {años_para_votar} años para poder votar.")
+
+                    print("\n=== FIN DEL PROGRAMA ===")
+                </div>
+
+                <div class="simulador-entrada">
+                    <label for="input-nombre"><i class="fas fa-user"></i> ¿Cuál es tu nombre?</label>
+                    <input type="text" id="input-nombre" class="simulador-input" placeholder="Escribe tu nombre aquí"
+                        value="Ana">
+                </div>
+
+                <div class="simulador-entrada">
+                    <label for="input-edad"><i class="fas fa-birthday-cake"></i> ¿Cuál es tu edad?</label>
+                    <input type="number" id="input-edad" class="simulador-input" placeholder="Escribe tu edad aquí"
+                        value="16" min="0" max="120">
+                </div>
+
+                <div class="simulador-botones">
+                    <button class="simulador-boton" id="ejecutar-simulador">
+                        <i class="fas fa-play"></i> Ejecutar Programa
+                    </button>
+                    <button class="simulador-boton reset" id="reiniciar-simulador">
+                        <i class="fas fa-redo"></i> Reiniciar
+                    </button>
+                </div>
+
+                <div class="simulador-resultado" id="resultado-simulador">
+                    El resultado aparecerá aquí después de ejecutar el programa.
+                </div>
+            </div>
+        </section>
+
+        <!-- Aplicaciones prácticas -->
+        <section class="section">
+            <h2><i class="fas fa-lightbulb"></i> Aplicaciones Prácticas: De la Teoría a la Realidad</h2>
+
+            <h3><i class="fas fa-calculator"></i> Calculadora de IMC (Índice de Masa Corporal)</h3>
+            <p>Vamos a crear una aplicación útil que combine print, input e if para calcular el IMC y dar
+                recomendaciones de salud.</p>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <span>calculadora_imc.py</span>
+                    <button class="code-copy" onclick="copiarCodigo(this)">Copiar código</button>
+                </div>
+                <span class="python-comment"># Calculadora de IMC con recomendaciones</span><br>
+                <span class="python-keyword">print</span>(<span class="python-string">"=== CALCULADORA DE IMC
+                    ==="</span>)<br>
+                <br>
+                <span class="python-comment"># Solicitar datos al usuario</span><br>
+                peso = <span class="python-keyword">float</span>(<span class="python-keyword">input</span>(<span
+                    class="python-string">"Ingresa tu peso en kg: "</span>))<br>
+                altura = <span class="python-keyword">float</span>(<span class="python-keyword">input</span>(<span
+                    class="python-string">"Ingresa tu altura en metros: "</span>))<br>
+                <br>
+                <span class="python-comment"># Calcular IMC</span><br>
+                imc = peso / (altura ** 2)<br>
+                <br>
+                <span class="python-keyword">print</span>(<span class="python-string">f"\nTu IMC es: {imc:.2f}"</span>)
+                <span class="python-comment"># :.2f muestra 2 decimales</span><br>
+                <br>
+                <span class="python-comment"># Determinar categoría según OMS</span><br>
+                <span class="python-keyword">if</span> imc < 18.5:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;categoria = <span class="python-string">"Bajo peso"</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;recomendacion = <span class="python-string">"Consulta a un nutricionista
+                        para ganar peso saludablemente."</span><br>
+                    <span class="python-keyword">elif</span> imc < 25:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;categoria = <span class="python-string">"Peso normal"</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;recomendacion = <span class="python-string">"¡Excelente! Mantén tus
+                            hábitos saludables."</span><br>
+                        <span class="python-keyword">elif</span> imc < 30:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;categoria = <span class="python-string">"Sobrepeso"</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;recomendacion = <span class="python-string">"Considera aumentar tu
+                                actividad física y mejorar tu dieta."</span><br>
+                            <span class="python-keyword">else</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;categoria = <span class="python-string">"Obesidad"</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;recomendacion = <span class="python-string">"Consulta a un
+                                profesional de la salud para un plan personalizado."</span><br>
+                            <br>
+                            <span class="python-keyword">print</span>(<span class="python-string">f"Categoría:
+                                {categoria}"</span>)<br>
+                            <span class="python-keyword">print</span>(<span class="python-string">f"Recomendación:
+                                {recomendacion}"</span>)<br>
+                            <br>
+                            <span class="python-keyword">print</span>(<span class="python-string">"\n=== RECUERDA
+                                ==="</span>)<br>
+                            <span class="python-keyword">print</span>(<span class="python-string">"El IMC es solo una
+                                referencia. Consulta siempre con un profesional de la salud."</span>)
+            </div>
+
+            <div class="paso-actividad">
+                <h4><i class="fas fa-tasks"></i> Actividad: Mejora el programa</h4>
+                <p>Modifica el programa para que también:</p>
+                <ol>
+                    <li>Pida el nombre del usuario y lo use en los mensajes</li>
+                    <li>Muestre diferentes mensajes según el género (si es hombre o mujer)</li>
+                    <li>Calcule cuántos kg necesita ganar o perder para llegar a un IMC normal</li>
+                </ol>
+            </div>
+
+            <h3><i class="fas fa-gamepad"></i> Juego: Adivina el Número</h3>
+            <p>Un juego simple pero divertido que muestra el poder de estas tres herramientas básicas.</p>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <span>adivina_numero.py</span>
+                    <button class="code-copy" onclick="copiarCodigo(this)">Copiar código</button>
+                </div>
+                <span class="python-keyword">print</span>(<span class="python-string">"=== ADIVINA EL NÚMERO
+                    ==="</span>)<br>
+                <span class="python-keyword">print</span>(<span class="python-string">"Estoy pensando en un número entre
+                    1 y 10"</span>)<br>
+                <br>
+                <span class="python-comment"># Número secreto (podría ser aleatorio, pero por simplicidad usamos
+                    7)</span><br>
+                numero_secreto = 7<br>
+                <br>
+                <span class="python-comment"># Pedir intento al usuario</span><br>
+                intento = <span class="python-keyword">int</span>(<span class="python-keyword">input</span>(<span
+                    class="python-string">"¿Cuál crees que es? "</span>))<br>
+                <br>
+                <span class="python-comment"># Verificar el intento</span><br>
+                <span class="python-keyword">if</span> intento == numero_secreto:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="python-keyword">print</span>(<span
+                    class="python-string">"¡Correcto! ¡Eres un genio!"</span>)<br>
+                <span class="python-keyword">elif</span> intento < numero_secreto:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="python-keyword">print</span>(<span
+                        class="python-string">"Demasiado bajo. El número era"</span>, numero_secreto)<br>
+                    <span class="python-keyword">else</span>:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="python-keyword">print</span>(<span
+                        class="python-string">"Demasiado alto. El número era"</span>, numero_secreto)<br>
+                    <br>
+                    <span class="python-keyword">print</span>(<span class="python-string">"¡Gracias por jugar!"</span>)
+            </div>
+
+            <div class="consejo-docente">
+                <p>Este juego simple tiene toda la esencia de la programación: entrada (input), procesamiento
+                    (comparación con if/elif/else) y salida (print). Es el ciclo fundamental de cualquier programa
+                    interactivo.</p>
+            </div>
+        </section>
+
+        <!-- Desafío interactivo -->
+        <section class="desafio-section">
+            <h2><i class="fas fa-puzzle-piece"></i> Desafío Interactivo: Pon a Prueba tu Comprensión</h2>
+            <p>Responde estas preguntas para verificar que has comprendido los conceptos clave de print, input e if.</p>
+
+            <div class="desafio-container">
+                <div class="desafio-progreso" id="progreso-desafio">Pregunta 1 de 5</div>
+                <div class="desafio-pregunta" id="pregunta-desafio">¿Qué hace la función print() en Python?</div>
+
+                <div class="desafio-opciones" id="opciones-desafio">
+                    <!-- Las opciones se llenarán con JavaScript -->
+                </div>
+
+                <div class="desafio-botones">
+                    <button class="desafio-boton" id="verificar-desafio">
+                        <i class="fas fa-check"></i> Verificar respuesta
+                    </button>
+                    <button class="desafio-boton" id="siguiente-desafio" style="display: none;">
+                        <i class="fas fa-arrow-right"></i> Siguiente pregunta
+                    </button>
+                </div>
+
+                <div class="desafio-resultado" id="resultado-desafio"></div>
+                <div class="desafio-puntaje">Puntaje: <span id="puntaje-desafio">0</span> / 5</div>
+            </div>
+        </section>
+
+        <!-- El reto final -->
+        <section class="section">
+            <h2><i class="fas fa-flag-checkered"></i> Reto Final: Sistema de Login Inteligente</h2>
+            <div class="reto">
+                <h3>Desafío: Crea un Sistema de Acceso Personalizado</h3>
+                <p>Tu misión es desarrollar un programa que simule un sistema de login con diferentes niveles de acceso
+                    según el usuario. El programa debe:</p>
+
+                <ol>
+                    <li>Solicitar al usuario su nombre de usuario y contraseña (puedes definir algunos usuarios y
+                        contraseñas preestablecidos).</li>
+                    <li>Verificar si las credenciales son correctas usando estructuras if/elif/else.</li>
+                    <li>Mostrar un mensaje personalizado según el tipo de usuario:
+                        <ul>
+                            <li>Administrador: Acceso completo a todas las funciones</li>
+                            <li>Estudiante: Acceso a material de estudio y perfil personal</li>
+                            <li>Invitado: Acceso limitado solo a información pública</li>
+                        </ul>
+                    </li>
+                    <li>Si las credenciales son incorrectas, dar hasta 3 intentos antes de bloquear el acceso
+                        temporalmente.</li>
+                    <li>Incluir una opción para recuperar contraseña (pregunta de seguridad).</li>
+                </ol>
+
+                <div class="code-container">
+                    <div class="code-header">
+                        <span>pista_login.py</span>
+                        <button class="code-copy" onclick="copiarCodigo(this)">Copiar código</button>
+                    </div>
+                    <span class="python-comment"># Pista para empezar</span><br>
+                    <span class="python-comment"># Definir usuarios y contraseñas</span><br>
+                    usuario_correcto = <span class="python-string">"admin"</span><br>
+                    clave_correcta = <span class="python-string">"1234"</span><br>
+                    <br>
+                    <span class="python-comment"># Solicitar credenciales</span><br>
+                    usuario = <span class="python-keyword">input</span>(<span class="python-string">"Usuario:
+                        "</span>)<br>
+                    clave = <span class="python-keyword">input</span>(<span class="python-string">"Contraseña:
+                        "</span>)<br>
+                    <br>
+                    <span class="python-comment"># Verificar</span><br>
+                    <span class="python-keyword">if</span> usuario == usuario_correcto <span
+                        class="python-keyword">and</span> clave == clave_correcta:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="python-keyword">print</span>(<span
+                        class="python-string">"Acceso concedido"</span>)<br>
+                    <span class="python-keyword">else</span>:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="python-keyword">print</span>(<span
+                        class="python-string">"Credenciales incorrectas"</span>)
+                </div>
+
+                <div class="consejo-docente">
+                    <p>Reflexión ética: ¿Cómo almacenarías las contraseñas de forma segura en un programa real? En
+                        sistemas reales, las contraseñas nunca se guardan en texto plano. La seguridad digital es una
+                        responsabilidad ética del programador.</p>
+                </div>
+
+                <h4>Características avanzadas (opcional):</h4>
+                <ul>
+                    <li>Agrega un sistema de registro para nuevos usuarios</li>
+                    <li>Implementa un menú de opciones después del login</li>
+                    <li>Crea un sistema de logs que registre los intentos de acceso</li>
+                    <li>Añade validación de fortaleza de contraseña al registrar</li>
+                </ul>
+
+                <p><strong>Entrega:</strong> Presenta tu código funcionando y explica cómo implementaste cada requisito.
+                    También presenta 3 casos de prueba con diferentes entradas y sus resultados esperados.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Taller diseñado con el corazón de un docente y la mente de un programador</p>
+            <p>Con la filosofía de que <em>"La programación no es acerca de escribir código, sino de resolver
+                    problemas"</em></p>
+            <p>Diseñado por: Edwin Méndez Játiva <span class="footer-heart">❤</span></p>
+            <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.7;">"print(), input() e if son las tres palabras
+                mágicas que abren las puertas a la programación interactiva"</p>
+        </div>
+    </footer>
+
+    <script>
+        // Simulador interactivo
+        const ejecutarSimuladorBtn = document.getElementById('ejecutar-simulador');
+        const reiniciarSimuladorBtn = document.getElementById('reiniciar-simulador');
+        const resultadoSimulador = document.getElementById('resultado-simulador');
+        const inputNombre = document.getElementById('input-nombre');
+        const inputEdad = document.getElementById('input-edad');
+
+        ejecutarSimuladorBtn.addEventListener('click', function () {
+            const nombre = inputNombre.value.trim() || "Usuario";
+            const edad = parseInt(inputEdad.value) || 0;
+
+            let output = "=== BIENVENIDO AL SIMULADOR ===\n";
+            output += `\nHola ${nombre}, gracias por usar el simulador.\n\n`;
+
+            if (edad >= 18) {
+                output += "Eres mayor de edad.\n";
+                if (edad >= 65) {
+                    output += "¡Eres parte de la tercera edad!\n";
+                } else {
+                    output += "Eres un adulto joven.\n";
+                }
+            } else {
+                output += "Eres menor de edad.\n";
+                const añosParaVotar = 18 - edad;
+                output += `Te faltan ${añosParaVotar} años para poder votar.\n`;
+            }
+
+            output += "\n=== FIN DEL PROGRAMA ===";
+
+            resultadoSimulador.textContent = output;
+            resultadoSimulador.className = "simulador-resultado";
+
+            // Efecto visual
+            resultadoSimulador.style.animation = 'none';
+            setTimeout(() => {
+                resultadoSimulador.style.animation = 'aparecer 0.5s ease';
+            }, 10);
+        });
+
+        reiniciarSimuladorBtn.addEventListener('click', function () {
+            inputNombre.value = "Ana";
+            inputEdad.value = "16";
+            resultadoSimulador.textContent = "El resultado aparecerá aquí después de ejecutar el programa.";
+            resultadoSimulador.className = "simulador-resultado";
+        });
+
+        // Datos para el desafío interactivo
+        const preguntasDesafio = [
+            {
+                pregunta: "¿Qué hace la función print() en Python?",
+                opciones: [
+                    "Lee datos del teclado",
+                    "Muestra información en la pantalla",
+                    "Toma decisiones en el programa",
+                    "Realiza operaciones matemáticas"
+                ],
+                respuestaCorrecta: 1,
+                explicacion: "print() se usa para mostrar información en la pantalla. Es la función de salida básica en Python."
+            },
+            {
+                pregunta: "¿Qué tipo de dato devuelve siempre input()?",
+                opciones: [
+                    "Entero (int)",
+                    "Decimal (float)",
+                    "Texto (str)",
+                    "Booleano (bool)"
+                ],
+                respuestaCorrecta: 2,
+                explicacion: "input() siempre devuelve un texto (string), incluso si el usuario ingresa números. Por eso debemos convertirlo con int() o float() para usarlo como número."
+            },
+            {
+                pregunta: "¿Cuál es la sintaxis correcta para una estructura if en Python?",
+                opciones: [
+                    "if (edad >= 18) { ... }",
+                    "if edad >= 18 then ...",
+                    "if edad >= 18: ...",
+                    "when edad >= 18: ..."
+                ],
+                respuestaCorrecta: 2,
+                explicacion: "En Python, la sintaxis correcta es 'if condicion:' seguido de código indentado. No se usan paréntesis alrededor de la condición (aunque se permiten) ni llaves {}."
+            },
+            {
+                pregunta: "¿Qué mostrará este código si el usuario ingresa '15'?<br><code>edad = input('Edad: ')<br>print(edad + 1)</code>",
+                opciones: [
+                    "16",
+                    "151",
+                    "Error de tipo",
+                    "15"
+                ],
+                respuestaCorrecta: 2,
+                explicacion: "Mostrará un error porque input() devuelve texto ('15'), y no se puede sumar texto con número (1). La solución sería: edad = int(input('Edad: '))"
+            },
+            {
+                pregunta: "¿Qué hace el operador 'elif' en Python?",
+                opciones: [
+                    "Es una abreviatura de 'else if'",
+                    "Es un error de escritura, debería ser 'elseif'",
+                    "Termina una estructura condicional",
+                    "Es lo mismo que 'else'"
+                ],
+                respuestaCorrecta: 0,
+                explicacion: "'elif' es la abreviatura de 'else if' y se usa para verificar múltiples condiciones después de un 'if' inicial."
+            }
+        ];
+
+        // Variables del desafío
+        let preguntaActualDesafio = 0;
+        let puntajeDesafio = 0;
+        let opcionSeleccionadaDesafio = null;
+
+        // Elementos del DOM del desafío
+        const elementoPreguntaDesafio = document.getElementById('pregunta-desafio');
+        const elementoOpcionesDesafio = document.getElementById('opciones-desafio');
+        const elementoVerificarDesafio = document.getElementById('verificar-desafio');
+        const elementoSiguienteDesafio = document.getElementById('siguiente-desafio');
+        const elementoResultadoDesafio = document.getElementById('resultado-desafio');
+        const elementoPuntajeDesafio = document.getElementById('puntaje-desafio');
+        const elementoProgresoDesafio = document.getElementById('progreso-desafio');
+
+        // Función para copiar código
+        function copiarCodigo(boton) {
+            const codigo = boton.parentElement.parentElement.innerText;
+            const lineas = codigo.split('\n');
+            // Eliminar la primera línea (el nombre del archivo)
+            lineas.shift();
+            const codigoLimpio = lineas.join('\n');
+
+            navigator.clipboard.writeText(codigoLimpio).then(() => {
+                const originalText = boton.textContent;
+                boton.textContent = "¡Copiado!";
+                boton.style.backgroundColor = "#10b981";
+
+                setTimeout(() => {
+                    boton.textContent = originalText;
+                    boton.style.backgroundColor = "";
+                }, 2000);
+            });
+        }
+
+        // Inicializar desafío
+        function cargarPreguntaDesafio() {
+            const pregunta = preguntasDesafio[preguntaActualDesafio];
+            elementoPreguntaDesafio.innerHTML = pregunta.pregunta;
+            elementoProgresoDesafio.textContent = `Pregunta ${preguntaActualDesafio + 1} de ${preguntasDesafio.length}`;
+
+            // Limpiar opciones anteriores
+            elementoOpcionesDesafio.innerHTML = '';
+
+            // Cargar nuevas opciones
+            pregunta.opciones.forEach((opcion, index) => {
+                const botonOpcion = document.createElement('div');
+                botonOpcion.className = 'desafio-opcion';
+                botonOpcion.innerHTML = opcion;
+                botonOpcion.dataset.indice = index;
+
+                botonOpcion.addEventListener('click', function () {
+                    // Remover selección anterior
+                    document.querySelectorAll('.desafio-opcion').forEach(opc => {
+                        opc.classList.remove('seleccionada');
+                    });
+
+                    // Seleccionar esta opción
+                    this.classList.add('seleccionada');
+                    opcionSeleccionadaDesafio = parseInt(this.dataset.indice);
+                });
+
+                elementoOpcionesDesafio.appendChild(botonOpcion);
+            });
+
+            // Reiniciar estado de botones
+            elementoVerificarDesafio.style.display = 'flex';
+            elementoSiguienteDesafio.style.display = 'none';
+            elementoResultadoDesafio.style.display = 'none';
+            elementoResultadoDesafio.className = 'desafio-resultado';
+        }
+
+        // Verificar respuesta del desafío
+        elementoVerificarDesafio.addEventListener('click', function () {
+            if (opcionSeleccionadaDesafio === null) {
+                elementoResultadoDesafio.textContent = 'Por favor, selecciona una opción antes de verificar';
+                elementoResultadoDesafio.className = 'desafio-resultado incorrecto';
+                elementoResultadoDesafio.style.display = 'block';
+                return;
+            }
+
+            const pregunta = preguntasDesafio[preguntaActualDesafio];
+            const opciones = document.querySelectorAll('.desafio-opcion');
+
+            // Mostrar respuestas correctas/incorrectas
+            opciones.forEach((opcion, index) => {
+                if (index === pregunta.respuestaCorrecta) {
+                    opcion.classList.add('correcta');
+                } else if (index === opcionSeleccionadaDesafio && index !== pregunta.respuestaCorrecta) {
+                    opcion.classList.add('incorrecta');
+                }
+            });
+
+            // Verificar si es correcta
+            if (opcionSeleccionadaDesafio === pregunta.respuestaCorrecta) {
+                elementoResultadoDesafio.innerHTML = `¡Correcto! ${pregunta.explicacion}`;
+                elementoResultadoDesafio.className = 'desafio-resultado correcto';
+                puntajeDesafio++;
+                elementoPuntajeDesafio.textContent = puntajeDesafio;
+            } else {
+                elementoResultadoDesafio.innerHTML = `Respuesta incorrecta. ${pregunta.explicacion}`;
+                elementoResultadoDesafio.className = 'desafio-resultado incorrecto';
+            }
+
+            elementoResultadoDesafio.style.display = 'block';
+            elementoVerificarDesafio.style.display = 'none';
+            elementoSiguienteDesafio.style.display = 'flex';
+        });
+
+        // Siguiente pregunta del desafío
+        elementoSiguienteDesafio.addEventListener('click', function () {
+            preguntaActualDesafio++;
+
+            if (preguntaActualDesafio < preguntasDesafio.length) {
+                opcionSeleccionadaDesafio = null;
+                cargarPreguntaDesafio();
+            } else {
+                // Fin del desafío
+                elementoPreguntaDesafio.textContent = '¡Desafío Completado!';
+                elementoOpcionesDesafio.innerHTML = `
+                    <div style="text-align: center; padding: 2rem;">
+                        <h3 style="color: var(--azul-oscuro); margin-bottom: 1rem;">Resultados del Desafío</h3>
+                        <div style="font-size: 4rem; margin: 1.5rem 0; color: ${puntajeDesafio >= 4 ? '#10b981' : puntajeDesafio >= 3 ? '#f59e0b' : '#ef4444'}">
+                            ${puntajeDesafio}/5
+                        </div>
+                        <p style="margin-bottom: 1.5rem; font-size: 1.2rem;">
+                            ${puntajeDesafio === 5 ? '🏆 ¡Perfecto! Dominas completamente print(), input() e if.' :
+                        puntajeDesafio >= 4 ? '🎯 ¡Excelente! Tienes un gran entendimiento de los conceptos.' :
+                            puntajeDesafio >= 3 ? '👍 Buen trabajo, pero hay algunos conceptos por reforzar.' :
+                                '📚 Sigue practicando, revisa los ejemplos y vuelve a intentarlo.'}
+                        </p>
+                        <button class="desafio-boton" onclick="reiniciarDesafio()" style="margin-top: 1rem;">
+                            <i class="fas fa-redo"></i> Reintentar desafío
+                        </button>
+                    </div>
+                `;
+                elementoVerificarDesafio.style.display = 'none';
+                elementoSiguienteDesafio.style.display = 'none';
+                elementoResultadoDesafio.style.display = 'none';
+                elementoProgresoDesafio.style.display = 'none';
+            }
+        });
+
+        // Función para reiniciar el desafío
+        window.reiniciarDesafio = function () {
+            preguntaActualDesafio = 0;
+            puntajeDesafio = 0;
+            elementoPuntajeDesafio.textContent = '0';
+            elementoProgresoDesafio.style.display = 'block';
+            cargarPreguntaDesafio();
+        };
+
+        // Iniciar desafío al cargar la página
+        document.addEventListener('DOMContentLoaded', cargarPreguntaDesafio);
+    </script>
+</body>
+
+</html>
