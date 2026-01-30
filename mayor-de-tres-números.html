@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python para Pensadores - Taller Práctico</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --success-color: #27ae60;
+            --dark-color: #2c3e50;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "{ }";
+            position: absolute;
+            font-size: 20rem;
+            opacity: 0.05;
+            top: -50px;
+            left: -30px;
+            font-weight: bold;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            color: #f1c40f;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        .theme {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 1.5rem;
+            margin: 2rem auto;
+            max-width: 1000px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            box-shadow: var(--shadow);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--secondary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 i {
+            color: var(--secondary-color);
+        }
+
+        .pillar-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .pillar {
+            background-color: var(--light-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-top: 5px solid var(--secondary-color);
+            transition: var(--transition);
+        }
+
+        .pillar:hover {
+            transform: translateY(-3px);
+        }
+
+        .pillar:nth-child(2) {
+            border-top-color: var(--accent-color);
+        }
+
+        .pillar:nth-child(3) {
+            border-top-color: var(--success-color);
+        }
+
+        .pillar:nth-child(4) {
+            border-top-color: #f39c12;
+        }
+
+        .pillar h3 {
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .code-container {
+            background-color: #2d3a4b;
+            color: #f8f8f2;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #4a5568;
+        }
+
+        .code-header h3 {
+            color: #f8f8f2;
+        }
+
+        .copy-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .copy-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .code-container pre {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1rem;
+            line-height: 1.5;
+            white-space: pre;
+            tab-size: 4;
+        }
+
+        .keyword {
+            color: #f92672;
+        }
+
+        .function {
+            color: #66d9ef;
+        }
+
+        .string {
+            color: #e6db74;
+        }
+
+        .comment {
+            color: #75715e;
+        }
+
+        .number {
+            color: #ae81ff;
+        }
+
+        .example {
+            background-color: #e8f4fc;
+            border-left: 4px solid var(--secondary-color);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .example h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .interactive-area {
+            background-color: #f5f7fa;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .input-group {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .input-container label {
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .input-container input {
+            width: 100px;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .input-container input:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+        }
+
+        .btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            margin: 0.5rem;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+        }
+
+        .btn-accent:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+        }
+
+        .btn-success:hover {
+            background-color: #219653;
+        }
+
+        .result-container {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            text-align: left;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--success-color);
+            display: none;
+        }
+
+        .result-container.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .step {
+            display: flex;
+            margin-bottom: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            background-color: var(--secondary-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .note {
+            background-color: #fff9e6;
+            border-left: 4px solid #f1c40f;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .note h4 {
+            color: #d35400;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .pillar-container {
+                grid-template-columns: 1fr;
+            }
+
+            .input-group {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo-container">
+            <i class="fas fa-code logo-icon"></i>
+            <h1>Python para pensadores</h1>
+        </div>
+        <p class="tagline">Taller diseñado con el corazón de un docente y la mente de un programador.</p>
+    </header>
+
+    <div class="theme">
+        Reto: Ingresar 3 números enteros y determinar en qué variable está el mayor valor
+    </div>
+
+    <div class="container">
+        <!-- Introducción -->
+        <section class="section">
+            <h2><i class="fas fa-info-circle"></i> Introducción al Problema</h2>
+            <p>En este taller aprenderás a resolver un problema común en programación: <strong>encontrar cuál de tres
+                    números es el mayor</strong>. Este ejercicio te ayudará a desarrollar tu pensamiento lógico y a
+                comprender conceptos fundamentales de programación como variables, comparaciones y estructuras de
+                control.</p>
+
+            <div class="note">
+                <h4><i class="fas fa-lightbulb"></i> ¿Por qué es importante?</h4>
+                <p>Encontrar el valor mayor entre varios números es una operación básica en programación que tiene
+                    aplicaciones en muchos campos: desde calcular la nota más alta en un curso hasta determinar el
+                    producto más vendido en una tienda.</p>
+            </div>
+        </section>
+
+        <!-- Pilares del Pensamiento Computacional -->
+        <section class="section">
+            <h2><i class="fas fa-cogs"></i> Análisis del Problema: Los 4 Pilares</h2>
+            <p>El pensamiento computacional nos ayuda a resolver problemas de manera sistemática. Aplicaremos sus 4
+                pilares para analizar nuestro problema:</p>
+
+            <div class="pillar-container">
+                <div class="pillar">
+                    <h3><i class="fas fa-search"></i> 1. Descomposición</h3>
+                    <p>Dividimos el problema en partes más pequeñas y manejables:</p>
+                    <ul>
+                        <li>Solicitar tres números al usuario</li>
+                        <li>Comparar los números entre sí</li>
+                        <li>Determinar cuál es el mayor</li>
+                        <li>Mostrar el resultado al usuario</li>
+                    </ul>
+                </div>
+
+                <div class="pillar">
+                    <h3><i class="fas fa-random"></i> 2. Reconocimiento de Patrones</h3>
+                    <p>Identificamos similitudes con problemas conocidos:</p>
+                    <ul>
+                        <li>Comparar dos números para encontrar el mayor</li>
+                        <li>Extender la comparación a tres números</li>
+                        <li>Usar estructuras condicionales (if, elif, else)</li>
+                    </ul>
+                </div>
+
+                <div class="pillar">
+                    <h3><i class="fas fa-filter"></i> 3. Abstracción</h3>
+                    <p>Enfocamos en lo esencial, ignorando detalles innecesarios:</p>
+                    <ul>
+                        <li>No importa qué tipo de números sean (edad, precio, etc.)</li>
+                        <li>No necesitamos almacenar todos los resultados intermedios</li>
+                        <li>El proceso es el mismo sin importar los valores específicos</li>
+                    </ul>
+                </div>
+
+                <div class="pillar">
+                    <h3><i class="fas fa-project-diagram"></i> 4. Algoritmos</h3>
+                    <p>Diseñamos pasos específicos para la solución:</p>
+                    <ol>
+                        <li>Obtener los tres números</li>
+                        <li>Comparar el primero con el segundo</li>
+                        <li>Comparar el resultado con el tercero</li>
+                        <li>Mostrar el número mayor</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Solución en Python -->
+        <section class="section">
+            <h2><i class="fab fa-python"></i> Solución en Python</h2>
+            <p>A continuación te presento la solución completa al problema, respetando los requisitos de trabajar en
+                modo consola y sin utilizar funciones.</p>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <h3>Código completo: encontrar_mayor.py</h3>
+                    <button class="copy-btn" id="copyCodeBtn">
+                        <i class="far fa-copy"></i> Copiar código
+                    </button>
+                </div>
+                <pre id="pythonCode"><span class="comment"># Programa para encontrar el mayor de tres números
+# Taller para estudiantes de bachillerato
+# Python para pensadores</span>
+
+<span class="comment"># PASO 1: Solicitar los tres números al usuario</span>
+<span class="comment"># Usamos input() para recibir datos del usuario y int() para convertirlos a números enteros</span>
+print(<span class="string">"=== ENCONTRAR EL NÚMERO MAYOR ==="</span>)
+print(<span class="string">"Ingresa tres números enteros para comparar:"</span>)
+
+<span class="comment"># Solicitamos el primer número</span>
+numero1 = int(input(<span class="string">"Primer número: "</span>))
+
+<span class="comment"># Solicitamos el segundo número</span>
+numero2 = int(input(<span class="string">"Segundo número: "</span>))
+
+<span class="comment"># Solicitamos el tercer número</span>
+numero3 = int(input(<span class="string">"Tercer número: "</span>))
+
+<span class="comment"># PASO 2: Comparar los números para encontrar el mayor
+# Usamos estructuras condicionales (if, elif, else) para comparar</span>
+
+<span class="comment"># Primero comparamos numero1 con numero2</span>
+<span class="keyword">if</span> numero1 > numero2:
+    <span class="comment"># Si numero1 es mayor que numero2, ahora comparamos con numero3</span>
+    <span class="keyword">if</span> numero1 > numero3:
+        <span class="comment"># Si numero1 también es mayor que numero3, entonces numero1 es el mayor</span>
+        mayor = numero1
+        nombre_variable = <span class="string">"numero1"</span>
+    <span class="keyword">else</span>:
+        <span class="comment"># Si numero1 no es mayor que numero3, entonces numero3 es el mayor</span>
+        mayor = numero3
+        nombre_variable = <span class="string">"numero3"</span>
+<span class="keyword">else</span>:
+    <span class="comment"># Si numero1 NO es mayor que numero2, entonces numero2 podría ser el mayor</span>
+    <span class="keyword">if</span> numero2 > numero3:
+        <span class="comment"># Si numero2 es mayor que numero3, entonces numero2 es el mayor</span>
+        mayor = numero2
+        nombre_variable = <span class="string">"numero2"</span>
+    <span class="keyword">else</span>:
+        <span class="comment"># Si numero2 NO es mayor que numero3, entonces numero3 es el mayor</span>
+        mayor = numero3
+        nombre_variable = <span class="string">"numero3"</span>
+
+<span class="comment"># PASO 3: Mostrar el resultado al usuario</span>
+print(<span class="string">"\n"</span> + <span class="string">"="</span>*40)
+print(<span class="string">"RESULTADO:"</span>)
+print(<span class="string">f"Los números ingresados fueron: {numero1}, {numero2}, {numero3}"</span>)
+print(<span class="string">f"El número mayor es: {mayor}"</span>)
+print(<span class="string">f"Este valor está almacenado en la variable: {nombre_variable}"</span>)
+print(<span class="string">"="</span>*40)
+
+<span class="comment"># PASO 4: Mensaje final</span>
+print(<span class="string">"\n¡Gracias por usar el programa!"</span>)
+print(<span class="string">"Recuerda: la programación se aprende practicando."</span>)</pre>
+            </div>
+
+            <div class="example">
+                <h4><i class="fas fa-play-circle"></i> Ejemplo de ejecución:</h4>
+                <p>Si el usuario ingresa los números 15, 8 y 22, el programa mostrará:</p>
+                <div class="code-container" style="background-color: #1e1e1e; margin-top: 0.5rem;">
+                    <pre style="color: #d4d4d4;">=== ENCONTRAR EL NÚMERO MAYOR ===
+Ingresa tres números enteros para comparar:
+Primer número: 15
+Segundo número: 8
+Tercer número: 22
+
+========================================
+RESULTADO:
+Los números ingresados fueron: 15, 8, 22
+El número mayor es: 22
+Este valor está almacenado en la variable: numero3
+========================================
+
+¡Gracias por usar el programa!
+Recuerda: la programación se aprende practicando.</pre>
+                </div>
+            </div>
+
+            <div class="note">
+                <h4><i class="fas fa-exclamation-circle"></i> Puntos clave a recordar:</h4>
+                <ul>
+                    <li><strong>input()</strong> siempre devuelve texto, por eso usamos <strong>int()</strong> para
+                        convertirlo a número entero.</li>
+                    <li>Las estructuras <strong>if</strong> nos permiten tomar decisiones en el programa.</li>
+                    <li>Podemos anidar condiciones (un <strong>if</strong> dentro de otro <strong>if</strong>) para
+                        comparaciones múltiples.</li>
+                    <li>La variable <strong>nombre_variable</strong> nos ayuda a recordar en qué variable estaba
+                        almacenado el mayor valor.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Práctica Interactiva -->
+        <section class="section">
+            <h2><i class="fas fa-hands-helping"></i> Practica con Ejemplos</h2>
+            <p>Ingresa tres números enteros y simula cómo funcionaría el programa:</p>
+
+            <div class="interactive-area">
+                <div class="input-group">
+                    <div class="input-container">
+                        <label for="num1">Primer número (numero1):</label>
+                        <input type="number" id="num1" value="10">
+                    </div>
+
+                    <div class="input-container">
+                        <label for="num2">Segundo número (numero2):</label>
+                        <input type="number" id="num2" value="25">
+                    </div>
+
+                    <div class="input-container">
+                        <label for="num3">Tercer número (numero3):</label>
+                        <input type="number" id="num3" value="15">
+                    </div>
+                </div>
+
+                <button class="btn btn-accent" id="simulateBtn">
+                    <i class="fas fa-play"></i> Simular Ejecución
+                </button>
+
+                <button class="btn btn-success" id="randomBtn">
+                    <i class="fas fa-random"></i> Generar Números Aleatorios
+                </button>
+
+                <button class="btn" id="clearBtn">
+                    <i class="fas fa-broom"></i> Limpiar
+                </button>
+
+                <div class="result-container" id="resultContainer">
+                    <h3>Resultado de la simulación:</h3>
+                    <div id="simulationResult"></div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">1</div>
+                <div>
+                    <h4>Explicación paso a paso:</h4>
+                    <p>El programa primero solicita tres números al usuario usando <code>input()</code> y los convierte
+                        a enteros con <code>int()</code>.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div>
+                    <h4>Comparaciones anidadas:</h4>
+                    <p>Usamos condiciones anidadas para comparar los tres números. Primero comparamos
+                        <code>numero1</code> con <code>numero2</code>, y luego el resultado con <code>numero3</code>.
+                    </p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div>
+                    <h4>Mostrar el resultado:</h4>
+                    <p>Finalmente, mostramos cuál es el número mayor y en qué variable estaba almacenado, usando la
+                        variable <code>nombre_variable</code> para recordarlo.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        Diseñado por: Edwin Méndez J.
+    </footer>
+
+    <script>
+        // Copiar código al portapapeles
+        document.getElementById('copyCodeBtn').addEventListener('click', function () {
+            const codeText = document.getElementById('pythonCode').textContent;
+            navigator.clipboard.writeText(codeText).then(() => {
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-check"></i> ¡Copiado!';
+                this.style.backgroundColor = '#27ae60';
+
+                setTimeout(() => {
+                    this.innerHTML = originalText;
+                    this.style.backgroundColor = '';
+                }, 2000);
+            });
+        });
+
+        // Simular ejecución del programa
+        document.getElementById('simulateBtn').addEventListener('click', function () {
+            const num1 = parseInt(document.getElementById('num1').value) || 0;
+            const num2 = parseInt(document.getElementById('num2').value) || 0;
+            const num3 = parseInt(document.getElementById('num3').value) || 0;
+
+            let mayor, nombre_variable;
+
+            // Lógica del programa (igual que en Python)
+            if (num1 > num2) {
+                if (num1 > num3) {
+                    mayor = num1;
+                    nombre_variable = "numero1";
+                } else {
+                    mayor = num3;
+                    nombre_variable = "numero3";
+                }
+            } else {
+                if (num2 > num3) {
+                    mayor = num2;
+                    nombre_variable = "numero2";
+                } else {
+                    mayor = num3;
+                    nombre_variable = "numero3";
+                }
+            }
+
+            // Mostrar resultado
+            const resultContainer = document.getElementById('resultContainer');
+            const simulationResult = document.getElementById('simulationResult');
+
+            simulationResult.innerHTML = `
+                <p><strong>=== ENCONTRAR EL NÚMERO MAYOR ===</strong></p>
+                <p>Los números ingresados fueron: ${num1}, ${num2}, ${num3}</p>
+                <p><strong>El número mayor es: ${mayor}</strong></p>
+                <p>Este valor está almacenado en la variable: <strong>${nombre_variable}</strong></p>
+                <p>========================================</p>
+                <p><em>¡Gracias por usar el programa!</em></p>
+                <p><em>Recuerda: la programación se aprende practicando.</em></p>
+            `;
+
+            resultContainer.classList.add('show');
+
+            // Desplazarse al resultado
+            resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+
+        // Generar números aleatorios
+        document.getElementById('randomBtn').addEventListener('click', function () {
+            // Generar números aleatorios entre 1 y 100
+            const num1 = Math.floor(Math.random() * 100) + 1;
+            const num2 = Math.floor(Math.random() * 100) + 1;
+            const num3 = Math.floor(Math.random() * 100) + 1;
+
+            document.getElementById('num1').value = num1;
+            document.getElementById('num2').value = num2;
+            document.getElementById('num3').value = num3;
+
+            // Ocultar resultado anterior
+            document.getElementById('resultContainer').classList.remove('show');
+        });
+
+        // Limpiar campos
+        document.getElementById('clearBtn').addEventListener('click', function () {
+            document.getElementById('num1').value = '';
+            document.getElementById('num2').value = '';
+            document.getElementById('num3').value = '';
+            document.getElementById('resultContainer').classList.remove('show');
+        });
+
+        // Resaltar sintaxis de código (simulado con clases CSS)
+        // El resaltado ya está implementado en el CSS con clases específicas
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python para Pensadores - Cálculo del Área de un Rectángulo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Slab:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #2ecc71;
+            --text-color: #333;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border-bottom: 5px solid var(--accent-color);
+        }
+
+        .header-content h1 {
+            font-family: 'Roboto Slab', serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-content .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        .theme-container {
+            background-color: white;
+            padding: 1.5rem;
+            margin: 2rem auto;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            max-width: 900px;
+            border-left: 5px solid var(--secondary-color);
+        }
+
+        .theme-container h2 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+        }
+
+        .theme-container p {
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h3 i {
+            color: var(--secondary-color);
+        }
+
+        .pillar-card {
+            border-top: 4px solid var(--secondary-color);
+        }
+
+        .pillar-card:nth-child(2) {
+            border-top-color: var(--success-color);
+        }
+
+        .pillar-card:nth-child(3) {
+            border-top-color: #f39c12;
+        }
+
+        .pillar-card:nth-child(4) {
+            border-top-color: #9b59b6;
+        }
+
+        .code-section {
+            margin: 2rem 0;
+        }
+
+        .code-container {
+            background-color: #2d2d2d;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-top: 1rem;
+        }
+
+        .code-header {
+            background-color: #1e1e1e;
+            color: #ccc;
+            padding: 0.8rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .code-header h4 {
+            font-weight: 500;
+        }
+
+        .copy-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+
+        .copy-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .code-content {
+            padding: 1.5rem;
+            overflow-x: auto;
+        }
+
+        pre {
+            color: #f8f8f2;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .code-comment {
+            color: #888;
+        }
+
+        .code-keyword {
+            color: #f92672;
+        }
+
+        .code-function {
+            color: #66d9ef;
+        }
+
+        .code-string {
+            color: #e6db74;
+        }
+
+        .code-number {
+            color: #ae81ff;
+        }
+
+        .interactive-section {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin: 2rem 0;
+        }
+
+        .interactive-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+        }
+
+        .btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-calculate {
+            background-color: var(--success-color);
+        }
+
+        .btn-calculate:hover {
+            background-color: #27ae60;
+        }
+
+        .result-box {
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border-left: 4px solid var(--success-color);
+            display: none;
+        }
+
+        .result-box.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .result-value {
+            font-size: 1.2rem;
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        .visualization {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+        }
+
+        .rectangle {
+            position: relative;
+            border: 3px solid var(--secondary-color);
+            background-color: rgba(52, 152, 219, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dimension {
+            position: absolute;
+            color: var(--primary-color);
+            font-weight: 600;
+            background-color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .dimension.base {
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .dimension.height {
+            right: -40px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .area-label {
+            font-weight: 600;
+            color: var(--accent-color);
+            text-align: center;
+        }
+
+        .learning-tips {
+            background-color: #e8f4fc;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .learning-tips h4 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .learning-tips ul {
+            padding-left: 1.5rem;
+        }
+
+        .learning-tips li {
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-content p {
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .footer-content .signature {
+            font-weight: 600;
+            color: var(--light-color);
+            margin-top: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin: 0.5rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1><i class="fas fa-laptop-code"></i> Python para pensadores</h1>
+                <p class="subtitle">Taller diseñado con el corazón de un docente y la mente de un programador.</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="theme-container">
+            <h2><i class="fas fa-ruler-combined"></i> Reto: Cálculo del área de un rectángulo</h2>
+            <p>Aprenderemos a aplicar el pensamiento computacional para resolver un problema matemático: calcular el
+                área de un rectángulo. Desarrollaremos una aplicación en Python paso a paso, entendiendo cada parte del
+                proceso.</p>
+        </div>
+
+        <section class="content-grid">
+            <div class="card pillar-card">
+                <h3><i class="fas fa-search"></i> 1. Descomposición</h3>
+                <p>Dividimos el problema en partes más pequeñas y manejables:</p>
+                <ul>
+                    <li>Solicitar al usuario la base del rectángulo</li>
+                    <li>Solicitar al usuario la altura del rectángulo</li>
+                    <li>Calcular el área multiplicando base por altura</li>
+                    <li>Mostrar el resultado al usuario</li>
+                </ul>
+            </div>
+
+            <div class="card pillar-card">
+                <h3><i class="fas fa-puzzle-piece"></i> 2. Reconocimiento de patrones</h3>
+                <p>Identificamos elementos comunes y estructuras repetitivas:</p>
+                <ul>
+                    <li>La fórmula del área (base × altura) es un patrón matemático conocido</li>
+                    <li>La entrada de datos por parte del usuario sigue un patrón común en programación</li>
+                    <li>La conversión de texto a número es un patrón frecuente</li>
+                </ul>
+            </div>
+
+            <div class="card pillar-card">
+                <h3><i class="fas fa-filter"></i> 3. Abstracción</h3>
+                <p>Identificamos lo esencial y eliminamos detalles innecesarios:</p>
+                <ul>
+                    <li>Nos enfocamos en la fórmula esencial: área = base × altura</li>
+                    <li>No necesitamos detalles sobre el tipo de rectángulo o sus unidades</li>
+                    <li>La implementación abstracta funciona para cualquier rectángulo</li>
+                </ul>
+            </div>
+
+            <div class="card pillar-card">
+                <h3><i class="fas fa-code"></i> 4. Algoritmos</h3>
+                <p>Diseñamos pasos específicos y ordenados para resolver el problema:</p>
+                <ol>
+                    <li>Mostrar un mensaje de bienvenida</li>
+                    <li>Pedir la base del rectángulo</li>
+                    <li>Pedir la altura del rectángulo</li>
+                    <li>Calcular el área</li>
+                    <li>Mostrar el resultado</li>
+                </ol>
+            </div>
+        </section>
+
+        <section class="code-section">
+            <h3><i class="fas fa-file-code"></i> Código Python completo</h3>
+            <p>A continuación, el código completo de la aplicación que calcula el área de un rectángulo:</p>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <h4><i class="fas fa-terminal"></i> area_rectangulo.py</h4>
+                    <button class="copy-btn" id="copy-btn"><i class="far fa-copy"></i> Copiar código</button>
+                </div>
+                <div class="code-content">
+                    <pre><code><span class="code-comment"># =============================================</span>
+<span class="code-comment"># APLICACIÓN PARA CALCULAR EL ÁREA DE UN RECTÁNGULO</span>
+<span class="code-comment"># Taller: Python para pensadores</span>
+<span class="code-comment"># Autor: Edwin Méndez J.</span>
+<span class="code-comment"># =============================================</span>
+
+<span class="code-comment"># 1. MOSTRAR MENSAJE DE BIENVENIDA</span>
+<span class="code-comment"># Explicación: Presentamos el programa al usuario</span>
+print(<span class="code-string">"======================================"</span>)
+print(<span class="code-string">"  CALCULADORA DEL ÁREA DE UN RECTÁNGULO"</span>)
+print(<span class="code-string">"======================================"</span>)
+print(<span class="code-string">""</span>)
+print(<span class="code-string">"Este programa calcula el área de un rectángulo"</span>)
+print(<span class="code-string">"utilizando la fórmula: área = base × altura"</span>)
+print(<span class="code-string">""</span>)
+
+<span class="code-comment"># 2. SOLICITAR LA BASE DEL RECTÁNGULO</span>
+<span class="code-comment"># Explicación: Pedimos al usuario que ingrese la base</span>
+<span class="code-comment"># La función input() captura texto desde el teclado</span>
+print(<span class="code-string">"Por favor, ingresa la base del rectángulo:"</span>)
+
+<span class="code-comment"># Leemos lo que el usuario escribe y lo guardamos en una variable</span>
+<span class="code-comment"># La variable 'base_str' almacena el valor como texto (string)</span>
+base_str = input(<span class="code-string">">>> "</span>)
+
+<span class="code-comment"># 3. CONVERTIR LA BASE A NÚMERO DECIMAL</span>
+<span class="code-comment"># Explicación: Convertimos el texto a número para poder hacer cálculos</span>
+<span class="code-comment"># La función float() convierte texto a número decimal</span>
+base = float(base_str)
+
+<span class="code-comment"># 4. SOLICITAR LA ALTURA DEL RECTÁNGULO</span>
+<span class="code-comment"># Explicación: Pedimos al usuario que ingrese la altura</span>
+print(<span class="code-string">""</span>)
+print(<span class="code-string">"Ahora, ingresa la altura del rectángulo:"</span>)
+
+<span class="code-comment"># Leemos la altura y la guardamos como texto</span>
+altura_str = input(<span class="code-string">">>> "</span>)
+
+<span class="code-comment"># 5. CONVERTIR LA ALTURA A NÚMERO DECIMAL</span>
+<span class="code-comment"># Explicación: Convertimos el texto a número decimal</span>
+altura = float(altura_str)
+
+<span class="code-comment"># 6. CALCULAR EL ÁREA DEL RECTÁNGULO</span>
+<span class="code-comment"># Explicación: Aplicamos la fórmula matemática</span>
+<span class="code-comment"># Multiplicamos la base por la altura</span>
+area = base * altura
+
+<span class="code-comment"># 7. MOSTRAR EL RESULTADO</span>
+<span class="code-comment"># Explicación: Presentamos el cálculo de forma clara</span>
+print(<span class="code-string">""</span>)
+print(<span class="code-string">"======================================"</span>)
+print(<span class="code-string">"            RESULTADO"</span>)
+print(<span class="code-string">"======================================"</span>)
+print(<span class="code-string">""</span>)
+
+<span class="code-comment"># Mostramos los valores ingresados por el usuario</span>
+print(<span class="code-string">"Base del rectángulo:   "</span>, base, <span class="code-string">" unidades"</span>)
+print(<span class="code-string">"Altura del rectángulo: "</span>, altura, <span class="code-string">" unidades"</span>)
+print(<span class="code-string">""</span>)
+
+<span class="code-comment"># Mostramos el área calculada</span>
+print(<span class="code-string">"Área = base × altura"</span>)
+print(<span class="code-string">"Área ="</span>, base, <span class="code-string">"×"</span>, altura)
+print(<span class="code-string">"Área ="</span>, area, <span class="code-string">" unidades cuadradas"</span>)
+print(<span class="code-string">""</span>)
+print(<span class="code-string">"======================================"</span>)
+print(<span class="code-string">"¡Gracias por usar la calculadora!"</span>)
+print(<span class="code-string">"======================================"</span>)</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="interactive-section">
+            <h3><i class="fas fa-calculator"></i> Calculadora interactiva</h3>
+            <p>Prueba el cálculo del área de un rectángulo con tus propios valores:</p>
+
+            <div class="input-group">
+                <label for="base"><i class="fas fa-arrows-alt-h"></i> Base del rectángulo (unidades):</label>
+                <input type="number" id="base" min="0" step="0.1" placeholder="Ej: 5.5" value="8">
+            </div>
+
+            <div class="input-group">
+                <label for="height"><i class="fas fa-arrows-alt-v"></i> Altura del rectángulo (unidades):</label>
+                <input type="number" id="height" min="0" step="0.1" placeholder="Ej: 3.2" value="6">
+            </div>
+
+            <button class="btn btn-calculate" id="calculate-btn">
+                <i class="fas fa-calculator"></i> Calcular área
+            </button>
+
+            <div class="result-box" id="result-box">
+                <div class="result-title">Resultado del cálculo:</div>
+                <div class="result-value" id="result-value"></div>
+                <p>El área se calcula como: <strong>base × altura</strong></p>
+            </div>
+
+            <div class="visualization">
+                <div id="rectangle-visualization"></div>
+            </div>
+        </section>
+
+        <section class="learning-tips">
+            <h4><i class="fas fa-lightbulb"></i> Consejos para el aprendizaje</h4>
+            <ul>
+                <li><strong>Prueba con diferentes valores:</strong> Ejecuta el programa varias veces con distintas bases
+                    y alturas.</li>
+                <li><strong>Modifica el código:</strong> Intenta cambiar los mensajes o agregar nuevas funcionalidades.
+                </li>
+                <li><strong>Analiza cada línea:</strong> Asegúrate de entender qué hace cada instrucción del programa.
+                </li>
+                <li><strong>Identifica las variables:</strong> Reconoce dónde se almacenan los datos en el programa.
+                </li>
+                <li><strong>Practica con otros problemas:</strong> Intenta crear un programa similar para calcular el
+                    área de un triángulo.</li>
+            </ul>
+        </section>
+
+        <div class="code-section">
+            <h3><i class="fas fa-play-circle"></i> Cómo ejecutar el programa</h3>
+            <div class="card">
+                <p>Sigue estos pasos para ejecutar el código en tu computadora:</p>
+                <ol>
+                    <li>Abre un editor de texto (como Notepad, VS Code o PyCharm)</li>
+                    <li>Copia y pega el código Python mostrado arriba</li>
+                    <li>Guarda el archivo con el nombre <strong>area_rectangulo.py</strong></li>
+                    <li>Abre la terminal o consola de comandos</li>
+                    <li>Navega hasta la carpeta donde guardaste el archivo</li>
+                    <li>Ejecuta el comando: <code>python area_rectangulo.py</code></li>
+                    <li>Sigue las instrucciones que aparecen en pantalla</li>
+                </ol>
+                <div class="badge"><i class="fas fa-exclamation-circle"></i> Importante: Asegúrate de tener Python
+                    instalado en tu computadora</div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p><i class="fas fa-graduation-cap"></i> Taller diseñado para estudiantes de bachillerato ecuatorianos
+                </p>
+                <p><i class="fas fa-heart"></i> Enfocado en el aprendizaje basado en competencias</p>
+                <p class="signature">Diseñado por: Edwin Méndez J.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Elementos del DOM
+        const copyBtn = document.getElementById('copy-btn');
+        const calculateBtn = document.getElementById('calculate-btn');
+        const baseInput = document.getElementById('base');
+        const heightInput = document.getElementById('height');
+        const resultBox = document.getElementById('result-box');
+        const resultValue = document.getElementById('result-value');
+        const rectangleVisualization = document.getElementById('rectangle-visualization');
+
+        // Código Python para copiar
+        const pythonCode = `# =============================================
+# APLICACIÓN PARA CALCULAR EL ÁREA DE UN RECTÁNGULO
+# Taller: Python para pensadores
+# Autor: Edwin Méndez J.
+# =============================================
+
+# 1. MOSTRAR MENSAJE DE BIENVENIDA
+# Explicación: Presentamos el programa al usuario
+print("======================================")
+print("  CALCULADORA DEL ÁREA DE UN RECTÁNGULO")
+print("======================================")
+print("")
+print("Este programa calcula el área de un rectángulo")
+print("utilizando la fórmula: área = base × altura")
+print("")
+
+# 2. SOLICITAR LA BASE DEL RECTÁNGULO
+# Explicación: Pedimos al usuario que ingrese la base
+# La función input() captura texto desde el teclado
+print("Por favor, ingresa la base del rectángulo:")
+
+# Leemos lo que el usuario escribe y lo guardamos en una variable
+# La variable 'base_str' almacena el valor como texto (string)
+base_str = input(">>> ")
+
+# 3. CONVERTIR LA BASE A NÚMERO DECIMAL
+# Explicación: Convertimos el texto a número para poder hacer cálculos
+# La función float() convierte texto a número decimal
+base = float(base_str)
+
+# 4. SOLICITAR LA ALTURA DEL RECTÁNGULO
+# Explicación: Pedimos al usuario que ingrese la altura
+print("")
+print("Ahora, ingresa la altura del rectángulo:")
+
+# Leemos la altura y la guardamos como texto
+altura_str = input(">>> ")
+
+# 5. CONVERTIR LA ALTURA A NÚMERO DECIMAL
+# Explicación: Convertimos el texto a número decimal
+altura = float(altura_str)
+
+# 6. CALCULAR EL ÁREA DEL RECTÁNGULO
+# Explicación: Aplicamos la fórmula matemática
+# Multiplicamos la base por la altura
+area = base * altura
+
+# 7. MOSTRAR EL RESULTADO
+# Explicación: Presentamos el cálculo de forma clara
+print("")
+print("======================================")
+print("            RESULTADO")
+print("======================================")
+print("")
+
+# Mostramos los valores ingresados por el usuario
+print("Base del rectángulo:   ", base, " unidades")
+print("Altura del rectángulo: ", altura, " unidades")
+print("")
+
+# Mostramos el área calculada
+print("Área = base × altura")
+print("Área =", base, "×", altura)
+print("Área =", area, " unidades cuadradas")
+print("")
+print("======================================")
+print("¡Gracias por usar la calculadora!")
+print("======================================")`;
+
+        // Función para copiar el código Python
+        copyBtn.addEventListener('click', function () {
+            navigator.clipboard.writeText(pythonCode).then(() => {
+                // Cambiar texto del botón temporalmente
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<i class="fas fa-check"></i> ¡Copiado!';
+                copyBtn.style.backgroundColor = '#2ecc71';
+
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalText;
+                    copyBtn.style.backgroundColor = '';
+                }, 2000);
+            }).catch(err => {
+                console.error('Error al copiar: ', err);
+                alert('No se pudo copiar el código. Por favor, selecciónalo manualmente.');
+            });
+        });
+
+        // Función para calcular el área
+        function calculateArea() {
+            const base = parseFloat(baseInput.value);
+            const height = parseFloat(heightInput.value);
+
+            if (isNaN(base) || isNaN(height) || base <= 0 || height <= 0) {
+                alert("Por favor, ingresa valores válidos mayores que cero.");
+                return;
+            }
+
+            const area = base * height;
+
+            // Mostrar resultado
+            resultValue.textContent = `${area.toFixed(2)} unidades cuadradas`;
+            resultBox.classList.add('active');
+
+            // Actualizar visualización
+            updateRectangleVisualization(base, height, area);
+        }
+
+        // Función para actualizar la visualización del rectángulo
+        function updateRectangleVisualization(base, height, area) {
+            // Limitar dimensiones para que se vean bien en pantalla
+            const maxSize = 200;
+            const scale = Math.min(maxSize / Math.max(base, height), 30);
+
+            const rectWidth = base * scale;
+            const rectHeight = height * scale;
+
+            rectangleVisualization.innerHTML = `
+                <div class="rectangle" style="width: ${rectWidth}px; height: ${rectHeight}px;">
+                    <div class="dimension base">Base = ${base.toFixed(1)}</div>
+                    <div class="dimension height">Altura = ${height.toFixed(1)}</div>
+                    <div class="area-label">Área = ${area.toFixed(2)}</div>
+                </div>
+            `;
+        }
+
+        // Inicializar la visualización con valores por defecto
+        updateRectangleVisualization(8, 6, 48);
+
+        // Asignar evento al botón de calcular
+        calculateBtn.addEventListener('click', calculateArea);
+
+        // Permitir calcular con Enter en cualquier campo
+        baseInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') calculateArea();
+        });
+
+        heightInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') calculateArea();
+        });
+
+        // Calcular automáticamente cuando cambian los valores
+        baseInput.addEventListener('input', function () {
+            const base = parseFloat(baseInput.value);
+            const height = parseFloat(heightInput.value);
+
+            if (!isNaN(base) && !isNaN(height) && base > 0 && height > 0) {
+                calculateArea();
+            }
+        });
+
+        heightInput.addEventListener('input', function () {
+            const base = parseFloat(baseInput.value);
+            const height = parseFloat(heightInput.value);
+
+            if (!isNaN(base) && !isNaN(height) && base > 0 && height > 0) {
+                calculateArea();
+            }
+        });
+    </script>
+</body>
+
+</html>
