@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python para Pensadores - Login Sencillo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #1a252f;
+            --success: #27ae60;
+            --warning: #f39c12;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            border-bottom: 5px solid var(--accent);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            margin-right: 15px;
+            color: var(--accent);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Main content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-title {
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-title i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+        
+        .pillar-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .pillar {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .pillar h4 {
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        
+        /* Code section */
+        .code-container {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            overflow-x: auto;
+            margin-top: 15px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #252526;
+            padding: 10px 15px;
+            border-radius: 8px 8px 0 0;
+            color: #cccccc;
+        }
+        
+        .code-body {
+            padding: 15px 0;
+            font-size: 0.95rem;
+        }
+        
+        .code-keyword {
+            color: #569cd6;
+        }
+        
+        .code-string {
+            color: #ce9178;
+        }
+        
+        .code-comment {
+            color: #6a9955;
+        }
+        
+        .code-function {
+            color: #dcdcaa;
+        }
+        
+        .code-operator {
+            color: #d4d4d4;
+        }
+        
+        /* Explanation section */
+        .explanation {
+            background-color: #e8f4fc;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .step {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: flex-start;
+        }
+        
+        .step-number {
+            background-color: var(--secondary);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        /* Interactive section */
+        .interactive-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        
+        .simulator {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            background-color: #f9f9f9;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        button {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .output {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 40px;
+        }
+        
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .footer-content p {
+            margin-bottom: 10px;
+        }
+        
+        .heart {
+            color: var(--accent);
+        }
+        
+        .teacher-badge {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .pillar-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo-container">
+                <i class="fas fa-code logo-icon"></i>
+                <h1>Python para pensadores</h1>
+            </div>
+            <p class="subtitle">Taller diseñado con el corazón de un docente y la mente de un programador.</p>
+            <h2>Reto "login sencillo"</h2>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Introducción -->
+        <div class="card">
+            <h3 class="card-title"><i class="fas fa-info-circle"></i> Introducción al problema</h3>
+            <p>En este taller aprenderás a crear un programa en Python que simule un sistema de inicio de sesión (login). Este es un problema común en programación que te ayudará a entender conceptos fundamentales como:</p>
+            <ul style="margin: 15px 0 15px 20px;">
+                <li>Entrada y salida de datos</li>
+                <li>Variables y asignación</li>
+                <li>Condicionales (if-else)</li>
+                <li>Operadores de comparación</li>
+            </ul>
+            <p>El objetivo es crear un programa que pida al usuario un nombre y una contraseña, verifique si son correctos, y muestre un mensaje de acceso permitido o denegado según corresponda.</p>
+        </div>
+
+        <div class="main-content">
+            <!-- Análisis con los 4 pilares -->
+            <div>
+                <div class="card">
+                    <h3 class="card-title"><i class="fas fa-cogs"></i> Análisis del problema</h3>
+                    <p>Para resolver cualquier problema de programación, es útil aplicar los <strong>4 pilares del pensamiento computacional</strong>:</p>
+                    
+                    <div class="pillar-container">
+                        <div class="pillar">
+                            <h4>1. Descomposición</h4>
+                            <p>Dividir el problema en partes más pequeñas:</p>
+                            <ul style="font-size: 0.9rem; margin-left: 15px;">
+                                <li>Solicitar nombre de usuario</li>
+                                <li>Solicitar contraseña</li>
+                                <li>Comparar con valores correctos</li>
+                                <li>Mostrar mensaje según resultado</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="pillar">
+                            <h4>2. Reconocimiento de patrones</h4>
+                            <p>Identificar elementos comunes:</p>
+                            <ul style="font-size: 0.9rem; margin-left: 15px;">
+                                <li>Entrada → Procesamiento → Salida</li>
+                                <li>Estructura condicional if-else</li>
+                                <li>Comparación de igualdad</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="pillar">
+                            <h4>3. Abstracción</h4>
+                            <p>Identificar lo esencial:</p>
+                            <ul style="font-size: 0.9rem; margin-left: 15px;">
+                                <li>No necesitamos interfaz gráfica</li>
+                                <li>No necesitamos almacenar múltiples usuarios</li>
+                                <li>Solo necesitamos comparar dos valores</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="pillar">
+                            <h4>4. Algoritmos</h4>
+                            <p>Diseñar los pasos:</p>
+                            <ul style="font-size: 0.9rem; margin-left: 15px;">
+                                <li>Pedir usuario y contraseña</li>
+                                <li>Comparar con valores predefinidos</li>
+                                <li>Decidir y mostrar resultado</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Explicación paso a paso -->
+                <div class="card">
+                    <h3 class="card-title"><i class="fas fa-list-ol"></i> Pasos para la solución</h3>
+                    
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div>
+                            <h4>Definir credenciales correctas</h4>
+                            <p>Determinaremos qué usuario y contraseña son válidos. En este caso, usaremos "estudiante" como usuario y "python123" como contraseña.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div>
+                            <h4>Solicitar datos al usuario</h4>
+                            <p>Usaremos la función <code>input()</code> para pedir al usuario que ingrese su nombre y contraseña. Los guardaremos en variables.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div>
+                            <h4>Comparar los valores</h4>
+                            <p>Usaremos una estructura condicional <code>if-else</code> para verificar si tanto el usuario como la contraseña coinciden con los valores correctos.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div>
+                            <h4>Mostrar el resultado</h4>
+                            <p>Dependiendo del resultado de la comparación, mostraremos "Acceso permitido" o "Acceso denegado".</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Código y demostración -->
+            <div>
+                <!-- Código Python -->
+                <div class="card">
+                    <h3 class="card-title"><i class="fas fa-code"></i> Solución en Python</h3>
+                    <p>A continuación se presenta el código completo para resolver el problema:</p>
+                    
+                    <div class="code-container">
+                        <div class="code-header">
+                            <span>login_sencillo.py</span>
+                            <span><i class="fas fa-copy" onclick="copyCode()" style="cursor:pointer;" title="Copiar código"></i></span>
+                        </div>
+                        <div class="code-body">
+<pre><span class="code-comment"># PROGRAMA: LOGIN SENCILLO
+# Este programa solicita un nombre de usuario y una contraseña
+# y verifica si son correctos para permitir el acceso</span>
+
+<span class="code-comment"># 1. DEFINIR LAS CREDENCIALES CORRECTAS</span>
+<span class="code-keyword">usuario_correcto</span> = <span class="code-string">"estudiante"</span>
+<span class="code-keyword">contrasena_correcta</span> = <span class="code-string">"python123"</span>
+
+<span class="code-comment"># 2. SOLICITAR DATOS AL USUARIO</span>
+<span class="code-keyword">print</span>(<span class="code-string">"=== SISTEMA DE ACCESO ==="</span>)
+<span class="code-keyword">print</span>(<span class="code-string">"Por favor, ingrese sus credenciales"</span>)
+
+<span class="code-comment"># Pedir nombre de usuario</span>
+<span class="code-keyword">usuario_ingresado</span> = <span class="code-function">input</span>(<span class="code-string">"Nombre de usuario: "</span>)
+
+<span class="code-comment"># Pedir contraseña (no se verán los caracteres por seguridad)</span>
+<span class="code-keyword">contrasena_ingresada</span> = <span class="code-function">input</span>(<span class="code-string">"Contraseña: "</span>)
+
+<span class="code-comment"># 3. VERIFICAR LAS CREDENCIALES</span>
+<span class="code-comment"># Comparamos si el usuario Y la contraseña son correctos</span>
+<span class="code-keyword">if</span> <span class="code-keyword">usuario_ingresado</span> == <span class="code-keyword">usuario_correcto</span> <span class="code-keyword">and</span> <span class="code-keyword">contrasena_ingresada</span> == <span class="code-keyword">contrasena_correcta</span>:
+    <span class="code-comment"># 4. MOSTRAR RESULTADO - Acceso permitido</span>
+    <span class="code-keyword">print</span>(<span class="code-string">"\n¡Acceso permitido!"</span>)
+    <span class="code-keyword">print</span>(<span class="code-string">"Bienvenido al sistema."</span>)
+<span class="code-keyword">else</span>:
+    <span class="code-comment"># 4. MOSTRAR RESULTADO - Acceso denegado</span>
+    <span class="code-keyword">print</span>(<span class="code-string">"\nAcceso denegado."</span>)
+    <span class="code-keyword">print</span>(<span class="code-string">"Usuario o contraseña incorrectos."</span>)
+
+<span class="code-comment"># Mensaje final del programa</span>
+<span class="code-keyword">print</span>(<span class="code-string">"\n=== FIN DEL PROGRAMA ==="</span>)</pre>
+                        </div>
+                    </div>
+                    
+                    <div class="explanation">
+                        <h4><i class="fas fa-lightbulb"></i> Explicación del código</h4>
+                        <p>El código sigue una estructura lógica simple:</p>
+                        <ol style="margin-left: 20px;">
+                            <li>Primero definimos las credenciales correctas en variables.</li>
+                            <li>Luego pedimos al usuario que ingrese sus datos.</li>
+                            <li>Después comparamos usando <code>if</code> para ver si coinciden.</li>
+                            <li>Finalmente, mostramos el resultado correspondiente.</li>
+                        </ol>
+                        <p><strong>Nota importante:</strong> En un sistema real, NUNCA se almacenan contraseñas en texto plano como en este ejemplo educativo. Se usan técnicas de encriptación y bases de datos seguras.</p>
+                    </div>
+                </div>
+                
+                <!-- Simulador interactivo -->
+                <div class="interactive-section">
+                    <h3 class="card-title"><i class="fas fa-laptop-code"></i> Prueba el simulador</h3>
+                    <p>Aquí puedes probar cómo funciona el programa. Ingresa las credenciales correctas:</p>
+                    <p><strong>Usuario:</strong> estudiante | <strong>Contraseña:</strong> python123</p>
+                    
+                    <div class="simulator">
+                        <div class="input-group">
+                            <label for="username">Nombre de usuario:</label>
+                            <input type="text" id="username" placeholder="Ingresa tu usuario">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="password">Contraseña:</label>
+                            <input type="password" id="password" placeholder="Ingresa tu contraseña">
+                        </div>
+                        
+                        <button onclick="checkLogin()">Verificar acceso</button>
+                        
+                        <div id="output" class="output"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Ejecución del código -->
+        <div class="card">
+            <h3 class="card-title"><i class="fas fa-play-circle"></i> Cómo ejecutar el código</h3>
+            <p>Sigue estos pasos para probar el programa en tu computadora:</p>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div>
+                    <h4>Instalar Python</h4>
+                    <p>Si no tienes Python instalado, descárgalo desde <a href="https://www.python.org/downloads/" target="_blank">python.org</a>. Asegúrate de marcar la opción "Add Python to PATH" durante la instalación.</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div>
+                    <h4>Crear el archivo</h4>
+                    <p>Abre un editor de texto (como Notepad, VS Code o PyCharm) y copia el código anterior. Guárdalo como <code>login_sencillo.py</code></p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div>
+                    <h4>Ejecutar el programa</h4>
+                    <p>Abre la terminal o consola, navega a la carpeta donde guardaste el archivo y ejecuta:</p>
+                    <div class="code-container" style="padding: 10px; margin-top: 10px; font-size: 0.9rem;">
+                        python login_sencillo.py
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <div>
+                    <h4>Probar diferentes casos</h4>
+                    <p>Ejecuta el programa varias veces probando con:</p>
+                    <ul style="margin-left: 20px;">
+                        <li>Usuario y contraseña correctos</li>
+                        <li>Usuario correcto, contraseña incorrecta</li>
+                        <li>Usuario incorrecto, contraseña correcta</li>
+                        <li>Ambas incorrectas</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Posibles mejoras -->
+        <div class="card">
+            <h3 class="card-title"><i class="fas fa-rocket"></i> Desafíos adicionales</h3>
+            <p>Una vez que domines este programa, intenta mejorarlo con estos desafíos:</p>
+            
+            <div class="pillar-container">
+                <div class="pillar">
+                    <h4>1. Múltiples intentos</h4>
+                    <p>Modifica el programa para que permita 3 intentos antes de bloquear el acceso completamente. Puedes usar un ciclo <code>while</code>.</p>
+                </div>
+                
+                <div class="pillar">
+                    <h4>2. Varios usuarios</h4>
+                    <p>Crea una lista con varios usuarios y contraseñas válidos. El programa debe verificar si las credenciales coinciden con alguna de las combinaciones.</p>
+                </div>
+                
+                <div class="pillar">
+                    <h4>3. Ocultar contraseña</h4>
+                    <p>Investiga cómo mostrar asteriscos (*) en lugar de los caracteres reales cuando el usuario escribe la contraseña (esto es más avanzado).</p>
+                </div>
+                
+                <div class="pillar">
+                    <h4>4. Menú de opciones</h4>
+                    <p>Crea un menú que permita al usuario elegir entre iniciar sesión, cambiar contraseña o salir del programa.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>Taller educativo de programación en Python para estudiantes de bachillerato</p>
+            <p><i class="fas fa-heart heart"></i> <strong>Python para pensadores</strong> <i class="fas fa-heart heart"></i></p>
+            <p>Reto "login sencillo" - Aprendizaje basado en competencias</p>
+            <div class="teacher-badge">Diseñado por: Edwin Méndez J.</div>
+        </div>
+    </footer>
+
+    <script>
+        // Función para simular el login
+        function checkLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const output = document.getElementById('output');
+            
+            // Credenciales correctas
+            const correctUsername = "estudiante";
+            const correctPassword = "python123";
+            
+            // Verificar credenciales
+            if (username === correctUsername && password === correctPassword) {
+                output.textContent = "¡Acceso permitido! Bienvenido al sistema.";
+                output.className = "output success";
+                output.style.display = "block";
+            } else {
+                output.textContent = "Acceso denegado. Usuario o contraseña incorrectos.";
+                output.className = "output error";
+                output.style.display = "block";
+            }
+        }
+        
+        // Función para copiar el código
+        function copyCode() {
+            const codeElement = document.querySelector('.code-body');
+            const textArea = document.createElement('textarea');
+            textArea.value = codeElement.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            // Mostrar mensaje de confirmación
+            const copyBtn = document.querySelector('.fa-copy');
+            const originalTitle = copyBtn.getAttribute('title');
+            copyBtn.setAttribute('title', '¡Código copiado!');
+            copyBtn.style.color = '#27ae60';
+            
+            setTimeout(() => {
+                copyBtn.setAttribute('title', originalTitle);
+                copyBtn.style.color = '';
+            }, 2000);
+        }
+        
+        // Permitir presionar Enter en los campos de entrada
+        document.getElementById('username').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('password').focus();
+            }
+        });
+        
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkLogin();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python para Pensadores - Taller Tipo de Jugador</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --dark: #1a252f;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px;
+            background: rgba(26, 37, 47, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-bottom: 5px solid var(--secondary);
+        }
+        
+        h1 {
+            color: var(--secondary);
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .tagline {
+            font-size: 1.4rem;
+            color: var(--light);
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .subtitle {
+            font-size: 1.8rem;
+            color: var(--warning);
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(243, 156, 18, 0.1);
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .explanation, .code-section, .simulator {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(26, 37, 47, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .section-title {
+            color: var(--success);
+            border-left: 5px solid var(--success);
+            padding-left: 15px;
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+        }
+        
+        .pillars {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        
+        .pillar {
+            background: rgba(52, 152, 219, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border-top: 4px solid var(--secondary);
+        }
+        
+        .pillar h3 {
+            color: var(--secondary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .code-block {
+            background: #1e1e1e;
+            border-radius: 10px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border-left: 5px solid var(--accent);
+        }
+        
+        .code-comment {
+            color: #6a9955;
+        }
+        
+        .code-keyword {
+            color: #569cd6;
+        }
+        
+        .code-string {
+            color: #ce9178;
+        }
+        
+        .code-function {
+            color: #dcdcaa;
+        }
+        
+        .simulator {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .input-group {
+            margin: 20px 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: var(--light);
+        }
+        
+        input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid var(--secondary);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.1rem;
+        }
+        
+        button {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            background: rgba(46, 204, 113, 0.1);
+            border-left: 5px solid var(--success);
+            display: none;
+        }
+        
+        .result-title {
+            color: var(--success);
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .categories {
+            display: flex;
+            justify-content: space-between;
+            margin: 25px 0;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .category {
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+        }
+        
+        .casual {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+        }
+        
+        .frequent {
+            background: linear-gradient(135deg, #d68910, #f39c12);
+        }
+        
+        .pro {
+            background: linear-gradient(135deg, #a93226, #e74c3c);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: rgba(26, 37, 47, 0.9);
+            border-radius: 15px;
+            margin-top: 20px;
+            border-top: 5px solid var(--accent);
+        }
+        
+        .footer-text {
+            font-size: 1.2rem;
+            color: var(--light);
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .tagline {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-code"></i> Python para pensadores</h1>
+            <p class="tagline">Taller diseñado con el corazón de un docente y la mente de un programador.</p>
+            <div class="subtitle">Reto "Tipo de jugador"</div>
+        </header>
+        
+        <div class="main-content">
+            <div class="explanation">
+                <h2 class="section-title"><i class="fas fa-brain"></i> Análisis del Problema</h2>
+                <p>Vamos a crear un programa en Python que clasifique a los jugadores según las horas que dedican a videojuegos por semana. Este es un problema perfecto para aplicar los 4 pilares del pensamiento computacional:</p>
+                
+                <div class="pillars">
+                    <div class="pillar">
+                        <h3><i class="fas fa-puzzle-piece"></i> 1. Descomposición</h3>
+                        <p>Dividimos el problema en partes más pequeñas y manejables: entrada de datos, validación, clasificación y salida de resultados.</p>
+                    </div>
+                    
+                    <div class="pillar">
+                        <h3><i class="fas fa-sitemap"></i> 2. Reconocimiento de patrones</h3>
+                        <p>Identificamos que la clasificación sigue un patrón de rangos numéricos y que la validación de entrada sigue un patrón repetitivo.</p>
+                    </div>
+                    
+                    <div class="pillar">
+                        <h3><i class="fas fa-filter"></i> 3. Abstracción</h3>
+                        <p>Nos centramos en lo esencial: transformar un número (horas) en una categoría, ignorando detalles innecesarios.</p>
+                    </div>
+                    
+                    <div class="pillar">
+                        <h3><i class="fas fa-list-ol"></i> 4. Algoritmos</h3>
+                        <p>Diseñamos una serie de pasos lógicos que resuelven el problema de manera eficiente y comprensible.</p>
+                    </div>
+                </div>
+                
+                <h3 class="section-title" style="margin-top: 30px;"><i class="fas fa-gamepad"></i> Categorías de Jugador</h3>
+                <div class="categories">
+                    <div class="category casual">
+                        <h4>Jugador Casual</h4>
+                        <p>Menos de 5 horas/semana</p>
+                    </div>
+                    <div class="category frequent">
+                        <h4>Jugador Frecuente</h4>
+                        <p>Entre 5 y 15 horas/semana</p>
+                    </div>
+                    <div class="category pro">
+                        <h4>Gamer Pro</h4>
+                        <p>Más de 15 horas/semana</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="code-section">
+                <h2 class="section-title"><i class="fas fa-code"></i> Solución en Python</h2>
+                <p>Aquí está el código completo que resuelve el problema. Está bien organizado y comentado para facilitar su comprensión:</p>
+                
+                <div class="code-block">
+                    <pre><code><span class="code-comment"># Programa para clasificar jugadores según horas de juego</span>
+<span class="code-comment"># Taller "Python para pensadores" - Reto "Tipo de jugador"</span>
+
+<span class="code-comment"># Mostrar mensaje de bienvenida</span>
+print(<span class="code-string">"========================================="</span>)
+print(<span class="code-string">"       CLASIFICADOR DE TIPO DE JUGADOR"</span>)
+print(<span class="code-string">"========================================="</span>)
+print(<span class="code-string">"Este programa te clasificará según las horas"</span>)
+print(<span class="code-string">"que juegas videojuegos a la semana."</span>)
+print()
+
+<span class="code-comment"># Variable para controlar si el usuario quiere continuar</span>
+continuar = <span class="code-string">"si"</span>
+
+<span class="code-comment"># Ciclo principal del programa</span>
+<span class="code-keyword">while</span> continuar == <span class="code-string">"si"</span>:
+    
+    <span class="code-comment"># Pedir al usuario que ingrese las horas de juego</span>
+    print(<span class="code-string">"Por favor, ingresa cuántas horas juegas videojuegos a la semana:"</span>)
+    
+    <span class="code-comment"># Validar que la entrada sea un número válido</span>
+    entrada_valida = <span class="code-keyword">False</span>
+    
+    <span class="code-keyword">while</span> <span class="code-keyword">not</span> entrada_valida:
+        horas_texto = input(<span class="code-string">">>> "</span>)
+        
+        <span class="code-comment"># Verificar que se haya ingresado algo</span>
+        <span class="code-keyword">if</span> horas_texto == <span class="code-string">""</span>:
+            print(<span class="code-string">"Debes ingresar un número. Intenta nuevamente:"</span>)
+            <span class="code-keyword">continue</span>
+        
+        <span class="code-comment"># Verificar que sea un número</span>
+        es_numero = <span class="code-keyword">True</span>
+        
+        <span class="code-comment"># Revisar cada caracter para asegurarnos que sea un número</span>
+        <span class="code-keyword">for</span> caracter <span class="code-keyword">in</span> horas_texto:
+            <span class="code-keyword">if</span> caracter &lt; <span class="code-string">'0'</span> <span class="code-keyword">or</span> caracter &gt; <span class="code-string">'9'</span>:
+                es_numero = <span class="code-keyword">False</span>
+                <span class="code-keyword">break</span>
+        
+        <span class="code-keyword">if</span> <span class="code-keyword">not</span> es_numero:
+            print(<span class="code-string">"¡Error! Debes ingresar un número entero. Intenta nuevamente:"</span>)
+        <span class="code-keyword">else</span>:
+            <span class="code-comment"># Convertir el texto a número</span>
+            horas = int(horas_texto)
+            
+            <span class="code-comment"># Verificar que sea un número positivo</span>
+            <span class="code-keyword">if</span> horas &lt; 0:
+                print(<span class="code-string">"¡Error! No puedes jugar horas negativas. Intenta nuevamente:"</span>)
+            <span class="code-keyword">else</span>:
+                entrada_valida = <span class="code-keyword">True</span>
+    
+    <span class="code-comment"># Clasificar al jugador según las horas ingresadas</span>
+    print()
+    print(<span class="code-string">"========================================="</span>)
+    print(<span class="code-string">"            RESULTADO"</span>)
+    print(<span class="code-string">"========================================="</span>)
+    
+    <span class="code-keyword">if</span> horas &lt; 5:
+        <span class="code-comment"># Menos de 5 horas: Jugador casual</span>
+        print(<span class="code-string">"Juegas"</span>, horas, <span class="code-string">"horas a la semana."</span>)
+        print(<span class="code-string">"Tu clasificación es: JUGADOR CASUAL"</span>)
+        print(<span class="code-string">"¡Disfrutas de los videojuegos sin que dominen tu tiempo!"</span>)
+    
+    <span class="code-keyword">elif</span> horas &gt;= 5 <span class="code-keyword">and</span> horas &lt;= 15:
+        <span class="code-comment"># Entre 5 y 15 horas: Jugador frecuente</span>
+        print(<span class="code-string">"Juegas"</span>, horas, <span class="code-string">"horas a la semana."</span>)
+        print(<span class="code-string">"Tu clasificación es: JUGADOR FRECUENTE"</span>)
+        print(<span class="code-string">"¡Los videojuegos son un hobby importante para ti!"</span>)
+    
+    <span class="code-keyword">else</span>:
+        <span class="code-comment"># Más de 15 horas: Gamer pro</span>
+        print(<span class="code-string">"Juegas"</span>, horas, <span class="code-string">"horas a la semana."</span>)
+        print(<span class="code-string">"Tu clasificación es: GAMER PRO"</span>)
+        print(<span class="code-string">"¡Los videojuegos son una parte fundamental de tu vida!"</span>)
+    
+    print(<span class="code-string">"========================================="</span>)
+    print()
+    
+    <span class="code-comment"># Preguntar si desea realizar otra clasificación</span>
+    print(<span class="code-string">"¿Deseas clasificar a otra persona? (escribe 'si' o 'no')"</span>)
+    continuar = input(<span class="code-string">">>> "</span>).lower()
+    
+    <span class="code-comment"># Validar la respuesta</span>
+    <span class="code-keyword">while</span> continuar != <span class="code-string">"si"</span> <span class="code-keyword">and</span> continuar != <span class="code-string">"no"</span>:
+        print(<span class="code-string">"Por favor, escribe 'si' o 'no':"</span>)
+        continuar = input(<span class="code-string">">>> "</span>).lower()
+    
+    print()
+
+<span class="code-comment"># Mensaje de despedida</span>
+print(<span class="code-string">"========================================="</span>)
+print(<span class="code-string">"¡Gracias por usar el clasificador de jugadores!"</span>)
+print(<span class="code-string">"Recuerda: lo importante es disfrutar jugando,"</span>)
+print(<span class="code-string">"sin descuidar otras actividades importantes."</span>)
+print(<span class="code-string">"========================================="</span>)</code></pre>
+                </div>
+                
+                <p><strong>Características pedagógicas del código:</strong></p>
+                <ul style="padding-left: 20px; margin-top: 10px;">
+                    <li>Comentarios explicativos en cada sección importante</li>
+                    <li>Validación robusta de entrada de datos</li>
+                    <li>Estructura lógica clara y fácil de seguir</li>
+                    <li>Mensajes informativos para el usuario</li>
+                    <li>Ciclo para permitir múltiples clasificaciones</li>
+                </ul>
+            </div>
+            
+            <div class="simulator">
+                <h2 class="section-title"><i class="fas fa-play-circle"></i> Simulador Interactivo</h2>
+                <p>Prueba cómo funciona el programa ingresando horas de juego a continuación:</p>
+                
+                <div class="input-group">
+                    <label for="hours"><i class="fas fa-clock"></i> Ingresa las horas de juego por semana:</label>
+                    <input type="number" id="hours" min="0" max="168" placeholder="Ejemplo: 10">
+                </div>
+                
+                <button id="classifyBtn"><i class="fas fa-calculator"></i> Clasificar Jugador</button>
+                <button id="resetBtn"><i class="fas fa-redo"></i> Reiniciar</button>
+                
+                <div class="result" id="result">
+                    <div class="result-title" id="resultTitle">Resultado</div>
+                    <p id="resultText"></p>
+                </div>
+                
+                <div style="margin-top: 30px; padding: 20px; background: rgba(52, 152, 219, 0.1); border-radius: 10px;">
+                    <h3><i class="fas fa-lightbulb"></i> Consejos para estudiantes</h3>
+                    <ul style="padding-left: 20px; margin-top: 10px;">
+                        <li>Prueba el programa con diferentes valores para entender cómo funciona</li>
+                        <li>Intenta modificar los rangos de clasificación</li>
+                        <li>Agrega una nueva categoría (ej: "Más de 40 horas → Adicto a los videojuegos")</li>
+                        <li>Cambia los mensajes de salida para hacerlos más personalizados</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p class="footer-text">Diseñado por: Edwin Méndez J.</p>
+            <p style="margin-top: 10px; font-size: 0.9rem; color: #bdc3c7;">Taller educativo para estudiantes de bachillerato - Python para pensadores</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hoursInput = document.getElementById('hours');
+            const classifyBtn = document.getElementById('classifyBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const resultDiv = document.getElementById('result');
+            const resultTitle = document.getElementById('resultTitle');
+            const resultText = document.getElementById('resultText');
+            
+            // Función para clasificar al jugador
+            classifyBtn.addEventListener('click', function() {
+                const hours = parseInt(hoursInput.value);
+                
+                // Validar entrada
+                if (isNaN(hours) || hours < 0 || hours > 168) {
+                    resultTitle.textContent = "Error";
+                    resultText.textContent = "Por favor, ingresa un número válido entre 0 y 168 horas.";
+                    resultDiv.style.borderLeft = "5px solid #e74c3c";
+                    resultDiv.style.background = "rgba(231, 76, 60, 0.1)";
+                    resultDiv.style.display = "block";
+                    return;
+                }
+                
+                // Clasificar según las horas
+                let category, message, colorClass;
+                
+                if (hours < 5) {
+                    category = "JUGADOR CASUAL";
+                    message = `Juegas ${hours} horas a la semana. ¡Disfrutas de los videojuegos sin que dominen tu tiempo!`;
+                    colorClass = "casual";
+                } else if (hours >= 5 && hours <= 15) {
+                    category = "JUGADOR FRECUENTE";
+                    message = `Juegas ${hours} horas a la semana. ¡Los videojuegos son un hobby importante para ti!`;
+                    colorClass = "frequent";
+                } else {
+                    category = "GAMER PRO";
+                    message = `Juegas ${hours} horas a la semana. ¡Los videojuegos son una parte fundamental de tu vida!`;
+                    colorClass = "pro";
+                }
+                
+                // Mostrar resultado
+                resultTitle.textContent = category;
+                resultText.textContent = message;
+                
+                // Cambiar color según categoría
+                if (colorClass === "casual") {
+                    resultDiv.style.borderLeft = "5px solid #27ae60";
+                    resultDiv.style.background = "rgba(39, 174, 96, 0.1)";
+                } else if (colorClass === "frequent") {
+                    resultDiv.style.borderLeft = "5px solid #f39c12";
+                    resultDiv.style.background = "rgba(243, 156, 18, 0.1)";
+                } else {
+                    resultDiv.style.borderLeft = "5px solid #e74c3c";
+                    resultDiv.style.background = "rgba(231, 76, 60, 0.1)";
+                }
+                
+                resultDiv.style.display = "block";
+                
+                // Desplazar hacia el resultado
+                resultDiv.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Función para reiniciar
+            resetBtn.addEventListener('click', function() {
+                hoursInput.value = "";
+                resultDiv.style.display = "none";
+                hoursInput.focus();
+            });
+            
+            // Permitir usar la tecla Enter para clasificar
+            hoursInput.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    classifyBtn.click();
+                }
+            });
+            
+            // Inicializar con un ejemplo
+            hoursInput.value = "8";
+        });
+    </script>
+</body>
+</html>
