@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python para Pensadores - La Instrucción match</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variables de colores y tipografía */
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #7c3aed;
+            --accent-color: #10b981;
+            --dark-color: #1e293b;
+            --light-color: #f8fafc;
+            --gray-color: #64748b;
+            --danger-color: #ef4444;
+            --success-color: #10b981;
+            --border-radius: 12px;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: #f1f5f9;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Estilos de la ventana principal */
+        .main-window {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 90vh;
+        }
+
+        /* Encabezado */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            font-style: italic;
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .topic {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 50px;
+            margin-top: 15px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* Contenido principal */
+        .content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            padding: 30px;
+            flex-grow: 1;
+        }
+
+        @media (min-width: 992px) {
+            .content {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .activity-section {
+                grid-column: span 2;
+            }
+        }
+
+        /* Secciones */
+        .section {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .section h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h2 i {
+            color: var(--secondary-color);
+        }
+
+        /* Objetivo de aprendizaje */
+        .objective {
+            border-left-color: var(--accent-color);
+        }
+
+        /* Contextualización */
+        .context {
+            border-left-color: var(--secondary-color);
+        }
+
+        /* Desarrollo de la actividad */
+        .activity-section {
+            border-left-color: var(--primary-color);
+        }
+
+        .code-example {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .code-example h3 {
+            color: #60a5fa;
+            margin-bottom: 15px;
+            font-family: var(--font-main);
+        }
+
+        .code-example .keyword {
+            color: #f472b6;
+        }
+
+        .code-example .string {
+            color: #34d399;
+        }
+
+        .code-example .comment {
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        .code-example .function {
+            color: #60a5fa;
+        }
+
+        /* Reto final */
+        .challenge {
+            border-left-color: #f59e0b;
+        }
+
+        /* Botones */
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 15px;
+            font-family: var(--font-main);
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary {
+            background-color: var(--accent-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #0da271;
+        }
+
+        /* Evaluación lúdica */
+        .quiz-section {
+            border-left-color: var(--danger-color);
+            padding-bottom: 10px;
+        }
+
+        .quiz-container {
+            margin-top: 20px;
+        }
+
+        .quiz-question {
+            background-color: #f8fafc;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            border: 1px solid #e2e8f0;
+            display: none;
+        }
+
+        .quiz-question.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .quiz-question h3 {
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .quiz-question h3 span {
+            background-color: var(--primary-color);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .option {
+            padding: 15px;
+            background-color: white;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .option:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(37, 99, 235, 0.05);
+        }
+
+        .option.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(37, 99, 235, 0.1);
+        }
+
+        .option.correct {
+            border-color: var(--success-color);
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+
+        .option.incorrect {
+            border-color: var(--danger-color);
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        .feedback {
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-top: 15px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback.correct {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            border-left: 4px solid var(--success-color);
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+            border-left: 4px solid var(--danger-color);
+            display: block;
+        }
+
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .score {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .score-value {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 50px;
+            margin-left: 5px;
+        }
+
+        /* Pie de página */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            opacity: 0.8;
+        }
+
+        /* Responsividad */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 20px;
+                gap: 20px;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .quiz-controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-window">
+            <!-- Encabezado -->
+            <header>
+                <div class="header-content">
+                    <h1>Python para Pensadores</h1>
+                    <p class="subtitle">Taller diseñado con el corazón de un docente y la mente de un programador</p>
+                    <p class="tagline">Transformando conceptos complejos en ideas claras y accesibles</p>
+                    <div class="topic">Tema: Python - La instrucción match</div>
+                </div>
+            </header>
+
+            <!-- Contenido principal -->
+            <div class="content">
+                <!-- Objetivo de aprendizaje -->
+                <section class="section objective">
+                    <h2><i class="fas fa-bullseye"></i> Objetivo de Aprendizaje</h2>
+                    <p>Dominar la instrucción <code>match</code> en Python como herramienta para implementar lógica condicional de manera clara y expresiva, desarrollando la capacidad de analizar problemas complejos, diseñar soluciones elegantes mediante estructuras de control avanzadas, y aplicar este conocimiento en la creación de programas más legibles, mantenibles y alineados con las mejores prácticas de la programación moderna, fomentando así un pensamiento computacional estructurado y una actitud de constante búsqueda de la simplicidad y claridad en el código.</p>
+                </section>
+
+                <!-- Contextualización -->
+                <section class="section context">
+                    <h2><i class="fas fa-compass"></i> Contextualización</h2>
+                    <p>Imagina que eres el organizador de un festival de música en Quito, y necesitas clasificar a los asistentes según el tipo de entrada que compraron: VIP, General, Estudiante o Invitado. Tradicionalmente, usarías una cadena interminable de <code>if-elif-else</code>, como un guardia revisando cada documento uno por uno. Pero Python 3.10 nos trajo una herramienta más elegante: la instrucción <code>match</code>, similar a un recepcionista experto que inmediatamente dirige a cada persona al área correcta.</p>
+                    <p>Esta nueva capacidad no es solo un "azúcar sintáctico"; es un cambio de mentalidad. Nos invita a pensar en patrones, en estructuras, en cómo nuestros datos se relacionan entre sí. Como cuando identificas un patrón en las nubes andinas o reconoces la estructura de una receta tradicional, <code>match</code> nos ayuda a ver patrones en nuestros datos y actuar en consecuencia.</p>
+                </section>
+
+                <!-- Desarrollo de la actividad -->
+                <section class="section activity-section">
+                    <h2><i class="fas fa-laptop-code"></i> Desarrollo de la Actividad</h2>
+                    <p>La instrucción <code>match</code> funciona comparando un valor con una serie de patrones. Es como tener un mapa de decisiones donde cada ruta está claramente marcada. Veamos cómo funciona con ejemplos prácticos:</p>
+                    
+                    <div class="code-example">
+                        <h3>Ejemplo 1: Clasificación de asistentes al festival</h3>
+                        <pre><code><span class="keyword">def</span> <span class="function">clasificar_asistente</span>(tipo_entrada):
+    <span class="keyword">match</span> tipo_entrada:
+        <span class="keyword">case</span> <span class="string">"VIP"</span>:
+            <span class="keyword">return</span> <span class="string">"Acceso al área preferencial + barra libre"</span>
+        <span class="keyword">case</span> <span class="string">"General"</span>:
+            <span class="keyword">return</span> <span class="string">"Acceso al área general"</span>
+        <span class="keyword">case</span> <span class="string">"Estudiante"</span>:
+            <span class="keyword">return</span> <span class="string">"Acceso con descuento (presentar carnet)"</span>
+        <span class="keyword">case</span> <span class="string">"Invitado"</span>:
+            <span class="keyword">return</span> <span class="string">"Acceso al backstage"</span>
+        <span class="keyword">case</span> _:
+            <span class="keyword">return</span> <span class="string">"Tipo de entrada no reconocido"</span>
+
+<span class="comment"># Probemos la función</span>
+print(clasificar_asistente(<span class="string">"VIP"</span>))        <span class="comment"># Resultado: Acceso al área preferencial + barra libre</span>
+print(clasificar_asistente(<span class="string">"Estudiante"</span>)) <span class="comment"># Resultado: Acceso con descuento (presentar carnet)</span></code></pre>
+                    </div>
+
+                    <div class="code-example">
+                        <h3>Ejemplo 2: Sistema de recomendación de actividades según clima</h3>
+                        <pre><code><span class="keyword">def</span> <span class="function">recomendar_actividad</span>(clima, temperatura):
+    <span class="keyword">match</span> (clima, temperatura):
+        <span class="keyword">case</span> (<span class="string">"soleado"</span>, temp) <span class="keyword">if</span> temp > 25:
+            <span class="keyword">return</span> <span class="string">"¡Día perfecto para visitar la Mitad del Mundo!"</span>
+        <span class="keyword">case</span> (<span class="string">"lluvioso"</span>, _):
+            <span class="keyword">return</span> <span class="string">"Recomendado: Visitar museos en el Centro Histórico"</span>
+        <span class="keyword">case</span> (<span class="string">"nublado"</span>, temp) <span class="keyword">if</span> 15 <= temp <= 25:
+            <span class="keyword">return</span> <span class="string">"Ideal para caminar por el Teleférico"</span>
+        <span class="keyword">case</span> (<span class="string">"soleado"</span>, _):
+            <span class="keyword">return</span> <span class="string">"Puedes recorrer la Mariscal"</span>
+        <span class="keyword">case</span> _:
+            <span class="keyword">return</span> <span class="string">"Revisa el pronóstico para planificar mejor"</span>
+
+<span class="comment"># Probemos con diferentes condiciones climáticas</span>
+print(recomendar_actividad(<span class="string">"soleado"</span>, 28))  <span class="comment"># Resultado: ¡Día perfecto para visitar la Mitad del Mundo!</span>
+print(recomendar_actividad(<span class="string">"lluvioso"</span>, 18)) <span class="comment"># Resultado: Recomendado: Visitar museos en el Centro Histórico</span></code></pre>
+                    </div>
+
+                    <p><strong>Actividad práctica:</strong> Copia estos ejemplos en tu entorno de Python y experimenta modificándolos. ¿Qué pasa si agregas un nuevo tipo de entrada al festival? ¿O si incluyes un nuevo patrón climático? Juega con los valores y observa cómo se comporta el programa.</p>
+                    <button class="btn" onclick="showHint()">
+                        <i class="fas fa-lightbulb"></i> Pista para experimentar
+                    </button>
+                </section>
+
+                <!-- Reto final -->
+                <section class="section challenge">
+                    <h2><i class="fas fa-trophy"></i> El Reto Final</h2>
+                    <p>Eres el desarrollador de un sistema para la feria gastronómica "Sabores del Ecuador". Tu tarea es crear un programa que:</p>
+                    <ol>
+                        <li>Clasifique a los visitantes según su tipo (Niño, Adulto, Adulto Mayor, Estudiante con carnet).</li>
+                        <li>Calcule el precio de entrada aplicando descuentos según la clasificación.</li>
+                        <li>Recomiende platos típicos según la región de origen del visitante (Costa, Sierra, Oriente, Insular).</li>
+                        <li>Maneje casos especiales como grupos familiares (más de 3 personas del mismo núcleo familiar).</li>
+                    </ol>
+                    <p>Utiliza la instrucción <code>match</code> para implementar esta lógica de manera clara y estructurada. Considera que los precios base son: $5 para niños, $10 para adultos, $7 para adultos mayores y $6 para estudiantes. Los descuentos por grupo familiar son del 15%.</p>
+                    <p><strong>Preguntas para reflexionar:</strong> ¿Cómo estructuraste tus patrones? ¿Qué ventajas encuentras en usar <code>match</code> frente a múltiples <code>if</code> anidados? ¿Cómo garantizas que tu código sea comprensible para otros programadores?</p>
+                    <button class="btn btn-secondary" onclick="showSolutionHint()">
+                        <i class="fas fa-code"></i> Ver estructura sugerida
+                    </button>
+                </section>
+
+                <!-- Evaluación lúdica -->
+                <section class="section quiz-section">
+                    <h2><i class="fas fa-gamepad"></i> Evaluación Lúdica: ¿Eres un maestro del match?</h2>
+                    <p>Responde estas 5 preguntas para poner a prueba tu comprensión de la instrucción <code>match</code>.</p>
+                    
+                    <div class="quiz-container">
+                        <!-- Pregunta 1 -->
+                        <div class="quiz-question active" id="question1">
+                            <h3><span>1</span> ¿En qué versión de Python se introdujo la instrucción <code>match</code>?</h3>
+                            <div class="options">
+                                <div class="option" data-correct="true">Python 3.10</div>
+                                <div class="option" data-correct="false">Python 3.8</div>
+                                <div class="option" data-correct="false">Python 3.6</div>
+                                <div class="option" data-correct="false">Python 3.12</div>
+                            </div>
+                            <div class="feedback"></div>
+                        </div>
+                        
+                        <!-- Pregunta 2 -->
+                        <div class="quiz-question" id="question2">
+                            <h3><span>2</span> ¿Qué símbolo se utiliza como comodín (wildcard) en la instrucción <code>match</code>?</h3>
+                            <div class="options">
+                                <div class="option" data-correct="false">*</div>
+                                <div class="option" data-correct="false">?</div>
+                                <div class="option" data-correct="true">_</div>
+                                <div class="option" data-correct="false">...</div>
+                            </div>
+                            <div class="feedback"></div>
+                        </div>
+                        
+                        <!-- Pregunta 3 -->
+                        <div class="quiz-question" id="question3">
+                            <h3><span>3</span> ¿Cuál es la principal ventaja de usar <code>match</code> sobre múltiples sentencias <code>if-elif</code>?</h3>
+                            <div class="options">
+                                <div class="option" data-correct="false">Es más rápido en ejecución</div>
+                                <div class="option" data-correct="true">Es más legible y expresivo</div>
+                                <div class="option" data-correct="false">Consume menos memoria</div>
+                                <div class="option" data-correct="false">Es compatible con versiones antiguas de Python</div>
+                            </div>
+                            <div class="feedback"></div>
+                        </div>
+                        
+                        <!-- Pregunta 4 -->
+                        <div class="quiz-question" id="question4">
+                            <h3><span>4</span> ¿Qué imprimirá el siguiente código?<br>
+                            <code>status = 404<br>
+                            match status:<br>
+                            &nbsp;&nbsp;case 200: print("OK")<br>
+                            &nbsp;&nbsp;case 404: print("No encontrado")<br>
+                            &nbsp;&nbsp;case _: print("Error")</code></h3>
+                            <div class="options">
+                                <div class="option" data-correct="false">OK</div>
+                                <div class="option" data-correct="true">No encontrado</div>
+                                <div class="option" data-correct="false">Error</div>
+                                <div class="option" data-correct="false">Nada, hay un error de sintaxis</div>
+                            </div>
+                            <div class="feedback"></div>
+                        </div>
+                        
+                        <!-- Pregunta 5 -->
+                        <div class="quiz-question" id="question5">
+                            <h3><span>5</span> ¿Cuál de estas estructuras NO se puede usar como patrón en <code>match</code>?</h3>
+                            <div class="options">
+                                <div class="option" data-correct="false">Tuplas</div>
+                                <div class="option" data-correct="false">Listas</div>
+                                <div class="option" data-correct="false">Clases personalizadas</div>
+                                <div class="option" data-correct="true">Diccionarios no estructurados</div>
+                            </div>
+                            <div class="feedback"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="quiz-controls">
+                        <button class="btn" id="prev-btn" onclick="prevQuestion()" disabled>
+                            <i class="fas fa-arrow-left"></i> Anterior
+                        </button>
+                        
+                        <div class="score">
+                            Puntuación: <span class="score-value" id="score">0/5</span>
+                        </div>
+                        
+                        <button class="btn" id="next-btn" onclick="nextQuestion()">
+                            Siguiente <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Pie de página -->
+            <footer>
+                <p>Diseñado por: Edwin Méndez J.</p>
+                <p>Taller de Python para Pensadores - La instrucción match</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Variables para el quiz
+        let currentQuestion = 1;
+        let score = 0;
+        const totalQuestions = 5;
+        
+        // Mostrar/ocultar preguntas
+        function showQuestion(questionNumber) {
+            // Ocultar todas las preguntas
+            document.querySelectorAll('.quiz-question').forEach(q => {
+                q.classList.remove('active');
+            });
+            
+            // Mostrar la pregunta actual
+            document.getElementById(`question${questionNumber}`).classList.add('active');
+            
+            // Actualizar estado de botones
+            document.getElementById('prev-btn').disabled = questionNumber === 1;
+            document.getElementById('next-btn').style.display = questionNumber === totalQuestions ? 'none' : 'block';
+            
+            // Si es la última pregunta, mostrar botón de resultados
+            if (questionNumber === totalQuestions) {
+                const nextBtn = document.getElementById('next-btn');
+                nextBtn.innerHTML = 'Ver resultados <i class="fas fa-chart-bar"></i>';
+                nextBtn.onclick = showResults;
+            }
+        }
+        
+        // Navegación entre preguntas
+        function nextQuestion() {
+            if (currentQuestion < totalQuestions) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            }
+        }
+        
+        function prevQuestion() {
+            if (currentQuestion > 1) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+            }
+        }
+        
+        // Manejo de selección de respuestas
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                // Solo permitir selección si no hay respuesta previa
+                if (this.parentElement.querySelector('.selected')) return;
+                
+                // Marcar esta opción como seleccionada
+                this.classList.add('selected');
+                
+                // Verificar si es correcta
+                const isCorrect = this.getAttribute('data-correct') === 'true';
+                const feedback = this.parentElement.nextElementSibling;
+                
+                if (isCorrect) {
+                    this.classList.add('correct');
+                    feedback.textContent = "¡Correcto! Has comprendido bien este concepto.";
+                    feedback.classList.add('correct');
+                    score++;
+                } else {
+                    this.classList.add('incorrect');
+                    feedback.textContent = "Incorrecto. Revisa el contenido del taller para aclarar este concepto.";
+                    feedback.classList.add('incorrect');
+                    
+                    // Mostrar la respuesta correcta
+                    const correctOption = this.parentElement.querySelector('[data-correct="true"]');
+                    correctOption.classList.add('correct');
+                }
+                
+                // Actualizar puntuación
+                document.getElementById('score').textContent = `${score}/${totalQuestions}`;
+            });
+        });
+        
+        // Mostrar resultados finales
+        function showResults() {
+            let message = '';
+            if (score === totalQuestions) {
+                message = `¡Excelente! ${score}/${totalQuestions} - Eres un maestro del match.`;
+            } else if (score >= totalQuestions * 0.7) {
+                message = `¡Buen trabajo! ${score}/${totalQuestions} - Tienes un buen dominio del concepto.`;
+            } else if (score >= totalQuestions * 0.5) {
+                message = `${score}/${totalQuestions} - Tienes conocimientos básicos, pero puedes mejorar.`;
+            } else {
+                message = `${score}/${totalQuestions} - Te recomiendo repasar el contenido del taller.`;
+            }
+            
+            alert(`Resultados del quiz:\n\n${message}\n\nRecuerda que el aprendizaje es un proceso continuo. ¡Sigue practicando!`);
+        }
+        
+        // Funciones para mostrar pistas
+        function showHint() {
+            alert("Pista para experimentar: Intenta agregar un caso para 'Patrocinador' en el primer ejemplo, o añade un nuevo patrón climático como 'ventoso' en el segundo ejemplo. Observa cómo la estructura match se adapta naturalmente a nuevos requerimientos.");
+        }
+        
+        function showSolutionHint() {
+            alert("Estructura sugerida para el reto:\n\n1. Crea una función que reciba tipo de visitante, región y tamaño del grupo.\n2. Usa match para el tipo de visitante y calcula el precio base.\n3. Usa otro match para la región y recomienda platos.\n4. Aplica descuento si el grupo es mayor a 3 personas.\n5. Considera usar patrones con guardias (if) para validaciones adicionales.");
+        }
+        
+        // Inicializar quiz
+        showQuestion(1);
+    </script>
+</body>
+</html>
