@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python para Pensadores - Taller Año Bisiesto</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        .header-decoration {
+            position: absolute;
+            font-size: 8rem;
+            opacity: 0.1;
+            top: 10px;
+            right: 20px;
+        }
+
+        /* Main Content */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            border-top: 5px solid var(--secondary-color);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-title {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--light-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            color: var(--secondary-color);
+        }
+
+        /* Python Code */
+        .code-container {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            position: relative;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #a0aec0;
+        }
+
+        .copy-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .copy-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .code-comment {
+            color: #81e6d9;
+        }
+
+        .code-keyword {
+            color: #fbb6ce;
+        }
+
+        .code-string {
+            color: #fed7d7;
+        }
+
+        .code-function {
+            color: #90cdf4;
+        }
+
+        .code-operator {
+            color: #fbd38d;
+        }
+
+        /* Interactive Section */
+        .interactive-section {
+            background-color: #f0f7ff;
+            border-left: 5px solid var(--secondary-color);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+
+        .test-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        input[type="number"] {
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            width: 150px;
+        }
+
+        input[type="number"]:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+        }
+
+        .btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+        }
+
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+
+        .result-box {
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-top: 15px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .result-bisiesto {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 5px solid var(--success-color);
+        }
+
+        .result-no-bisiesto {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        /* Steps */
+        .step {
+            display: flex;
+            margin-bottom: 25px;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            background-color: var(--secondary-color);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .step-content h3 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        /* Learning Tips */
+        .tips {
+            background-color: #fff8e1;
+            border-left: 5px solid var(--warning-color);
+            padding: 15px;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            margin: 20px 0;
+        }
+
+        .tip-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--warning-color);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-decoration">
+                <i class="fas fa-calendar-alt"></i>
+            </div>
+            <h1>Python para pensadores</h1>
+            <p class="subtitle">Taller diseñado con el corazón de un docente y la mente de un programador.</p>
+            <h2>Reto: "Año bisiesto"</h2>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="content-grid">
+            <!-- Columna izquierda: Explicación del problema -->
+            <div>
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-lightbulb"></i> ¿Qué es un año bisiesto?</h2>
+                    <p>Un año bisiesto es un año que tiene 366 días en lugar de los 365 días normales. Este día adicional se añade al final de febrero (29 de febrero) para corregir el desfase entre nuestro calendario (calendario gregoriano) y el año solar.</p>
+                    
+                    <div class="tips">
+                        <div class="tip-title">
+                            <i class="fas fa-info-circle"></i>
+                            <span>¿Por qué necesitamos años bisiestos?</span>
+                        </div>
+                        <p>La Tierra tarda aproximadamente 365.2422 días en orbitar alrededor del Sol. Sin los años bisiestos, nuestras estaciones se desfasarían aproximadamente 1 día cada 4 años.</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-cogs"></i> Las 4 reglas del pensamiento computacional</h2>
+                    
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Descomposición</h3>
+                            <p>Dividimos el problema grande en partes más pequeñas y manejables: entrada del usuario, verificación de divisibilidad y mostrar resultados.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Reconocimiento de patrones</h3>
+                            <p>Identificamos el patrón en los años bisiestos: se repiten cada 4 años, con excepciones cada 100 años y correcciones cada 400 años.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Abstracción</h3>
+                            <p>Extraemos las reglas esenciales del problema, ignorando detalles irrelevantes. Nos centramos en las condiciones matemáticas de divisibilidad.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3>Algoritmos</h3>
+                            <p>Creamos una serie de pasos ordenados para resolver el problema: un algoritmo que cualquiera pueda seguir para determinar si un año es bisiesto.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-code"></i> Algoritmo para verificar año bisiesto</h2>
+                    <p>Sigue estos pasos para determinar si un año es bisiesto:</p>
+                    <ol style="padding-left: 20px; margin-top: 10px;">
+                        <li>Obtén el año que quieres verificar</li>
+                        <li>Si el año <strong>NO</strong> es divisible entre 4 → NO es bisiesto</li>
+                        <li>Si el año es divisible entre 4 pero <strong>NO</strong> es divisible entre 100 → SÍ es bisiesto</li>
+                        <li>Si el año es divisible entre 100 y también es divisible entre 400 → SÍ es bisiesto</li>
+                        <li>Si el año es divisible entre 100 pero <strong>NO</strong> es divisible entre 400 → NO es bisiesto</li>
+                    </ol>
+                    
+                    <div class="interactive-section">
+                        <h3><i class="fas fa-check-circle"></i> ¡Pon a prueba tu comprensión!</h3>
+                        <p>¿Cuáles de estos años son bisiestos según las reglas?</p>
+                        
+                        <div class="test-section">
+                            <div class="input-group">
+                                <button class="btn" onclick="checkYear(2024)">2024</button>
+                                <span id="result-2024" class="result-box"></span>
+                            </div>
+                            
+                            <div class="input-group">
+                                <button class="btn" onclick="checkYear(1900)">1900</button>
+                                <span id="result-1900" class="result-box"></span>
+                            </div>
+                            
+                            <div class="input-group">
+                                <button class="btn" onclick="checkYear(2000)">2000</button>
+                                <span id="result-2000" class="result-box"></span>
+                            </div>
+                            
+                            <div class="input-group">
+                                <button class="btn" onclick="checkYear(2023)">2023</button>
+                                <span id="result-2023" class="result-box"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna derecha: Código Python y Práctica -->
+            <div>
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-laptop-code"></i> Solución en Python</h2>
+                    <p>Aquí está el código completo para determinar si un año es bisiesto. Lee los comentarios para entender cada paso:</p>
+                    
+                    <div class="code-container">
+                        <div class="code-header">
+                            <span>código_bisiesto.py</span>
+                            <button class="copy-btn" onclick="copyCode()">
+                                <i class="fas fa-copy"></i> Copiar código
+                            </button>
+                        </div>
+                        <pre><code><span class="code-comment"># PROGRAMA PARA VERIFICAR SI UN AÑO ES BISIESTO
+# Taller educativo para estudiantes de bachillerato</span>
+
+<span class="code-comment"># 1. SOLICITAR ENTRADA DEL USUARIO</span>
+<span class="code-comment"># Pedimos al usuario que ingrese un año</span>
+print(<span class="code-string">"=========================================="</span>)
+print(<span class="code-string">"       VERIFICADOR DE AÑO BISIESTO"</span>)
+print(<span class="code-string">"=========================================="</span>)
+print(<span class="code-string">""</span>)
+
+<span class="code-comment"># Obtenemos el año del usuario</span>
+anio_texto = input(<span class="code-string">"Ingresa un año: "</span>)
+
+<span class="code-comment"># Convertimos el texto a número</span>
+<span class="code-comment"># La función int() convierte texto a número entero</span>
+anio = int(anio_texto)
+
+print(<span class="code-string">""</span>)
+print(<span class="code-string">"------------------------------------------"</span>)
+print(<span class="code-string">f"Analizando el año {anio}..."</span>)
+print(<span class="code-string">"------------------------------------------"</span>)
+print(<span class="code-string">""</span>)
+
+<span class="code-comment"># 2. VERIFICAR LAS REGLAS DEL AÑO BISIESTO</span>
+<span class="code-comment"># REGLA 1: Verificar si es divisible entre 4</span>
+<span class="code-comment"># El operador % devuelve el residuo de una división</span>
+<span class="code-comment"># Si el residuo es 0, entonces es divisible</span>
+es_divisible_entre_4 = (anio % 4 == 0)
+
+<span class="code-comment"># Mostrar resultado del primer paso</span>
+<span class="code-keyword">if</span> es_divisible_entre_4:
+    print(<span class="code-string">f"✓ El año {anio} SÍ es divisible entre 4"</span>)
+<span class="code-keyword">else</span>:
+    print(<span class="code-string">f"✗ El año {anio} NO es divisible entre 4"</span>)
+
+<span class="code-comment"># REGLA 2: Verificar si es divisible entre 100</span>
+es_divisible_entre_100 = (anio % 100 == 0)
+
+<span class="code-keyword">if</span> es_divisible_entre_100:
+    print(<span class="code-string">f"✓ El año {anio} SÍ es divisible entre 100"</span>)
+<span class="code-keyword">else</span>:
+    print(<span class="code-string">f"✗ El año {anio} NO es divisible entre 100"</span>)
+
+<span class="code-comment"># REGLA 3: Verificar si es divisible entre 400</span>
+es_divisible_entre_400 = (anio % 400 == 0)
+
+<span class="code-keyword">if</span> es_divisible_entre_400:
+    print(<span class="code-string">f"✓ El año {anio} SÍ es divisible entre 400"</span>)
+<span class="code-keyword">else</span>:
+    print(<span class="code-string">f"✗ El año {anio} NO es divisible entre 400"</span>)
+
+print(<span class="code-string">""</span>)
+print(<span class="code-string">"------------------------------------------"</span>)
+print(<span class="code-string">"Aplicando las reglas completas..."</span>)
+print(<span class="code-string">"------------------------------------------"</span>)
+print(<span class="code-string">""</span>)
+
+<span class="code-comment"># 3. APLICAR TODAS LAS REGLAS JUNTAS</span>
+<span class="code-comment"># Primera condición: NO divisible entre 4</span>
+<span class="code-keyword">if</span> <span class="code-keyword">not</span> es_divisible_entre_4:
+    print(<span class="code-string">"→ Según la regla 1: NO es divisible entre 4"</span>)
+    print(<span class="code-string">f"→ CONCLUSIÓN: El año {anio} NO es bisiesto"</span>)
+    
+<span class="code-comment"># Segunda condición: Divisible entre 4 pero NO entre 100</span>
+<span class="code-keyword">elif</span> es_divisible_entre_4 <span class="code-keyword">and</span> <span class="code-keyword">not</span> es_divisible_entre_100:
+    print(<span class="code-string">"→ Según la regla 2: Divisible entre 4 pero NO entre 100"</span>)
+    print(<span class="code-string">f"→ CONCLUSIÓN: El año {anio} SÍ es bisiesto"</span>)
+    
+<span class="code-comment"># Tercera condición: Divisible entre 100 y también entre 400</span>
+<span class="code-keyword">elif</span> es_divisible_entre_100 <span class="code-keyword">and</span> es_divisible_entre_400:
+    print(<span class="code-string">"→ Según la regla 3: Divisible entre 100 y también entre 400"</span>)
+    print(<span class="code-string">f"→ CONCLUSIÓN: El año {anio} SÍ es bisiesto"</span>)
+    
+<span class="code-comment"># Cuarta condición: Divisible entre 100 pero NO entre 400</span>
+<span class="code-keyword">else</span>:
+    print(<span class="code-string">"→ Según la regla 4: Divisible entre 100 pero NO entre 400"</span>)
+    print(<span class="code-string">f"→ CONCLUSIÓN: El año {anio} NO es bisiesto"</span>)
+
+print(<span class="code-string">""</span>)
+print(<span class="code-string">"=========================================="</span>)
+print(<span class="code-string">"           ANÁLISIS COMPLETADO"</span>)
+print(<span class="code-string">"=========================================="</span>)
+print(<span class="code-string">""</span>)
+
+<span class="code-comment"># 4. MOSTRAR RESULTADO FINAL</span>
+<span class="code-comment"># Esta parte resume todo en un solo mensaje</span>
+<span class="code-keyword">if</span> (es_divisible_entre_4 <span class="code-keyword">and</span> <span class="code-keyword">not</span> es_divisible_entre_100) <span class="code-keyword">or</span> (es_divisible_entre_100 <span class="code-keyword">and</span> es_divisible_entre_400):
+    print(<span class="code-string">"★"</span> * 42)
+    print(<span class="code-string">f"★   ¡EL AÑO {anio} SÍ ES BISIESTO!   ★"</span>)
+    print(<span class="code-string">"★"</span> * 42)
+<span class="code-keyword">else</span>:
+    print(<span class="code-string">"-"</span> * 42)
+    print(<span class="code-string">f"   El año {anio} NO es bisiesto   "</span>)
+    print(<span class="code-string">"-"</span> * 42)
+
+print(<span class="code-string">""</span>)
+print(<span class="code-string">"Fin del programa. ¡Gracias por participar!"</span>)</code></pre>
+                    </div>
+                    
+                    <div class="test-section">
+                        <h3><i class="fas fa-play-circle"></i> Prueba el código con cualquier año</h3>
+                        <p>Ingresa un año para verificar si es bisiesto:</p>
+                        
+                        <div class="input-group">
+                            <input type="number" id="yearInput" placeholder="Ejemplo: 2024" min="1" max="9999" value="2024">
+                            <button class="btn btn-success" onclick="testYear()">
+                                <i class="fas fa-play"></i> Probar año
+                            </button>
+                        </div>
+                        
+                        <div id="testResult" class="result-box"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-graduation-cap"></i> Ejercicios para practicar</h2>
+                    <p>Para consolidar tu aprendizaje, intenta estos ejercicios:</p>
+                    
+                    <div class="tips">
+                        <div class="tip-title">
+                            <i class="fas fa-tasks"></i>
+                            <span>Ejercicio 1: Modificar el código</span>
+                        </div>
+                        <p>Cambia el programa para que pregunte al usuario si quiere verificar otro año sin salir del programa.</p>
+                    </div>
+                    
+                    <div class="tips">
+                        <div class="tip-title">
+                            <i class="fas fa-tasks"></i>
+                            <span>Ejercicio 2: Rango de años</span>
+                        </div>
+                        <p>Modifica el programa para que muestre todos los años bisiestos en un rango específico (ejemplo: entre 2000 y 2050).</p>
+                    </div>
+                    
+                    <div class="tips">
+                        <div class="tip-title">
+                            <i class="fas fa-tasks"></i>
+                            <span>Ejercicio 3: Contador de bisiestos</span>
+                        </div>
+                        <p>Crea un programa que cuente cuántos años bisiestos hay en el siglo XXI (entre 2001 y 2100).</p>
+                    </div>
+                    
+                    <div class="interactive-section">
+                        <h3><i class="fas fa-question-circle"></i> Preguntas de reflexión</h3>
+                        <ol style="padding-left: 20px;">
+                            <li>¿Por qué crees que la regla del 400 es necesaria?</li>
+                            <li>¿Qué pasaría si no tuviéramos años bisiestos?</li>
+                            <li>¿Cómo se relaciona este algoritmo con otros problemas de la vida real?</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Diseñado por: Edwin Méndez J.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Función para verificar si un año es bisiesto
+        function esBisiesto(anio) {
+            // Regla 1: No divisible entre 4 → No bisiesto
+            if (anio % 4 !== 0) {
+                return false;
+            }
+            // Regla 2: Divisible entre 4 pero no entre 100 → Bisiesto
+            else if (anio % 100 !== 0) {
+                return true;
+            }
+            // Regla 3: Divisible entre 100 y también entre 400 → Bisiesto
+            // Regla 4: Divisible entre 100 pero no entre 400 → No bisiesto
+            else {
+                return anio % 400 === 0;
+            }
+        }
+
+        // Función para mostrar resultado de los años de prueba
+        function checkYear(anio) {
+            const resultado = esBisiesto(anio);
+            const elemento = document.getElementById(`result-${anio}`);
+            
+            if (resultado) {
+                elemento.textContent = `¡Sí! ${anio} es bisiesto`;
+                elemento.className = "result-box result-bisiesto";
+            } else {
+                elemento.textContent = `No, ${anio} no es bisiesto`;
+                elemento.className = "result-box result-no-bisiesto";
+            }
+            
+            elemento.style.display = "block";
+        }
+
+        // Función para probar cualquier año ingresado
+        function testYear() {
+            const input = document.getElementById("yearInput");
+            const resultadoDiv = document.getElementById("testResult");
+            const anio = parseInt(input.value);
+            
+            if (isNaN(anio) || anio < 1 || anio > 9999) {
+                resultadoDiv.textContent = "Por favor, ingresa un año válido (entre 1 y 9999)";
+                resultadoDiv.className = "result-box result-no-bisiesto";
+                resultadoDiv.style.display = "block";
+                return;
+            }
+            
+            const esBisiestoResultado = esBisiesto(anio);
+            
+            if (esBisiestoResultado) {
+                resultadoDiv.innerHTML = `
+                    <i class="fas fa-calendar-check"></i> 
+                    <strong>¡${anio} SÍ es un año bisiesto!</strong>
+                    <br><br>
+                    <small>El año ${anio} tiene 366 días, con un 29 de febrero.</small>
+                `;
+                resultadoDiv.className = "result-box result-bisiesto";
+            } else {
+                resultadoDiv.innerHTML = `
+                    <i class="fas fa-calendar-times"></i> 
+                    <strong>${anio} NO es un año bisiesto</strong>
+                    <br><br>
+                    <small>El año ${anio} tiene 365 días, sin 29 de febrero.</small>
+                `;
+                resultadoDiv.className = "result-box result-no-bisiesto";
+            }
+            
+            resultadoDiv.style.display = "block";
+        }
+
+        // Función para copiar el código al portapapeles
+        function copyCode() {
+            const codeElement = document.querySelector('.code-container pre');
+            const range = document.createRange();
+            range.selectNode(codeElement);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            
+            try {
+                document.execCommand('copy');
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> ¡Copiado!';
+                btn.style.backgroundColor = '#2ecc71';
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.backgroundColor = '';
+                }, 2000);
+            } catch (err) {
+                console.error('Error al copiar: ', err);
+            }
+            
+            window.getSelection().removeAllRanges();
+        }
+
+        // Inicializar algunos resultados al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mostrar resultados para algunos años de ejemplo
+            setTimeout(() => {
+                checkYear(2024);
+                checkYear(1900);
+                checkYear(2000);
+                checkYear(2023);
+            }, 500);
+        });
+    </script>
+</body>
+</html>
