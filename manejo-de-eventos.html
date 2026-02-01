@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python: Manejo de Eventos - Taller Práctico</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            margin: 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+        }
+        
+        header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--accent);
+        }
+        
+        h1 {
+            font-size: 3.2rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.4rem;
+            font-weight: 300;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+        
+        .topic {
+            display: inline-block;
+            background-color: var(--accent);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            margin-top: 15px;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            border-radius: 15px;
+            background-color: #f8fafc;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--secondary);
+            display: flex;
+            align-items: center;
+        }
+        
+        h2 i {
+            margin-right: 15px;
+            color: var(--secondary);
+        }
+        
+        .learning-objective {
+            background-color: #e8f4fc;
+            border-left: 5px solid var(--secondary);
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+            margin: 20px 0;
+        }
+        
+        /* Code Examples */
+        .code-container {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .code-keyword {
+            color: #63b3ed;
+        }
+        
+        .code-function {
+            color: #68d391;
+        }
+        
+        .code-string {
+            color: #fbb6ce;
+        }
+        
+        .code-comment {
+            color: #a0aec0;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+            margin: 10px 5px;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+        }
+        
+        .btn-accent:hover {
+            background-color: #c0392b;
+            box-shadow: 0 7px 15px rgba(231, 76, 60, 0.3);
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+        }
+        
+        .btn-success:hover {
+            background-color: #27ae60;
+            box-shadow: 0 7px 15px rgba(46, 204, 113, 0.3);
+        }
+        
+        /* Quiz Section */
+        .quiz-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+        
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .score {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 30px;
+        }
+        
+        .question {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .option {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+        }
+        
+        .option:hover {
+            background-color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .option.selected {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .option.incorrect {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .option-letter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background-color: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+        
+        .feedback {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: var(--success);
+            border: 2px solid var(--success);
+            display: block;
+        }
+        
+        .feedback.incorrect {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            display: block;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--primary);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            font-size: 1rem;
+        }
+        
+        .designer {
+            margin-top: 10px;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            header {
+                padding: 30px 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .topic {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                display: block;
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Python para pensadores</h1>
+            <div class="subtitle">Taller diseñado con el corazón de un docente y la mente de un programador</div>
+            <div class="topic">Python: Manejo de Eventos</div>
+        </header>
+        
+        <main class="main-content">
+            <!-- Section 1: Learning Objective -->
+            <section class="section">
+                <h2><i class="fas fa-bullseye"></i> Objetivo de aprendizaje</h2>
+                <div class="learning-objective">
+                    <p>Desarrollar la competencia para diseñar e implementar programas en Python que respondan a eventos del usuario, integrando conocimientos técnicos sobre estructuras de control, funciones y bibliotecas gráficas, habilidades cognitivas de análisis, diseño de soluciones y depuración de errores, y actitudes de curiosidad, perseverancia y colaboración, con el propósito de crear aplicaciones interactivas que respondan de manera intuitiva a las acciones del usuario y resuelvan problemas reales mediante la programación reactiva.</p>
+                </div>
+            </section>
+            
+            <!-- Section 2: Context -->
+            <section class="section">
+                <h2><i class="fas fa-globe-americas"></i> Contextualización</h2>
+                <p>Imagina que estás jugando tu videojuego favorito. Cada vez que presionas una tecla, tu personaje salta; cuando haces clic con el mouse, dispara; al mover el joystick, cambia de dirección. Detrás de cada una de estas acciones hay un <strong>evento</strong> que el programa detecta y responde. En nuestra vida diaria, los eventos están por todas partes: una notificación en tu celular, el semáforo que cambia de color, el timbre de la escuela que marca el inicio de clases.</p>
+                
+                <p>En programación, los eventos son acciones o sucesos que ocurren durante la ejecución de un programa, generalmente iniciados por el usuario (clic, tecla presionada, movimiento del mouse) o por el sistema (temporizador, recepción de datos). Aprender a manejar eventos es como adquirir el superpoder de hacer que tus programas "escuchen" y "respondan" al mundo que los rodea. En este taller, conectaremos la programación con situaciones reales de interacción humano-computadora, explorando cómo Python nos permite crear experiencias digitales interactivas y significativas.</p>
+            </section>
+            
+            <!-- Section 3: Activity Development -->
+            <section class="section">
+                <h2><i class="fas fa-code"></i> Desarrollo de la actividad</h2>
+                <p>Para trabajar con eventos en Python, utilizaremos la biblioteca <strong>Tkinter</strong>, que nos permite crear interfaces gráficas y manejar eventos de usuario. Comencemos con un ejemplo sencillo que responde al clic de un botón.</p>
+                
+                <div class="code-container">
+                    <pre><code><span class="code-keyword">import</span> tkinter <span class="code-keyword">as</span> tk
+<span class="code-keyword">from</span> tkinter <span class="code-keyword">import</span> messagebox
+
+<span class="code-comment"># Función que se ejecutará cuando ocurra el evento (clic en el botón)</span>
+<span class="code-keyword">def</span> <span class="code-function">saludar</span>():
+    messagebox.showinfo(<span class="code-string">"Saludo"</span>, <span class="code-string">"¡Hola! Has hecho clic en el botón."</span>)
+
+<span class="code-comment"># Crear la ventana principal</span>
+ventana = tk.Tk()
+ventana.title(<span class="code-string">"Mi primera aplicación con eventos"</span>)
+ventana.geometry(<span class="code-string">"400x300"</span>)
+
+<span class="code-comment"># Crear un botón y asociarlo al evento 'click'</span>
+boton = tk.Button(ventana, text=<span class="code-string">"Haz clic aquí"</span>, command=saludar)
+boton.pack(pady=50)
+
+<span class="code-comment"># Iniciar el bucle principal de eventos</span>
+ventana.mainloop()</code></pre>
+                </div>
+                
+                <p><strong>Exploración práctica:</strong> Copia este código en tu editor de Python, ejecútalo y haz clic en el botón. Luego, experimenta modificando:</p>
+                <ul>
+                    <li>El texto del botón</li>
+                    <li>El mensaje que aparece en el cuadro de diálogo</li>
+                    <li>El tamaño de la ventana</li>
+                </ul>
+                
+                <p>Ahora veamos un ejemplo más avanzado que responde a diferentes tipos de eventos:</p>
+                
+                <div class="code-container">
+                    <pre><code><span class="code-keyword">import</span> tkinter <span class="code-keyword">as</span> tk
+
+<span class="code-keyword">def</span> <span class="code-function">tecla_presionada</span>(evento):
+    <span class="code-comment"># Este evento se dispara cuando se presiona una tecla</span>
+    etiqueta.config(text=<span class="code-string">f"Tecla presionada: {evento.char}"</span>)
+    ventana.config(bg=<span class="code-string">"lightblue"</span>)
+
+<span class="code-keyword">def</span> <span class="code-function">tecla_liberada</span>(evento):
+    <span class="code-comment"># Este evento se dispara cuando se suelta una tecla</span>
+    etiqueta.config(text=<span class="code-string">"Suelta una tecla para ver el código"</span>)
+    ventana.config(bg=<span class="code-string">"white"</span>)
+
+<span class="code-keyword">def</span> <span class="code-function">raton_entra</span>(evento):
+    <span class="code-comment"># Este evento se dispara cuando el ratón entra en un widget</span>
+    etiqueta.config(text=<span class="code-string">"¡El ratón entró en el área!"</span>)
+
+<span class="code-keyword">def</span> <span class="code-function">raton_sale</span>(evento):
+    <span class="code-comment"># Este evento se dispara cuando el ratón sale de un widget</span>
+    etiqueta.config(text=<span class="code-string">"El ratón salió del área"</span>)
+
+<span class="code-comment"># Configuración de la ventana</span>
+ventana = tk.Tk()
+ventana.title(<span class="code-string">"Manejador de Eventos"</span>)
+ventana.geometry(<span class="code-string">"500x400"</span>)
+
+<span class="code-comment"># Crear una etiqueta para mostrar información</span>
+etiqueta = tk.Label(ventana, text=<span class="code-string">"Presiona una tecla o mueve el ratón"</span>, 
+                    font=(<span class="code-string">"Arial"</span>, <span class="code-function">16</span>))
+etiqueta.pack(pady=50)
+
+<span class="code-comment"># Vincular eventos a la ventana principal</span>
+ventana.bind(<span class="code-string">'&lt;KeyPress&gt;'</span>, tecla_presionada)
+ventana.bind(<span class="code-string">'&lt;KeyRelease&gt;'</span>, tecla_liberada)
+ventana.bind(<span class="code-string">'&lt;Enter&gt;'</span>, raton_entra)
+ventana.bind(<span class="code-string">'&lt;Leave&gt;'</span>, raton_sale)
+
+<span class="code-comment"># Iniciar la aplicación</span>
+ventana.mainloop()</code></pre>
+                </div>
+                
+                <p><strong>Reflexión metacognitiva:</strong> Después de ejecutar este código, responde:</p>
+                <ol>
+                    <li>¿Cómo se relaciona cada función con el evento que la dispara?</li>
+                    <li>¿Qué sucede si cambias el orden de los eventos vinculados?</li>
+                    <li>¿Cómo podrías modificar el código para que el color de fondo cambie según la tecla presionada?</li>
+                </ol>
+                
+                <button class="btn" onclick="toggleCodeExplanation()">Ver explicación detallada</button>
+                
+                <div id="codeExplanation" style="display: none; margin-top: 20px; padding: 15px; background-color: #f0f8ff; border-radius: 10px;">
+                    <p><strong>Explicación del código:</strong> En este ejemplo, cada función está diseñada para manejar un tipo específico de evento. La función <code>bind()</code> se utiliza para "vincular" o "asociar" un tipo de evento (como presionar una tecla) con una función que se ejecutará cuando ese evento ocurra. El parámetro <code>evento</code> que recibe cada función contiene información sobre lo que sucedió (qué tecla se presionó, coordenadas del mouse, etc.).</p>
+                </div>
+            </section>
+            
+            <!-- Section 4: Final Challenge -->
+            <section class="section">
+                <h2><i class="fas fa-trophy"></i> El reto final</h2>
+                <p>Tu misión es crear un <strong>simulador de caja registradora interactiva</strong> para una tienda virtual de productos tecnológicos. La aplicación debe cumplir con los siguientes requisitos:</p>
+                
+                <ol>
+                    <li>Mostrar al menos 5 productos tecnológicos con su nombre, precio y una imagen representativa (puedes usar emojis o iconos).</li>
+                    <li>Permitir al usuario seleccionar productos haciendo clic en ellos (cada clic agrega una unidad al carrito).</li>
+                    <li>Implementar botones para aumentar/disminuir la cantidad de cada producto en el carrito.</li>
+                    <li>Mostrar el total de la compra que se actualice automáticamente cada vez que se modifique el carrito.</li>
+                    <li>Incluir un botón "Pagar" que, al hacer clic, muestre un resumen de la compra y limpie el carrito.</li>
+                    <li>Agregar al menos dos eventos de teclado:
+                        <ul>
+                            <li>Presionar "Escape" para limpiar todo el carrito</li>
+                            <li>Presionar "Enter" para simular el pago (igual que el botón "Pagar")</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <p><strong>Elementos de evaluación:</strong> Tu solución será evaluada en función de:</p>
+                <ul>
+                    <li>Funcionalidad correcta de todos los eventos solicitados</li>
+                    <li>Claridad y organización del código</li>
+                    <li>Creatividad en la interfaz y selección de productos</li>
+                    <li>Manejo adecuado de las excepciones (evitar errores al usuario)</li>
+                </ul>
+                
+                <p><em>Pista:</em> Puedes comenzar diseñando la interfaz con los elementos visuales y luego añadir los eventos uno por uno, probando cada funcionalidad a medida que avanzas.</p>
+                
+                <button class="btn btn-accent" onclick="showChallengeHint()">Ver pista extendida</button>
+                
+                <div id="challengeHint" style="display: none; margin-top: 20px; padding: 15px; background-color: #fff8e1; border-radius: 10px;">
+                    <p><strong>Estructura sugerida:</strong></p>
+                    <ol>
+                        <li>Crea un diccionario para almacenar los productos con sus precios</li>
+                        <li>Diseña la interfaz con Frames para organizar los productos y el carrito</li>
+                        <li>Usa botones con el parámetro <code>command</code> para manejar los clics en productos</li>
+                        <li>Implementa una función <code>actualizar_total()</code> que recalcule el total cuando cambie el carrito</li>
+                        <li>Vincula los eventos de teclado usando <code>ventana.bind()</code> al final, después de crear todos los elementos</li>
+                    </ol>
+                </div>
+            </section>
+            
+            <!-- Section 5: Interactive Quiz -->
+            <section class="section quiz-container">
+                <h2 style="color: white; border-bottom-color: white;"><i class="fas fa-gamepad"></i> Evaluación lúdica: ¡Pon a prueba tu conocimiento!</h2>
+                
+                <div class="quiz-header">
+                    <div class="question-counter">Pregunta <span id="current-question">1</span> de 5</div>
+                    <div class="score">Puntaje: <span id="score">0</span></div>
+                </div>
+                
+                <div class="question" id="question-text">¿Qué es un evento en programación?</div>
+                
+                <div class="options" id="options-container">
+                    <!-- Options will be populated by JavaScript -->
+                </div>
+                
+                <div class="feedback" id="feedback"></div>
+                
+                <div style="text-align: center;">
+                    <button class="btn btn-success" id="next-btn" onclick="nextQuestion()">Siguiente pregunta <i class="fas fa-arrow-right"></i></button>
+                    <button class="btn" id="restart-btn" onclick="restartQuiz()" style="display: none;">Reiniciar quiz</button>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>Taller práctico de aprendizaje basado en competencias para estudiantes ecuatorianos de bachillerato</p>
+            <div class="designer">Diseñado por: Edwin Méndez J.</div>
+        </footer>
+    </div>
+
+    <script>
+        // Toggle code explanation visibility
+        function toggleCodeExplanation() {
+            const explanation = document.getElementById('codeExplanation');
+            explanation.style.display = explanation.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        // Show challenge hint
+        function showChallengeHint() {
+            const hint = document.getElementById('challengeHint');
+            hint.style.display = hint.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        // Quiz functionality
+        const questions = [
+            {
+                question: "¿Qué es un evento en programación?",
+                options: [
+                    "Una función que se ejecuta automáticamente",
+                    "Una acción o suceso que ocurre durante la ejecución de un programa",
+                    "Un tipo de variable especial en Python",
+                    "Un error que ocurre en tiempo de ejecución"
+                ],
+                correct: 1,
+                explanation: "Un evento es cualquier acción o suceso que ocurre durante la ejecución de un programa, generalmente iniciado por el usuario o por el sistema."
+            },
+            {
+                question: "En Tkinter, ¿qué método se utiliza para vincular un evento a una función?",
+                options: [
+                    "connect()",
+                    "attach()",
+                    "bind()",
+                    "link()"
+                ],
+                correct: 2,
+                explanation: "El método bind() se utiliza para vincular un tipo de evento (como presionar una tecla) con una función que se ejecutará cuando ocurra ese evento."
+            },
+            {
+                question: "¿Cuál de estos NO es un evento común en interfaces gráficas?",
+                options: [
+                    "Clic del mouse",
+                    "Presionar una tecla",
+                    "Cambio de valor de una variable",
+                    "Movimiento del mouse"
+                ],
+                correct: 2,
+                explanation: "El cambio de valor de una variable no es considerado un evento en interfaces gráficas, ya que los eventos generalmente están relacionados con acciones del usuario o del sistema."
+            },
+            {
+                question: "En el código de ejemplo, ¿qué hace la función mainloop()?",
+                options: [
+                    "Termina la ejecución del programa",
+                    "Inicia el bucle principal que escucha eventos",
+                    "Crea la ventana principal de la aplicación",
+                    "Importa los módulos necesarios"
+                ],
+                correct: 1,
+                explanation: "mainloop() inicia el bucle principal de eventos de Tkinter, que se mantiene a la espera de eventos (clic, teclas, etc.) y ejecuta las funciones correspondientes."
+            },
+            {
+                question: "¿Qué tipo de evento se dispara cuando el usuario suelta una tecla?",
+                options: [
+                    "&lt;Key&gt;",
+                    "&lt;KeyPress&gt;",
+                    "&lt;KeyRelease&gt;",
+                    "&lt;KeyUp&gt;"
+                ],
+                correct: 2,
+                explanation: "El evento &lt;KeyRelease&gt; se dispara cuando el usuario suelta una tecla. &lt;KeyPress&gt; se dispara al presionarla, y &lt;Key&gt; puede referirse a ambos eventos."
+            }
+        ];
+        
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedOption = null;
+        
+        function loadQuestion() {
+            const question = questions[currentQuestionIndex];
+            document.getElementById('question-text').textContent = question.question;
+            document.getElementById('current-question').textContent = currentQuestionIndex + 1;
+            
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            
+            const letters = ['A', 'B', 'C', 'D'];
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.innerHTML = `
+                    <div class="option-letter">${letters[index]}</div>
+                    <div>${option}</div>
+                `;
+                
+                optionElement.addEventListener('click', () => selectOption(index, optionElement));
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('next-btn').textContent = currentQuestionIndex === questions.length - 1 ? 'Ver resultados' : 'Siguiente pregunta';
+            selectedOption = null;
+        }
+        
+        function selectOption(optionIndex, element) {
+            // Reset all options
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected', 'incorrect');
+            });
+            
+            // Mark selected option
+            element.classList.add('selected');
+            selectedOption = optionIndex;
+            
+            // Check if correct and show feedback
+            const question = questions[currentQuestionIndex];
+            const feedback = document.getElementById('feedback');
+            
+            if (optionIndex === question.correct) {
+                feedback.textContent = `¡Correcto! ${question.explanation}`;
+                feedback.className = 'feedback correct';
+                score++;
+                document.getElementById('score').textContent = score;
+            } else {
+                feedback.textContent = `Incorrecto. La respuesta correcta es: ${question.options[question.correct]}. ${question.explanation}`;
+                feedback.className = 'feedback incorrect';
+                
+                // Show correct answer
+                const letters = ['A', 'B', 'C', 'D'];
+                document.querySelectorAll('.option')[question.correct].classList.add('selected');
+                element.classList.add('incorrect');
+            }
+            
+            feedback.style.display = 'block';
+        }
+        
+        function nextQuestion() {
+            if (selectedOption === null) {
+                alert('Por favor, selecciona una respuesta antes de continuar.');
+                return;
+            }
+            
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                // Show final results
+                document.getElementById('question-text').textContent = `¡Quiz completado! Obtuviste ${score} de ${questions.length} puntos (${Math.round(score/questions.length*100)}%).`;
+                document.getElementById('options-container').innerHTML = '';
+                document.getElementById('feedback').style.display = 'none';
+                document.getElementById('next-btn').style.display = 'none';
+                document.getElementById('restart-btn').style.display = 'inline-block';
+            }
+        }
+        
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            document.getElementById('score').textContent = '0';
+            document.getElementById('next-btn').style.display = 'inline-block';
+            document.getElementById('restart-btn').style.display = 'none';
+            loadQuestion();
+        }
+        
+        // Initialize the quiz
+        document.addEventListener('DOMContentLoaded', loadQuestion);
+    </script>
+</body>
+</html>

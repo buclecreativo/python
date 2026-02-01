@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taller de Python: Tkinter - Python para pensadores</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #1a252f;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --card-bg: #ffffff;
+            --gradient-primary: linear-gradient(135deg, #2c3e50 0%, #4a6491 100%);
+            --gradient-secondary: linear-gradient(135deg, #3498db 0%, #2ecc71 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 12px var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath fill='%23ffffff' fill-opacity='0.03' d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z'%3E%3C/path%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+        
+        .header-content h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header-content h2 {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .topic {
+            display: inline-block;
+            background-color: var(--accent);
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 2rem 0;
+        }
+        
+        .section {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 6px 15px var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .section-title {
+            color: var(--primary);
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 0.8rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: var(--secondary);
+        }
+        
+        .objective, .context, .challenge {
+            background-color: #f8fafc;
+            border-left: 5px solid var(--secondary);
+            padding-left: 1.5rem;
+        }
+        
+        .activity-section {
+            margin-top: 2rem;
+        }
+        
+        .sub-section {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .sub-section:last-child {
+            border-bottom: none;
+        }
+        
+        .sub-title {
+            color: var(--dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .code-block {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .code-comment {
+            color: #81e6d9;
+        }
+        
+        .code-keyword {
+            color: #ff79c6;
+        }
+        
+        .code-string {
+            color: #f1fa8c;
+        }
+        
+        .code-function {
+            color: #50fa7b;
+        }
+        
+        .highlight {
+            background-color: #fff9c4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+        
+        /* Quiz Section */
+        .quiz-container {
+            background: var(--gradient-secondary);
+            padding: 2rem;
+            border-radius: 15px;
+            color: white;
+            margin-top: 2rem;
+        }
+        
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .score-container {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .question {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .option {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .option:hover {
+            background-color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-color: var(--secondary);
+        }
+        
+        .option.selected {
+            background-color: var(--secondary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .option.correct {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .option.incorrect {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .option-letter {
+            background-color: var(--primary);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .feedback {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            font-weight: bold;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .feedback.correct {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+            border-left: 5px solid #27ae60;
+        }
+        
+        .feedback.incorrect {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: #c0392b;
+            border-left: 5px solid #c0392b;
+        }
+        
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+        
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.8rem;
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(50, 150, 250, 0.3);
+        }
+        
+        .btn:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(50, 150, 250, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+        }
+        
+        .btn-accent:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content h1 {
+                font-size: 2rem;
+            }
+            
+            .header-content h2 {
+                font-size: 1.2rem;
+            }
+            
+            .section {
+                padding: 1.5rem;
+            }
+            
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            .quiz-container {
+                padding: 1.5rem;
+            }
+            
+            .code-block {
+                font-size: 0.85rem;
+                padding: 1rem;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Scroll animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container header-content">
+            <h1>Python para pensadores</h1>
+            <h2>Taller diseñado con el corazón de un docente y la mente de un programador</h2>
+            <div class="topic">Tkinter: Creando interfaces gráficas con Python</div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Learning Objective Section -->
+        <section class="section objective fade-in">
+            <h2 class="section-title"><i class="fas fa-bullseye"></i> Objetivo de aprendizaje</h2>
+            <p>Desarrollar una aplicación de escritorio con interfaz gráfica utilizando la biblioteca Tkinter de Python, integrando la comprensión de sus componentes fundamentales (ventanas, widgets y eventos) y métodos de organización (pack, grid y place), para resolver problemas reales mediante el diseño de soluciones interactivas que fomenten la creatividad, el pensamiento lógico y la capacidad de transformar ideas abstractas en herramientas tangibles y útiles.</p>
+        </section>
+
+        <!-- Context Section -->
+        <section class="section context fade-in">
+            <h2 class="section-title"><i class="fas fa-compass"></i> Contextualización</h2>
+            <p>Imagina que quieres crear una aplicación para organizar tus tareas diarias, calcular tus gastos mensuales o incluso diseñar un juego simple. Hasta ahora, tus programas en Python probablemente se han comunicado contigo a través de la consola, con texto blanco sobre fondo negro. Pero ¿y si pudieras crear ventanas, botones, campos de texto y menús como los de cualquier programa que usas en tu computadora? Esto es precisamente lo que aprenderás hoy: a dar vida visual a tus ideas de programación.</p>
+            <p>Tkinter es como el set de herramientas que te permitirá construir la interfaz de usuario para tus programas. Es tu puente entre el código que escribes y la experiencia visual que ofreces a quien use tu aplicación. En un mundo donde la interacción visual es fundamental, dominar estas herramientas te convierte no solo en un programador, sino en un creador de experiencias digitales.</p>
+        </section>
+
+        <!-- Activity Development Section -->
+        <section class="section fade-in">
+            <h2 class="section-title"><i class="fas fa-code"></i> Desarrollo de la actividad</h2>
+            
+            <div class="activity-section">
+                <div class="sub-section">
+                    <h3 class="sub-title"><i class="fas fa-question-circle"></i> ¿Qué es Tkinter?</h3>
+                    <p>Tkinter es la biblioteca estándar de Python para crear interfaces gráficas de usuario (GUI). Viene incluida con Python, por lo que no necesitas instalar nada adicional. Tkinter proporciona una variedad de widgets (elementos visuales) como botones, etiquetas, cuadros de texto y más, que puedes organizar en ventanas para crear aplicaciones de escritorio.</p>
+                    <p>La belleza de Tkinter está en su simplicidad: con pocas líneas de código puedes crear una ventana funcional, y a medida que avanzas, puedes construir interfaces complejas y profesionales.</p>
+                </div>
+                
+                <div class="sub-section">
+                    <h3 class="sub-title"><i class="fas fa-sitemap"></i> Estructura básica de un programa con Tkinter</h3>
+                    <p>Toda aplicación con Tkinter sigue una estructura básica:</p>
+                    <div class="code-block">
+<pre><span class="code-comment"># 1. Importar la biblioteca tkinter</span>
+<span class="code-keyword">import</span> tkinter <span class="code-keyword">as</span> tk
+<span class="code-keyword">from</span> tkinter <span class="code-keyword">import</span> ttk
+
+<span class="code-comment"># 2. Crear la ventana principal</span>
+<span class="code-function">ventana</span> = tk.Tk()
+<span class="code-function">ventana</span>.title(<span class="code-string">"Mi primera aplicación"</span>)
+<span class="code-function">ventana</span>.geometry(<span class="code-string">"400x300"</span>)
+
+<span class="code-comment"># 3. Agregar widgets (elementos de la interfaz)</span>
+<span class="code-function">etiqueta</span> = tk.Label(<span class="code-function">ventana</span>, text=<span class="code-string">"¡Hola, mundo!"</span>)
+<span class="code-function">etiqueta</span>.pack()
+
+<span class="code-comment"># 4. Iniciar el bucle principal de la aplicación</span>
+<span class="code-function">ventana</span>.mainloop()</pre>
+                    </div>
+                    <p>Este código crea una ventana con el título "Mi primera aplicación", de 400 píxeles de ancho por 300 de alto, que muestra el texto "¡Hola, mundo!". El método <span class="highlight">mainloop()</span> mantiene la ventana abierta y responde a las interacciones del usuario.</p>
+                </div>
+                
+                <div class="sub-section">
+                    <h3 class="sub-title"><i class="fas fa-cube"></i> Los fundamentos: Ventanas, Widgets y Eventos</h3>
+                    <p><strong>Ventanas (Windows):</strong> Son el contenedor principal de tu aplicación. Puedes tener una ventana principal y varias ventanas secundarias.</p>
+                    <p><strong>Widgets:</strong> Son los elementos que colocas dentro de las ventanas. Los más comunes son:</p>
+                    <ul>
+                        <li><span class="highlight">Label</span>: Para mostrar texto o imágenes</li>
+                        <li><span class="highlight">Button</span>: Botones que realizan acciones al hacer clic</li>
+                        <li><span class="highlight">Entry</span>: Campo de texto de una sola línea</li>
+                        <li><span class="highlight">Text</span>: Área de texto de múltiples líneas</li>
+                        <li><span class="highlight">Frame</span>: Contenedor para organizar otros widgets</li>
+                    </ul>
+                    <p><strong>Eventos:</strong> Son las acciones del usuario (hacer clic, escribir, mover el mouse) a las que tu programa puede responder. Los manejadores de eventos (event handlers) son funciones que se ejecutan cuando ocurre un evento específico.</p>
+                    
+                    <div class="code-block">
+<pre><span class="code-keyword">import</span> tkinter <span class="code-keyword">as</span> tk
+
+<span class="code-function">def</span> <span class="code-function">saludar</span>():
+    <span class="code-comment"># Esta función se ejecuta cuando se hace clic en el botón</span>
+    <span class="code-function">etiqueta_saludo</span>.config(text=<span class="code-string">"¡Hola, estudiante! ¡Bienvenido a Tkinter!"</span>)
+
+<span class="code-comment"># Crear ventana</span>
+<span class="code-function">ventana</span> = tk.Tk()
+<span class="code-function">ventana</span>.title(<span class="code-string">"Ejemplo de Eventos"</span>)
+
+<span class="code-comment"># Crear widgets</span>
+<span class="code-function">etiqueta_saludo</span> = tk.Label(<span class="code-function">ventana</span>, text=<span class="code-string">"Presiona el botón para un saludo"</span>)
+<span class="code-function">etiqueta_saludo</span>.pack(pady=10)
+
+<span class="code-comment"># El parámetro command indica qué función ejecutar al hacer clic</span>
+<span class="code-function">boton_saludo</span> = tk.Button(<span class="code-function">ventana</span>, text=<span class="code-string">"Saludar"</span>, command=saludar)
+<span class="code-function">boton_saludo</span>.pack()
+
+<span class="code-function">ventana</span>.mainloop()</pre>
+                    </div>
+                </div>
+                
+                <div class="sub-section">
+                    <h3 class="sub-title"><i class="fas fa-th"></i> Organización de elementos: pack, grid y place</h3>
+                    <p>Tkinter ofrece tres métodos para organizar widgets en una ventana:</p>
+                    
+                    <p><strong>1. pack():</strong> Organiza widgets en bloques antes de colocarlos en el contenedor padre. Es simple pero menos flexible.</p>
+                    <div class="code-block">
+<pre><span class="code-comment"># Ejemplo con pack()</span>
+<span class="code-function">etiqueta1</span> = tk.Label(<span class="code-function">ventana</span>, text=<span class="code-string">"Arriba"</span>, bg=<span class="code-string">"lightblue"</span>)
+<span class="code-function">etiqueta1</span>.pack(side=<span class="code-string">"top"</span>, fill=<span class="code-string">"x"</span>, padx=10, pady=5)
+
+<span class="code-function">etiqueta2</span> = tk.Label(<span class="code-function">ventana</span>, text=<span class="code-string">"Abajo"</span>, bg=<span class="code-string">"lightgreen"</span>)
+<span class="code-function">etiqueta2</span>.pack(side=<span class="code-string">"bottom"</span>, fill=<span class="code-string">"x"</span>, padx=10, pady=5)</pre>
+                    </div>
+                    
+                    <p><strong>2. grid():</strong> Organiza widgets en una tabla de filas y columnas. Es muy útil para formularios y diseños estructurados.</p>
+                    <div class="code-block">
+<pre><span class="code-comment"># Ejemplo con grid()</span>
+<span class="code-comment"># Etiqueta en la fila 0, columna 0</span>
+<span class="code-function">tk.Label</span>(<span class="code-function">ventana</span>, text=<span class="code-string">"Nombre:"</span>).grid(row=0, column=0, sticky=<span class="code-string">"w"</span>, padx=10, pady=5)
+
+<span class="code-comment"># Campo de entrada en la fila 0, columna 1</span>
+<span class="code-function">entrada_nombre</span> = tk.Entry(<span class="code-function">ventana</span>)
+<span class="code-function">entrada_nombre</span>.grid(row=0, column=1, padx=10, pady=5)
+
+<span class="code-comment"># Botón que ocupa dos columnas</span>
+<span class="code-function">tk.Button</span>(<span class="code-function">ventana</span>, text=<span class="code-string">"Enviar"</span>).grid(row=1, column=0, columnspan=2, pady=10)</pre>
+                    </div>
+                    
+                    <p><strong>3. place():</strong> Permite colocar widgets en coordenadas específicas (x, y). Ofrece control absoluto pero requiere más trabajo para diseños responsivos.</p>
+                    <div class="code-block">
+<pre><span class="code-comment"># Ejemplo con place()</span>
+<span class="code-function">tk.Label</span>(<span class="code-function">ventana</span>, text=<span class="code-string">"Posición exacta"</span>, bg=<span class="code-string">"yellow"</span>).place(x=50, y=30)
+<span class="code-function">tk.Button</span>(<span class="code-function">ventana</span>, text=<span class="code-string">"Centrado"</span>).place(relx=0.5, rely=0.5, anchor=<span class="code-string">"center"</span>)</pre>
+                    </div>
+                    
+                    <p><strong>Recomendación:</strong> Para la mayoría de aplicaciones, <span class="highlight">grid()</span> ofrece el mejor equilibrio entre flexibilidad y simplicidad.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final Challenge Section -->
+        <section class="section challenge fade-in">
+            <h2 class="section-title"><i class="fas fa-flag-checkered"></i> El reto final</h2>
+            <p><strong>Desafío:</strong> Crea una aplicación para gestionar una lista de tareas (to-do list) con las siguientes características:</p>
+            <ol>
+                <li>Una ventana principal con título "Gestor de Tareas"</li>
+                <li>Un campo de entrada (Entry) para agregar nuevas tareas</li>
+                <li>Un botón "Agregar" que, al hacer clic, añada la tarea del campo de entrada a una lista</li>
+                <li>Un área (Listbox o Text) que muestre todas las tareas agregadas</li>
+                <li>Un botón "Eliminar" que permita quitar la tarea seleccionada de la lista</li>
+                <li>Un contador que muestre cuántas tareas hay pendientes</li>
+                <li>(Opcional avanzado) Agrega un botón "Marcar como completada" que cambie el color de la tarea seleccionada</li>
+            </ol>
+            <p><strong>Puntos de reflexión:</strong> ¿Qué método de organización (pack, grid o place) elegirías para este diseño y por qué? ¿Cómo manejarías los eventos de cada botón? ¿Qué widgets adicionales podrían mejorar la experiencia de usuario?</p>
+            <p><strong>Extensión creativa:</strong> Si terminas antes del tiempo, intenta agregar una función para guardar las tareas en un archivo de texto, de modo que no se pierdan al cerrar la aplicación.</p>
+            <button class="btn btn-accent" id="showHint">Mostrar pista para el reto</button>
+            <div id="hint" style="display: none; margin-top: 1rem; padding: 1rem; background-color: #e3f2fd; border-radius: 8px; border-left: 4px solid var(--secondary);">
+                <p><strong>Pista:</strong> Considera usar un Listbox para mostrar las tareas. Recuerda que para obtener el texto de un Entry usas <span class="highlight">entrada.get()</span> y para limpiarlo después de agregar una tarea, usas <span class="highlight">entrada.delete(0, tk.END)</span>. Para el contador, puedes usar una variable IntVar() de tkinter que se actualice cada vez que agregas o eliminas una tarea.</p>
+            </div>
+        </section>
+
+        <!-- Interactive Quiz Section -->
+        <section class="quiz-container fade-in">
+            <div class="quiz-header">
+                <h2 class="section-title" style="color: white; border-bottom-color: white;"><i class="fas fa-gamepad"></i> Evaluación lúdica</h2>
+                <div class="score-container">Puntaje: <span id="score">0</span>/5</div>
+            </div>
+            
+            <div id="question-container">
+                <div class="question" id="question-text">Cargando preguntas...</div>
+                
+                <div class="options" id="options-container">
+                    <!-- Las opciones se cargarán dinámicamente con JavaScript -->
+                </div>
+                
+                <div class="feedback" id="feedback"></div>
+                
+                <div class="quiz-controls">
+                    <button class="btn btn-outline" id="prev-btn" disabled><i class="fas fa-arrow-left"></i> Anterior</button>
+                    <button class="btn" id="next-btn">Siguiente <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <p>Taller diseñado para estudiantes ecuatorianos de bachillerato</p>
+            <p><strong>Diseñado por: Edwin Méndez J.</strong></p>
+            <p>Python para pensadores - Uniendo código con creatividad</p>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const fadeObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            fadeElements.forEach(element => {
+                fadeObserver.observe(element);
+            });
+            
+            // Show hint for challenge
+            document.getElementById('showHint').addEventListener('click', function() {
+                const hint = document.getElementById('hint');
+                if (hint.style.display === 'none' || hint.style.display === '') {
+                    hint.style.display = 'block';
+                    this.textContent = 'Ocultar pista';
+                } else {
+                    hint.style.display = 'none';
+                    this.textContent = 'Mostrar pista para el reto';
+                }
+            });
+            
+            // Initialize quiz
+            initializeQuiz();
+        });
+
+        // Quiz Data
+        const quizData = [
+            {
+                question: "¿Qué es Tkinter en Python?",
+                options: [
+                    "Una biblioteca para crear interfaces gráficas de usuario",
+                    "Un framework para desarrollo web",
+                    "Una herramienta para análisis de datos",
+                    "Un sistema de gestión de bases de datos"
+                ],
+                correct: 0
+            },
+            {
+                question: "¿Cuál es la función del método mainloop() en Tkinter?",
+                options: [
+                    "Cierra la ventana principal de la aplicación",
+                    "Inicia el bucle principal que mantiene la ventana abierta y responde a eventos",
+                    "Crea una nueva ventana secundaria",
+                    "Organiza los widgets usando el método grid"
+                ],
+                correct: 1
+            },
+            {
+                question: "¿Qué método de Tkinter organiza los widgets en una tabla de filas y columnas?",
+                options: [
+                    "pack()",
+                    "grid()",
+                    "place()",
+                    "table()"
+                ],
+                correct: 1
+            },
+            {
+                question: "¿Qué widget de Tkinter se utiliza para crear un botón en la interfaz?",
+                options: [
+                    "tk.Label",
+                    "tk.Entry",
+                    "tk.Button",
+                    "tk.Text"
+                ],
+                correct: 2
+            },
+            {
+                question: "¿Cuál de estas afirmaciones sobre Tkinter es FALSA?",
+                options: [
+                    "Viene incluido en la instalación estándar de Python",
+                    "Permite crear aplicaciones de escritorio multiplataforma",
+                    "Solo funciona en el sistema operativo Windows",
+                    "Utiliza widgets como Label, Button y Entry para construir interfaces"
+                ],
+                correct: 2
+            }
+        ];
+
+        // Quiz Variables
+        let currentQuestion = 0;
+        let score = 0;
+        let selectedOption = null;
+        let quizCompleted = false;
+
+        // Initialize Quiz
+        function initializeQuiz() {
+            document.getElementById('score').textContent = score;
+            showQuestion();
+            
+            // Event listeners for buttons
+            document.getElementById('prev-btn').addEventListener('click', prevQuestion);
+            document.getElementById('next-btn').addEventListener('click', nextQuestion);
+        }
+
+        // Show Current Question
+        function showQuestion() {
+            const question = quizData[currentQuestion];
+            document.getElementById('question-text').textContent = `Pregunta ${currentQuestion + 1}: ${question.question}`;
+            
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            
+            const letters = ['A', 'B', 'C', 'D'];
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.innerHTML = `
+                    <div class="option-letter">${letters[index]}</div>
+                    <div class="option-text">${option}</div>
+                `;
+                
+                optionElement.addEventListener('click', () => selectOption(index, optionElement));
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Update button states
+            document.getElementById('prev-btn').disabled = currentQuestion === 0;
+            document.getElementById('next-btn').textContent = currentQuestion === quizData.length - 1 ? 'Ver resultados' : 'Siguiente';
+            
+            // Hide feedback
+            document.getElementById('feedback').style.display = 'none';
+            selectedOption = null;
+            
+            // Reset all options to default state
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+        }
+
+        // Select an Option
+        function selectOption(index, element) {
+            if (quizCompleted) return;
+            
+            // Reset previous selection
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Mark selected option
+            element.classList.add('selected');
+            selectedOption = index;
+            
+            // Check answer immediately
+            checkAnswer();
+        }
+
+        // Check Answer
+        function checkAnswer() {
+            if (selectedOption === null) return;
+            
+            const question = quizData[currentQuestion];
+            const options = document.querySelectorAll('.option');
+            const feedback = document.getElementById('feedback');
+            
+            // Mark correct and incorrect answers
+            options.forEach((option, index) => {
+                if (index === question.correct) {
+                    option.classList.add('correct');
+                } else if (index === selectedOption && index !== question.correct) {
+                    option.classList.add('incorrect');
+                }
+            });
+            
+            // Show feedback
+            if (selectedOption === question.correct) {
+                feedback.textContent = "¡Correcto! Has entendido bien este concepto.";
+                feedback.className = 'feedback correct';
+                
+                // Increase score if not already scored for this question
+                if (!options[selectedOption].classList.contains('already-scored')) {
+                    score++;
+                    document.getElementById('score').textContent = score;
+                    options[selectedOption].classList.add('already-scored');
+                }
+            } else {
+                feedback.textContent = `Incorrecto. La respuesta correcta es: ${question.options[question.correct]}`;
+                feedback.className = 'feedback incorrect';
+            }
+            
+            feedback.style.display = 'block';
+        }
+
+        // Next Question
+        function nextQuestion() {
+            if (currentQuestion < quizData.length - 1) {
+                currentQuestion++;
+                showQuestion();
+            } else {
+                // Show results
+                showResults();
+            }
+        }
+
+        // Previous Question
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion();
+            }
+        }
+
+        // Show Results
+        function showResults() {
+            quizCompleted = true;
+            
+            const resultsHTML = `
+                <div style="text-align: center; padding: 2rem;">
+                    <h3 style="margin-bottom: 1rem;">¡Quiz completado!</h3>
+                    <p style="font-size: 1.2rem; margin-bottom: 1.5rem;">Obtuviste <strong>${score}</strong> de <strong>${quizData.length}</strong> puntos</p>
+                    <p style="margin-bottom: 1.5rem;">${score >= 4 ? '¡Excelente! Dominas los conceptos básicos de Tkinter.' : score >= 3 ? 'Buen trabajo, pero puedes repasar algunos conceptos.' : 'Es recomendable revisar los conceptos nuevamente para fortalecer tu comprensión.'}</p>
+                    <button class="btn" id="restart-btn">Reiniciar quiz</button>
+                </div>
+            `;
+            
+            document.getElementById('question-container').innerHTML = resultsHTML;
+            
+            document.getElementById('restart-btn').addEventListener('click', restartQuiz);
+        }
+
+        // Restart Quiz
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            selectedOption = null;
+            quizCompleted = false;
+            
+            document.getElementById('score').textContent = score;
+            document.getElementById('question-container').innerHTML = `
+                <div class="question" id="question-text"></div>
+                <div class="options" id="options-container"></div>
+                <div class="feedback" id="feedback"></div>
+                <div class="quiz-controls">
+                    <button class="btn btn-outline" id="prev-btn" disabled><i class="fas fa-arrow-left"></i> Anterior</button>
+                    <button class="btn" id="next-btn">Siguiente <i class="fas fa-arrow-right"></i></button>
+                </div>
+            `;
+            
+            showQuestion();
+            
+            // Reattach event listeners
+            document.getElementById('prev-btn').addEventListener('click', prevQuestion);
+            document.getElementById('next-btn').addEventListener('click', nextQuestion);
+        }
+    </script>
+</body>
+</html>

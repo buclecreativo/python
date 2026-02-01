@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python: Sistemas de Numeración | Taller para Bachillerato</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2A5B8C;
+            --secondary: #4ECDC4;
+            --accent: #FF6B6B;
+            --light: #F7F9FC;
+            --dark: #292F36;
+            --gray: #8A9BA8;
+            --success: #4CAF50;
+            --warning: #FFC107;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f5ff;
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(42, 91, 140, 0.15);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 90vh;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), #3A7BC0);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header-content .subtitle {
+            font-size: 1.4rem;
+            font-weight: 300;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+        
+        .header-content .tema {
+            font-size: 1.2rem;
+            background-color: rgba(255, 255, 255, 0.15);
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .python-icon {
+            font-size: 3rem;
+            color: #FFD43B;
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* Main content */
+        main {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+        }
+        
+        .content-wrapper {
+            display: flex;
+            flex: 1;
+        }
+        
+        .sidebar {
+            width: 300px;
+            background-color: var(--light);
+            padding: 2rem;
+            border-right: 1px solid #e0e6ef;
+        }
+        
+        .nav-menu {
+            position: sticky;
+            top: 20px;
+        }
+        
+        .nav-menu h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary);
+        }
+        
+        .nav-menu ul {
+            list-style: none;
+        }
+        
+        .nav-menu li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            background-color: white;
+            border: none;
+            border-radius: 10px;
+            color: var(--dark);
+            font-size: 1rem;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .nav-btn:hover {
+            background-color: var(--secondary);
+            color: white;
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(78, 205, 196, 0.3);
+        }
+        
+        .nav-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .nav-btn i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.7rem;
+            border-bottom: 2px solid var(--secondary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .section h2 i {
+            margin-right: 10px;
+        }
+        
+        .card {
+            background-color: var(--light);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid var(--secondary);
+        }
+        
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card h3 i {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+        
+        .code-block {
+            background-color: #1e1e1e;
+            color: #f8f8f2;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .code-block .comment {
+            color: #6A9955;
+        }
+        
+        .code-block .function {
+            color: #DCDCAA;
+        }
+        
+        .code-block .string {
+            color: #CE9178;
+        }
+        
+        .code-block .number {
+            color: #B5CEA8;
+        }
+        
+        .code-block .keyword {
+            color: #569CD6;
+        }
+        
+        .highlight {
+            background-color: rgba(255, 107, 107, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        .example {
+            background-color: rgba(78, 205, 196, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        /* Quiz */
+        .quiz-container {
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 1rem;
+        }
+        
+        .question {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .options {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .option {
+            background-color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid #e0e6ef;
+            display: flex;
+            align-items: center;
+        }
+        
+        .option:hover {
+            border-color: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .option.selected {
+            border-color: var(--primary);
+            background-color: rgba(42, 91, 140, 0.05);
+        }
+        
+        .option.correct {
+            border-color: var(--success);
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+        
+        .option.incorrect {
+            border-color: var(--accent);
+            background-color: rgba(255, 107, 107, 0.1);
+        }
+        
+        .option-letter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background-color: var(--light);
+            border-radius: 50%;
+            margin-right: 15px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .feedback {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: rgba(76, 175, 80, 0.1);
+            border-left: 4px solid var(--success);
+            color: #2e7d32;
+        }
+        
+        .feedback.incorrect {
+            background-color: rgba(255, 107, 107, 0.1);
+            border-left: 4px solid var(--accent);
+            color: #c62828;
+        }
+        
+        .score {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 0.9rem 1.8rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            background-color: #1a4569;
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(42, 91, 140, 0.3);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #3bb4ac;
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+        }
+        
+        .btn-accent:hover {
+            background-color: #e05555;
+        }
+        
+        .btn:disabled {
+            background-color: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.9rem;
+        }
+        
+        footer p {
+            opacity: 0.8;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e0e6ef;
+            }
+            
+            .nav-menu {
+                position: static;
+            }
+            
+            .nav-btn:hover {
+                transform: translateY(-3px);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content h1 {
+                font-size: 2.2rem;
+            }
+            
+            .header-content .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .content, .sidebar {
+                padding: 1.5rem;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="python-icon">
+                    <i class="fab fa-python"></i>
+                </div>
+                <h1>Python para pensadores</h1>
+                <p class="subtitle">Taller diseñado con el corazón de un docente y la mente de un programador</p>
+                <div class="tema">
+                    <i class="fas fa-code"></i> Python: Sistemas de numeración (decimal, binario, octal y hexadecimal)
+                </div>
+            </div>
+        </header>
+        
+        <main>
+            <div class="content-wrapper">
+                <nav class="sidebar">
+                    <div class="nav-menu">
+                        <h3><i class="fas fa-map-signs"></i> Navegación del Taller</h3>
+                        <ul>
+                            <li>
+                                <button class="nav-btn active" data-section="objetivo">
+                                    <i class="fas fa-bullseye"></i> Objetivo de aprendizaje
+                                </button>
+                            </li>
+                            <li>
+                                <button class="nav-btn" data-section="contexto">
+                                    <i class="fas fa-globe-americas"></i> Contextualización
+                                </button>
+                            </li>
+                            <li>
+                                <button class="nav-btn" data-section="desarrollo">
+                                    <i class="fas fa-laptop-code"></i> Desarrollo de la actividad
+                                </button>
+                            </li>
+                            <li>
+                                <button class="nav-btn" data-section="reto">
+                                    <i class="fas fa-flag-checkered"></i> El reto final
+                                </button>
+                            </li>
+                            <li>
+                                <button class="nav-btn" data-section="evaluacion">
+                                    <i class="fas fa-gamepad"></i> Evaluación lúdica
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                
+                <div class="content">
+                    <!-- Sección 1: Objetivo de aprendizaje -->
+                    <section id="objetivo" class="section active">
+                        <h2><i class="fas fa-bullseye"></i> Objetivo de aprendizaje</h2>
+                        <div class="card">
+                            <h3><i class="fas fa-graduation-cap"></i> ¿Qué vamos a lograr?</h3>
+                            <p>
+                                <strong>Dominar</strong> la representación, conversión y aplicación de los sistemas de numeración decimal, binario, octal y hexadecimal en Python, 
+                                <strong>explorando</strong> activamente las funciones nativas del lenguaje y desarrollando algoritmos propios, para 
+                                <strong>comprender</strong> cómo los sistemas numéricos subyacen en el funcionamiento de las computadoras y 
+                                <strong>resolver</strong> problemas reales relacionados con la representación de datos digitales, cultivando así una mentalidad analítica, lógica y creativa frente a los desafíos de la programación.
+                            </p>
+                        </div>
+                    </section>
+                    
+                    <!-- Sección 2: Contextualización -->
+                    <section id="contexto" class="section">
+                        <h2><i class="fas fa-globe-americas"></i> Contextualización</h2>
+                        <div class="card">
+                            <h3><i class="fas fa-lightbulb"></i> ¿Por qué importan los sistemas numéricos?</h3>
+                            <p>Imagina que estás enviando un mensaje a un amigo desde tu celular. Cada letra, cada emoji, cada imagen que compartes se transforma en una secuencia de ceros y unos antes de viajar por la red. Es como un código secreto que solo las computadoras entienden.</p>
+                            
+                            <p>Los sistemas de numeración son los lenguajes ocultos que permiten que la tecnología funcione. Cuando juegas un videojuego, cuando ves un video en streaming, cuando usas una red social, detrás de todo hay números representados de maneras especiales que hacen posible la magia digital.</p>
+                            
+                            <div class="example">
+                                <p><strong>Reflexiona:</strong> ¿Alguna vez has notado cómo los colores en una página web a veces se representan con códigos como #FF5733? Ese es el sistema hexadecimal en acción. O cuando configuras permisos en un archivo en Linux y usas números como 755, estás trabajando con octal. Estos sistemas están más presentes en tu vida digital de lo que imaginas.</p>
+                            </div>
+                            
+                            <p>En este taller no solo aprenderás a convertir números entre sistemas, sino que descubrirás el "porqué" detrás de cada representación, conectando conceptos abstractos con aplicaciones concretas que usas cada día.</p>
+                        </div>
+                    </section>
+                    
+                    <!-- Sección 3: Desarrollo de la actividad -->
+                    <section id="desarrollo" class="section">
+                        <h2><i class="fas fa-laptop-code"></i> Desarrollo de la actividad</h2>
+                        
+                        <div class="card">
+                            <h3><i class="fas fa-cogs"></i> Fundamentos conceptuales</h3>
+                            <p>Cada sistema de numeración tiene una <span class="highlight">base</span> que determina cuántos símbolos diferentes utiliza:</p>
+                            <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
+                                <li><strong>Decimal (base 10):</strong> Usa los dígitos 0-9. Es nuestro sistema cotidiano.</li>
+                                <li><strong>Binario (base 2):</strong> Usa solo 0 y 1. El lenguaje nativo de las computadoras.</li>
+                                <li><strong>Octal (base 8):</strong> Usa los dígitos 0-7. Útil para representar permisos en sistemas Unix.</li>
+                                <li><strong>Hexadecimal (base 16):</strong> Usa 0-9 y A-F. Ideal para representar colores y direcciones de memoria.</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="card">
+                            <h3><i class="fas fa-code"></i> Exploración práctica con Python</h3>
+                            <p>Python tiene funciones integradas para trabajar con estos sistemas. Vamos a experimentar:</p>
+                            
+                            <div class="code-block">
+                                <span class="comment"># Convertir entre sistemas en Python</span><br><br>
+                                <span class="keyword">def</span> <span class="function">explorar_sistemas_numericos</span>():<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Número decimal (nuestro sistema habitual)</span><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;numero_decimal = <span class="number">42</span><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;print(<span class="string">f"Decimal: {numero_decimal}"</span>)<br><br>
+                                
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Convertir a binario</span><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;binario = <span class="function">bin</span>(numero_decimal)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;print(<span class="string">f"Binario: {binario}"</span>)  <span class="comment"># Resultado: 0b101010</span><br><br>
+                                
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Convertir a octal</span><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;octal = <span class="function">oct</span>(numero_decimal)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;print(<span class="string">f"Octal: {octal}"</span>)  <span class="comment"># Resultado: 0o52</span><br><br>
+                                
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Convertir a hexadecimal</span><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;hexadecimal = <span class="function">hex</span>(numero_decimal)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;print(<span class="string">f"Hexadecimal: {hexadecimal}"</span>)  <span class="comment"># Resultado: 0x2a</span><br><br>
+                                
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Convertir de vuelta a decimal</span><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;print(<span class="string">f"Binario a decimal: {int('101010', 2)}"</span>)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;print(<span class="string">f"Octal a decimal: {int('52', 8)}"</span>)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;print(<span class="string">f"Hexadecimal a decimal: {int('2a', 16)}"</span>)<br><br>
+                                
+                                <span class="comment"># Ejecutar la función</span><br>
+                                explorar_sistemas_numericos()
+                            </div>
+                            
+                            <div class="example">
+                                <p><strong>Desafío de exploración:</strong> Modifica el código anterior para:</p>
+                                <ol>
+                                    <li>Cambiar el número decimal a tu edad</li>
+                                    <li>Agregar conversión del año actual a los diferentes sistemas</li>
+                                    <li>Crear una función que convierta cualquier número decimal a los cuatro sistemas</li>
+                                </ol>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <h3><i class="fas fa-brain"></i> Aplicación en el mundo real</h3>
+                            <p>Vamos a crear un programa que simula cómo se representan los colores en HTML/CSS usando hexadecimal:</p>
+                            
+                            <div class="code-block">
+                                <span class="keyword">def</span> <span class="function">mezclar_colores</span>(rojo, verde, azul):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">"""Convierte valores RGB (0-255) a código hexadecimal"""</span><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="function">a_hex</span>(valor):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Asegurar que el valor esté entre 0 y 255</span><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;valor = <span class="function">max</span>(<span class="number">0</span>, <span class="function">min</span>(<span class="number">255</span>, valor))<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Convertir a hexadecimal y formatear a 2 dígitos</span><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="function">format</span>(valor, <span class="string">'02X'</span>)<br><br>
+                                
+                                &nbsp;&nbsp;&nbsp;&nbsp;hex_color = <span class="string">'#'</span> + <span class="function">a_hex</span>(rojo) + <span class="function">a_hex</span>(verde) + <span class="function">a_hex</span>(azul)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> hex_color<br><br>
+                                
+                                <span class="comment"># Probamos la función con algunos colores</span><br>
+                                print(<span class="string">"Rojo puro:"</span>, <span class="function">mezclar_colores</span>(<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>))<br>
+                                print(<span class="string">"Verde puro:"</span>, <span class="function">mezclar_colores</span>(<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>))<br>
+                                print(<span class="string">"Azul puro:"</span>, <span class="function">mezclar_colores</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>))<br>
+                                print(<span class="string">"Un color personalizado:"</span>, <span class="function">mezclar_colores</span>(<span class="number">100</span>, <span class="number">200</span>, <span class="number">50</span>))
+                            </div>
+                            
+                            <p><strong>Reflexión:</strong> ¿Qué ventajas crees que tiene usar hexadecimal para representar colores en lugar del sistema decimal? Piensa en cómo se almacena la información en la memoria de la computadora.</p>
+                        </div>
+                    </section>
+                    
+                    <!-- Sección 4: El reto final -->
+                    <section id="reto" class="section">
+                        <h2><i class="fas fa-flag-checkered"></i> El reto final</h2>
+                        <div class="card">
+                            <h3><i class="fas fa-tasks"></i> La misión: Codificador/Decodificador Universal</h3>
+                            <p>Tu desafío es crear un programa en Python que funcione como un codificador y decodificador entre los cuatro sistemas de numeración. El programa debe:</p>
+                            
+                            <ol style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
+                                <li>Solicitar al usuario un número y el sistema en el que está representado (decimal, binario, octal o hexadecimal)</li>
+                                <li>Validar que el número ingresado sea correcto para el sistema especificado</li>
+                                <li>Convertir el número a los otros tres sistemas</li>
+                                <li>Mostrar los resultados de forma clara y organizada</li>
+                                <li>Permitir al usuario realizar múltiples conversiones hasta que decida salir</li>
+                            </ol>
+                            
+                            <div class="example">
+                                <h4><i class="fas fa-star"></i> Nivel de desafío adicional (opcional):</h4>
+                                <p>Extiende tu programa para que también pueda realizar operaciones aritméticas básicas (suma, resta, multiplicación) entre números de diferentes sistemas, mostrando el resultado en los cuatro sistemas.</p>
+                            </div>
+                            
+                            <p><strong>Pistas para comenzar:</strong></p>
+                            <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
+                                <li>Recuerda que la función <span class="highlight">int()</span> puede convertir desde cualquier base si especificas el segundo parámetro</li>
+                                <li>Puedes usar diccionarios para mapear las opciones del usuario a las funciones correspondientes</li>
+                                <li>Considera manejar errores con try-except para entradas inválidas</li>
+                            </ul>
+                            
+                            <button class="btn btn-accent" id="mostrarPista">
+                                <i class="fas fa-lightbulb"></i> Mostrar estructura básica del programa
+                            </button>
+                            
+                            <div id="pistaPrograma" style="display: none; margin-top: 1.5rem;">
+                                <div class="code-block">
+                                    <span class="comment"># Estructura básica para el reto final</span><br>
+                                    <span class="keyword">def</span> <span class="function">codificador_universal</span>():<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">while</span> <span class="keyword">True</span>:<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(<span class="string">"\n=== Codificador Universal ==="</span>)<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(<span class="string">"1. Convertir número"</span>)<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(<span class="string">"2. Salir"</span>)<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;opcion = input(<span class="string">"Seleccione una opción: "</span>)<br><br>
+                                    
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> opcion == <span class="string">"2"</span>:<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">break</span><br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">elif</span> opcion == <span class="string">"1"</span>:<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Aquí implementarías la lógica de conversión</span><br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(<span class="string">"Lógica de conversión a implementar..."</span>)<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span>:<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(<span class="string">"Opción no válida. Intente de nuevo."</span>)<br><br>
+                                    
+                                    <span class="comment"># Ejecutar el programa</span><br>
+                                    <span class="function">codificador_universal</span>()
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Sección 5: Evaluación lúdica -->
+                    <section id="evaluacion" class="section">
+                        <h2><i class="fas fa-gamepad"></i> Evaluación lúdica</h2>
+                        <div class="card">
+                            <h3><i class="fas fa-puzzle-piece"></i> Test: El desafío numérico</h3>
+                            <p>Responde las siguientes preguntas para poner a prueba tu comprensión de los sistemas de numeración. ¡Cada respuesta correcta vale 20 puntos!</p>
+                            
+                            <div class="quiz-container">
+                                <div class="score" id="score">Puntaje: 0/100</div>
+                                
+                                <div id="question-container">
+                                    <!-- Las preguntas se cargarán aquí dinámicamente -->
+                                </div>
+                                
+                                <div id="feedback" class="feedback"></div>
+                                
+                                <div class="btn-group">
+                                    <button class="btn" id="prev-btn" disabled>
+                                        <i class="fas fa-arrow-left"></i> Pregunta anterior
+                                    </button>
+                                    <button class="btn btn-secondary" id="next-btn">
+                                        Siguiente pregunta <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                                
+                                <div style="text-align: center; margin-top: 2rem;">
+                                    <button class="btn btn-accent" id="restart-btn">
+                                        <i class="fas fa-redo"></i> Reiniciar test
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>Diseñado por: Edwin Méndez J.</p>
+            <p>Taller de Python: Sistemas de numeración para estudiantes de bachillerato</p>
+        </footer>
+    </div>
+
+    <script>
+        // Navegación entre secciones
+        document.querySelectorAll('.nav-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remover clase active de todos los botones
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Agregar clase active al botón clickeado
+                button.classList.add('active');
+                
+                // Ocultar todas las secciones
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Mostrar la sección correspondiente
+                const sectionId = button.getAttribute('data-section');
+                document.getElementById(sectionId).classList.add('active');
+            });
+        });
+        
+        // Mostrar/ocultar pista para el reto final
+        document.getElementById('mostrarPista').addEventListener('click', function() {
+            const pista = document.getElementById('pistaPrograma');
+            if (pista.style.display === 'none') {
+                pista.style.display = 'block';
+                this.innerHTML = '<i class="fas fa-eye-slash"></i> Ocultar estructura básica del programa';
+            } else {
+                pista.style.display = 'none';
+                this.innerHTML = '<i class="fas fa-lightbulb"></i> Mostrar estructura básica del programa';
+            }
+        });
+        
+        // Sistema de evaluación lúdica
+        const questions = [
+            {
+                question: "¿Cuál es la base del sistema de numeración hexadecimal?",
+                options: ["2", "8", "10", "16"],
+                correct: 3,
+                explanation: "El sistema hexadecimal tiene base 16, lo que significa que utiliza 16 símbolos diferentes: 0-9 y A-F."
+            },
+            {
+                question: "¿Cómo se representa el número decimal 15 en hexadecimal?",
+                options: ["F", "10", "15", "1F"],
+                correct: 0,
+                explanation: "En hexadecimal, el número 15 se representa con el símbolo F, ya que A=10, B=11, C=12, D=13, E=14, F=15."
+            },
+            {
+                question: "¿Cuál de estas funciones de Python convierte un número decimal a binario?",
+                options: ["bin()", "hex()", "dec()", "oct()"],
+                correct: 0,
+                explanation: "La función bin() en Python convierte un número decimal a su representación binaria, devolviendo una cadena que comienza con '0b'."
+            },
+            {
+                question: "¿Qué representa el prefijo '0o' en Python?",
+                options: ["Un número binario", "Un número octal", "Un número hexadecimal", "Un número decimal"],
+                correct: 1,
+                explanation: "En Python, el prefijo '0o' indica que el número está representado en sistema octal (base 8)."
+            },
+            {
+                question: "Si un color en HTML se representa como #FF0000, ¿qué color es?",
+                options: ["Azul", "Verde", "Rojo", "Amarillo"],
+                correct: 2,
+                explanation: "En representación hexadecimal de colores, #FF0000 significa rojo al máximo (FF), verde en 0 y azul en 0, lo que produce el color rojo puro."
+            }
+        ];
+        
+        let currentQuestion = 0;
+        let score = 0;
+        let selectedOption = null;
+        
+        const questionContainer = document.getElementById('question-container');
+        const feedbackElement = document.getElementById('feedback');
+        const scoreElement = document.getElementById('score');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        
+        function loadQuestion() {
+            const question = questions[currentQuestion];
+            
+            let optionsHTML = '';
+            question.options.forEach((option, index) => {
+                optionsHTML += `
+                    <div class="option" data-index="${index}">
+                        <div class="option-letter">${String.fromCharCode(65 + index)}</div>
+                        <div class="option-text">${option}</div>
+                    </div>
+                `;
+            });
+            
+            questionContainer.innerHTML = `
+                <div class="question">${currentQuestion + 1}. ${question.question}</div>
+                <div class="options">${optionsHTML}</div>
+            `;
+            
+            // Agregar event listeners a las opciones
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', selectOption);
+            });
+            
+            // Actualizar estado de los botones
+            prevBtn.disabled = currentQuestion === 0;
+            nextBtn.disabled = true;
+            nextBtn.textContent = currentQuestion === questions.length - 1 ? 'Ver resultados' : 'Siguiente pregunta';
+            
+            // Limpiar feedback
+            feedbackElement.style.display = 'none';
+            feedbackElement.className = 'feedback';
+            feedbackElement.innerHTML = '';
+            
+            // Reiniciar selección
+            selectedOption = null;
+        }
+        
+        function selectOption(e) {
+            // Remover selección previa
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Marcar opción seleccionada
+            const optionElement = e.currentTarget;
+            optionElement.classList.add('selected');
+            selectedOption = parseInt(optionElement.getAttribute('data-index'));
+            
+            // Verificar respuesta
+            const isCorrect = selectedOption === questions[currentQuestion].correct;
+            
+            // Mostrar feedback
+            feedbackElement.innerHTML = `
+                <strong>${isCorrect ? '¡Correcto!' : 'Incorrecto.'}</strong> 
+                ${questions[currentQuestion].explanation}
+            `;
+            feedbackElement.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+            feedbackElement.style.display = 'block';
+            
+            // Actualizar puntaje si es correcto
+            if (isCorrect && !optionElement.classList.contains('answered')) {
+                score += 20;
+                scoreElement.textContent = `Puntaje: ${score}/100`;
+            }
+            
+            // Marcar opción como respondida
+            optionElement.classList.add('answered');
+            
+            // Habilitar botón siguiente
+            nextBtn.disabled = false;
+            
+            // Mostrar respuesta correcta si la selección fue incorrecta
+            if (!isCorrect) {
+                document.querySelectorAll('.option').forEach((option, index) => {
+                    if (index === questions[currentQuestion].correct) {
+                        option.classList.add('correct');
+                    }
+                });
+            }
+        }
+        
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                // Mostrar resultados finales
+                showResults();
+            }
+        }
+        
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+        
+        function showResults() {
+            let message = '';
+            let emoji = '';
+            
+            if (score >= 80) {
+                message = '¡Excelente! Dominas los sistemas de numeración.';
+                emoji = '🎉';
+            } else if (score >= 60) {
+                message = '¡Buen trabajo! Tienes un buen entendimiento del tema.';
+                emoji = '👍';
+            } else if (score >= 40) {
+                message = 'No está mal, pero hay conceptos que necesitas repasar.';
+                emoji = '🤔';
+            } else {
+                message = 'Es una oportunidad para aprender más. ¡Sigue practicando!';
+                emoji = '💪';
+            }
+            
+            questionContainer.innerHTML = `
+                <div class="question">Resultados del test</div>
+                <div style="text-align: center; padding: 2rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">${emoji}</div>
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">${message}</h3>
+                    <div style="font-size: 2rem; font-weight: bold; color: var(--accent); margin-bottom: 1.5rem;">
+                        ${score}/100 puntos
+                    </div>
+                    <p>Has completado el test de evaluación. ¡Sigue explorando el fascinante mundo de los sistemas de numeración!</p>
+                </div>
+            `;
+            
+            feedbackElement.style.display = 'none';
+            nextBtn.disabled = true;
+            prevBtn.disabled = true;
+        }
+        
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            selectedOption = null;
+            scoreElement.textContent = 'Puntaje: 0/100';
+            loadQuestion();
+        }
+        
+        // Event listeners para los botones del quiz
+        prevBtn.addEventListener('click', prevQuestion);
+        nextBtn.addEventListener('click', nextQuestion);
+        restartBtn.addEventListener('click', restartQuiz);
+        
+        // Inicializar el quiz
+        loadQuestion();
+    </script>
+</body>
+</html>

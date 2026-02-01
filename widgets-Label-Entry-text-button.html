@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python para Pensadores - Taller tkinter</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2C3E50;
+            --secondary: #3498DB;
+            --accent: #E74C3C;
+            --light: #ECF0F1;
+            --dark: #1A252F;
+            --success: #27AE60;
+            --warning: #F39C12;
+            --gray: #7F8C8D;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin: 0 auto;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            position: relative;
+            opacity: 0.9;
+        }
+        
+        .topic-tag {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Main Content */
+        .content {
+            padding: 2rem;
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            border-radius: 12px;
+            background-color: var(--light);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--secondary);
+            display: inline-block;
+        }
+        
+        h3 {
+            color: var(--secondary);
+            margin: 1.5rem 0 1rem 0;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .highlight {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 1.5rem;
+            border-left: 4px solid var(--secondary);
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+        }
+        
+        /* Code Block */
+        .code-block {
+            background-color: #2d3436;
+            color: #dfe6e9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .code-block code {
+            display: block;
+            line-height: 1.5;
+            font-size: 1rem;
+        }
+        
+        .keyword {
+            color: #6c5ce7;
+        }
+        
+        .function {
+            color: #00cec9;
+        }
+        
+        .string {
+            color: #fab1a0;
+        }
+        
+        .comment {
+            color: #636e72;
+            font-style: italic;
+        }
+        
+        /* Buttons */
+        .button-container {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+        
+        .btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-secondary {
+            background-color: var(--gray);
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+        }
+        
+        /* Quiz Section */
+        .quiz-container {
+            background-color: white;
+            border: 2px solid var(--light);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .quiz-question {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 2rem;
+        }
+        
+        .quiz-option {
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .quiz-option:hover {
+            border-color: var(--secondary);
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+        
+        .quiz-option.selected {
+            border-color: var(--success);
+            background-color: rgba(39, 174, 96, 0.1);
+        }
+        
+        .quiz-option.incorrect {
+            border-color: var(--accent);
+            background-color: rgba(231, 76, 60, 0.1);
+        }
+        
+        .feedback {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: rgba(39, 174, 96, 0.1);
+            color: var(--success);
+            border-left: 4px solid var(--success);
+            display: block;
+        }
+        
+        .feedback.incorrect {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--accent);
+            border-left: 4px solid var(--accent);
+            display: block;
+        }
+        
+        .score-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #ddd;
+        }
+        
+        .score {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .result-container {
+            text-align: center;
+            padding: 2rem;
+            display: none;
+        }
+        
+        .result-container h2 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 1rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .content {
+                padding: 1rem;
+            }
+            
+            .section {
+                padding: 1.5rem;
+            }
+            
+            .button-container {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .topic-tag {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Python para pensadores</h1>
+            <div class="subtitle">Taller diseñado con el corazón de un docente y la mente de un programador</div>
+            <div class="topic-tag">Tema: tkinter (widgets: Label, Entry, Text, Button)</div>
+        </header>
+        
+        <main class="content">
+            <!-- Section 1: Learning Objective -->
+            <section class="section" id="objective">
+                <h2>Objetivo de aprendizaje</h2>
+                <p>Desarrollar una aplicación GUI funcional utilizando Python y tkinter, integrando los widgets Label, Entry, Text y Button, para resolver problemas del contexto estudiantil ecuatoriano, mediante la experimentación directa con código, análisis crítico de resultados y la aplicación de principios de diseño de interfaces, fomentando la curiosidad técnica, la colaboración y la ética en el desarrollo de software.</p>
+            </section>
+            
+            <!-- Section 2: Context -->
+            <section class="section" id="context">
+                <h2>Contextualización: De la consola a la interfaz humana</h2>
+                <p>Imagina por un momento que necesitas crear un sistema para organizar los gastos de tu emprendimiento escolar, o quizás una aplicación para calcular tus promedios de manera visual, o incluso un pequeño programa para gestionar las tareas de tu equipo de trabajo. Hasta ahora, probablemente has interactuado con programas que muestran texto en una consola negra, pero ¿cómo dar el salto para crear aplicaciones con botones, campos de texto y etiquetas como las que usas cada día en tu celular?</p>
+                
+                <div class="highlight">
+                    <p>La programación de interfaces gráficas no es solo cuestión de estética; es sobre <strong>humanizar la tecnología</strong>, hacerla accesible, intuitiva y cercana a quienes la utilizan. Con tkinter, la biblioteca estándar de Python para interfaces gráficas, puedes comenzar a construir puentes entre la lógica del código y la experiencia humana.</p>
+                </div>
+                
+                <p>En Ecuador, donde la creatividad y el ingenio son parte de nuestra identidad, aprender a crear interfaces con tkinter te permitirá desarrollar soluciones tecnológicas que respondan a necesidades reales de tu comunidad educativa, tu barrio o tu ciudad. No se trata solo de escribir código, sino de diseñar experiencias.</p>
+            </section>
+            
+            <!-- Section 3: Activity Development -->
+            <section class="section" id="development">
+                <h2>Desarrollo de la actividad: Construyendo nuestro primer formulario</h2>
+                
+                <h3>1. Los cuatro pilares de tkinter</h3>
+                <p>En tkinter, los widgets son los componentes básicos de cualquier interfaz. Hoy trabajaremos con cuatro esenciales:</p>
+                
+                <ul style="padding-left: 2rem; margin-bottom: 1.5rem;">
+                    <li><strong>Label:</strong> Muestra texto estático o imágenes. Es la voz de tu aplicación.</li>
+                    <li><strong>Entry:</strong> Permite al usuario ingresar una línea de texto. Es el oído de tu aplicación.</li>
+                    <li><strong>Text:</strong> Permite ingresar o mostrar múltiples líneas de texto. Es el cuaderno de tu aplicación.</li>
+                    <li><strong>Button:</strong> Ejecuta una función cuando se hace clic. Es la acción de tu aplicación.</li>
+                </ul>
+                
+                <h3>2. Nuestra primera aplicación: Calculadora de promedio</h3>
+                <p>Vamos a crear una aplicación que calcule el promedio de tres notas, algo muy útil en el contexto estudiantil. Observa cuidadosamente cada parte:</p>
+                
+                <div class="code-block">
+                    <code>
+                        <span class="keyword">import</span> tkinter <span class="keyword">as</span> tk<br>
+                        <span class="keyword">from</span> tkinter <span class="keyword">import</span> messagebox<br>
+                        <br>
+                        <span class="comment"># Función que se ejecutará al hacer clic en el botón</span><br>
+                        <span class="keyword">def</span> <span class="function">calcular_promedio</span>():<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">try</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Obtener los valores de los campos Entry</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nota1 = <span class="function">float</span>(entry_nota1.<span class="function">get</span>())<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nota2 = <span class="function">float</span>(entry_nota2.<span class="function">get</span>())<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nota3 = <span class="function">float</span>(entry_nota3.<span class="function">get</span>())<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Calcular el promedio</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;promedio = (nota1 + nota2 + nota3) / 3<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Mostrar el resultado en el widget Text</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text_resultado.<span class="function">delete</span>(<span class="string">"1.0"</span>, tk.END)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text_resultado.<span class="function">insert</span>(tk.END, <span class="string">f"Notas ingresadas: {nota1}, {nota2}, {nota3}\n"</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text_resultado.<span class="function">insert</span>(tk.END, <span class="string">f"Promedio calculado: {promedio:.2f}\n"</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Determinar si aprueba o no</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> promedio >= 7:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text_resultado.<span class="function">insert</span>(tk.END, <span class="string">"¡Felicidades, has aprobado! 🎉"</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text_resultado.<span class="function">insert</span>(tk.END, <span class="string">"Necesitas repasar más. ¡Tú puedes! 💪"</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">except</span> ValueError:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;messagebox.<span class="function">showerror</span>(<span class="string">"Error"</span>, <span class="string">"Por favor, ingresa valores numéricos válidos"</span>)<br>
+                        <br>
+                        <span class="comment"># Crear la ventana principal</span><br>
+                        ventana = tk.<span class="function">Tk</span>()<br>
+                        ventana.title(<span class="string">"Calculadora de Promedio"</span>)<br>
+                        ventana.geometry(<span class="string">"500x500"</span>)<br>
+                        ventana.configure(bg=<span class="string">"#f0f8ff"</span>)<br>
+                        <br>
+                        <span class="comment"># Crear y colocar los widgets Label</span><br>
+                        label_titulo = tk.<span class="function">Label</span>(ventana, text=<span class="string">"Calculadora de Promedio Escolar"</span>, font=(<span class="string">"Arial"</span>, 16, <span class="string">"bold"</span>), bg=<span class="string">"#f0f8ff"</span>)<br>
+                        label_titulo.<span class="function">pack</span>(pady=20)<br>
+                        <br>
+                        label_nota1 = tk.<span class="function">Label</span>(ventana, text=<span class="string">"Nota 1:"</span>, bg=<span class="string">"#f0f8ff"</span>)<br>
+                        label_nota1.<span class="function">pack</span>()<br>
+                        entry_nota1 = tk.<span class="function">Entry</span>(ventana, width=20)<br>
+                        entry_nota1.<span class="function">pack</span>(pady=5)<br>
+                        <br>
+                        label_nota2 = tk.<span class="function">Label</span>(ventana, text=<span class="string">"Nota 2:"</span>, bg=<span class="string">"#f0f8ff"</span>)<br>
+                        label_nota2.<span class="function">pack</span>()<br>
+                        entry_nota2 = tk.<span class="function">Entry</span>(ventana, width=20)<br>
+                        entry_nota2.<span class="function">pack</span>(pady=5)<br>
+                        <br>
+                        label_nota3 = tk.<span class="function">Label</span>(ventana, text=<span class="string">"Nota 3:"</span>, bg=<span class="string">"#f0f8ff"</span>)<br>
+                        label_nota3.<span class="function">pack</span>()<br>
+                        entry_nota3 = tk.<span class="function">Entry</span>(ventana, width=20)<br>
+                        entry_nota3.<span class="function">pack</span>(pady=5)<br>
+                        <br>
+                        <span class="comment"># Crear el botón para calcular</span><br>
+                        boton_calcular = tk.<span class="function">Button</span>(ventana, text=<span class="string">"Calcular Promedio"</span>, command=calcular_promedio, bg=<span class="string">"#4CAF50"</span>, fg=<span class="string">"white"</span>, font=(<span class="string">"Arial"</span>, 12))<br>
+                        boton_calcular.<span class="function">pack</span>(pady=20)<br>
+                        <br>
+                        <span class="comment"># Crear el widget Text para mostrar resultados</span><br>
+                        text_resultado = tk.<span class="function">Text</span>(ventana, height=8, width=50)<br>
+                        text_resultado.<span class="function">pack</span>(pady=10)<br>
+                        <br>
+                        <span class="comment"># Ejecutar el bucle principal de la aplicación</span><br>
+                        ventana.<span class="function">mainloop</span>()<br>
+                    </code>
+                </div>
+                
+                <div class="button-container">
+                    <button class="btn" onclick="showExperiment()">
+                        <i class="fas fa-flask"></i> Experimenta con el código
+                    </button>
+                    <button class="btn btn-secondary" onclick="showReflection()">
+                        <i class="fas fa-brain"></i> Preguntas para reflexionar
+                    </button>
+                </div>
+                
+                <div id="experiment" style="display: none; margin-top: 1.5rem; padding: 1.5rem; background-color: rgba(52, 152, 219, 0.05); border-radius: 8px;">
+                    <h3>💡 Actividad experimental</h3>
+                    <p>Modifica el código anterior intentando lo siguiente:</p>
+                    <ol>
+                        <li>Cambia el color de fondo de la ventana modificando el valor en <code>ventana.configure(bg="tu_color")</code></li>
+                        <li>Añade una cuarta nota para calcular el promedio de 4 notas</li>
+                        <li>Cambia el mensaje de aprobación para que aparezca cuando el promedio sea mayor o igual a 8</li>
+                        <li>Agrega un botón adicional que limpie todos los campos (Entry y Text)</li>
+                    </ol>
+                    <p>Observa cómo cada cambio afecta la funcionalidad y estética de tu aplicación.</p>
+                </div>
+                
+                <div id="reflection" style="display: none; margin-top: 1.5rem; padding: 1.5rem; background-color: rgba(243, 156, 18, 0.05); border-radius: 8px;">
+                    <h3>🤔 Reflexión metacognitiva</h3>
+                    <p>Después de experimentar con el código, responde estas preguntas:</p>
+                    <ol>
+                        <li>¿Qué ventajas tiene una aplicación con interfaz gráfica frente a una de consola para el usuario final?</li>
+                        <li>¿Cómo maneja tkinter la interacción entre los diferentes widgets?</li>
+                        <li>¿Qué consideraciones de diseño tomarías en cuenta si esta aplicación fuera a ser usada por personas con discapacidad visual?</li>
+                        <li>¿Cómo podrías validar que las notas ingresadas estén en el rango correcto (0-10)?</li>
+                    </ol>
+                </div>
+            </section>
+            
+            <!-- Section 4: Final Challenge -->
+            <section class="section" id="challenge">
+                <h2>El reto final: Aplicación para emprendedores escolares</h2>
+                
+                <div class="highlight">
+                    <p>En Ecuador, el espíritu emprendedor florece desde las aulas. Tu desafío es crear una aplicación con tkinter que ayude a un estudiante emprendedor a gestionar las ventas de su pequeño negocio escolar (venta de golosinas, manualidades, etc.).</p>
+                </div>
+                
+                <h3>Especificaciones del reto:</h3>
+                <p>La aplicación debe incluir:</p>
+                
+                <ol style="padding-left: 2rem; margin-bottom: 1.5rem;">
+                    <li>Un formulario para registrar productos (nombre, precio, cantidad en inventario)</li>
+                    <li>Un sistema para registrar ventas (producto, cantidad vendida, fecha)</li>
+                    <li>Un área que muestre el inventario actualizado después de cada venta</li>
+                    <li>Un cálculo automático de las ganancias totales</li>
+                    <li>Un botón para generar un "reporte del día" en el widget Text</li>
+                </ol>
+                
+                <h3>Requisitos técnicos:</h3>
+                <ul style="padding-left: 2rem; margin-bottom: 1.5rem;">
+                    <li>Utilizar al menos 4 Labels, 3 Entries, 1 Text y 3 Buttons</li>
+                    <li>Manejar errores (por ejemplo, intentar vender más productos de los disponibles)</li>
+                    <li>Diseñar una interfaz limpia y amigable</li>
+                    <li>Incluir comentarios en el código que expliquen tu lógica</li>
+                </ul>
+                
+                <div class="highlight">
+                    <p><strong>Reflexión adicional:</strong> Piensa en cómo tu aplicación podría adaptarse para emprendimientos reales de tu comunidad. ¿Qué funcionalidades adicionales serían útiles? ¿Cómo podrías hacerla más accesible para personas con diferentes niveles de alfabetización digital?</p>
+                </div>
+                
+                <div class="button-container">
+                    <button class="btn btn-accent" onclick="showChallengeTips()">
+                        <i class="fas fa-lightbulb"></i> Consejos para abordar el reto
+                    </button>
+                </div>
+                
+                <div id="challengeTips" style="display: none; margin-top: 1.5rem; padding: 1.5rem; background-color: rgba(155, 89, 182, 0.05); border-radius: 8px;">
+                    <h3>💡 Estrategias para resolver el reto</h3>
+                    <ol>
+                        <li><strong>Divide y vencerás:</strong> Empieza creando solo el formulario de productos. Cuando funcione, añade el de ventas.</li>
+                        <li><strong>Usa estructuras de datos:</strong> Considera usar listas o diccionarios para almacenar los productos y ventas.</li>
+                        <li><strong>Planifica antes de programar:</strong> Dibuja en papel cómo quieres que se vea tu interfaz.</li>
+                        <li><strong>Testea continuamente:</strong> Después de cada función nueva, prueba que todo funciona correctamente.</li>
+                        <li><strong>Pide feedback:</strong> Muestra tu aplicación a un compañero y observa si le resulta intuitiva.</li>
+                    </ol>
+                </div>
+            </section>
+            
+            <!-- Section 5: Interactive Quiz -->
+            <section class="section" id="quiz">
+                <h2>Evaluación lúdica: Demuestra lo aprendido</h2>
+                <p>Responde estas 5 preguntas para verificar tu comprensión de los conceptos de tkinter. ¡Cada respuesta correcta te dará 20 puntos!</p>
+                
+                <div class="quiz-container">
+                    <div id="quiz-content">
+                        <div class="quiz-question" id="question-text">Pregunta 1: ¿Qué widget de tkinter se utiliza para mostrar texto estático que el usuario no puede modificar?</div>
+                        
+                        <div class="quiz-options" id="options-container">
+                            <!-- Options will be inserted here by JavaScript -->
+                        </div>
+                        
+                        <div class="feedback" id="feedback"></div>
+                        
+                        <div class="button-container">
+                            <button class="btn btn-success" id="next-btn" onclick="nextQuestion()" style="display: none;">
+                                <i class="fas fa-arrow-right"></i> Siguiente pregunta
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="score-container">
+                        <div class="score">Puntuación: <span id="score">0</span>/100</div>
+                        <div id="question-counter">Pregunta <span id="current-q">1</span>/5</div>
+                    </div>
+                    
+                    <div id="result-container" class="result-container">
+                        <h2 id="result-title">¡Quiz completado!</h2>
+                        <p id="result-message"></p>
+                        <button class="btn btn-accent" onclick="restartQuiz()">
+                            <i class="fas fa-redo"></i> Intentar nuevamente
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            Diseñado por: Edwin Méndez J.
+        </footer>
+    </div>
+
+    <script>
+        // Quiz questions data
+        const quizQuestions = [
+            {
+                question: "¿Qué widget de tkinter se utiliza para mostrar texto estático que el usuario no puede modificar?",
+                options: [
+                    { text: "Entry", correct: false },
+                    { text: "Label", correct: true },
+                    { text: "Text", correct: false },
+                    { text: "Button", correct: false }
+                ],
+                explanation: "Correcto. El widget Label se utiliza para mostrar texto estático o imágenes que el usuario no puede modificar directamente."
+            },
+            {
+                question: "¿Cuál es la función del método pack() en tkinter?",
+                options: [
+                    { text: "Empaquetar datos para enviar a un servidor", correct: false },
+                    { text: "Organizar los widgets en la ventana principal", correct: true },
+                    { text: "Comprimir imágenes para ahorrar espacio", correct: false },
+                    { text: "Guardar el estado de la aplicación", correct: false }
+                ],
+                explanation: "Correcto. El método pack() es un administrador de geometría que organiza los widgets en bloques antes de colocarlos en la ventana principal."
+            },
+            {
+                question: "Si quieres que el usuario ingrese múltiples líneas de texto, ¿qué widget debes usar?",
+                options: [
+                    { text: "Entry", correct: false },
+                    { text: "Label", correct: false },
+                    { text: "Button", correct: false },
+                    { text: "Text", correct: true }
+                ],
+                explanation: "Correcto. El widget Text permite ingresar o mostrar múltiples líneas de texto, a diferencia de Entry que solo permite una línea."
+            },
+            {
+                question: "¿Qué parámetro del widget Button especifica la función que se ejecutará al hacer clic?",
+                options: [
+                    { text: "function", correct: false },
+                    { text: "onclick", correct: false },
+                    { text: "command", correct: true },
+                    { text: "action", correct: false }
+                ],
+                explanation: "Correcto. El parámetro 'command' del widget Button recibe el nombre de la función (sin paréntesis) que se ejecutará cuando se haga clic en el botón."
+            },
+            {
+                question: "¿Cuál de estas afirmaciones sobre tkinter es FALSA?",
+                options: [
+                    { text: "Tkinter es parte de la biblioteca estándar de Python", correct: false },
+                    { text: "Tkinter solo funciona en Windows", correct: true },
+                    { text: "Tkinter permite crear interfaces gráficas de usuario", correct: false },
+                    { text: "mainloop() mantiene la aplicación ejecutándose", correct: false }
+                ],
+                explanation: "Correcto. La afirmación falsa es que tkinter solo funciona en Windows. En realidad, tkinter es multiplataforma y funciona en Windows, macOS y Linux."
+            }
+        ];
+
+        // Quiz state variables
+        let currentQuestion = 0;
+        let score = 0;
+        let userAnswers = [];
+
+        // DOM elements
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackElement = document.getElementById('feedback');
+        const nextButton = document.getElementById('next-btn');
+        const scoreElement = document.getElementById('score');
+        const currentQElement = document.getElementById('current-q');
+        const quizContent = document.getElementById('quiz-content');
+        const resultContainer = document.getElementById('result-container');
+        const resultTitle = document.getElementById('result-title');
+        const resultMessage = document.getElementById('result-message');
+
+        // Initialize the quiz
+        function initQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            userAnswers = [];
+            scoreElement.textContent = score;
+            currentQElement.textContent = currentQuestion + 1;
+            quizContent.style.display = 'block';
+            resultContainer.style.display = 'none';
+            loadQuestion();
+        }
+
+        // Load the current question
+        function loadQuestion() {
+            const question = quizQuestions[currentQuestion];
+            questionText.textContent = `Pregunta ${currentQuestion + 1}: ${question.question}`;
+            
+            // Clear previous options
+            optionsContainer.innerHTML = '';
+            
+            // Add new options
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'quiz-option';
+                optionElement.textContent = `${String.fromCharCode(65 + index)}. ${option.text}`;
+                optionElement.onclick = () => selectOption(optionElement, option.correct, index);
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Hide feedback and next button
+            feedbackElement.style.display = 'none';
+            feedbackElement.className = 'feedback';
+            nextButton.style.display = 'none';
+            
+            // Update question counter
+            currentQElement.textContent = currentQuestion + 1;
+        }
+
+        // Handle option selection
+        function selectOption(optionElement, isCorrect, optionIndex) {
+            // Disable all options
+            const allOptions = document.querySelectorAll('.quiz-option');
+            allOptions.forEach(opt => {
+                opt.onclick = null;
+                opt.style.cursor = 'default';
+            });
+            
+            // Mark selected option
+            optionElement.classList.add('selected');
+            
+            // Show feedback
+            feedbackElement.textContent = quizQuestions[currentQuestion].explanation;
+            feedbackElement.classList.add(isCorrect ? 'correct' : 'incorrect');
+            feedbackElement.style.display = 'block';
+            
+            // Mark incorrect options if needed
+            if (!isCorrect) {
+                optionElement.classList.add('incorrect');
+                // Find and mark the correct option
+                const correctIndex = quizQuestions[currentQuestion].options.findIndex(opt => opt.correct);
+                allOptions[correctIndex].classList.add('selected');
+            }
+            
+            // Update score
+            if (isCorrect) {
+                score += 20;
+                scoreElement.textContent = score;
+            }
+            
+            // Store user answer
+            userAnswers.push({
+                questionIndex: currentQuestion,
+                selectedOption: optionIndex,
+                isCorrect: isCorrect
+            });
+            
+            // Show next button
+            nextButton.style.display = 'flex';
+        }
+
+        // Move to the next question
+        function nextQuestion() {
+            currentQuestion++;
+            
+            if (currentQuestion < quizQuestions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        // Show quiz results
+        function showResults() {
+            quizContent.style.display = 'none';
+            resultContainer.style.display = 'block';
+            
+            // Calculate percentage
+            const percentage = (score / 100) * 100;
+            
+            // Set result message based on score
+            if (percentage >= 80) {
+                resultTitle.textContent = "¡Excelente trabajo! 🎉";
+                resultMessage.textContent = `Has obtenido ${score} puntos de 100. Dominas los conceptos básicos de tkinter y estás listo para el reto final.`;
+            } else if (percentage >= 60) {
+                resultTitle.textContent = "¡Buen trabajo! 👍";
+                resultMessage.textContent = `Has obtenido ${score} puntos de 100. Tienes una buena comprensión, pero revisa los conceptos que te generaron dudas.`;
+            } else {
+                resultTitle.textContent = "¡Sigue practicando! 💪";
+                resultMessage.textContent = `Has obtenido ${score} puntos de 100. Te recomiendo revisar el código de ejemplo y experimentar más antes de abordar el reto final.`;
+            }
+        }
+
+        // Restart the quiz
+        function restartQuiz() {
+            initQuiz();
+        }
+
+        // Show/hide experiment section
+        function showExperiment() {
+            const experimentDiv = document.getElementById('experiment');
+            const reflectionDiv = document.getElementById('reflection');
+            
+            if (experimentDiv.style.display === 'block') {
+                experimentDiv.style.display = 'none';
+            } else {
+                experimentDiv.style.display = 'block';
+                reflectionDiv.style.display = 'none';
+            }
+        }
+
+        // Show/hide reflection section
+        function showReflection() {
+            const experimentDiv = document.getElementById('experiment');
+            const reflectionDiv = document.getElementById('reflection');
+            
+            if (reflectionDiv.style.display === 'block') {
+                reflectionDiv.style.display = 'none';
+            } else {
+                reflectionDiv.style.display = 'block';
+                experimentDiv.style.display = 'none';
+            }
+        }
+
+        // Show/hide challenge tips
+        function showChallengeTips() {
+            const challengeTips = document.getElementById('challengeTips');
+            
+            if (challengeTips.style.display === 'block') {
+                challengeTips.style.display = 'none';
+            } else {
+                challengeTips.style.display = 'block';
+            }
+        }
+
+        // Initialize the page when loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initQuiz();
+            
+            // Center the container
+            const container = document.querySelector('.container');
+            container.style.margin = '20px auto';
+            
+            // Add smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 20,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
