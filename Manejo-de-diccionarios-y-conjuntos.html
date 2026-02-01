@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python para pensadores - Diccionarios y Conjuntos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variables de diseño y paleta de colores */
+        :root {
+            --color-primario: #2A5CAA; /* Azul educativo */
+            --color-secundario: #FF6B35; /* Naranja energético */
+            --color-terciario: #00A896; /* Verde inspirador */
+            --color-fondo: #F7F9FC; /* Gris claro para fondo */
+            --color-texto: #333333; /* Gris oscuro para texto */
+            --color-blanco: #FFFFFF;
+            --color-sombra: rgba(42, 92, 170, 0.1);
+            --gradiente-primario: linear-gradient(135deg, var(--color-primario), var(--color-terciario));
+            --gradiente-secundario: linear-gradient(135deg, var(--color-secundario), #FF9F1C);
+            --transicion: all 0.3s ease;
+            --borde-redondeado: 12px;
+            --sombra-suave: 0 8px 20px var(--color-sombra);
+            --sombra-intensa: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Reset y estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Contenedor principal centrado */
+        .contenedor {
+            width: 100%;
+            max-width: 1200px;
+            background-color: var(--color-blanco);
+            border-radius: var(--borde-redondeado);
+            box-shadow: var(--sombra-intensa);
+            overflow: hidden;
+            margin: 20px 0;
+            transition: var(--transicion);
+        }
+
+        /* Encabezado */
+        header {
+            background: var(--gradiente-primario);
+            color: var(--color-blanco);
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .titulo-principal {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .subtitulo {
+            font-size: 1.4rem;
+            font-weight: 300;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .tema {
+            display: inline-block;
+            background-color: var(--color-secundario);
+            color: var(--color-blanco);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Secciones del contenido */
+        .seccion {
+            padding: 40px 30px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .seccion:nth-child(even) {
+            background-color: rgba(247, 249, 252, 0.5);
+        }
+
+        .seccion-titulo {
+            color: var(--color-primario);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .seccion-titulo i {
+            background: var(--gradiente-secundario);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .texto-contenido {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .texto-contenido p {
+            margin-bottom: 15px;
+        }
+
+        /* Código Python */
+        .codigo-container {
+            background-color: #1E1E1E;
+            color: #D4D4D4;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 25px 0;
+            overflow-x: auto;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .codigo-container::before {
+            content: "Python";
+            position: absolute;
+            top: 0;
+            right: 15px;
+            background-color: var(--color-terciario);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 0 0 5px 5px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .codigo-python {
+            font-family: 'Courier New', monospace;
+            line-height: 1.5;
+            font-size: 1rem;
+            tab-size: 4;
+        }
+
+        .keyword {
+            color: #569CD6;
+        }
+
+        .string {
+            color: #CE9178;
+        }
+
+        .function {
+            color: #DCDCAA;
+        }
+
+        .comment {
+            color: #6A9955;
+        }
+
+        /* Botones */
+        .boton {
+            display: inline-block;
+            background: var(--gradiente-primario);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transicion);
+            box-shadow: 0 4px 10px rgba(42, 92, 170, 0.2);
+            text-decoration: none;
+            margin: 5px;
+        }
+
+        .boton:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(42, 92, 170, 0.3);
+            background: linear-gradient(135deg, var(--color-secundario), var(--color-primario));
+        }
+
+        .boton:active {
+            transform: translateY(0);
+        }
+
+        /* Juego de evaluación */
+        #juego-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: var(--borde-redondeado);
+            padding: 25px;
+            box-shadow: var(--sombra-suave);
+            margin-top: 20px;
+            display: none;
+        }
+
+        .pregunta {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #ddd;
+        }
+
+        .pregunta-titulo {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--color-primario);
+            font-size: 1.2rem;
+        }
+
+        .opcion {
+            background-color: #f0f4f8;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: var(--transicion);
+            border: 2px solid transparent;
+        }
+
+        .opcion:hover {
+            background-color: #e1e8f0;
+            transform: translateX(5px);
+        }
+
+        .opcion.seleccionada {
+            border-color: var(--color-terciario);
+            background-color: rgba(0, 168, 150, 0.1);
+        }
+
+        .opcion.correcta {
+            border-color: #28a745;
+            background-color: rgba(40, 167, 69, 0.1);
+        }
+
+        .opcion.incorrecta {
+            border-color: #dc3545;
+            background-color: rgba(220, 53, 69, 0.1);
+        }
+
+        .feedback {
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .feedback.correcta {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+            display: block;
+        }
+
+        .feedback.incorrecta {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            display: block;
+        }
+
+        .puntaje-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid var(--color-terciario);
+        }
+
+        #puntaje {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--color-primario);
+        }
+
+        /* Pie de página */
+        footer {
+            background-color: var(--color-primario);
+            color: var(--color-blanco);
+            padding: 25px;
+            text-align: center;
+        }
+
+        .autor {
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        /* Responsividad */
+        @media (max-width: 768px) {
+            .contenedor {
+                margin: 10px;
+                border-radius: 10px;
+            }
+
+            .titulo-principal {
+                font-size: 2.2rem;
+            }
+
+            .subtitulo {
+                font-size: 1.1rem;
+            }
+
+            .seccion {
+                padding: 30px 20px;
+            }
+
+            .seccion-titulo {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .titulo-principal {
+                font-size: 1.8rem;
+            }
+
+            .tema {
+                font-size: 1rem;
+                padding: 6px 15px;
+            }
+
+            .boton {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor">
+        <!-- Encabezado -->
+        <header>
+            <h1 class="titulo-principal">Python para pensadores</h1>
+            <p class="subtitulo">Taller diseñado con el corazón de un docente y la mente de un programador.</p>
+            <div class="tema">Python: Manejo de diccionarios y conjuntos</div>
+        </header>
+
+        <!-- Sección 1: Objetivo de aprendizaje -->
+        <section class="seccion">
+            <h2 class="seccion-titulo"><i class="fas fa-bullseye"></i> Objetivo de aprendizaje</h2>
+            <div class="texto-contenido">
+                <p>Dominar la creación, manipulación y aplicación de diccionarios y conjuntos en Python para organizar y procesar información de manera eficiente, desarrollando habilidades de pensamiento lógico y estructurado que permitan resolver problemas complejos mediante la representación adecuada de datos, cultivando una actitud curiosa y metódica frente a la programación como herramienta para modelar y transformar la realidad.</p>
+            </div>
+        </section>
+
+        <!-- Sección 2: Contextualización -->
+        <section class="seccion">
+            <h2 class="seccion-titulo"><i class="fas fa-globe-americas"></i> Contextualización</h2>
+            <div class="texto-contenido">
+                <p>Imagina que eres el organizador de un festival de música ecuatoriano. Tienes cientos de artistas, escenarios, horarios y asistentes. ¿Cómo llevarías el control de quién toca dónde y a qué hora? ¿Cómo sabrías si un asistente ya compró entrada o si un artista ya fue asignado a un escenario?</p>
+                <p>En la vida cotidiana, constantemente necesitamos organizar información: los contactos de tu teléfono (nombre, número, email), tu colección de videojuegos (título, plataforma, horas jugadas), o incluso tus amigos en redes sociales. Python te ofrece herramientas poderosas para este propósito: los diccionarios, que relacionan "claves" con "valores" como un directorio telefónico, y los conjuntos, que son como bolsas donde cada elemento es único y el orden no importa.</p>
+                <p>Hoy no solo aprenderás sintaxis, sino que descubrirás cómo estas estructuras pueden ayudarte a pensar de manera más clara y resolver problemas más eficientemente.</p>
+            </div>
+        </section>
+
+        <!-- Sección 3: Desarrollo de la actividad -->
+        <section class="seccion">
+            <h2 class="seccion-titulo"><i class="fas fa-code"></i> Desarrollo de la actividad</h2>
+            <div class="texto-contenido">
+                <p>Vamos a explorar los diccionarios y conjuntos a través de ejemplos prácticos relacionados con situaciones reales que podrías encontrar en tu entorno.</p>
+                
+                <h3>Diccionarios: Tu agenda personalizada</h3>
+                <p>Un diccionario en Python es como un diccionario real: buscas una palabra (clave) y encuentras su significado (valor). Veamos cómo funciona:</p>
+                
+                <div class="codigo-container">
+                    <pre class="codigo-python"><span class="comment"># Creando un diccionario de información personal</span>
+<span class="keyword">estudiante</span> = {
+    <span class="string">"nombre"</span>: <span class="string">"Ana"</span>,
+    <span class="string">"edad"</span>: <span class="string">17</span>,
+    <span class="string">"ciudad"</span>: <span class="string">"Quito"</span>,
+    <span class="string">"materia_favorita"</span>: <span class="string">"Matemáticas"</span>,
+    <span class="string">"hobbies"</span>: [<span class="string">"leer"</span>, <span class="string">"programar"</span>, <span class="string">"senderismo"</span>]
+}
+
+<span class="comment"># Accediendo a los valores por su clave</span>
+<span class="function">print</span>(<span class="string">"Nombre:"</span>, estudiante[<span class="string">"nombre"</span>])
+<span class="function">print</span>(<span class="string">"Ciudad:"</span>, estudiante.get(<span class="string">"ciudad"</span>, <span class="string">"No especificada"</span>))
+
+<span class="comment"># Modificando un valor</span>
+estudiante[<span class="string">"edad"</span>] = <span class="string">18</span>
+<span class="function">print</span>(<span class="string">"Nueva edad:"</span>, estudiante[<span class="string">"edad"</span>])
+
+<span class="comment"># Añadiendo una nueva clave-valor</span>
+estudiante[<span class="string">"colegio"</span>] = <span class="string">"Unidad Educativa XYZ"</span>
+
+<span class="comment"># Recorriendo el diccionario</span>
+<span class="keyword">for</span> clave, valor <span class="keyword">in</span> estudiante.items():
+    <span class="function">print</span>(<span class="string">f"{clave}: {valor}"</span>)</pre>
+                </div>
+                
+                <h3>Conjuntos: Eliminando duplicados</h3>
+                <p>Los conjuntos son perfectos cuando necesitas trabajar con elementos únicos. Imagina que estás organizando los participantes de un torneo de videojuegos:</p>
+                
+                <div class="codigo-container">
+                    <pre class="codigo-python"><span class="comment"># Lista de participantes con duplicados</span>
+participantes = [<span class="string">"María"</span>, <span class="string">"Carlos"</span>, <span class="string">"Ana"</span>, <span class="string">"María"</span>, <span class="string">"Luis"</span>, <span class="string">"Carlos"</span>, <span class="string">"Ana"</span>]
+<span class="function">print</span>(<span class="string">"Lista original:"</span>, participantes)
+<span class="function">print</span>(<span class="string">"Tamaño (con duplicados):"</span>, <span class="function">len</span>(participantes))
+
+<span class="comment"># Convertir a conjunto para eliminar duplicados</span>
+participantes_unicos = <span class="function">set</span>(participantes)
+<span class="function">print</span>(<span class="string">"Conjunto de participantes:"</span>, participantes_unicos)
+<span class="function">print</span>(<span class="string">"Tamaño (sin duplicados):"</span>, <span class="function">len</span>(participantes_unicos))
+
+<span class="comment"># Operaciones con conjuntos</span>
+equipo_a = {<span class="string">"Ana"</span>, <span class="string">"Carlos"</span>, <span class="string">"Diana"</span>}
+equipo_b = {<span class="string">"Carlos"</span>, <span class="string">"Luis"</span>, <span class="string">"Elena"</span>}
+
+<span class="function">print</span>(<span class="string">"Jugadores en ambos equipos:"</span>, equipo_a & equipo_b) <span class="comment"># Intersección</span>
+<span class="function">print</span>(<span class="string">"Todos los jugadores:"</span>, equipo_a | equipo_b) <span class="comment"># Unión</span>
+<span class="function">print</span>(<span class="string">"Solo en equipo A:"</span>, equipo_a - equipo_b) <span class="comment"># Diferencia</span></pre>
+                </div>
+                
+                <p><strong>Reflexiona:</strong> ¿En qué situaciones de tu vida podrías usar diccionarios? ¿Y conjuntos? Piensa en aplicaciones reales como organizar tu música, gestionar contactos o analizar datos de redes sociales.</p>
+            </div>
+        </section>
+
+        <!-- Sección 4: El reto final -->
+        <section class="seccion">
+            <h2 class="seccion-titulo"><i class="fas fa-flag-checkered"></i> El reto final</h2>
+            <div class="texto-contenido">
+                <p>Eres el organizador de la "Feria de Ciencias Intercolegial Ecuador 2024". Debes desarrollar un programa en Python que gestione la información del evento usando diccionarios y conjuntos.</p>
+                
+                <p><strong>Tareas a realizar:</strong></p>
+                <ol>
+                    <li>Crea un diccionario que almacene la información de cada proyecto participante con las siguientes claves: "id", "nombre", "colegio", "categoría", "integrantes", "puntaje".</li>
+                    <li>Implementa funciones para:
+                        <ul>
+                            <li>Agregar nuevos proyectos</li>
+                            <li>Buscar proyectos por colegio o categoría</li>
+                            <li>Actualizar el puntaje de un proyecto</li>
+                            <li>Mostrar los 3 proyectos con mayor puntaje</li>
+                        </ul>
+                    </li>
+                    <li>Usa conjuntos para:
+                        <ul>
+                            <li>Llevar control de los colegios participantes (sin duplicados)</li>
+                            <li>Identificar estudiantes que participan en más de un proyecto</li>
+                            <li>Encontrar categorías que tienen menos de 2 proyectos</li>
+                        </ul>
+                    </li>
+                    <li>Genera un informe final que muestre:
+                        <ul>
+                            <li>Total de proyectos por categoría</li>
+                            <li>Colegios participantes</li>
+                            <li>Proyectos ganadores por categoría</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <p><strong>Extensión creativa:</strong> Si quieres ir más allá, agrega una función que simule el proceso de evaluación aleatoria de proyectos y luego organice los resultados.</p>
+                
+                <button id="mostrar-pista" class="boton">Ver pista para comenzar</button>
+                <div id="pista" style="display: none; margin-top: 15px; padding: 15px; background-color: rgba(42, 92, 170, 0.1); border-radius: 8px;">
+                    <p><strong>Pista:</strong> Comienza definiendo una lista de diccionarios llamada "proyectos". Cada diccionario representará un proyecto. Para los conjuntos, crea uno para "colegios" y otro para "estudiantes". A medida que agregas proyectos, actualiza estos conjuntos.</p>
+                    <div class="codigo-container">
+                        <pre class="codigo-python"><span class="comment"># Estructura inicial sugerida</span>
+proyectos = [
+    {
+        <span class="string">"id"</span>: 1,
+        <span class="string">"nombre"</span>: <span class="string">"Robot limpiador ecológico"</span>,
+        <span class="string">"colegio"</span>: <span class="string">"Colegio Científico"</span>,
+        <span class="string">"categoria"</span>: <span class="string">"Robótica"</span>,
+        <span class="string">"integrantes"</span>: [<span class="string">"Ana"</span>, <span class="string">"Luis"</span>],
+        <span class="string">"puntaje"</span>: 0
+    }
+    <span class="comment"># ... más proyectos</span>
+]
+
+colegios = <span class="function">set</span>()
+estudiantes = <span class="function">set</span>()</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 5: Evaluación lúdica -->
+        <section class="seccion">
+            <h2 class="seccion-titulo"><i class="fas fa-gamepad"></i> Evaluación lúdica</h2>
+            <div class="texto-contenido">
+                <p>¡Pon a prueba lo aprendido con este juego interactivo! Responde las 5 preguntas sobre diccionarios y conjuntos en Python. Cada respuesta correcta te dará 20 puntos. ¡Intenta alcanzar los 100 puntos!</p>
+                
+                <button id="iniciar-juego" class="boton">Iniciar juego de evaluación</button>
+                
+                <div id="juego-container">
+                    <div id="preguntas-container"></div>
+                    
+                    <div class="puntaje-container">
+                        <div>
+                            <span>Puntaje: </span>
+                            <span id="puntaje">0</span>/100
+                        </div>
+                        <button id="reiniciar-juego" class="boton">Reiniciar juego</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pie de página -->
+        <footer>
+            <p class="autor">Diseñado por: Edwin Méndez J.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Datos para el juego de evaluación
+        const preguntas = [
+            {
+                pregunta: "¿Cuál es la principal característica de un diccionario en Python?",
+                opciones: [
+                    "Almacena elementos en un orden específico que no puede cambiar",
+                    "Relaciona claves únicas con valores, permitiendo búsqueda eficiente",
+                    "Solo puede almacenar números y cadenas de texto",
+                    "Es similar a una lista pero más rápida para todas las operaciones"
+                ],
+                respuestaCorrecta: 1
+            },
+            {
+                pregunta: "Si tienes un conjunto A = {1, 2, 3} y B = {3, 4, 5}, ¿qué devuelve A | B?",
+                opciones: [
+                    "{3}",
+                    "{1, 2, 3, 4, 5}",
+                    "{1, 2}",
+                    "{1, 2, 4, 5}"
+                ],
+                respuestaCorrecta: 1
+            },
+            {
+                pregunta: "¿Cuál de estas operaciones NO es válida para un diccionario llamado 'datos'?",
+                opciones: [
+                    "datos['nuevo'] = 'valor'",
+                    "datos.get('clave', 'alternativo')",
+                    "datos.append('elemento')",
+                    "datos.keys()"
+                ],
+                respuestaCorrecta: 2
+            },
+            {
+                pregunta: "¿Qué hace el método .add() en un conjunto?",
+                opciones: [
+                    "Elimina un elemento si existe",
+                    "Agrega un elemento si no existe ya en el conjunto",
+                    "Une dos conjuntos",
+                    "Ordena los elementos del conjunto"
+                ],
+                respuestaCorrecta: 1
+            },
+            {
+                pregunta: "¿Cuál es la ventaja principal de usar conjuntos cuando trabajas con datos que pueden tener duplicados?",
+                opciones: [
+                    "Los conjuntos son más rápidos para recorrer en un bucle",
+                    "Los conjuntos eliminan automáticamente los elementos duplicados",
+                    "Los conjuntos ocupan menos memoria que las listas",
+                    "Los conjuntos permiten acceso por índice como las listas"
+                ],
+                respuestaCorrecta: 1
+            }
+        ];
+
+        // Variables del juego
+        let puntajeActual = 0;
+        let preguntaActual = 0;
+        let respuestasSeleccionadas = [];
+        let juegoIniciado = false;
+
+        // Elementos DOM
+        const iniciarJuegoBtn = document.getElementById('iniciar-juego');
+        const juegoContainer = document.getElementById('juego-container');
+        const preguntasContainer = document.getElementById('preguntas-container');
+        const puntajeElement = document.getElementById('puntaje');
+        const reiniciarJuegoBtn = document.getElementById('reiniciar-juego');
+        const mostrarPistaBtn = document.getElementById('mostrar-pista');
+        const pistaDiv = document.getElementById('pista');
+
+        // Iniciar el juego
+        iniciarJuegoBtn.addEventListener('click', () => {
+            juegoIniciado = true;
+            juegoContainer.style.display = 'block';
+            iniciarJuegoBtn.style.display = 'none';
+            cargarPreguntas();
+        });
+
+        // Reiniciar el juego
+        reiniciarJuegoBtn.addEventListener('click', reiniciarJuego);
+
+        // Mostrar/ocultar pista
+        mostrarPistaBtn.addEventListener('click', () => {
+            if (pistaDiv.style.display === 'none') {
+                pistaDiv.style.display = 'block';
+                mostrarPistaBtn.textContent = 'Ocultar pista';
+            } else {
+                pistaDiv.style.display = 'none';
+                mostrarPistaBtn.textContent = 'Ver pista para comenzar';
+            }
+        });
+
+        // Cargar preguntas en el contenedor
+        function cargarPreguntas() {
+            preguntasContainer.innerHTML = '';
+            respuestasSeleccionadas = [];
+            
+            preguntas.forEach((pregunta, index) => {
+                const preguntaDiv = document.createElement('div');
+                preguntaDiv.className = 'pregunta';
+                
+                let opcionesHTML = '';
+                pregunta.opciones.forEach((opcion, opcionIndex) => {
+                    opcionesHTML += `
+                        <div class="opcion" data-pregunta="${index}" data-opcion="${opcionIndex}">
+                            ${String.fromCharCode(65 + opcionIndex)}) ${opcion}
+                        </div>
+                    `;
+                });
+                
+                preguntaDiv.innerHTML = `
+                    <div class="pregunta-titulo">${index + 1}. ${pregunta.pregunta}</div>
+                    ${opcionesHTML}
+                    <div class="feedback" id="feedback-${index}"></div>
+                `;
+                
+                preguntasContainer.appendChild(preguntaDiv);
+            });
+            
+            // Añadir eventos a las opciones
+            document.querySelectorAll('.opcion').forEach(opcion => {
+                opcion.addEventListener('click', seleccionarRespuesta);
+            });
+            
+            puntajeActual = 0;
+            preguntaActual = 0;
+            actualizarPuntaje();
+        }
+
+        // Seleccionar una respuesta
+        function seleccionarRespuesta(e) {
+            if (!juegoIniciado) return;
+            
+            const preguntaIndex = parseInt(e.target.dataset.pregunta);
+            const opcionIndex = parseInt(e.target.dataset.opcion);
+            
+            // Evitar cambiar respuesta después de seleccionar
+            if (respuestasSeleccionadas[preguntaIndex] !== undefined) return;
+            
+            // Marcar como seleccionada
+            e.target.classList.add('seleccionada');
+            
+            // Verificar si es correcta
+            const esCorrecta = opcionIndex === preguntas[preguntaIndex].respuestaCorrecta;
+            const feedbackDiv = document.getElementById(`feedback-${preguntaIndex}`);
+            
+            if (esCorrecta) {
+                e.target.classList.add('correcta');
+                feedbackDiv.textContent = "¡Correcto! Has respondido acertadamente.";
+                feedbackDiv.classList.add('correcta');
+                puntajeActual += 20;
+            } else {
+                e.target.classList.add('incorrecta');
+                // Mostrar también la respuesta correcta
+                const opcionCorrecta = document.querySelector(`.opcion[data-pregunta="${preguntaIndex}"][data-opcion="${preguntas[preguntaIndex].respuestaCorrecta}"]`);
+                opcionCorrecta.classList.add('correcta');
+                
+                feedbackDiv.textContent = `Respuesta incorrecta. La opción correcta es: ${String.fromCharCode(65 + preguntas[preguntaIndex].respuestaCorrecta)}) ${preguntas[preguntaIndex].opciones[preguntas[preguntaIndex].respuestaCorrecta]}`;
+                feedbackDiv.classList.add('incorrecta');
+            }
+            
+            respuestasSeleccionadas[preguntaIndex] = opcionIndex;
+            actualizarPuntaje();
+            
+            // Si es la última pregunta, mostrar mensaje final
+            if (respuestasSeleccionadas.filter(r => r !== undefined).length === preguntas.length) {
+                setTimeout(() => {
+                    let mensajeFinal = "";
+                    if (puntajeActual === 100) {
+                        mensajeFinal = "¡Excelente! Dominas completamente los conceptos de diccionarios y conjuntos.";
+                    } else if (puntajeActual >= 60) {
+                        mensajeFinal = "¡Buen trabajo! Tienes un buen entendimiento, pero hay algunos conceptos que podrías repasar.";
+                    } else {
+                        mensajeFinal = "¡Sigue practicando! Te recomiendo revisar los ejemplos y experimentar con más código.";
+                    }
+                    
+                    alert(`Juego terminado. Tu puntaje final: ${puntajeActual}/100\n\n${mensajeFinal}`);
+                }, 500);
+            }
+        }
+
+        // Actualizar el puntaje en pantalla
+        function actualizarPuntaje() {
+            puntajeElement.textContent = puntajeActual;
+        }
+
+        // Reiniciar el juego
+        function reiniciarJuego() {
+            juegoIniciado = true;
+            cargarPreguntas();
+        }
+
+        // Efecto hover para botones adicionales
+        document.addEventListener('DOMContentLoaded', function() {
+            // Añadir efecto hover a todos los botones
+            const botones = document.querySelectorAll('.boton');
+            botones.forEach(boton => {
+                boton.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px)';
+                });
+                
+                boton.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

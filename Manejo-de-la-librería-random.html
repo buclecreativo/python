@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python para pensadores | Taller: Librería Random</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7ff;
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        .title-container {
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .theme {
+            background-color: rgba(255, 255, 255, 0.15);
+            display: inline-block;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.3rem;
+            backdrop-filter: blur(5px);
+            margin-top: 1rem;
+        }
+
+        /* Main content */
+        main {
+            padding: 2.5rem;
+        }
+
+        section {
+            margin-bottom: 3.5rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        h2 {
+            color: var(--secondary);
+            font-size: 1.8rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent);
+            display: inline-block;
+        }
+
+        h3 {
+            color: var(--primary);
+            font-size: 1.4rem;
+            margin: 1.5rem 0 1rem;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            font-size: 1.1rem;
+        }
+
+        .highlight {
+            background-color: rgba(67, 97, 238, 0.1);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            border-left: 5px solid var(--primary);
+            margin: 1.5rem 0;
+        }
+
+        .code-container {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .code-keyword {
+            color: #63b3ed;
+        }
+
+        .code-function {
+            color: #68d391;
+        }
+
+        .code-string {
+            color: #fbb6ce;
+        }
+
+        .code-comment {
+            color: #a0aec0;
+        }
+
+        .example-box {
+            background-color: var(--light);
+            border-radius: var(--radius);
+            padding: 1.8rem;
+            margin: 1.8rem 0;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--light-gray);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            box-shadow: 0 4px 6px rgba(67, 97, 238, 0.2);
+        }
+
+        .btn:hover {
+            background-color: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(67, 97, 238, 0.3);
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+        }
+
+        .btn-accent:hover {
+            background-color: #d63384;
+        }
+
+        .btn-light {
+            background-color: var(--light-gray);
+            color: var(--dark);
+        }
+
+        .btn-light:hover {
+            background-color: #d4d6da;
+        }
+
+        /* Quiz section */
+        .quiz-container {
+            background-color: #f8f9ff;
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .question {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .question.active {
+            display: block;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .option {
+            background-color: white;
+            padding: 1.2rem;
+            border-radius: var(--radius);
+            border: 2px solid var(--light-gray);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .option.selected {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+
+        .option.correct {
+            border-color: var(--success);
+            background-color: rgba(76, 201, 240, 0.1);
+        }
+
+        .option.incorrect {
+            border-color: #ef4444;
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        .feedback {
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-top: 1rem;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback.correct {
+            background-color: rgba(76, 201, 240, 0.2);
+            color: #0d9488;
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: #dc2626;
+            display: block;
+        }
+
+        .score-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 2px dashed var(--light-gray);
+        }
+
+        .score {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 1.8rem;
+            font-size: 1rem;
+        }
+
+        .author {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+            }
+            
+            header {
+                padding: 2rem 1rem;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .theme {
+                font-size: 1.1rem;
+            }
+            
+            main {
+                padding: 1.5rem;
+            }
+            
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            .score-container {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-container">
+                <h1>Python para pensadores</h1>
+                <div class="subtitle">Taller diseñado con el corazón de un docente y la mente de un programador</div>
+                <div class="theme">Python: Manejo de la librería random (randint, randchoice, randshuffle)</div>
+            </div>
+        </header>
+
+        <main>
+            <section id="objetivo">
+                <h2>Objetivo de aprendizaje</h2>
+                <p>Dominar el uso de la librería random en Python para generar valores aleatorios, simular escenarios del mundo real y resolver problemas complejos mediante el desarrollo de algoritmos que integren las funciones <strong>randint()</strong>, <strong>choice()</strong> y <strong>shuffle()</strong>, fortaleciendo así el pensamiento computacional, la creatividad en la resolución de problemas y la capacidad de análisis crítico frente a situaciones de incertidumbre, todo mientras se cultiva una actitud ética y colaborativa hacia el uso de la aleatoriedad en aplicaciones tecnológicas.</p>
+            </section>
+
+            <section id="contexto">
+                <h2>Contextualización: El azar en nuestras vidas</h2>
+                <p>Imagina que estás organizando un torneo de videojuegos entre tus amigos, o quizás preparando un examen sorpresa para estudiar, o tal vez creando una playlist que mezcle tus canciones favoritas de forma impredecible. En todas estas situaciones, hay un elemento en común: el azar. Pero, ¿es realmente "azar" o podemos domar la imprevisibilidad con código?</p>
+                
+                <div class="highlight">
+                    <p>La programación nos permite crear orden a partir del caos, y Python, con su librería <strong>random</strong>, nos da las herramientas para simular la aleatoriedad de la vida real en nuestros programas. Hoy no solo aprenderás funciones, sino que descubrirás cómo la incertidumbre puede convertirse en una aliada para crear soluciones innovadoras.</p>
+                </div>
+            </section>
+
+            <section id="desarrollo">
+                <h2>Desarrollo de la actividad</h2>
+                
+                <h3>1. Importando la librería random</h3>
+                <p>Para comenzar a trabajar con aleatoriedad en Python, primero debemos importar la librería:</p>
+                
+                <div class="code-container">
+                    <span class="code-keyword">import</span> random
+                </div>
+                
+                <h3>2. Generando números enteros aleatorios: randint()</h3>
+                <p>La función <strong>randint(a, b)</strong> genera un número entero aleatorio entre <strong>a</strong> y <strong>b</strong>, incluyendo ambos extremos.</p>
+                
+                <div class="example-box">
+                    <h4>Ejemplo práctico: Simulador de lanzamiento de dados</h4>
+                    <p>Vamos a crear un programa que simule el lanzamiento de un dado de 6 caras:</p>
+                    
+                    <div class="code-container">
+                        <span class="code-keyword">import</span> random<br><br>
+                        <span class="code-comment"># Simular un lanzamiento de dado</span><br>
+                        resultado = random.randint(<span class="code-string">1</span>, <span class="code-string">6</span>)<br>
+                        <span class="code-function">print</span>(<span class="code-string">"El dado cayó en:"</span>, resultado)<br><br>
+                        <span class="code-comment"># Simular 10 lanzamientos y contar cuántas veces sale cada número</span><br>
+                        conteo = {<span class="code-string">1</span>: <span class="code-string">0</span>, <span class="code-string">2</span>: <span class="code-string">0</span>, <span class="code-string">3</span>: <span class="code-string">0</span>, <span class="code-string">4</span>: <span class="code-string">0</span>, <span class="code-string">5</span>: <span class="code-string">0</span>, <span class="code-string">6</span>: <span class="code-string">0</span>}<br><br>
+                        <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-string">10</span>):<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;lanzamiento = random.randint(<span class="code-string">1</span>, <span class="code-string">6</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;conteo[lanzamiento] += <span class="code-string">1</span><br><br>
+                        <span class="code-function">print</span>(<span class="code-string">"Resultados de 10 lanzamientos:"</span>)<br>
+                        <span class="code-keyword">for</span> cara, cantidad <span class="code-keyword">in</span> conteo.items():<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-string">f"Cara {cara}: {cantidad} veces"</span>)
+                    </div>
+                </div>
+                
+                <h3>3. Seleccionando elementos aleatorios: choice()</h3>
+                <p>La función <strong>choice(secuencia)</strong> selecciona un elemento aleatorio de una lista, tupla o cadena.</p>
+                
+                <div class="example-box">
+                    <h4>Ejemplo práctico: Selector de temas para presentaciones</h4>
+                    <p>Imagina que debes preparar una presentación pero no sabes por dónde empezar. Este programa selecciona un tema aleatorio para ti:</p>
+                    
+                    <div class="code-container">
+                        <span class="code-keyword">import</span> random<br><br>
+                        <span class="code-comment"># Lista de temas posibles</span><br>
+                        temas = [<span class="code-string">"Inteligencia Artificial"</span>, <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">"Cambio climático"</span>, <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">"Realidad virtual"</span>, <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">"Blockchain y criptomonedas"</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">"Exploración espacial"</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">"Salud digital"</span>]<br><br>
+                        <span class="code-comment"># Seleccionar un tema aleatorio</span><br>
+                        tema_seleccionado = random.choice(temas)<br>
+                        <span class="code-function">print</span>(<span class="code-string">"Tu tema de presentación es:"</span>, tema_seleccionado)<br><br>
+                        <span class="code-comment"># Seleccionar 3 temas diferentes sin repetición</span><br>
+                        temas_unicos = random.sample(temas, <span class="code-string">3</span>)<br>
+                        <span class="code-function">print</span>(<span class="code-string">"Tres temas interesantes:"</span>, temas_unicos)
+                    </div>
+                </div>
+                
+                <h3>4. Mezclando secuencias: shuffle()</h3>
+                <p>La función <strong>shuffle(secuencia)</strong> mezcla los elementos de una lista <strong>en su lugar</strong> (modifica la lista original).</p>
+                
+                <div class="example-box">
+                    <h4>Ejemplo práctico: Organizador de equipos para proyectos</h4>
+                    <p>Cuando trabajas en equipo, a veces es justo asignar los roles de forma aleatoria. Este programa mezcla una lista de estudiantes y los asigna a grupos:</p>
+                    
+                    <div class="code-container">
+                        <span class="code-keyword">import</span> random<br><br>
+                        <span class="code-comment"># Lista de estudiantes</span><br>
+                        estudiantes = [<span class="code-string">"Ana"</span>, <span class="code-string">"Carlos"</span>, <span class="code-string">"María"</span>, <span class="code-string">"José"</span>, <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">"Lucía"</span>, <span class="code-string">"Diego"</span>, <span class="code-string">"Sofía"</span>, <span class="code-string">"Miguel"</span>]<br><br>
+                        <span class="code-function">print</span>(<span class="code-string">"Estudiantes en orden original:"</span>, estudiantes)<br><br>
+                        <span class="code-comment"># Mezclar la lista</span><br>
+                        random.shuffle(estudiantes)<br>
+                        <span class="code-function">print</span>(<span class="code-string">"Estudiantes mezclados:"</span>, estudiantes)<br><br>
+                        <span class="code-comment"># Formar 2 equipos de 4 personas</span><br>
+                        equipo1 = estudiantes[:<span class="code-string">4</span>]<br>
+                        equipo2 = estudiantes[<span class="code-string">4</span>:]<br>
+                        <span class="code-function">print</span>(<span class="code-string">"\nEquipo 1:"</span>, equipo1)<br>
+                        <span class="code-function">print</span>(<span class="code-string">"Equipo 2:"</span>, equipo2)
+                    </div>
+                </div>
+            </section>
+
+            <section id="reto">
+                <h2>El reto final: Simulador de lotería ecuatoriana</h2>
+                <p>Tu misión es crear un programa que simule el juego de lotería tradicional ecuatoriana. Debes implementar las siguientes funcionalidades:</p>
+                
+                <div class="highlight">
+                    <ol>
+                        <li>Generar 6 números aleatorios entre 1 y 45 (sin repetición) que representen los números ganadores.</li>
+                        <li>Permitir al usuario ingresar 6 números de su elección (validando que estén entre 1 y 45 y no se repitan).</li>
+                        <li>Comparar los números del usuario con los números ganadores y determinar cuántos aciertos tuvo.</li>
+                        <li>Asignar un premio según la cantidad de aciertos: 6 aciertos (premio mayor), 5 aciertos (segundo premio), 4 aciertos (tercer premio).</li>
+                        <li>Mostrar los resultados de forma clara y atractiva.</li>
+                    </ol>
+                </div>
+                
+                <p>Este reto integra todo lo aprendido: usarás <strong>randint()</strong> para generar números, <strong>sample()</strong> para evitar repeticiones, trabajarás con listas y condicionales, y crearás una interfaz de usuario básica. ¡Ponte a prueba y muestra tu creatividad!</p>
+                
+                <button class="btn btn-accent" onclick="mostrarPista()">
+                    <i class="fas fa-lightbulb"></i> Ver pista para el reto
+                </button>
+                
+                <div id="pista" style="display: none; margin-top: 1rem; padding: 1rem; background-color: #f0f7ff; border-radius: var(--radius);">
+                    <p><strong>Pista:</strong> Puedes usar <code>random.sample(range(1, 46), 6)</code> para generar 6 números únicos entre 1 y 45. Para comparar aciertos, considera convertir las listas a conjuntos (set) y usar la intersección.</p>
+                </div>
+            </section>
+
+            <section id="evaluacion">
+                <h2>Evaluación lúdica: Pon a prueba tu conocimiento</h2>
+                <p>Responde las siguientes preguntas para demostrar lo que has aprendido sobre la librería random en Python.</p>
+                
+                <div class="quiz-container">
+                    <div id="question-container">
+                        <!-- Las preguntas se cargarán aquí con JavaScript -->
+                    </div>
+                    
+                    <div id="feedback" class="feedback"></div>
+                    
+                    <div class="score-container">
+                        <div>
+                            <span class="score">Puntuación: <span id="score-value">0</span>/5</span>
+                        </div>
+                        <div class="controls">
+                            <button class="btn btn-light" id="prev-btn" onclick="prevQuestion()">
+                                <i class="fas fa-arrow-left"></i> Anterior
+                            </button>
+                            <button class="btn" id="next-btn" onclick="nextQuestion()">
+                                Siguiente <i class="fas fa-arrow-right"></i>
+                            </button>
+                            <button class="btn btn-accent" id="submit-btn" onclick="submitQuiz()" style="display: none;">
+                                <i class="fas fa-paper-plane"></i> Enviar respuestas
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Diseñado por: <span class="author">Edwin Méndez J.</span></p>
+            <p style="margin-top: 0.5rem; opacity: 0.8; font-size: 0.9rem;">Python para pensadores | Taller educativo para estudiantes de bachillerato</p>
+        </footer>
+    </div>
+
+    <script>
+        // Datos para el quiz
+        const questions = [
+            {
+                question: "¿Cuál es la función correcta para generar un número entero aleatorio entre 10 y 20 (incluyendo ambos extremos)?",
+                options: [
+                    "random.randint(10, 20)",
+                    "random.randint(10, 21)",
+                    "random.randint(10, 19)",
+                    "random.randint(11, 20)"
+                ],
+                correct: 0,
+                feedback: "Correcto: random.randint(10, 20) genera números entre 10 y 20, incluyendo ambos extremos."
+            },
+            {
+                question: "¿Qué hace la función random.choice()?",
+                options: [
+                    "Genera un número decimal aleatorio entre 0 y 1",
+                    "Selecciona un elemento aleatorio de una secuencia",
+                    "Mezcla los elementos de una lista",
+                    "Genera un número entero aleatorio en un rango"
+                ],
+                correct: 1,
+                feedback: "Correcto: random.choice(secuencia) selecciona y devuelve un elemento aleatorio de la secuencia proporcionada."
+            },
+            {
+                question: "Si tenemos la lista: colores = ['rojo', 'verde', 'azul'], ¿qué hace random.shuffle(colores)?",
+                options: [
+                    "Devuelve una copia mezclada de la lista",
+                    "Mezcla la lista original en su lugar",
+                    "Selecciona un color aleatorio",
+                    "Genera una lista con los colores en orden inverso"
+                ],
+                correct: 1,
+                feedback: "Correcto: random.shuffle() mezcla la lista original 'en su lugar', es decir, modifica la lista original directamente."
+            },
+            {
+                question: "¿Cuál es la diferencia entre random.choice() y random.sample()?",
+                options: [
+                    "choice() devuelve múltiples elementos, sample() solo uno",
+                    "sample() devuelve múltiples elementos únicos, choice() solo uno",
+                    "No hay diferencia, son funciones equivalentes",
+                    "choice() funciona con números, sample() con cadenas"
+                ],
+                correct: 1,
+                feedback: "Correcto: random.sample(secuencia, k) devuelve una lista de k elementos únicos seleccionados aleatoriamente, mientras que random.choice() devuelve un solo elemento."
+            },
+            {
+                question: "¿Qué imprimirá este código?<br>import random<br>print(random.randint(5, 5))",
+                options: [
+                    "Un error porque los parámetros son iguales",
+                    "Un número aleatorio entre 0 y 5",
+                    "Siempre imprimirá 5",
+                    "Un número aleatorio entre 1 y 5"
+                ],
+                correct: 2,
+                feedback: "Correcto: Cuando ambos parámetros de randint() son iguales, siempre devuelve ese número. En este caso, siempre será 5."
+            }
+        ];
+
+        // Variables del quiz
+        let currentQuestion = 0;
+        let score = 0;
+        let userAnswers = new Array(questions.length).fill(-1);
+
+        // Inicializar el quiz
+        function initQuiz() {
+            showQuestion(currentQuestion);
+            updateButtons();
+        }
+
+        // Mostrar pregunta
+        function showQuestion(index) {
+            const questionContainer = document.getElementById('question-container');
+            const question = questions[index];
+            
+            let optionsHTML = '';
+            question.options.forEach((option, i) => {
+                const isSelected = userAnswers[index] === i;
+                const optionClass = isSelected ? 'option selected' : 'option';
+                optionsHTML += `
+                    <div class="${optionClass}" onclick="selectOption(${i})">
+                        ${option}
+                    </div>
+                `;
+            });
+            
+            questionContainer.innerHTML = `
+                <div class="question active">
+                    <h3>Pregunta ${index + 1} de ${questions.length}</h3>
+                    <p>${question.question}</p>
+                    <div class="options">
+                        ${optionsHTML}
+                    </div>
+                </div>
+            `;
+            
+            // Mostrar retroalimentación si ya respondió
+            const feedbackDiv = document.getElementById('feedback');
+            feedbackDiv.className = 'feedback';
+            feedbackDiv.style.display = 'none';
+            
+            updateButtons();
+        }
+
+        // Seleccionar una opción
+        function selectOption(optionIndex) {
+            // Remover selección anterior
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Seleccionar nueva opción
+            options[optionIndex].classList.add('selected');
+            userAnswers[currentQuestion] = optionIndex;
+            
+            // Mostrar botón de enviar en la última pregunta
+            const submitBtn = document.getElementById('submit-btn');
+            if (currentQuestion === questions.length - 1) {
+                submitBtn.style.display = 'inline-block';
+            }
+        }
+
+        // Navegar a la pregunta anterior
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        // Navegar a la siguiente pregunta
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        // Actualizar estado de los botones
+        function updateButtons() {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            prevBtn.disabled = currentQuestion === 0;
+            nextBtn.disabled = currentQuestion === questions.length - 1;
+            
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.style.display = 'none';
+            } else {
+                nextBtn.style.display = 'inline-block';
+            }
+        }
+
+        // Enviar respuestas y mostrar resultados
+        function submitQuiz() {
+            // Calcular puntuación
+            score = 0;
+            questions.forEach((question, index) => {
+                if (userAnswers[index] === question.correct) {
+                    score++;
+                }
+            });
+            
+            // Mostrar puntuación
+            document.getElementById('score-value').textContent = score;
+            
+            // Mostrar retroalimentación para la última pregunta
+            const lastQuestion = questions[currentQuestion];
+            const feedbackDiv = document.getElementById('feedback');
+            
+            if (userAnswers[currentQuestion] === lastQuestion.correct) {
+                feedbackDiv.textContent = lastQuestion.feedback;
+                feedbackDiv.className = 'feedback correct';
+            } else {
+                feedbackDiv.textContent = `Incorrecto. ${lastQuestion.feedback}`;
+                feedbackDiv.className = 'feedback incorrect';
+            }
+            
+            feedbackDiv.style.display = 'block';
+            
+            // Mostrar resultados finales si se respondieron todas
+            const allAnswered = userAnswers.every(answer => answer !== -1);
+            if (allAnswered) {
+                setTimeout(() => {
+                    alert(`¡Quiz completado!\nObtuviste ${score} de ${questions.length} respuestas correctas.\n${score >= 4 ? '¡Excelente! Dominas la librería random.' : score >= 3 ? 'Buen trabajo, pero puedes mejorar.' : 'Revisa los conceptos y vuelve a intentarlo.'}`);
+                }, 500);
+            }
+        }
+
+        // Mostrar pista para el reto
+        function mostrarPista() {
+            const pistaDiv = document.getElementById('pista');
+            if (pistaDiv.style.display === 'none') {
+                pistaDiv.style.display = 'block';
+            } else {
+                pistaDiv.style.display = 'none';
+            }
+        }
+
+        // Inicializar cuando se carga la página
+        document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+</body>
+</html>

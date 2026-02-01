@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python para Pensadores: Manejo de Funciones</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2C3E50;
+            --secondary: #3498DB;
+            --accent: #1ABC9C;
+            --light: #ECF0F1;
+            --dark: #1A1A2E;
+            --success: #27AE60;
+            --warning: #F39C12;
+            --danger: #E74C3C;
+            --text: #333333;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .main-container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 1s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Encabezado */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><text x="10" y="80" font-size="80" fill="rgba(255,255,255,0.05)">{}()</text></svg>');
+            opacity: 0.3;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .logo i {
+            font-size: 2.5rem;
+            margin-right: 15px;
+            color: var(--accent);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.4rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+        
+        .theme-badge {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            margin-top: 20px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        /* Navegación */
+        .nav-container {
+            background-color: var(--light);
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            list-style: none;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .nav-tabs li {
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+        }
+        
+        .nav-tabs a {
+            display: block;
+            padding: 18px 20px;
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .nav-tabs a:hover, .nav-tabs a.active {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--secondary);
+            border-bottom: 3px solid var(--secondary);
+        }
+        
+        /* Contenido principal */
+        .content {
+            flex: 1;
+            padding: 40px;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+            display: flex;
+            align-items: center;
+        }
+        
+        h2 i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+        
+        .card {
+            background-color: var(--light);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .objective-card {
+            border-left: 5px solid var(--success);
+        }
+        
+        .context-card {
+            border-left: 5px solid var(--secondary);
+        }
+        
+        .activity-card {
+            border-left: 5px solid var(--accent);
+        }
+        
+        .challenge-card {
+            border-left: 5px solid var(--warning);
+        }
+        
+        .code-container {
+            background-color: var(--dark);
+            color: #f8f8f2;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        
+        .code-keyword {
+            color: #ff79c6;
+        }
+        
+        .code-function {
+            color: #50fa7b;
+        }
+        
+        .code-string {
+            color: #f1fa8c;
+        }
+        
+        .code-comment {
+            color: #6272a4;
+        }
+        
+        .code-var {
+            color: #8be9fd;
+        }
+        
+        .interactive-btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+            text-align: center;
+        }
+        
+        .interactive-btn:hover {
+            background-color: var(--primary);
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .interactive-btn.accent {
+            background-color: var(--accent);
+        }
+        
+        .interactive-btn.accent:hover {
+            background-color: #16a085;
+            box-shadow: 0 5px 15px rgba(26, 188, 156, 0.3);
+        }
+        
+        /* Juego de evaluación */
+        .quiz-container {
+            text-align: center;
+        }
+        
+        .question-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .options-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .option {
+            background-color: var(--light);
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .option:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+            border-color: var(--secondary);
+        }
+        
+        .option.selected {
+            background-color: rgba(52, 152, 219, 0.2);
+            border-color: var(--secondary);
+            font-weight: bold;
+        }
+        
+        .option.correct {
+            background-color: rgba(39, 174, 96, 0.2);
+            border-color: var(--success);
+        }
+        
+        .option.incorrect {
+            background-color: rgba(231, 76, 60, 0.2);
+            border-color: var(--danger);
+        }
+        
+        .feedback {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: 600;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: rgba(39, 174, 96, 0.1);
+            color: var(--success);
+            display: block;
+        }
+        
+        .feedback.incorrect {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--danger);
+            display: block;
+        }
+        
+        .score-container {
+            background-color: var(--light);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            display: inline-block;
+            min-width: 250px;
+        }
+        
+        .score {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: var(--accent);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        /* Pie de página */
+        footer {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 25px;
+            font-size: 1rem;
+        }
+        
+        .designer {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .nav-tabs li {
+                min-width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .options-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            header {
+                padding: 25px 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .interactive-btn {
+                display: block;
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Encabezado -->
+        <header>
+            <div class="logo">
+                <i class="fas fa-code"></i>
+                <div>
+                    <h1>Python para pensadores</h1>
+                    <p class="subtitle">Taller diseñado con el corazón de un docente y la mente de un programador.</p>
+                </div>
+            </div>
+            <div class="theme-badge">Python: Manejo de funciones</div>
+        </header>
+        
+        <!-- Navegación por pestañas -->
+        <div class="nav-container">
+            <ul class="nav-tabs">
+                <li><a href="#objetivo" class="nav-link active" data-tab="objetivo"><i class="fas fa-bullseye"></i> Objetivo</a></li>
+                <li><a href="#contexto" class="nav-link" data-tab="contexto"><i class="fas fa-globe-americas"></i> Contexto</a></li>
+                <li><a href="#actividad" class="nav-link" data-tab="actividad"><i class="fas fa-laptop-code"></i> Actividad</a></li>
+                <li><a href="#reto" class="nav-link" data-tab="reto"><i class="fas fa-trophy"></i> Reto Final</a></li>
+                <li><a href="#evaluacion" class="nav-link" data-tab="evaluacion"><i class="fas fa-gamepad"></i> Evaluación</a></li>
+            </ul>
+        </div>
+        
+        <!-- Contenido principal -->
+        <div class="content">
+            <!-- Objetivo -->
+            <div id="objetivo" class="tab-content active">
+                <h2><i class="fas fa-bullseye"></i> Objetivo de aprendizaje</h2>
+                <div class="card objective-card">
+                    <p>Dominar el manejo de funciones en Python mediante la creación, implementación y aplicación de funciones personalizadas para resolver problemas computacionales, desarrollando competencias técnicas en estructuración de código modular, habilidades cognitivas en el análisis y descomposición de problemas complejos, y actitudes profesionales como la curiosidad intelectual, la precisión técnica y la colaboración efectiva, con el propósito de transformar algoritmos abstractos en soluciones concretas que respondan a necesidades reales de automatización y procesamiento de información en contextos educativos y profesionales.</p>
+                </div>
+                <button class="interactive-btn" onclick="changeTab('contexto')">Continuar con la contextualización <i class="fas fa-arrow-right"></i></button>
+            </div>
+            
+            <!-- Contexto -->
+            <div id="contexto" class="tab-content">
+                <h2><i class="fas fa-globe-americas"></i> Contextualización</h2>
+                <div class="card context-card">
+                    <p>Imagina que eres el organizador de un festival de música en tu ciudad. Tienes una lista de artistas, horarios, escenarios y asistentes. Cada día debes coordinar decenas de actividades que se repiten: asignar horarios, calcular ingresos, organizar logística. Sin funciones, tendrías que escribir el mismo código una y otra vez, como un organizador que repite las mismas instrucciones a cada persona.</p>
+                    <p>Las funciones en Python son como asistentes virtuales especializados: uno calcula ingresos, otro organiza horarios, otro gestiona invitados. Una vez que defines sus tareas, puedes invocarlos cuando los necesites, con diferentes datos, obteniendo resultados consistentes. En nuestro taller, no solo aprenderás sintaxis; descubrirás cómo descomponer problemas complejos en partes manejables, crear soluciones reutilizables y construir programas que se adapten como un equipo bien coordinado.</p>
+                    <p>Este conocimiento te prepara para el mundo real, donde la eficiencia, la organización y el pensamiento modular no son opciones, sino necesidades. Desde aplicaciones móviles hasta análisis de datos, las funciones son los cimientos sobre los que se construye software útil y elegante.</p>
+                </div>
+                <button class="interactive-btn" onclick="changeTab('actividad')">Explorar actividades <i class="fas fa-arrow-right"></i></button>
+            </div>
+            
+            <!-- Actividad -->
+            <div id="actividad" class="tab-content">
+                <h2><i class="fas fa-laptop-code"></i> Desarrollo de la actividad</h2>
+                
+                <div class="card activity-card">
+                    <h3>1. Funciones básicas: Tu primer asistente virtual</h3>
+                    <p>Una función es un bloque de código reutilizable que realiza una tarea específica. Se define con la palabra clave <strong>def</strong>.</p>
+                    
+                    <div class="code-container">
+                        <pre><code><span class="code-keyword">def</span> <span class="code-function">saludar_participante</span>(nombre):
+    <span class="code-string">"""Saluda a un participante del festival"""</span>
+    mensaje = <span class="code-string">f"¡Bienvenido al festival, {nombre}! Que disfrutes del evento."</span>
+    <span class="code-keyword">return</span> mensaje
+
+<span class="code-comment"># Llamando a la función</span>
+<span class="code-var">mensaje_bienvenida</span> = saludar_participante(<span class="code-string">"Ana"</span>)
+<span class="code-keyword">print</span>(mensaje_bienvenida)
+<span class="code-comment"># Resultado: ¡Bienvenido al festival, Ana! Que disfrutes del evento.</span></code></pre>
+                    </div>
+                    
+                    <button class="interactive-btn" onclick="runCode('code1')"><i class="fas fa-play"></i> Ejecutar este código mentalmente</button>
+                    <div id="output1" class="code-container" style="display:none; background-color:#f1f8ff; color:#333;">
+                        <strong>Salida:</strong> ¡Bienvenido al festival, Ana! Que disfrutes del evento.
+                    </div>
+                </div>
+                
+                <div class="card activity-card">
+                    <h3>2. Funciones con parámetros y retorno de valores</h3>
+                    <p>Las funciones pueden recibir información (parámetros) y devolver resultados (return).</p>
+                    
+                    <div class="code-container">
+                        <pre><code><span class="code-keyword">def</span> <span class="code-function">calcular_ingresos</span>(precio_entrada, cantidad_asistentes):
+    <span class="code-string">"""Calcula los ingresos totales del festival"""</span>
+    <span class="code-keyword">if</span> cantidad_asistentes &lt; <span class="code-var">0</span>:
+        <span class="code-keyword">return</span> <span class="code-string">"Error: La cantidad de asistentes no puede ser negativa"</span>
+    
+    ingresos_totales = precio_entrada * cantidad_asistentes
+    <span class="code-keyword">return</span> ingresos_totales
+
+<span class="code-comment"># Probando la función con diferentes valores</span>
+<span class="code-keyword">print</span>(calcular_ingresos(<span class="code-var">25</span>, <span class="code-var">1000</span>))  <span class="code-comment"># 25000</span>
+<span class="code-keyword">print</span>(calcular_ingresos(<span class="code-var">30</span>, <span class="code-var">500</span>))   <span class="code-comment"># 15000</span>
+<span class="code-keyword">print</span>(calcular_ingresos(<span class="code-var">20</span>, <span class="code-var">-50</span>))   <span class="code-comment"># Mensaje de error</span></code></pre>
+                    </div>
+                    
+                    <button class="interactive-btn" onclick="runCode('code2')"><i class="fas fa-play"></i> Ejecutar este código mentalmente</button>
+                    <div id="output2" class="code-container" style="display:none; background-color:#f1f8ff; color:#333;">
+                        <strong>Salida:</strong><br>
+                        25000<br>
+                        15000<br>
+                        Error: La cantidad de asistentes no puede ser negativa
+                    </div>
+                </div>
+                
+                <div class="card activity-card">
+                    <h3>3. Funciones con valores por defecto</h3>
+                    <p>Podemos asignar valores predeterminados a los parámetros para hacer las funciones más flexibles.</p>
+                    
+                    <div class="code-container">
+                        <pre><code><span class="code-keyword">def</span> <span class="code-function">organizar_concierto</span>(artista, escenario=<span class="code-string">"Principal"</span>, duracion=<span class="code-var">90</span>):
+    <span class="code-string">"""Organiza los detalles de un concierto"""</span>
+    detalle = <span class="code-string">f"Artista: {artista} | Escenario: {escenario} | Duración: {duracion} min"</span>
+    <span class="code-keyword">return</span> detalle
+
+<span class="code-comment"># Usando valores por defecto</span>
+<span class="code-keyword">print</span>(organizar_concierto(<span class="code-string">"Los Teenagers"</span>))
+<span class="code-comment"># Artista: Los Teenagers | Escenario: Principal | Duración: 90 min</span>
+
+<span class="code-comment"># Sobrescribiendo valores por defecto</span>
+<span class="code-keyword">print</span>(organizar_concierto(<span class="code-string">"DJ Rhythmo"</span>, <span class="code-string">"Electrónica"</span>, <span class="code-var">120</span>))
+<span class="code-comment"># Artista: DJ Rhythmo | Escenario: Electrónica | Duración: 120 min</span></code></pre>
+                    </div>
+                    
+                    <button class="interactive-btn" onclick="runCode('code3')"><i class="fas fa-play"></i> Ejecutar este código mentalmente</button>
+                    <div id="output3" class="code-container" style="display:none; background-color:#f1f8ff; color:#333;">
+                        <strong>Salida:</strong><br>
+                        Artista: Los Teenagers | Escenario: Principal | Duración: 90 min<br>
+                        Artista: DJ Rhythmo | Escenario: Electrónica | Duración: 120 min
+                    </div>
+                </div>
+                
+                <button class="interactive-btn accent" onclick="changeTab('reto')">¡Asumir el reto final! <i class="fas fa-arrow-right"></i></button>
+            </div>
+            
+            <!-- Reto -->
+            <div id="reto" class="tab-content">
+                <h2><i class="fas fa-trophy"></i> El Reto Final</h2>
+                
+                <div class="card challenge-card">
+                    <h3>Festival de Música "Código en Armonía"</h3>
+                    <p>Eres el coordinador principal del festival de música más importante del año. Debes desarrollar un sistema modular en Python que gestione diferentes aspectos del evento usando funciones.</p>
+                    
+                    <h4>Tu misión:</h4>
+                    <p>Crea un programa Python que incluya las siguientes funciones:</p>
+                    
+                    <ol>
+                        <li><strong>calcular_ingresos_netos</strong>: Recibe el precio de entrada, cantidad de asistentes y costos de producción. Retorna las ganancias netas (ingresos - costos).</li>
+                        <li><strong>asignar_escenario</strong>: Recibe el nombre del artista y su género musical. Asigna automáticamente un escenario según el género (Rock → Principal, Electrónica → Dance, Pop → Central, otros → Acústico).</li>
+                        <li><strong>verificar_capacidad</strong>: Recibe el escenario y cantidad de asistentes esperados. Retorna True si la capacidad es suficiente, False si está sobrecupado (Principal: 5000, Dance: 3000, Central: 4000, Acústico: 1000).</li>
+                        <li><strong>generar_informe</strong>: Recibe lista de artistas y asistentes esperados. Usa las funciones anteriores para generar un informe detallado que incluya ingresos netos, asignación de escenarios y verificación de capacidades.</li>
+                    </ol>
+                    
+                    <h4>Datos de prueba:</h4>
+                    <div class="code-container">
+                        <pre><code>artistas = [
+    {"nombre": "The Pythonists", "genero": "Rock", "asistentes_esperados": 4500},
+    {"nombre": "DJ Byte", "genero": "Electrónica", "asistentes_esperados": 2800},
+    {"nombre": "String Harmony", "genero": "Pop", "asistentes_esperados": 3800},
+    {"nombre": "Binary Duo", "genero": "Acústico", "asistentes_esperados": 800}
+]
+
+precio_entrada = 30
+costos_produccion = 100000</code></pre>
+                    </div>
+                    
+                    <h4>Reflexión metacognitiva:</h4>
+                    <p>Antes de codificar, pregúntate: ¿Cómo puedo dividir este problema en partes más pequeñas? ¿Qué funciones ya he aprendido que puedo adaptar? ¿Qué parámetros necesitará cada función? ¿Qué valores deberían retornar?</p>
+                    
+                    <p>Este reto integra todo lo aprendido: funciones con parámetros, condicionales, operaciones matemáticas, y sobre todo, el pensamiento modular para resolver problemas complejos.</p>
+                </div>
+                
+                <button class="interactive-btn" onclick="showSolution()">Ver posible solución <i class="fas fa-lightbulb"></i></button>
+                <button class="interactive-btn accent" onclick="changeTab('evaluacion')">Evaluar mi aprendizaje <i class="fas fa-arrow-right"></i></button>
+                
+                <div id="solution" class="code-container" style="display:none; margin-top:20px;">
+                    <pre><code><span class="code-keyword">def</span> <span class="code-function">calcular_ingresos_netos</span>(precio, asistentes, costos):
+    ingresos = precio * asistentes
+    <span class="code-keyword">return</span> ingresos - costos
+
+<span class="code-keyword">def</span> <span class="code-function">asignar_escenario</span>(artista, genero):
+    genero = genero.lower()
+    <span class="code-keyword">if</span> genero == <span class="code-string">"rock"</span>:
+        <span class="code-keyword">return</span> <span class="code-string">"Principal"</span>
+    <span class="code-keyword">elif</span> genero == <span class="code-string">"electrónica"</span>:
+        <span class="code-keyword">return</span> <span class="code-string">"Dance"</span>
+    <span class="code-keyword">elif</span> genero == <span class="code-string">"pop"</span>:
+        <span class="code-keyword">return</span> <span class="code-string">"Central"</span>
+    <span class="code-keyword">else</span>:
+        <span class="code-keyword">return</span> <span class="code-string">"Acústico"</span>
+
+<span class="code-keyword">def</span> <span class="code-function">verificar_capacidad</span>(escenario, asistentes):
+    capacidades = {
+        <span class="code-string">"Principal"</span>: <span class="code-var">5000</span>,
+        <span class="code-string">"Dance"</span>: <span class="code-var">3000</span>,
+        <span class="code-string">"Central"</span>: <span class="code-var">4000</span>,
+        <span class="code-string">"Acústico"</span>: <span class="code-var">1000</span>
+    }
+    <span class="code-keyword">return</span> asistentes &lt;= capacidades.get(escenario, <span class="code-var">0</span>)
+
+<span class="code-keyword">def</span> <span class="code-function">generar_informe</span>(lista_artistas, precio, costos):
+    <span class="code-keyword">print</span>(<span class="code-string">"=== INFORME DEL FESTIVAL ===\n"</span>)
+    
+    <span class="code-keyword">for</span> artista <span class="code-keyword">in</span> lista_artistas:
+        escenario = asignar_escenario(artista[<span class="code-string">"nombre"</span>], artista[<span class="code-string">"genero"</span>])
+        capacidad_ok = verificar_capacidad(escenario, artista[<span class="code-string">"asistentes_esperados"</span>])
+        
+        <span class="code-keyword">print</span>(<span class="code-string">f"Artista: {artista['nombre']}"</span>)
+        <span class="code-keyword">print</span>(<span class="code-string">f"  Género: {artista['genero']}"</span>)
+        <span class="code-keyword">print</span>(<span class="code-string">f"  Escenario asignado: {escenario}"</span>)
+        <span class="code-keyword">print</span>(<span class="code-string">f"  Asistentes esperados: {artista['asistentes_esperados']}"</span>)
+        <span class="code-keyword">print</span>(<span class="code-string">f"  Capacidad adecuada: {'Sí' if capacidad_ok else 'No (sobrecupo)'}\n"</span>)
+    
+    total_asistentes = sum(artista[<span class="code-string">"asistentes_esperados"</span>] <span class="code-keyword">for</span> artista <span class="code-keyword">in</span> lista_artistas)
+    ingresos_netos = calcular_ingresos_netos(precio, total_asistentes, costos)
+    
+    <span class="code-keyword">print</span>(<span class="code-string">f"\nTotal asistentes: {total_asistentes}"</span>)
+    <span class="code-keyword">print</span>(<span class="code-string">f"Ingresos netos: ${ingresos_netos}"</span>)
+    
+    <span class="code-keyword">return</span> ingresos_netos
+
+<span class="code-comment"># Ejecutando el sistema</span>
+artistas = [
+    {<span class="code-string">"nombre"</span>: <span class="code-string">"The Pythonists"</span>, <span class="code-string">"genero"</span>: <span class="code-string">"Rock"</span>, <span class="code-string">"asistentes_esperados"</span>: <span class="code-var">4500</span>},
+    {<span class="code-string">"nombre"</span>: <span class="code-string">"DJ Byte"</span>, <span class="code-string">"genero"</span>: <span class="code-string">"Electrónica"</span>, <span class="code-string">"asistentes_esperados"</span>: <span class="code-var">2800</span>},
+    {<span class="code-string">"nombre"</span>: <span class="code-string">"String Harmony"</span>, <span class="code-string">"genero"</span>: <span class="code-string">"Pop"</span>, <span class="code-string">"asistentes_esperados"</span>: <span class="code-var">3800</span>},
+    {<span class="code-string">"nombre"</span>: <span class="code-string">"Binary Duo"</span>, <span class="code-string">"genero"</span>: <span class="code-string">"Acústico"</span>, <span class="code-string">"asistentes_esperados"</span>: <span class="code-var">800</span>}
+]
+
+generar_informe(artistas, <span class="code-var">30</span>, <span class="code-var">100000</span>)</code></pre>
+                </div>
+            </div>
+            
+            <!-- Evaluación -->
+            <div id="evaluacion" class="tab-content">
+                <h2><i class="fas fa-gamepad"></i> Evaluación Lúdica</h2>
+                
+                <div class="quiz-container">
+                    <div class="question-card">
+                        <div class="question" id="question-text">¿Cuál es la palabra clave para definir una función en Python?</div>
+                        
+                        <div class="options-container" id="options-container">
+                            <!-- Las opciones se cargarán dinámicamente -->
+                        </div>
+                        
+                        <div class="feedback" id="feedback"></div>
+                        
+                        <button class="interactive-btn" onclick="nextQuestion()" id="next-btn" style="display:none;">Siguiente pregunta <i class="fas fa-arrow-right"></i></button>
+                        <button class="interactive-btn accent" onclick="checkAnswer()" id="check-btn">Verificar respuesta</button>
+                    </div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress" id="quiz-progress"></div>
+                    </div>
+                    
+                    <div class="score-container">
+                        <p>Puntaje actual:</p>
+                        <div class="score" id="score">0</div>
+                        <p id="progress-text">Pregunta 1 de 5</p>
+                    </div>
+                    
+                    <button class="interactive-btn" onclick="resetQuiz()" id="reset-btn" style="display:none;"><i class="fas fa-redo"></i> Reiniciar evaluación</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pie de página -->
+        <footer>
+            <p>Taller de Python: Manejo de Funciones | <span class="designer">Diseñado por: Edwin Méndez J.</span></p>
+        </footer>
+    </div>
+
+    <script>
+        // Sistema de navegación por pestañas
+        function changeTab(tabId) {
+            // Ocultar todas las pestañas
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Mostrar la pestaña seleccionada
+            document.getElementById(tabId).classList.add('active');
+            
+            // Actualizar navegación activa
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-tab') === tabId) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Reiniciar el juego si vamos a la evaluación
+            if (tabId === 'evaluacion') {
+                resetQuiz();
+            }
+        }
+        
+        // Configurar eventos de navegación
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const tabId = this.getAttribute('data-tab');
+                changeTab(tabId);
+            });
+        });
+        
+        // Funciones para ejecución de código
+        function runCode(codeId) {
+            let outputId;
+            if (codeId === 'code1') outputId = 'output1';
+            else if (codeId === 'code2') outputId = 'output2';
+            else if (codeId === 'code3') outputId = 'output3';
+            
+            const outputElement = document.getElementById(outputId);
+            outputElement.style.display = 'block';
+            
+            // Scroll suave al resultado
+            outputElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        // Mostrar solución del reto
+        function showSolution() {
+            const solutionElement = document.getElementById('solution');
+            if (solutionElement.style.display === 'none' || solutionElement.style.display === '') {
+                solutionElement.style.display = 'block';
+                solutionElement.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                solutionElement.style.display = 'none';
+            }
+        }
+        
+        // Sistema de evaluación lúdica
+        let currentQuestion = 0;
+        let score = 0;
+        let selectedOption = null;
+        
+        const questions = [
+            {
+                question: "¿Cuál es la palabra clave para definir una función en Python?",
+                options: ["function", "def", "func", "define"],
+                correct: 1
+            },
+            {
+                question: "¿Qué hace la palabra clave 'return' en una función?",
+                options: [
+                    "Termina la ejecución de la función y devuelve un valor",
+                    "Imprime un mensaje en la consola",
+                    "Define los parámetros de la función",
+                    "Llama a otra función"
+                ],
+                correct: 0
+            },
+            {
+                question: "¿Cuál es el resultado de la siguiente función cuando se llama con calcular_potencia(2, 3)?\ndef calcular_potencia(base, exponente):\n    return base ** exponente",
+                options: ["5", "6", "8", "9"],
+                correct: 2
+            },
+            {
+                question: "¿Qué tipo de parámetros tienen valores predeterminados en una función?",
+                options: [
+                    "Parámetros posicionales",
+                    "Parámetros por defecto",
+                    "Parámetros clave",
+                    "Parámetros globales"
+                ],
+                correct: 1
+            },
+            {
+                question: "¿Cuál es una ventaja principal de usar funciones en programación?",
+                options: [
+                    "Hace el código más largo",
+                    "Permite reutilizar código y organizar mejor el programa",
+                    "Aumenta automáticamente la velocidad de ejecución",
+                    "Elimina la necesidad de comentarios"
+                ],
+                correct: 1
+            }
+        ];
+        
+        function loadQuestion() {
+            const question = questions[currentQuestion];
+            document.getElementById('question-text').textContent = question.question;
+            
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.textContent = option;
+                optionElement.dataset.index = index;
+                
+                optionElement.addEventListener('click', function() {
+                    // Remover selección anterior
+                    document.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Seleccionar esta opción
+                    this.classList.add('selected');
+                    selectedOption = parseInt(this.dataset.index);
+                });
+                
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Actualizar texto de progreso
+            document.getElementById('progress-text').textContent = `Pregunta ${currentQuestion + 1} de ${questions.length}`;
+            
+            // Actualizar barra de progreso
+            const progressPercentage = ((currentQuestion) / questions.length) * 100;
+            document.getElementById('quiz-progress').style.width = `${progressPercentage}%`;
+            
+            // Ocultar botones
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('check-btn').style.display = 'inline-block';
+            document.getElementById('reset-btn').style.display = 'none';
+        }
+        
+        function checkAnswer() {
+            if (selectedOption === null) {
+                document.getElementById('feedback').className = 'feedback incorrect';
+                document.getElementById('feedback').textContent = 'Por favor, selecciona una respuesta antes de verificar.';
+                document.getElementById('feedback').style.display = 'block';
+                return;
+            }
+            
+            const question = questions[currentQuestion];
+            const options = document.querySelectorAll('.option');
+            
+            // Mostrar respuesta correcta e incorrecta
+            options.forEach((option, index) => {
+                option.classList.remove('selected');
+                if (index === question.correct) {
+                    option.classList.add('correct');
+                } else if (index === selectedOption && selectedOption !== question.correct) {
+                    option.classList.add('incorrect');
+                }
+            });
+            
+            // Mostrar retroalimentación
+            const feedbackElement = document.getElementById('feedback');
+            if (selectedOption === question.correct) {
+                feedbackElement.className = 'feedback correct';
+                feedbackElement.textContent = '¡Correcto! Has comprendido bien este concepto.';
+                score++;
+                document.getElementById('score').textContent = score;
+            } else {
+                feedbackElement.className = 'feedback incorrect';
+                feedbackElement.textContent = 'Respuesta incorrecta. Revisa el contenido y vuelve a intentarlo.';
+            }
+            
+            feedbackElement.style.display = 'block';
+            
+            // Mostrar botón de siguiente o finalizar
+            if (currentQuestion < questions.length - 1) {
+                document.getElementById('next-btn').style.display = 'inline-block';
+            } else {
+                document.getElementById('check-btn').style.display = 'none';
+                document.getElementById('reset-btn').style.display = 'inline-block';
+                
+                // Mostrar mensaje final según puntaje
+                let finalMessage = '';
+                if (score === questions.length) {
+                    finalMessage = '¡Excelente! Dominas completamente el manejo de funciones.';
+                } else if (score >= questions.length * 0.7) {
+                    finalMessage = '¡Muy bien! Tienes un buen entendimiento del tema.';
+                } else if (score >= questions.length * 0.5) {
+                    finalMessage = 'Buen intento. Sigue practicando para mejorar.';
+                } else {
+                    finalMessage = 'Revisa los conceptos y vuelve a intentarlo. ¡Tú puedes!';
+                }
+                
+                feedbackElement.textContent += ` ${finalMessage}`;
+            }
+        }
+        
+        function nextQuestion() {
+            currentQuestion++;
+            selectedOption = null;
+            loadQuestion();
+        }
+        
+        function resetQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            selectedOption = null;
+            document.getElementById('score').textContent = '0';
+            loadQuestion();
+        }
+        
+        // Inicializar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar el sistema de pestañas
+            changeTab('objetivo');
+            
+            // Cargar la primera pregunta del juego
+            loadQuestion();
+            
+            // Añadir efecto hover a botones manualmente para mayor compatibilidad
+            const buttons = document.querySelectorAll('.interactive-btn');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.05)';
+                });
+                
+                button.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

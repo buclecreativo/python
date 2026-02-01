@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python para pensadores: Bucle for</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2C3E50;
+            --secondary: #3498DB;
+            --accent: #1ABC9C;
+            --light: #ECF0F1;
+            --dark: #2C3E50;
+            --success: #2ECC71;
+            --warning: #F39C12;
+            --danger: #E74C3C;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px var(--shadow);
+            overflow: hidden;
+            margin: 20px;
+        }
+        
+        header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header-content h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header-content .subtitle {
+            font-size: 1.4rem;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+        
+        .header-content .theme {
+            margin-top: 20px;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        nav {
+            background-color: var(--light);
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            padding: 12px 25px;
+            background-color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 6px var(--shadow);
+        }
+        
+        .nav-btn:hover {
+            background-color: var(--secondary);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px var(--shadow);
+        }
+        
+        .nav-btn.active {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .content-section {
+            padding: 40px;
+            display: none;
+        }
+        
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--accent);
+            font-size: 2.2rem;
+        }
+        
+        h3 {
+            color: var(--secondary);
+            margin: 25px 0 15px;
+            font-size: 1.6rem;
+        }
+        
+        p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .highlight {
+            background-color: rgba(26, 188, 156, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 25px 0;
+        }
+        
+        .code-container {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 25px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        
+        .code-keyword {
+            color: #63b3ed;
+        }
+        
+        .code-function {
+            color: #68d391;
+        }
+        
+        .code-string {
+            color: #fbb6ce;
+        }
+        
+        .code-comment {
+            color: #a0aec0;
+            font-style: italic;
+        }
+        
+        .example-box {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e9ecef;
+        }
+        
+        .interactive-box {
+            background-color: #f0f9ff;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+            border: 2px dashed var(--secondary);
+        }
+        
+        .challenge-box {
+            background-color: #fff3cd;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 6px solid var(--warning);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(52, 152, 219, 0.4);
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+            box-shadow: 0 4px 6px rgba(26, 188, 156, 0.3);
+        }
+        
+        .btn-accent:hover {
+            background-color: #16a085;
+            box-shadow: 0 6px 12px rgba(26, 188, 156, 0.4);
+        }
+        
+        /* Estilos para el juego de evaluación */
+        .quiz-container {
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+        
+        .question {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .options {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .option {
+            background-color: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.1rem;
+        }
+        
+        .option:hover {
+            border-color: var(--secondary);
+            background-color: #f0f9ff;
+            transform: translateY(-3px);
+        }
+        
+        .option.selected {
+            border-color: var(--accent);
+            background-color: rgba(26, 188, 156, 0.1);
+        }
+        
+        .option.correct {
+            border-color: var(--success);
+            background-color: rgba(46, 204, 113, 0.1);
+        }
+        
+        .option.incorrect {
+            border-color: var(--danger);
+            background-color: rgba(231, 76, 60, 0.1);
+        }
+        
+        .feedback {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: 600;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+            border-left: 4px solid var(--success);
+            display: block;
+        }
+        
+        .feedback.incorrect {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: #c0392b;
+            border-left: 4px solid var(--danger);
+            display: block;
+        }
+        
+        .score-container {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+        
+        .score {
+            font-size: 2.5rem;
+            color: var(--accent);
+            font-weight: 700;
+            margin: 10px 0;
+        }
+        
+        .next-btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 20px;
+        }
+        
+        .next-btn:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        footer {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 25px;
+            font-size: 1.1rem;
+        }
+        
+        .footer-text {
+            opacity: 0.8;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header-content h1 {
+                font-size: 2.2rem;
+            }
+            
+            .header-content .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .header-content .theme {
+                font-size: 1.4rem;
+            }
+            
+            h2 {
+                font-size: 1.8rem;
+            }
+            
+            .content-section {
+                padding: 25px;
+            }
+            
+            .nav-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header-content h1 {
+                font-size: 1.8rem;
+            }
+            
+            .content-section {
+                padding: 20px;
+            }
+            
+            .options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>Python para pensadores</h1>
+                <div class="subtitle">Taller diseñado con el corazón de un docente y la mente de un programador</div>
+                <div class="theme">Tema: El poder del bucle for</div>
+            </div>
+        </header>
+        
+        <nav>
+            <button class="nav-btn active" data-target="introduction">Introducción</button>
+            <button class="nav-btn" data-target="objective">Objetivo</button>
+            <button class="nav-btn" data-target="context">Contexto</button>
+            <button class="nav-btn" data-target="development">Desarrollo</button>
+            <button class="nav-btn" data-target="challenge">Reto final</button>
+            <button class="nav-btn" data-target="quiz">Evaluación</button>
+        </nav>
+        
+        <main>
+            <!-- Sección de Introducción -->
+            <section id="introduction" class="content-section active">
+                <h2>Domina el arte de la repetición inteligente</h2>
+                <p>Imagina que debes saludar a cada uno de tus 30 compañeros de clase, uno por uno. ¿Repetirías 30 veces la misma acción manualmente? En la vida y en la programación, existen tareas que requieren ejecutarse múltiples veces, pero con una diferencia crucial: podemos enseñarle a la computadora a hacerlo por nosotros, de forma elegante y eficiente.</p>
+                
+                <div class="highlight">
+                    <p>El <strong>bucle for</strong> es una de las estructuras más poderosas en Python. Nos permite repetir un bloque de código para cada elemento en una secuencia, ya sean nombres en una lista, números en un rango o caracteres en una cadena de texto.</p>
+                </div>
+                
+                <p>En este taller, no solo aprenderás la sintaxis del bucle for, sino que descubrirás cómo pensar en términos de patrones repetitivos, cómo transformar tareas tediosas en procesos automáticos y cómo aplicar este conocimiento a situaciones reales de tu vida académica y personal.</p>
+                
+                <div class="example-box">
+                    <h3>Un vistazo al poder del for</h3>
+                    <div class="code-container">
+                        <pre><code><span class="code-comment"># Ejemplo simple: saludar a cada amigo en una lista</span>
+<span class="code-keyword">amigos</span> = [<span class="code-string">"Ana"</span>, <span class="code-string">"Carlos"</span>, <span class="code-string">"Diana"</span>, <span class="code-string">"Fernando"</span>]
+
+<span class="code-keyword">for</span> amigo <span class="code-keyword">in</span> amigos:
+    <span class="code-keyword">print</span>(<span class="code-string">f"Hola {amigo, ¿cómo estás?"</span>)</code></pre>
+                    </div>
+                    <p>Con solo 3 líneas de código, saludamos a 4 personas. Imagina extender esto a 100, 1000 o incluso 10,000 elementos. ¡Esa es la potencia del bucle for!</p>
+                </div>
+            </section>
+            
+            <!-- Sección de Objetivo -->
+            <section id="objective" class="content-section">
+                <h2>Objetivo de aprendizaje</h2>
+                <div class="highlight">
+                    <p><strong>Dominar el uso del bucle for en Python</strong> para automatizar tareas repetitivas mediante la identificación de patrones iterativos en problemas cotidianos y computacionales, desarrollando simultáneamente habilidades de pensamiento algorítmico, capacidad de abstracción y una actitud proactiva hacia la resolución eficiente de problemas, con el fin de empoderar a los estudiantes como creadores tecnológicos conscientes de su potencial para transformar realidades a través de la programación.</p>
+                </div>
+                
+                <h3>¿Qué lograrás al finalizar este taller?</h3>
+                <ul style="padding-left: 30px; margin-bottom: 25px;">
+                    <li>Comprender la estructura y sintaxis del bucle for en Python</li>
+                    <li>Identificar situaciones donde aplicar bucles para optimizar procesos</li>
+                    <li>Implementar soluciones iterativas para problemas reales</li>
+                    <li>Desarrollar pensamiento lógico y capacidad de abstracción</li>
+                    <li>Crear programas que procesen colecciones de datos eficientemente</li>
+                </ul>
+                
+                <div class="example-box">
+                    <h3>De lo abstracto a lo concreto</h3>
+                    <p>El bucle for transforma problemas como "calcular el promedio de 50 notas" o "buscar un nombre en una lista de 200 estudiantes" en soluciones elegantes de pocas líneas. Pasaremos de la repetición manual a la automatización inteligente.</p>
+                </div>
+            </section>
+            
+            <!-- Sección de Contextualización -->
+            <section id="context" class="content-section">
+                <h2>Contexto: La magia en lo cotidiano</h2>
+                <p>Cada mañana, revisas tu lista de tareas pendientes. Cada semana, repites rutinas de estudio para diferentes materias. Cada mes, organizas tus gastos. La vida está llena de ciclos y repeticiones, pero cuando aprendemos a reconocer estos patrones, podemos diseñar sistemas que los automaticen.</p>
+                
+                <div class="highlight">
+                    <p>Piensa en cómo un profesor califica 30 exámenes: revisa cada uno, aplica los mismos criterios, suma los puntos. Esa es una tarea repetitiva perfecta para un bucle for. O imagina organizar los nombres de todos los estudiantes de tu colegio en orden alfabético: otro candidato ideal para la automatización.</p>
+                </div>
+                
+                <h3>La programación como extensión de tu pensamiento</h3>
+                <p>Cuando programamos, externalizamos procesos mentales. El bucle for es como contratar a un asistente virtual extremadamente rápido y preciso que ejecuta tareas repetitivas por ti, liberando tu mente para enfocarse en lo creativo, lo estratégico, lo humano.</p>
+                
+                <div class="interactive-box">
+                    <h3>Reflexiona y conecta</h3>
+                    <p>Piensa en tres actividades de tu vida diaria que involucren repetición. ¿Podrías describirlas como un algoritmo? Por ejemplo:</p>
+                    <ul style="padding-left: 30px; margin-bottom: 20px;">
+                        <li>Revisar notificaciones en redes sociales</li>
+                        <li>Repasar los temas para un examen</li>
+                        <li>Organizar tu música por género o artista</li>
+                    </ul>
+                    <p>Detrás de cada una de estas tareas hay un patrón repetitivo que, una vez identificado, puede ser modelado con programación.</p>
+                </div>
+            </section>
+            
+            <!-- Sección de Desarrollo -->
+            <section id="development" class="content-section">
+                <h2>Desarrollo: Explorando el bucle for</h2>
+                
+                <h3>1. La anatomía del bucle for</h3>
+                <p>Un bucle for en Python tiene una estructura clara y consistente:</p>
+                <div class="code-container">
+                    <pre><code><span class="code-keyword">for</span> elemento <span class="code-keyword">in</span> secuencia:
+    <span class="code-comment"># Bloque de código que se repite</span>
+    <span class="code-comment"># para cada elemento en la secuencia</span></code></pre>
+                </div>
+                
+                <div class="example-box">
+                    <h3>Ejemplo práctico: Calcular promedios</h3>
+                    <p>Imagina que tienes las notas de 5 materias y quieres calcular tu promedio:</p>
+                    <div class="code-container">
+                        <pre><code><span class="code-comment"># Lista de notas</span>
+<span class="code-keyword">notas</span> = [85, 90, 78, 92, 88]
+
+<span class="code-comment"># Inicializar acumulador</span>
+<span class="code-keyword">suma_total</span> = 0
+
+<span class="code-comment"># Recorrer cada nota con un bucle for</span>
+<span class="code-keyword">for</span> nota <span class="code-keyword">in</span> notas:
+    <span class="code-keyword">suma_total</span> = <span class="code-keyword">suma_total</span> + nota
+
+<span class="code-comment"># Calcular el promedio</span>
+<span class="code-keyword">promedio</span> = <span class="code-keyword">suma_total</span> / <span class="code-function">len</span>(notas)
+<span class="code-keyword">print</span>(<span class="code-string">f"Tu promedio es: {promedio}"</span>)</code></pre>
+                    </div>
+                    <p>El bucle for recorre automáticamente cada valor en la lista, evitando que tengamos que escribir 5 líneas de suma manual.</p>
+                </div>
+                
+                <h3>2. La función range(): Tu aliada para contar</h3>
+                <p>Cuando necesitamos repetir una acción un número específico de veces, usamos <code>range()</code>:</p>
+                <div class="code-container">
+                    <pre><code><span class="code-comment"># Contar del 1 al 5</span>
+<span class="code-keyword">for</span> numero <span class="code-keyword">in</span> <span class="code-function">range</span>(1, 6):
+    <span class="code-keyword">print</span>(<span class="code-string">f"Número: {numero}"</span>)
+
+<span class="code-comment"># Repetir una acción 3 veces</span>
+<span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(3):
+    <span class="code-keyword">print</span>(<span class="code-string">"¡A programar se ha dicho!"</span>)</code></pre>
+                </div>
+                
+                <div class="interactive-box">
+                    <h3>Experimenta con este código</h3>
+                    <p>Modifica el siguiente código para que imprima los números pares del 2 al 10:</p>
+                    <div class="code-container">
+                        <pre><code><span class="code-comment"># Código base - modifícalo</span>
+<span class="code-keyword">for</span> num <span class="code-keyword">in</span> <span class="code-function">range</span>(1, 6):
+    <span class="code-keyword">print</span>(num)</code></pre>
+                    </div>
+                    <p><strong>Sugerencia:</strong> Los números pares son divisibles por 2. Puedes usar el operador <code>%</code> (módulo) para verificar si un número es par: <code>num % 2 == 0</code>.</p>
+                </div>
+                
+                <h3>3. Bucles anidados: Patrones dentro de patrones</h3>
+                <p>Así como en la vida tenemos rutinas dentro de rutinas, en programación podemos tener bucles dentro de bucles:</p>
+                <div class="code-container">
+                    <pre><code><span class="code-comment"># Ejemplo: Tabla de multiplicar</span>
+<span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-function">range</span>(1, 4):  <span class="code-comment"># Filas</span>
+    <span class="code-keyword">for</span> j <span class="code-keyword">in</span> <span class="code-function">range</span>(1, 4):  <span class="code-comment"># Columnas</span>
+        <span class="code-keyword">resultado</span> = i * j
+        <span class="code-keyword">print</span>(<span class="code-string">f"{i} x {j} = {resultado}"</span>, end=<span class="code-string">"  "</span>)
+    <span class="code-keyword">print</span>()  <span class="code-comment"># Salto de línea después de cada fila</span></code></pre>
+                </div>
+                
+                <div class="highlight">
+                    <h3>Reflexión metacognitiva</h3>
+                    <p>Piensa por un momento: ¿Qué procesos de tu vida siguen una estructura de "bucle anidado"? Por ejemplo, organizar tu semana (días dentro de semanas) o estudiar para múltiples materias (temas dentro de materias). Identificar estos patrones en tu vida diaria te ayudará a reconocer cuándo aplicar bucles en programación.</p>
+                </div>
+            </section>
+            
+            <!-- Sección de Reto Final -->
+            <section id="challenge" class="content-section">
+                <h2>El reto final: Crea tu propio analizador de datos</h2>
+                
+                <div class="challenge-box">
+                    <h3>📋 Descripción del reto</h3>
+                    <p>Eres el asistente del profesor de matemáticas y te ha encargado desarrollar un programa en Python que analice las calificaciones de un curso completo. Debes procesar los datos de 15 estudiantes, calcular estadísticas importantes y generar un reporte automático.</p>
+                    
+                    <h3>🎯 Requisitos del programa</h3>
+                    <ol style="padding-left: 30px; margin-bottom: 25px;">
+                        <li>Almacenar las calificaciones de 15 estudiantes en una lista</li>
+                        <li>Calcular el promedio general del curso</li>
+                        <li>Identificar la calificación más alta y la más baja</li>
+                        <li>Contar cuántos estudiantes aprobaron (nota ≥ 70/100)</li>
+                        <li>Mostrar todas las calificaciones mayores al promedio</li>
+                        <li>Generar un reporte claro con todos los resultados</li>
+                    </ol>
+                    
+                    <h3>💡 Pistas para la solución</h3>
+                    <ul style="padding-left: 30px; margin-bottom: 25px;">
+                        <li>Usa una lista para almacenar las calificaciones</li>
+                        <li>Emplea bucles for para recorrer la lista múltiples veces</li>
+                        <li>Utiliza condicionales (if) para verificar aprobación</li>
+                        <li>Crea variables acumuladoras para sumar y contar</li>
+                    </ul>
+                    
+                    <h3>🚀 Nivel avanzado (opcional)</h3>
+                    <p>Si terminas rápido, intenta agregar estas funcionalidades:</p>
+                    <ul style="padding-left: 30px;">
+                        <li>Clasificar las calificaciones en rangos (Excelente, Bueno, Regular, etc.)</li>
+                        <li>Calcular la mediana de las calificaciones</li>
+                        <li>Generar una "curva" sumando puntos a todas las notas bajas</li>
+                    </ul>
+                </div>
+                
+                <div class="example-box">
+                    <h3>Estructura básica para empezar</h3>
+                    <div class="code-container">
+                        <pre><code><span class="code-comment"># Datos de ejemplo (15 calificaciones)</span>
+<span class="code-keyword">calificaciones</span> = [85, 92, 78, 90, 65, 88, 72, 95, 60, 83, 77, 91, 68, 74, 81]
+
+<span class="code-comment"># 1. Calcular promedio</span>
+<span class="code-keyword">suma</span> = 0
+<span class="code-keyword">for</span> nota <span class="code-keyword">in</span> calificaciones:
+    <span class="code-comment"># Completa el código aquí</span>
+
+<span class="code-comment"># Continúa con los demás requisitos...</span></code></pre>
+                    </div>
+                    <p>Recuerda: El objetivo no es solo que el programa funcione, sino que comprendas cada paso del proceso. Si te atoras, descompón el problema en partes más pequeñas y resuelve una a la vez.</p>
+                </div>
+                
+                <button class="btn btn-accent" onclick="showSolution()">Ver solución de ejemplo</button>
+                
+                <div id="solution" style="display: none; margin-top: 30px;">
+                    <div class="code-container">
+                        <pre><code><span class="code-comment"># Solución completa del reto</span>
+<span class="code-keyword">calificaciones</span> = [85, 92, 78, 90, 65, 88, 72, 95, 60, 83, 77, 91, 68, 74, 81]
+
+<span class="code-comment"># 1. Calcular promedio</span>
+<span class="code-keyword">suma</span> = 0
+<span class="code-keyword">for</span> nota <span class="code-keyword">in</span> calificaciones:
+    <span class="code-keyword">suma</span> += nota
+<span class="code-keyword">promedio</span> = <span class="code-keyword">suma</span> / <span class="code-function">len</span>(calificaciones)
+
+<span class="code-comment"># 2. Encontrar nota máxima y mínima</span>
+<span class="code-keyword">maxima</span> = calificaciones[0]
+<span class="code-keyword">minima</span> = calificaciones[0]
+<span class="code-keyword">for</span> nota <span class="code-keyword">in</span> calificaciones:
+    <span class="code-keyword">if</span> nota > <span class="code-keyword">maxima</span>:
+        <span class="code-keyword">maxima</span> = nota
+    <span class="code-keyword">if</span> nota < <span class="code-keyword">minima</span>:
+        <span class="code-keyword">minima</span> = nota
+
+<span class="code-comment"># 3. Contar aprobados</span>
+<span class="code-keyword">aprobados</span> = 0
+<span class="code-keyword">for</span> nota <span class="code-keyword">in</span> calificaciones:
+    <span class="code-keyword">if</span> nota >= 70:
+        <span class="code-keyword">aprobados</span> += 1
+
+<span class="code-comment"># 4. Mostrar notas mayores al promedio</span>
+<span class="code-keyword">print</span>(<span class="code-string">"=== REPORTE DE CALIFICACIONES ==="</span>)
+<span class="code-keyword">print</span>(<span class="code-string">f"Promedio del curso: {promedio:.2f}"</span>)
+<span class="code-keyword">print</span>(<span class="code-string">f"Nota más alta: {maxima}"</span>)
+<span class="code-keyword">print</span>(<span class="code-string">f"Nota más baja: {minima}"</span>)
+<span class="code-keyword">print</span>(<span class="code-string">f"Estudiantes aprobados: {aprobados}/{len(calificaciones)}"</span>)
+<span class="code-keyword">print</span>(<span class="code-string">"\nNotas mayores al promedio:"</span>)
+<span class="code-keyword">for</span> nota <span class="code-keyword">in</span> calificaciones:
+    <span class="code-keyword">if</span> nota > promedio:
+        <span class="code-keyword">print</span>(<span class="code-string">f"  - {nota}"</span>)</code></pre>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Sección de Evaluación -->
+            <section id="quiz" class="content-section">
+                <h2>Evaluación lúdica: Pon a prueba tu conocimiento</h2>
+                <p>Responde las siguientes preguntas para verificar tu comprensión sobre el bucle for. ¡Cada respuesta correcta suma puntos!</p>
+                
+                <div class="quiz-container">
+                    <div id="quiz-content">
+                        <!-- El contenido del quiz se carga dinámicamente con JavaScript -->
+                    </div>
+                    
+                    <div class="score-container">
+                        <p>Tu puntuación:</p>
+                        <div class="score" id="score">0</div>
+                        <p id="score-message">¡Sigue así! Cada pregunta te acerca a dominar el bucle for.</p>
+                        <button id="restart-btn" class="next-btn" onclick="restartQuiz()">Reiniciar evaluación</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <div class="footer-text">Diseñado por: Edwin Méndez J.</div>
+            <div style="margin-top: 10px; font-size: 0.9rem; opacity: 0.7;">
+                Python para pensadores - Taller de bucle for © 2023
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Navegación entre secciones
+        const navButtons = document.querySelectorAll('.nav-btn');
+        const contentSections = document.querySelectorAll('.content-section');
+        
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remover clase active de todos los botones y secciones
+                navButtons.forEach(btn => btn.classList.remove('active'));
+                contentSections.forEach(section => section.classList.remove('active'));
+                
+                // Agregar clase active al botón clickeado
+                button.classList.add('active');
+                
+                // Mostrar la sección correspondiente
+                const targetId = button.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+        
+        // Mostrar/ocultar solución del reto final
+        function showSolution() {
+            const solution = document.getElementById('solution');
+            if (solution.style.display === 'none') {
+                solution.style.display = 'block';
+                event.target.textContent = 'Ocultar solución';
+            } else {
+                solution.style.display = 'none';
+                event.target.textContent = 'Ver solución de ejemplo';
+            }
+        }
+        
+        // Sistema de evaluación (quiz)
+        const quizQuestions = [
+            {
+                question: "¿Cuál es la principal función de un bucle for en Python?",
+                options: [
+                    "Tomar decisiones condicionales",
+                    "Repetir un bloque de código para cada elemento en una secuencia",
+                    "Definir funciones personalizadas",
+                    "Importar módulos externos"
+                ],
+                correct: 1,
+                explanation: "El bucle for se utiliza para iterar sobre los elementos de una secuencia (lista, tupla, cadena, etc.) ejecutando un bloque de código para cada uno."
+            },
+            {
+                question: "¿Cuál es la salida del siguiente código?<br><code>for i in range(3):<br>&nbsp;&nbsp;print(i * 2)</code>",
+                options: [
+                    "0, 1, 2",
+                    "0, 2, 4",
+                    "2, 4, 6",
+                    "1, 2, 3"
+                ],
+                correct: 1,
+                explanation: "range(3) genera los números 0, 1, 2. Al multiplicar cada uno por 2 obtenemos: 0×2=0, 1×2=2, 2×2=4."
+            },
+            {
+                question: "¿Cuántas veces se ejecutará el bloque de código dentro de este bucle?<br><code>for letra in 'Python':</code>",
+                options: [
+                    "5 veces",
+                    "6 veces",
+                    "7 veces",
+                    "Depende del contenido de la variable"
+                ],
+                correct: 1,
+                explanation: "La cadena 'Python' tiene 6 caracteres, por lo que el bucle se ejecutará 6 veces, una por cada letra."
+            },
+            {
+                question: "¿Cuál es el resultado de este código?<br><code>suma = 0<br>for num in [1, 2, 3, 4]:<br>&nbsp;&nbsp;suma += num<br>print(suma)</code>",
+                options: [
+                    "4",
+                    "10",
+                    "24",
+                    "Error de sintaxis"
+                ],
+                correct: 1,
+                explanation: "El bucle suma todos los números de la lista: 1+2+3+4 = 10."
+            },
+            {
+                question: "¿Qué hace la función range(2, 8, 2)?",
+                options: [
+                    "Genera los números del 2 al 8",
+                    "Genera los números pares del 2 al 8",
+                    "Genera los números del 2 al 8 con incremento de 2",
+                    "Genera una lista con 8 elementos que empiezan en 2"
+                ],
+                correct: 2,
+                explanation: "range(start, stop, step) genera números desde 'start' hasta 'stop-1' incrementando de 'step' en 'step'. En este caso: 2, 4, 6."
+            }
+        ];
+        
+        let currentQuestion = 0;
+        let score = 0;
+        let userAnswers = [];
+        
+        // Inicializar el quiz
+        function initQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            userAnswers = [];
+            document.getElementById('score').textContent = '0';
+            document.getElementById('score-message').textContent = '¡Sigue así! Cada pregunta te acerca a dominar el bucle for.';
+            loadQuestion();
+        }
+        
+        // Cargar pregunta actual
+        function loadQuestion() {
+            const quizContent = document.getElementById('quiz-content');
+            const question = quizQuestions[currentQuestion];
+            
+            let optionsHTML = '';
+            question.options.forEach((option, index) => {
+                optionsHTML += `
+                    <div class="option" onclick="selectOption(${index})">
+                        ${option}
+                    </div>
+                `;
+            });
+            
+            quizContent.innerHTML = `
+                <div class="question">${question.question}</div>
+                <div class="options">${optionsHTML}</div>
+                <div id="feedback" class="feedback"></div>
+                ${currentQuestion < quizQuestions.length - 1 ? 
+                    `<button id="next-btn" class="next-btn" onclick="nextQuestion()" disabled>Siguiente pregunta</button>` : 
+                    `<button id="next-btn" class="next-btn" onclick="nextQuestion()" disabled>Ver resultados</button>`}
+            `;
+            
+            // Actualizar indicador de progreso
+            const progress = document.createElement('div');
+            progress.style.marginBottom = '20px';
+            progress.style.fontWeight = '600';
+            progress.style.color = 'var(--secondary)';
+            progress.innerHTML = `Pregunta ${currentQuestion + 1} de ${quizQuestions.length}`;
+            quizContent.prepend(progress);
+        }
+        
+        // Seleccionar una opción
+        function selectOption(optionIndex) {
+            const options = document.querySelectorAll('.option');
+            const feedback = document.getElementById('feedback');
+            const nextBtn = document.getElementById('next-btn');
+            const question = quizQuestions[currentQuestion];
+            
+            // Remover selección previa
+            options.forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Marcar opción seleccionada
+            options[optionIndex].classList.add('selected');
+            
+            // Verificar respuesta
+            if (optionIndex === question.correct) {
+                feedback.innerHTML = `<i class="fas fa-check-circle"></i> ¡Correcto! ${question.explanation}`;
+                feedback.className = 'feedback correct';
+                
+                // Sumar puntos si es la primera vez que responde correctamente
+                if (!userAnswers[currentQuestion]) {
+                    score += 20;
+                    document.getElementById('score').textContent = score;
+                    userAnswers[currentQuestion] = true;
+                }
+            } else {
+                feedback.innerHTML = `<i class="fas fa-times-circle"></i> Incorrecto. ${question.explanation}`;
+                feedback.className = 'feedback incorrect';
+                options[optionIndex].classList.add('incorrect');
+                options[question.correct].classList.add('correct');
+                userAnswers[currentQuestion] = false;
+            }
+            
+            // Habilitar botón siguiente
+            nextBtn.disabled = false;
+            
+            // Actualizar mensaje de puntuación
+            updateScoreMessage();
+        }
+        
+        // Siguiente pregunta
+        function nextQuestion() {
+            currentQuestion++;
+            
+            if (currentQuestion < quizQuestions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+        
+        // Mostrar resultados finales
+        function showResults() {
+            const quizContent = document.getElementById('quiz-content');
+            let message = '';
+            
+            if (score >= 80) {
+                message = '¡Excelente! Dominas el bucle for como un verdadero programador.';
+            } else if (score >= 60) {
+                message = '¡Muy bien! Tienes un buen entendimiento del bucle for.';
+            } else if (score >= 40) {
+                message = '¡Buen trabajo! Has comprendido los conceptos básicos.';
+            } else {
+                message = 'Sigue practicando. Revisa los conceptos y vuelve a intentarlo.';
+            }
+            
+            quizContent.innerHTML = `
+                <div style="text-align: center; padding: 30px;">
+                    <h3 style="color: var(--accent); margin-bottom: 20px;">Evaluación completada</h3>
+                    <div style="font-size: 5rem; color: var(--accent); margin: 20px 0;">${score}/100</div>
+                    <p style="font-size: 1.3rem; margin-bottom: 30px;">${message}</p>
+                    <div style="background-color: white; padding: 20px; border-radius: 10px; text-align: left; margin-top: 30px;">
+                        <h4>Resumen de respuestas:</h4>
+                        ${quizQuestions.map((q, index) => {
+                            return `<p style="margin: 10px 0;">
+                                <strong>Pregunta ${index + 1}:</strong> 
+                                ${userAnswers[index] ? 
+                                    '<span style="color: var(--success);"><i class="fas fa-check"></i> Correcta</span>' : 
+                                    '<span style="color: var(--danger);"><i class="fas fa-times"></i> Incorrecta</span>'}
+                            </p>`;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('score-message').textContent = '¡Has completado la evaluación!';
+        }
+        
+        // Actualizar mensaje de puntuación
+        function updateScoreMessage() {
+            const scoreMessage = document.getElementById('score-message');
+            if (score >= 80) {
+                scoreMessage.textContent = '¡Impresionante! Vas camino a ser un experto en bucles.';
+            } else if (score >= 60) {
+                scoreMessage.textContent = '¡Vas muy bien! Sigue concentrado en las preguntas restantes.';
+            } else if (score >= 40) {
+                scoreMessage.textContent = '¡Bien hecho! Cada respuesta cuenta, sigue así.';
+            } else {
+                scoreMessage.textContent = '¡Sigue intentándolo! Cada error es una oportunidad para aprender.';
+            }
+        }
+        
+        // Reiniciar evaluación
+        function restartQuiz() {
+            initQuiz();
+        }
+        
+        // Inicializar el quiz cuando se carga la página
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar el quiz solo si estamos en la sección de evaluación
+            const quizSection = document.getElementById('quiz');
+            if (quizSection.classList.contains('active')) {
+                initQuiz();
+            }
+            
+            // También inicializar cuando se navegue a la sección de evaluación
+            navButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    if (this.getAttribute('data-target') === 'quiz') {
+                        setTimeout(initQuiz, 300); // Pequeño delay para la animación
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

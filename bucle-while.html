@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python: Bucle While - Taller Interactivo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variables de colores y estilos */
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #1a2530;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --transition: all 0.3s ease;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+        
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.4rem;
+            font-weight: 300;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+        
+        .tema {
+            background-color: rgba(255, 255, 255, 0.15);
+            display: inline-block;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 15px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Navegación */
+        nav {
+            background-color: var(--light);
+            padding: 0;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .nav-list {
+            display: flex;
+            list-style: none;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            min-width: 120px;
+        }
+        
+        .nav-link {
+            display: block;
+            padding: 18px 20px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(52, 152, 219, 0.1);
+            border-bottom: 3px solid var(--secondary);
+            color: var(--secondary);
+        }
+        
+        /* Contenido principal */
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 30px;
+        }
+        
+        .content-section {
+            display: none;
+            padding: 25px;
+            background-color: #f9f9f9;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h2 i {
+            color: var(--secondary);
+        }
+        
+        h3 {
+            color: var(--secondary);
+            margin: 20px 0 15px 0;
+            font-size: 1.5rem;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        /* Ejemplos de código */
+        .code-container {
+            background-color: var(--dark);
+            color: var(--light);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .code-title {
+            font-weight: bold;
+            color: var(--warning);
+        }
+        
+        .copy-btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+        
+        .copy-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        pre {
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            line-height: 1.5;
+        }
+        
+        .code-keyword {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .code-string {
+            color: #2ecc71;
+        }
+        
+        .code-comment {
+            color: #7f8c8d;
+        }
+        
+        .code-function {
+            color: #3498db;
+        }
+        
+        /* Ejercicios interactivos */
+        .exercise {
+            background-color: white;
+            border-left: 4px solid var(--secondary);
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .exercise-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .exercise-title i {
+            color: var(--accent);
+        }
+        
+        /* Test interactivo */
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .question {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eee;
+        }
+        
+        .question-number {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .options {
+            margin: 20px 0;
+        }
+        
+        .option {
+            background-color: var(--light);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+        
+        .option:hover {
+            background-color: #e0e7f0;
+            transform: translateX(5px);
+        }
+        
+        .option.selected {
+            border-color: var(--secondary);
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+        
+        .option.correct {
+            border-color: var(--success);
+            background-color: rgba(46, 204, 113, 0.1);
+        }
+        
+        .option.incorrect {
+            border-color: var(--accent);
+            background-color: rgba(231, 76, 60, 0.1);
+        }
+        
+        .feedback {
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: #27ae60;
+            border-left: 4px solid var(--success);
+        }
+        
+        .feedback.incorrect {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: #c0392b;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(52, 152, 219, 0.2);
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #27ae60;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(46, 204, 113, 0.2);
+        }
+        
+        .btn-warning {
+            background-color: var(--warning);
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background-color: #e67e22;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(243, 156, 18, 0.2);
+        }
+        
+        .score-container {
+            text-align: center;
+            padding: 30px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            display: none;
+        }
+        
+        .score-value {
+            font-size: 3.5rem;
+            color: var(--secondary);
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        
+        .score-message {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 30px;
+            border-top: 5px solid var(--secondary);
+        }
+        
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .nav-list {
+                flex-direction: column;
+            }
+            
+            .nav-item {
+                min-width: 100%;
+            }
+            
+            .main-content {
+                padding: 15px;
+            }
+            
+            .content-section {
+                padding: 20px;
+            }
+            
+            .quiz-controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="header-content">
+                <h1><i class="fas fa-infinity"></i> Más Allá del Código</h1>
+                <div class="subtitle">Python para pensadores</div>
+                <p class="subtitle">Taller diseñado con el corazón de un docente y la mente de un programador.</p>
+                <div class="tema">Tema: Python - Bucle While</div>
+            </div>
+        </header>
+        
+        <!-- Navegación -->
+        <nav>
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="#objetivo" class="nav-link active" data-target="objetivo">
+                        <i class="fas fa-bullseye"></i> Objetivo
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#contexto" class="nav-link" data-target="contexto">
+                        <i class="fas fa-globe-americas"></i> Contexto
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#desarrollo" class="nav-link" data-target="desarrollo">
+                        <i class="fas fa-code"></i> Desarrollo
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#reto" class="nav-link" data-target="reto">
+                        <i class="fas fa-flag-checkered"></i> Reto Final
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#evaluacion" class="nav-link" data-target="evaluacion">
+                        <i class="fas fa-gamepad"></i> Evaluación
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <!-- Contenido principal -->
+        <main class="main-content">
+            <!-- Sección Objetivo -->
+            <section id="objetivo" class="content-section active">
+                <h2><i class="fas fa-bullseye"></i> Objetivo de Aprendizaje</h2>
+                <p>Dominar el uso del bucle <strong>while</strong> en Python para desarrollar programas que respondan a situaciones reales donde no se conoce de antemano la cantidad de repeticiones necesarias, fomentando el pensamiento algorítmico, la capacidad de resolución de problemas complejos y la perseverancia ante desafíos técnicos, a través de la experimentación directa con código, el análisis de resultados y la reflexión metacognitiva sobre el proceso de aprendizaje.</p>
+                
+                <div class="exercise">
+                    <div class="exercise-title">
+                        <i class="fas fa-lightbulb"></i>
+                        <h3>Reflexión inicial</h3>
+                    </div>
+                    <p>Antes de comenzar, piensa en estas preguntas:</p>
+                    <ul>
+                        <li>¿Has tenido que repetir una tarea hasta lograr un resultado específico?</li>
+                        <li>¿Cómo decides cuándo dejar de intentar algo?</li>
+                        <li>¿Qué situaciones de tu vida diaria siguen un patrón de "mientras una condición se cumple, sigue adelante"?</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <!-- Sección Contexto -->
+            <section id="contexto" class="content-section">
+                <h2><i class="fas fa-globe-americas"></i> Contextualización</h2>
+                <p>Imagina que estás subiendo el Cotopaxi, el volcán activo más alto del mundo. Cada paso que das es una repetición del anterior, pero con un propósito: llegar a la cima. No sabes exactamente cuántos pasos necesitarás, pero continúas mientras tengas energía, mientras el clima lo permita, mientras tu cuerpo resista.</p>
+                
+                <p>Así funciona el bucle <strong>while</strong> en programación: repite una acción <em>mientras</em> una condición sea verdadera. No sabemos cuántas repeticiones hará, solo sabemos que continuará hasta que algo cambie.</p>
+                
+                <p>En nuestro contexto ecuatoriano, piensa en:</p>
+                <ul>
+                    <li>El proceso de preparación del ceviche: agregas limón <strong>mientras</strong> el pescado no tenga la textura adecuada.</li>
+                    <li>Una llamada telefónica: permaneces en la línea <strong>mientras</strong> no te atiendan.</li>
+                    <li>El ahorro para un objetivo: guardas dinero <strong>mientras</strong> no hayas alcanzado la meta.</li>
+                </ul>
+                
+                <p>En programación, el <strong>while</strong> es tu aliado para situaciones donde la incertidumbre es la regla, no la excepción. Es el bucle de la resiliencia, de la perseverancia, de seguir intentando hasta lograrlo.</p>
+            </section>
+            
+            <!-- Sección Desarrollo -->
+            <section id="desarrollo" class="content-section">
+                <h2><i class="fas fa-code"></i> Desarrollo de la Actividad</h2>
+                
+                <h3>Conceptos Fundamentales</h3>
+                <p>El bucle <strong>while</strong> ejecuta un bloque de código repetidamente <em>mientras</em> una condición especificada sea verdadera. Su estructura básica es:</p>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <div class="code-title">Estructura básica del bucle while</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+                    </div>
+                    <pre><code><span class="code-keyword">while</span> condición:
+    <span class="code-comment"># Bloque de código a repetir</span>
+    <span class="code-comment"># Es crucial modificar la condición dentro del bucle</span>
+    <span class="code-comment"># para evitar bucles infinitos</span></code></pre>
+                </div>
+                
+                <h3>Ejemplo 1: Contador simple</h3>
+                <p>Un ejemplo clásico es un contador que va desde 1 hasta un límite:</p>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <div class="code-title">Contador con while</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+                    </div>
+                    <pre><code><span class="code-comment"># Inicializamos una variable contador</span>
+contador = <span class="code-keyword">1</span>
+
+<span class="code-comment"># El bucle se ejecutará mientras contador sea menor o igual a 5</span>
+<span class="code-keyword">while</span> contador <= <span class="code-keyword">5</span>:
+    <span class="code-function">print</span>(<span class="code-string">f"Este es el paso número {contador}"</span>)
+    <span class="code-comment"># Incrementamos el contador en 1 en cada iteración</span>
+    contador = contador + <span class="code-keyword">1</span>
+
+<span class="code-function">print</span>(<span class="code-string">"¡Hemos terminado de contar!"</span>)</code></pre>
+                </div>
+                
+                <div class="exercise">
+                    <div class="exercise-title">
+                        <i class="fas fa-flask"></i>
+                        <h3>Experimento: Modifica el código</h3>
+                    </div>
+                    <p>Intenta cambiar el código anterior:</p>
+                    <ul>
+                        <li>¿Qué pasa si olvidas incrementar el contador?</li>
+                        <li>¿Cómo harías para contar de 2 en 2?</li>
+                        <li>¿Qué ocurre si cambias la condición a <code>contador < 10</code>?</li>
+                    </ul>
+                    <p>Escribe tu propio código y observa los resultados.</p>
+                </div>
+                
+                <h3>Ejemplo 2: Validación de entrada</h3>
+                <p>Un uso muy común del bucle <strong>while</strong> es validar la entrada del usuario:</p>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <div class="code-title">Validación de entrada con while</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+                    </div>
+                    <pre><code><span class="code-comment"># Solicitamos una edad válida al usuario</span>
+edad = <span class="code-keyword">0</span>
+
+<span class="code-comment"># El bucle continuará mientras la edad no esté en el rango válido</span>
+<span class="code-keyword">while</span> edad < <span class="code-keyword">1</span> <span class="code-keyword">or</span> edad > <span class="code-keyword">100</span>:
+    <span class="code-keyword">try</span>:
+        edad = int(<span class="code-function">input</span>(<span class="code-string">"Ingresa tu edad (1-100): "</span>))
+        <span class="code-keyword">if</span> edad < <span class="code-keyword">1</span> <span class="code-keyword">or</span> edad > <span class="code-keyword">100</span>:
+            <span class="code-function">print</span>(<span class="code-string">"Edad no válida. Intenta de nuevo."</span>)
+    <span class="code-keyword">except</span> ValueError:
+        <span class="code-function">print</span>(<span class="code-string">"Debes ingresar un número entero."</span>)
+        edad = <span class="code-keyword">0</span>
+
+<span class="code-function">print</span>(<span class="code-string">f"Edad registrada correctamente: {edad} años"</span>)</code></pre>
+                </div>
+                
+                <h3>Ejemplo 3: Simulación de un cajero automático</h3>
+                <p>Vamos a simular un cajero automático sencillo:</p>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <div class="code-title">Simulación de cajero automático</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+                    </div>
+                    <pre><code><span class="code-comment"># Simulación de un cajero automático básico</span>
+saldo = <span class="code-keyword">1000.00</span>
+continuar = <span class="code-keyword">True</span>
+
+<span class="code-function">print</span>(<span class="code-string">"=== BIENVENIDO AL CAJERO AUTOMÁTICO ==="</span>)
+
+<span class="code-keyword">while</span> continuar:
+    <span class="code-function">print</span>(<span class="code-string">f"\nTu saldo actual es: ${saldo:.2f}"</span>)
+    <span class="code-function">print</span>(<span class="code-string">"1. Retirar dinero"</span>)
+    <span class="code-function">print</span>(<span class="code-string">"2. Salir"</span>)
+    
+    opcion = <span class="code-function">input</span>(<span class="code-string">"Selecciona una opción: "</span>)
+    
+    <span class="code-keyword">if</span> opcion == <span class="code-string">"1"</span>:
+        monto = float(<span class="code-function">input</span>(<span class="code-string">"Ingresa el monto a retirar: $"</span>))
+        <span class="code-keyword">if</span> monto > saldo:
+            <span class="code-function">print</span>(<span class="code-string">"Fondos insuficientes."</span>)
+        <span class="code-keyword">elif</span> monto <= <span class="code-keyword">0</span>:
+            <span class="code-function">print</span>(<span class="code-string">"Monto no válido."</span>)
+        <span class="code-keyword">else</span>:
+            saldo -= monto
+            <span class="code-function">print</span>(<span class="code-string">f"Retiro exitoso. Nuevo saldo: ${saldo:.2f}"</span>)
+    <span class="code-keyword">elif</span> opcion == <span class="code-string">"2"</span>:
+        continuar = <span class="code-keyword">False</span>
+        <span class="code-function">print</span>(<span class="code-string">"Gracias por usar nuestro cajero. ¡Hasta pronto!"</span>)
+    <span class="code-keyword">else</span>:
+        <span class="code-function">print</span>(<span class="code-string">"Opción no válida. Intenta de nuevo."</span>)
+
+<span class="code-function">print</span>(<span class="code-string">"====================================="</span>)</code></pre>
+                </div>
+                
+                <div class="exercise">
+                    <div class="exercise-title">
+                        <i class="fas fa-brain"></i>
+                        <h3>Reflexión metacognitiva</h3>
+                    </div>
+                    <p>Después de analizar estos ejemplos, responde mentalmente:</p>
+                    <ul>
+                        <li>¿En qué se diferencia el bucle <strong>while</strong> del bucle <strong>for</strong> que ya conoces?</li>
+                        <li>¿Cuál es el peligro principal al usar bucles <strong>while</strong> y cómo puedes evitarlo?</li>
+                        <li>¿Qué tipo de problemas se resuelven mejor con <strong>while</strong> que con <strong>for</strong>?</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <!-- Sección Reto Final -->
+            <section id="reto" class="content-section">
+                <h2><i class="fas fa-flag-checkered"></i> Reto Final</h2>
+                
+                <h3>El Juego de Adivinanzas Andino</h3>
+                <p>Crea un juego donde el programa "piense" en un número secreto entre 1 y 100 (como los secretos guardados en las montañas de los Andes), y el jugador deba adivinarlo. El juego debe:</p>
+                
+                <ol>
+                    <li>Generar un número aleatorio entre 1 y 100.</li>
+                    <li>Permitir al usuario ingresar intentos hasta que adivine el número.</li>
+                    <li>Dar pistas indicando si el número ingresado es mayor o menor que el secreto.</li>
+                    <li>Llevar un conteo de los intentos realizados.</li>
+                    <li>Preguntar al final si desea jugar nuevamente.</li>
+                </ol>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <div class="code-title">Estructura base para el reto</div>
+                        <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+                    </div>
+                    <pre><code><span class="code-comment"># Importamos la función randint para generar números aleatorios</span>
+<span class="code-keyword">from</span> random <span class="code-keyword">import</span> randint
+
+<span class="code-comment"># Variable para controlar si seguimos jugando</span>
+seguir_jugando = <span class="code-keyword">True</span>
+
+<span class="code-function">print</span>(<span class="code-string">"=== JUEGO DE ADIVINANZAS ANDINO ==="</span>)
+<span class="code-function">print</span>(<span class="code-string">"Adivina el número secreto (entre 1 y 100)"</span>)
+<span class="code-function">print</span>(<span class="code-string">"¡Buena suerte!"</span>)
+
+<span class="code-keyword">while</span> seguir_jugando:
+    <span class="code-comment"># 1. Generar el número secreto aleatorio</span>
+    numero_secreto = randint(<span class="code-keyword">1</span>, <span class="code-keyword">100</span>)
+    
+    <span class="code-comment"># 2. Inicializar el contador de intentos</span>
+    intentos = <span class="code-keyword">0</span>
+    
+    <span class="code-comment"># 3. Variable para saber si el jugador ha adivinado</span>
+    adivinado = <span class="code-keyword">False</span>
+    
+    <span class="code-comment"># 4. Bucle principal del juego</span>
+    <span class="code-keyword">while</span> <span class="code-comment"># COMPLETA ESTA CONDICIÓN</span>:
+        <span class="code-comment"># 5. Pedir al usuario un número</span>
+        <span class="code-comment"># 6. Incrementar el contador de intentos</span>
+        <span class="code-comment"># 7. Comparar el número ingresado con el secreto</span>
+        <span class="code-comment"># 8. Dar pistas (mayor/menor) o felicitar si acertó</span>
+        <span class="code-keyword">pass</span>  <span class="code-comment"># Elimina esta línea cuando escribas tu código</span>
+    
+    <span class="code-comment"># 9. Preguntar si quiere jugar nuevamente</span>
+    respuesta = <span class="code-function">input</span>(<span class="code-string">"¿Quieres jugar otra vez? (s/n): "</span>).lower()
+    <span class="code-keyword">if</span> respuesta != <span class="code-string">"s"</span>:
+        seguir_jugando = <span class="code-keyword">False</span>
+
+<span class="code-function">print</span>(<span class="code-string">"¡Gracias por jugar! Hasta la próxima."</span>)</code></pre>
+                </div>
+                
+                <div class="exercise">
+                    <div class="exercise-title">
+                        <i class="fas fa-rocket"></i>
+                        <h3>Desafío adicional (opcional)</h3>
+                    </div>
+                    <p>Si completaste el reto básico, intenta estas mejoras:</p>
+                    <ul>
+                        <li>Agrega niveles de dificultad (fácil: 1-50, medio: 1-100, difícil: 1-200).</li>
+                        <li>Lleva un registro del récord de menos intentos.</li>
+                        <li>Muestra mensajes diferentes según la cantidad de intentos (ej: "¡Eres un adivino experto!" si acertó en menos de 5 intentos).</li>
+                        <li>Permite al usuario establecer sus propios rangos (ej: "Adivina entre 20 y 500").</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <!-- Sección Evaluación -->
+            <section id="evaluacion" class="content-section">
+                <h2><i class="fas fa-gamepad"></i> Evaluación Lúdica</h2>
+                <p>Responde las siguientes preguntas para demostrar tu comprensión del bucle <strong>while</strong>.</p>
+                
+                <div class="quiz-container">
+                    <!-- Pregunta 1 -->
+                    <div class="question" id="question1">
+                        <div class="question-number">1</div>
+                        <h3>¿Cuál es la principal característica del bucle while en Python?</h3>
+                        <div class="options">
+                            <div class="option" data-correct="false">Se ejecuta un número fijo de veces determinado al inicio</div>
+                            <div class="option" data-correct="true">Se ejecuta mientras una condición sea verdadera</div>
+                            <div class="option" data-correct="false">Solo puede usarse con números enteros</div>
+                            <div class="option" data-correct="false">Requiere conocer de antemano cuántas iteraciones hará</div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    
+                    <!-- Pregunta 2 -->
+                    <div class="question" id="question2">
+                        <div class="question-number">2</div>
+                        <h3>¿Qué problema puede ocurrir si olvidamos actualizar la variable de control en un bucle while?</h3>
+                        <div class="options">
+                            <div class="option" data-correct="true">Bucle infinito</div>
+                            <div class="option" data-correct="false">Error de sintaxis</div>
+                            <div class="option" data-correct="false">El bucle no se ejecutará</div>
+                            <div class="option" data-correct="false">El programa se cerrará automáticamente</div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    
+                    <!-- Pregunta 3 -->
+                    <div class="question" id="question3">
+                        <div class="question-number">3</div>
+                        <h3>¿Cuál es la salida del siguiente código?</h3>
+                        <div class="code-container" style="margin: 15px 0; padding: 10px; font-size: 0.9rem;">
+                            <pre><code>contador = 5
+while contador > 0:
+    print(contador, end=" ")
+    contador -= 1</code></pre>
+                        </div>
+                        <div class="options">
+                            <div class="option" data-correct="false">1 2 3 4 5</div>
+                            <div class="option" data-correct="true">5 4 3 2 1</div>
+                            <div class="option" data-correct="false">0 1 2 3 4 5</div>
+                            <div class="option" data-correct="false">El código produce un error</div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    
+                    <!-- Pregunta 4 -->
+                    <div class="question" id="question4">
+                        <div class="question-number">4</div>
+                        <h3>¿En cuál de estas situaciones sería más apropiado usar un bucle while en lugar de un bucle for?</h3>
+                        <div class="options">
+                            <div class="option" data-correct="false">Recorrer una lista de nombres conocida</div>
+                            <div class="option" data-correct="false">Imprimir los números del 1 al 10</div>
+                            <div class="option" data-correct="true">Validar una entrada del usuario hasta que sea correcta</div>
+                            <div class="option" data-correct="false">Calcular la suma de los primeros 100 números naturales</div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    
+                    <!-- Pregunta 5 -->
+                    <div class="question" id="question5">
+                        <div class="question-number">5</div>
+                        <h3>¿Cómo podemos asegurarnos de que un bucle while se ejecute al menos una vez?</h3>
+                        <div class="options">
+                            <div class="option" data-correct="false">Usando la palabra clave "do" antes del while</div>
+                            <div class="option" data-correct="false">Inicializando la condición en False</div>
+                            <div class="option" data-correct="true">Inicializando la condición en True y controlando la salida dentro del bucle</div>
+                            <div class="option" data-correct="false">No es posible, el while puede no ejecutarse nunca</div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    
+                    <!-- Controles del test -->
+                    <div class="quiz-controls">
+                        <button class="btn btn-warning" id="resetBtn">
+                            <i class="fas fa-redo"></i> Reiniciar Test
+                        </button>
+                        <button class="btn btn-success" id="submitBtn">
+                            <i class="fas fa-paper-plane"></i> Verificar Respuestas
+                        </button>
+                    </div>
+                    
+                    <!-- Resultado -->
+                    <div class="score-container" id="scoreContainer">
+                        <h3><i class="fas fa-trophy"></i> Resultado del Test</h3>
+                        <div class="score-value" id="scoreValue">0/5</div>
+                        <div class="score-message" id="scoreMessage"></div>
+                        <button class="btn btn-primary" id="retryBtn">
+                            <i class="fas fa-sync-alt"></i> Intentar Nuevamente
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <p>Taller diseñado para estudiantes ecuatorianos de bachillerato</p>
+                <p>Con el enfoque en aprendizaje basado en competencias y desarrollo del pensamiento computacional</p>
+                <p><strong>Diseñado por: Edwin Méndez J.</strong></p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Navegación entre secciones
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configurar navegación
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Obtener el objetivo
+                    const targetId = this.getAttribute('data-target');
+                    
+                    // Remover clase active de todos los enlaces y secciones
+                    navLinks.forEach(navLink => navLink.classList.remove('active'));
+                    contentSections.forEach(section => section.classList.remove('active'));
+                    
+                    // Agregar clase active al enlace clickeado
+                    this.classList.add('active');
+                    
+                    // Mostrar la sección correspondiente
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+            
+            // Configurar test interactivo
+            setupQuiz();
+            
+            // Configurar botón de copiar código
+            setupCopyButtons();
+        });
+        
+        // Función para copiar código
+        function copyCode(button) {
+            const codeContainer = button.closest('.code-container');
+            const codeElement = codeContainer.querySelector('code');
+            const codeText = codeElement.innerText;
+            
+            // Copiar al portapapeles
+            navigator.clipboard.writeText(codeText).then(() => {
+                // Mostrar confirmación
+                const originalText = button.textContent;
+                button.textContent = '¡Copiado!';
+                button.style.backgroundColor = '#2ecc71';
+                
+                // Restaurar después de 2 segundos
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.backgroundColor = '';
+                }, 2000);
+            }).catch(err => {
+                console.error('Error al copiar: ', err);
+                button.textContent = 'Error';
+                button.style.backgroundColor = '#e74c3c';
+            });
+        }
+        
+        function setupCopyButtons() {
+            // Ya está configurado en el HTML con onclick
+        }
+        
+        // Configuración del test interactivo
+        function setupQuiz() {
+            const options = document.querySelectorAll('.option');
+            const submitBtn = document.getElementById('submitBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const retryBtn = document.getElementById('retryBtn');
+            const scoreContainer = document.getElementById('scoreContainer');
+            
+            // Seleccionar opciones
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remover selección de otras opciones en la misma pregunta
+                    const question = this.closest('.question');
+                    const otherOptions = question.querySelectorAll('.option');
+                    otherOptions.forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Seleccionar esta opción
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Verificar respuestas
+            submitBtn.addEventListener('click', function() {
+                let score = 0;
+                const totalQuestions = 5;
+                
+                // Verificar cada pregunta
+                for (let i = 1; i <= totalQuestions; i++) {
+                    const question = document.getElementById(`question${i}`);
+                    const selectedOption = question.querySelector('.option.selected');
+                    const feedback = question.querySelector('.feedback');
+                    
+                    // Si no hay opción seleccionada
+                    if (!selectedOption) {
+                        feedback.textContent = "No seleccionaste ninguna opción.";
+                        feedback.classList.add('incorrect');
+                        feedback.style.display = 'block';
+                        continue;
+                    }
+                    
+                    // Verificar si es correcta
+                    const isCorrect = selectedOption.getAttribute('data-correct') === 'true';
+                    
+                    // Marcar opción correcta/incorrecta
+                    if (isCorrect) {
+                        selectedOption.classList.add('correct');
+                        feedback.textContent = "¡Correcto! Excelente respuesta.";
+                        feedback.classList.remove('incorrect');
+                        feedback.classList.add('correct');
+                        score++;
+                    } else {
+                        selectedOption.classList.add('incorrect');
+                        feedback.textContent = "Incorrecto. Revisa el concepto nuevamente.";
+                        feedback.classList.remove('correct');
+                        feedback.classList.add('incorrect');
+                        
+                        // Mostrar la opción correcta
+                        const correctOption = question.querySelector('.option[data-correct="true"]');
+                        correctOption.classList.add('correct');
+                    }
+                    
+                    feedback.style.display = 'block';
+                }
+                
+                // Mostrar puntaje
+                const scoreValue = document.getElementById('scoreValue');
+                const scoreMessage = document.getElementById('scoreMessage');
+                
+                scoreValue.textContent = `${score}/${totalQuestions}`;
+                
+                // Mensaje personalizado según puntaje
+                if (score === totalQuestions) {
+                    scoreMessage.textContent = "¡Excelente! Dominas completamente el bucle while.";
+                } else if (score >= totalQuestions * 0.7) {
+                    scoreMessage.textContent = "¡Muy bien! Tienes un buen entendimiento del concepto.";
+                } else if (score >= totalQuestions * 0.5) {
+                    scoreMessage.textContent = "Buen intento. Revisa los conceptos para mejorar.";
+                } else {
+                    scoreMessage.textContent = "Sigue practicando. Revisa los ejemplos y vuelve a intentarlo.";
+                }
+                
+                // Mostrar contenedor de puntaje
+                scoreContainer.style.display = 'block';
+                
+                // Desplazarse al resultado
+                scoreContainer.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Reiniciar test
+            resetBtn.addEventListener('click', function() {
+                resetQuiz();
+            });
+            
+            // Reintentar test
+            retryBtn.addEventListener('click', function() {
+                resetQuiz();
+                scoreContainer.style.display = 'none';
+                
+                // Desplazarse al inicio del test
+                document.getElementById('question1').scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Función para reiniciar el test
+            function resetQuiz() {
+                // Limpiar selecciones y estilos
+                options.forEach(option => {
+                    option.classList.remove('selected', 'correct', 'incorrect');
+                });
+                
+                // Ocultar feedback
+                const feedbacks = document.querySelectorAll('.feedback');
+                feedbacks.forEach(feedback => {
+                    feedback.style.display = 'none';
+                    feedback.classList.remove('correct', 'incorrect');
+                });
+                
+                // Ocultar resultado
+                scoreContainer.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

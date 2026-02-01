@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python: Manejo de Módulos y Paquetes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --color-primario: #2c3e50;
+            --color-secundario: #3498db;
+            --color-accent: #e74c3c;
+            --color-fondo: #f9f9f9;
+            --color-texto: #333;
+            --color-texto-claro: #7f8c8d;
+            --color-sombra: rgba(0, 0, 0, 0.1);
+            --color-exito: #2ecc71;
+            --color-error: #e74c3c;
+            --color-hover: #2980b9;
+            --color-borde: #ddd;
+            --transicion: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--color-texto);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .contenedor-principal {
+            width: 100%;
+            max-width: 1200px;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px var(--color-sombra);
+            overflow: hidden;
+            margin: 30px 0;
+        }
+        
+        /* Encabezado */
+        .encabezado {
+            background: linear-gradient(90deg, var(--color-primario), var(--color-secundario));
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 5px solid var(--color-accent);
+        }
+        
+        .encabezado h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .encabezado .subtitulo {
+            font-size: 1.4rem;
+            font-weight: 300;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+        
+        .encabezado .tema {
+            font-size: 1.2rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 50px;
+            margin-top: 15px;
+        }
+        
+        /* Contenido principal */
+        .contenido {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+        
+        .seccion {
+            background-color: var(--color-fondo);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid var(--color-secundario);
+            transition: var(--transicion);
+        }
+        
+        .seccion:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .titulo-seccion {
+            color: var(--color-primario);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .titulo-seccion i {
+            color: var(--color-accent);
+        }
+        
+        .contenido-texto {
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+        
+        .contenido-texto p {
+            margin-bottom: 15px;
+        }
+        
+        .contenido-texto ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .contenido-texto li {
+            margin-bottom: 8px;
+        }
+        
+        /* Código */
+        .codigo-contenedor {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .codigo-contenedor pre {
+            white-space: pre-wrap;
+        }
+        
+        .codigo-contenedor .comentario {
+            color: #88846e;
+        }
+        
+        .codigo-contenedor .palabra-clave {
+            color: #ff79c6;
+        }
+        
+        .codigo-contenedor .funcion {
+            color: #50fa7b;
+        }
+        
+        .codigo-contenedor .cadena {
+            color: #f1fa8c;
+        }
+        
+        .codigo-contenedor .clase {
+            color: #8be9fd;
+        }
+        
+        /* Botones */
+        .boton {
+            display: inline-block;
+            background-color: var(--color-secundario);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transicion);
+            margin: 10px 5px;
+            text-align: center;
+        }
+        
+        .boton:hover {
+            background-color: var(--color-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1);
+        }
+        
+        .boton-aceptar {
+            background-color: var(--color-exito);
+        }
+        
+        .boton-cancelar {
+            background-color: var(--color-error);
+        }
+        
+        /* Juego de evaluación */
+        .juego-contenedor {
+            background-color: var(--color-fondo);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .pregunta-contenedor {
+            margin-bottom: 25px;
+        }
+        
+        .pregunta {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: var(--color-primario);
+        }
+        
+        .opciones {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .opcion {
+            background-color: white;
+            border: 2px solid var(--color-borde);
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: var(--transicion);
+            text-align: left;
+            font-size: 1.1rem;
+        }
+        
+        .opcion:hover {
+            border-color: var(--color-secundario);
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+        
+        .opcion.seleccionada {
+            border-color: var(--color-secundario);
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+        
+        .opcion.correcta {
+            border-color: var(--color-exito);
+            background-color: rgba(46, 204, 113, 0.1);
+        }
+        
+        .opcion.incorrecta {
+            border-color: var(--color-error);
+            background-color: rgba(231, 76, 60, 0.1);
+        }
+        
+        .retroalimentacion {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-weight: 600;
+            display: none;
+        }
+        
+        .retroalimentacion.correcta {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: var(--color-exito);
+            display: block;
+        }
+        
+        .retroalimentacion.incorrecta {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--color-error);
+            display: block;
+        }
+        
+        .puntaje-contenedor {
+            font-size: 1.3rem;
+            margin-top: 20px;
+            color: var(--color-primario);
+            font-weight: 600;
+        }
+        
+        .resultado-final {
+            display: none;
+            padding: 30px;
+            background-color: rgba(52, 152, 219, 0.1);
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+        
+        /* Pie de página */
+        .pie-pagina {
+            background-color: var(--color-primario);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            border-top: 5px solid var(--color-accent);
+        }
+        
+        .pie-pagina p {
+            font-size: 1.1rem;
+        }
+        
+        /* Responsividad */
+        @media (max-width: 768px) {
+            .encabezado h1 {
+                font-size: 2.2rem;
+            }
+            
+            .encabezado .subtitulo {
+                font-size: 1.2rem;
+            }
+            
+            .contenido {
+                padding: 20px;
+            }
+            
+            .seccion {
+                padding: 20px;
+            }
+            
+            .titulo-seccion {
+                font-size: 1.5rem;
+            }
+            
+            .opciones {
+                gap: 10px;
+            }
+            
+            .opcion {
+                padding: 12px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor-principal">
+        <header class="encabezado">
+            <h1>Construyendo Universos Digitales</h1>
+            <div class="subtitulo">Python para pensadores</div>
+            <div class="subtitulo">Taller diseñado con el corazón de un docente y la mente de un programador</div>
+            <div class="tema">Python: Manejo de módulos y paquetes</div>
+        </header>
+        
+        <main class="contenido">
+            <!-- Sección 1: Objetivo de aprendizaje -->
+            <section class="seccion">
+                <h2 class="titulo-seccion"><i class="fas fa-bullseye"></i> Objetivo de aprendizaje</h2>
+                <div class="contenido-texto">
+                    <p>Dominar la creación, organización y uso de módulos y paquetes en Python para desarrollar programas modulares, escalables y mantenibles, integrando competencias técnicas como la importación de bibliotecas, habilidades cognitivas de análisis y síntesis para estructurar soluciones, y actitudes de curiosidad y colaboración que permitan construir software ético y socialmente relevante para la comunidad educativa ecuatoriana.</p>
+                </div>
+            </section>
+            
+            <!-- Sección 2: Contextualización -->
+            <section class="seccion">
+                <h2 class="titulo-seccion"><i class="fas fa-globe-americas"></i> Contextualización</h2>
+                <div class="contenido-texto">
+                    <p>Imagina que estás organizando la biblioteca de tu colegio. Tienes miles de libros: algunos son de matemáticas, otros de historia, algunos de literatura. ¿Los pondrías todos juntos en una sola pila? Por supuesto que no. Los organizarías por materias, por autores, por años... crearías un sistema.</p>
+                    
+                    <p>Así funciona Python con los módulos y paquetes. Cada vez que escribes un programa, estás creando conocimiento. Y como en cualquier biblioteca, ese conocimiento necesita organización. Cuando programas, no estás solo escribiendo código; estás creando un ecosistema digital que, bien organizado, puede crecer, evolucionar y servir a otros.</p>
+                    
+                    <p>En el Ecuador digital de hoy, donde las soluciones tecnológicas locales son cada vez más necesarias, aprender a estructurar código no es solo una habilidad técnica: es una forma de pensar sistémicamente, de construir soluciones que perduren y se adapten, de crear herramientas que realmente sirvan a nuestra comunidad.</p>
+                </div>
+            </section>
+            
+            <!-- Sección 3: Desarrollo de la actividad -->
+            <section class="seccion">
+                <h2 class="titulo-seccion"><i class="fas fa-code"></i> Desarrollo de la actividad</h2>
+                <div class="contenido-texto">
+                    <p>Un <strong>módulo</strong> en Python es simplemente un archivo con extensión <code>.py</code> que contiene código Python. Un <strong>paquete</strong> es una carpeta que contiene varios módulos organizados jerárquicamente.</p>
+                    
+                    <h3>Creando tu primer módulo</h3>
+                    <p>Vamos a crear un módulo para operaciones matemáticas básicas con sabor ecuatoriano:</p>
+                    
+                    <div class="codigo-contenedor">
+<pre><span class="comentario"># modulo_matematicas_ec.py</span>
+<span class="comentario"># Módulo con operaciones matemáticas inspiradas en Ecuador</span>
+
+<span class="palabra-clave">def</span> <span class="funcion">calcular_iva</span>(monto, porcentaje=<span class="numero">12</span>):
+    <span class="cadena">"""Calcula el IVA de un monto (por defecto 12% como en Ecuador)"""</span>
+    <span class="palabra-clave">return</span> monto * porcentaje / <span class="numero">100</span>
+
+<span class="palabra-clave">def</span> <span class="funcion">convertir_dolares_a_sucres</span>(dolares):
+    <span class="cadena">"""Convierte dólares a sucres (tipo de cambio fijo: 1 USD = 25000 sucres)"""</span>
+    <span class="palabra-clave">return</span> dolares * <span class="numero">25000</span>
+
+<span class="palabra-clave">def</span> <span class="funcion">calcular_promedio_pichincha</span>(*calificaciones):
+    <span class="cadena">"""Calcula el promedio de calificaciones (como en los colegios de Pichincha)"""</span>
+    <span class="palabra-clave">if</span> <span class="palabra-clave">len</span>(calificaciones) == <span class="numero">0</span>:
+        <span class="palabra-clave">return</span> <span class="numero">0</span>
+    <span class="palabra-clave">return</span> <span class="funcion">sum</span>(calificaciones) / <span class="palabra-clave">len</span>(calificaciones)
+
+<span class="comentario"># Probemos nuestro módulo internamente</span>
+<span class="palabra-clave">if</span> <span class="variable">__name__</span> == <span class="cadena">"__main__"</span>:
+    <span class="funcion">print</span>(<span class="cadena">"Prueba del módulo:"</span>)
+    <span class="funcion">print</span>(<span class="cadena">"IVA de $100:"</span>, <span class="funcion">calcular_iva</span>(<span class="numero">100</span>))
+    <span class="funcion">print</span>(<span class="cadena">"$10 en sucres:"</span>, <span class="funcion">convertir_dolares_a_sucres</span>(<span class="numero">10</span>))
+    <span class="funcion">print</span>(<span class="cadena">"Promedio de 15, 18, 20:"</span>, <span class="funcion">calcular_promedio_pichincha</span>(<span class="numero">15</span>, <span class="numero">18</span>, <span class="numero">20</span>))</pre>
+                    </div>
+                    
+                    <h3>Usando nuestro módulo desde otro archivo</h3>
+                    <p>Ahora creamos otro archivo para importar y usar nuestro módulo:</p>
+                    
+                    <div class="codigo-contenedor">
+<pre><span class="comentario"># programa_principal.py</span>
+<span class="comentario"># Importando nuestro módulo personalizado</span>
+
+<span class="palabra-clave">import</span> modulo_matematicas_ec <span class="palabra-clave">as</span> mate_ec
+
+<span class="comentario"># También podemos importar funciones específicas</span>
+<span class="palabra-clave">from</span> modulo_matematicas_ec <span class="palabra-clave">import</span> calcular_iva, convertir_dolares_a_sucres
+
+<span class="funcion">print</span>(<span class="cadena">"=== Sistema de cálculos ecuatorianos ==="</span>)
+
+<span class="comentario"># Usando el módulo con alias</span>
+compra = <span class="numero">250</span>
+iva_calculado = mate_ec.calcular_iva(compra)
+<span class="funcion">print</span>(<span class="cadena">f"Compra: $</span>{compra}<span class="cadena">, IVA: $</span>{iva_calculado:<span class="numero">.2f</span>}<span class="cadena">"</span>)
+
+<span class="comentario"># Usando funciones importadas directamente</span>
+dolares = <span class="numero">50</span>
+sucres = convertir_dolares_a_sucres(dolares)
+<span class="funcion">print</span>(<span class="cadena">f"</span>{dolares}<span class="cadena"> dólares equivalen a </span>{sucres:,}<span class="cadena"> sucres"</span>)
+
+<span class="comentario"># Usando otra función del módulo</span>
+promedio = mate_ec.calcular_promedio_pichincha(<span class="numero">16</span>, <span class="numero">18</span>, <span class="numero">14</span>, <span class="numero">20</span>)
+<span class="funcion">print</span>(<span class="cadena">f"Promedio de calificaciones: </span>{promedio:<span class="numero">.1f</span>}<span class="cadena">"</span>)</pre>
+                    </div>
+                    
+                    <h3>Creando un paquete</h3>
+                    <p>Un paquete es una carpeta que contiene un archivo especial llamado <code>__init__.py</code> (que puede estar vacío) y módulos relacionados:</p>
+                    
+                    <div class="codigo-contenedor">
+<pre><span class="comentario"># Estructura de un paquete ecuatoriano:</span>
+<span class="comentario"># paquete_ecuador/</span>
+<span class="comentario">#   __init__.py</span>
+<span class="comentario">#   matematicas.py</span>
+<span class="comentario">#   geografia.py</span>
+<span class="comentario">#   cultura.py</span>
+
+<span class="comentario"># paquete_ecuador/matematicas.py</span>
+<span class="palabra-clave">def</span> <span class="funcion">calcular_area_rectangulo</span>(base, altura):
+    <span class="cadena">"""Calcula el área de un rectángulo"""</span>
+    <span class="palabra-clave">return</span> base * altura
+
+<span class="comentario"># paquete_ecuador/geografia.py</span>
+<span class="palabra-clave">def</span> <span class="funcion">obtener_provincias</span>():
+    <span class="cadena">"""Retorna la lista de provincias de Ecuador"""</span>
+    <span class="palabra-clave">return</span> [<span class="cadena">"Azuay"</span>, <span class="cadena">"Bolívar"</span>, <span class="cadena">"Cañar"</span>, <span class="cadena">"Carchi"</span>, <span class="cadena">"Chimborazo"</span>, 
+            <span class="cadena">"Cotopaxi"</span>, <span class="cadena">"El Oro"</span>, <span class="cadena">"Esmeraldas"</span>, <span class="cadena">"Galápagos"</span>, <span class="cadena">"Guayas"</span>,
+            <span class="cadena">"Imbabura"</span>, <span class="cadena">"Loja"</span>, <span class="cadena">"Los Ríos"</span>, <span class="cadena">"Manabí"</span>, <span class="cadena">"Morona Santiago"</span>,
+            <span class="cadena">"Napo"</span>, <span class="cadena">"Orellana"</span>, <span class="cadena">"Pastaza"</span>, <span class="cadena">"Pichincha"</span>, <span class="cadena">"Santa Elena"</span>,
+            <span class="cadena">"Santo Domingo"</span>, <span class="cadena">"Sucumbíos"</span>, <span class="cadena">"Tungurahua"</span>, <span class="cadena">"Zamora Chinchipe"</span>]
+
+<span class="comentario"># programa principal usando el paquete</span>
+<span class="palabra-clave">from</span> paquete_ecuador <span class="palabra-clave">import</span> geografia, matematicas
+
+<span class="funcion">print</span>(<span class="cadena">"Provincias de Ecuador:"</span>)
+<span class="palabra-clave">for</span> provincia <span class="palabra-clave">in</span> geografia.obtener_provincias():
+    <span class="funcion">print</span>(<span class="cadena">"-"</span>, provincia)
+
+area = matematicas.calcular_area_rectangulo(<span class="numero">10</span>, <span class="numero">5</span>)
+<span class="funcion">print</span>(<span class="cadena">f"Área de un rectángulo de 10x5: </span>{area}<span class="cadena">"</span>)</pre>
+                    </div>
+                    
+                    <p><strong>Reflexión:</strong> ¿Qué ventajas ves en organizar tu código en módulos y paquetes? ¿Cómo podrías aplicar esta organización a un proyecto sobre la biodiversidad ecuatoriana o sobre el patrimonio cultural de tu provincia?</p>
+                </div>
+            </section>
+            
+            <!-- Sección 4: El reto final -->
+            <section class="seccion">
+                <h2 class="titulo-seccion"><i class="fas fa-flag-checkered"></i> El reto final</h2>
+                <div class="contenido-texto">
+                    <p><strong>Reto: Sistema de Gestión para el Festival de Ciencias del Colegio</strong></p>
+                    
+                    <p>Tu colegio está organizando un Festival de Ciencias y te ha encargado desarrollar un sistema modular en Python para gestionar las actividades. El sistema debe:</p>
+                    
+                    <ol>
+                        <li>Crear un paquete llamado <code>festival_ciencias</code> con al menos tres módulos:
+                            <ul>
+                                <li><code>registro.py</code>: Para registrar participantes (estudiantes, profesores, proyectos)</li>
+                                <li><code>calificacion.py</code>: Para que los jueces califiquen los proyectos</li>
+                                <li><code>reportes.py</code>: Para generar reportes de los resultados</li>
+                            </ul>
+                        </li>
+                        <li>Cada módulo debe contener al menos dos funciones relevantes a su propósito.</li>
+                        <li>Crear un programa principal que importe y use todos los módulos del paquete.</li>
+                        <li>Implementar al menos una función que reciba parámetros con valores por defecto.</li>
+                        <li>Incluir documentación en cada módulo explicando su propósito.</li>
+                    </ol>
+                    
+                    <p><strong>Preguntas para guiar tu solución:</strong></p>
+                    <ul>
+                        <li>¿Cómo estructurarías las carpetas y archivos?</li>
+                        <li>¿Qué datos específicos del festival necesitarías manejar?</li>
+                        <li>¿Cómo harías para que el sistema pueda crecer en futuras versiones?</li>
+                        <li>¿Qué elementos de la cultura ecuatoriana podrías incorporar en tu diseño?</li>
+                    </ul>
+                    
+                    <button class="boton" onclick="mostrarPista()">
+                        <i class="fas fa-lightbulb"></i> ¿Necesitas una pista?
+                    </button>
+                    
+                    <div id="pista" style="display:none; margin-top:20px; padding:15px; background-color:#e8f4fc; border-radius:10px;">
+                        <p><strong>Pista:</strong> Comienza creando la estructura de carpetas. Luego, en cada módulo, define primero las funciones más simples. Por ejemplo, en <code>registro.py</code> podrías tener una función <code>agregar_participante(nombre, curso, proyecto)</code> y otra función <code>mostrar_participantes()</code>. Recuerda que el archivo <code>__init__.py</code> puede estar vacío inicialmente.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Sección 5: Evaluación lúdica -->
+            <section class="seccion">
+                <h2 class="titulo-seccion"><i class="fas fa-gamepad"></i> Evaluación lúdica</h2>
+                <div class="juego-contenedor">
+                    <h3>Test: ¿Eres un maestro de los módulos?</h3>
+                    <p>Responde las siguientes preguntas para demostrar tu comprensión de módulos y paquetes en Python.</p>
+                    
+                    <div class="pregunta-contenedor">
+                        <div class="pregunta" id="pregunta-texto">Cargando pregunta...</div>
+                        
+                        <div class="opciones" id="opciones-contenedor">
+                            <!-- Las opciones se cargarán con JavaScript -->
+                        </div>
+                        
+                        <div class="retroalimentacion" id="retroalimentacion"></div>
+                        
+                        <button class="boton" id="siguiente-btn" onclick="siguientePregunta()" style="display:none;">
+                            Siguiente pregunta <i class="fas fa-arrow-right"></i>
+                        </button>
+                        
+                        <button class="boton" id="verificar-btn" onclick="verificarRespuesta()">
+                            Verificar respuesta
+                        </button>
+                        
+                        <button class="boton boton-aceptar" onclick="reiniciarJuego()" style="display:none;">
+                            <i class="fas fa-redo"></i> Reiniciar juego
+                        </button>
+                    </div>
+                    
+                    <div class="puntaje-contenedor">
+                        Puntaje: <span id="puntaje">0</span> / 5
+                    </div>
+                    
+                    <div class="resultado-final" id="resultado-final">
+                        <!-- Resultado final se mostrará aquí -->
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer class="pie-pagina">
+            <p>Diseñado por: Edwin Méndez J.</p>
+            <p>Taller educativo para estudiantes ecuatorianos de bachillerato</p>
+        </footer>
+    </div>
+
+    <script>
+        // Datos para el juego de evaluación
+        const preguntas = [
+            {
+                pregunta: "¿Qué es un módulo en Python?",
+                opciones: [
+                    "Un archivo con extensión .py que contiene código Python reutilizable",
+                    "Una carpeta que contiene varios archivos .py",
+                    "Una función especial de Python",
+                    "Un tipo de dato numérico"
+                ],
+                respuestaCorrecta: 0
+            },
+            {
+                pregunta: "¿Cuál es la diferencia entre un módulo y un paquete?",
+                opciones: [
+                    "Un módulo es un archivo .py, un paquete es una carpeta con varios módulos",
+                    "Un módulo es más complejo que un paquete",
+                    "Un paquete es un archivo .py, un módulo es una carpeta",
+                    "No hay diferencia, son sinónimos en Python"
+                ],
+                respuestaCorrecta: 0
+            },
+            {
+                pregunta: "¿Qué archivo especial debe contener una carpeta para que Python la reconozca como paquete?",
+                opciones: [
+                    "__init__.py",
+                    "main.py",
+                    "package.py",
+                    "module.py"
+                ],
+                respuestaCorrecta: 0
+            },
+            {
+                pregunta: "Si tienes un módulo llamado 'matematicas.py' con una función 'sumar', ¿cómo la importarías correctamente?",
+                opciones: [
+                    "import matematicas; matematicas.sumar()",
+                    "from sumar import matematicas",
+                    "import sumar from matematicas",
+                    "matematicas.import(sumar)"
+                ],
+                respuestaCorrecta: 0
+            },
+            {
+                pregunta: "¿Para qué sirve la línea 'if __name__ == \"__main__\":' en un módulo Python?",
+                opciones: [
+                    "Para ejecutar código solo cuando el módulo se ejecuta directamente, no cuando se importa",
+                    "Para indicar que el módulo es el principal del programa",
+                    "Para importar automáticamente otros módulos",
+                    "Para definir el nombre del módulo"
+                ],
+                respuestaCorrecta: 0
+            }
+        ];
+
+        // Variables del juego
+        let preguntaActual = 0;
+        let puntaje = 0;
+        let respuestaSeleccionada = null;
+        let juegoTerminado = false;
+
+        // Inicializar el juego
+        function inicializarJuego() {
+            mostrarPregunta(preguntaActual);
+            document.getElementById('puntaje').textContent = puntaje;
+            document.getElementById('verificar-btn').style.display = 'inline-block';
+            document.getElementById('siguiente-btn').style.display = 'none';
+            document.getElementById('retroalimentacion').style.display = 'none';
+            document.getElementById('resultado-final').style.display = 'none';
+            document.querySelector('.boton-aceptar').style.display = 'none';
+        }
+
+        // Mostrar pregunta actual
+        function mostrarPregunta(indice) {
+            const pregunta = preguntas[indice];
+            document.getElementById('pregunta-texto').textContent = `${indice + 1}. ${pregunta.pregunta}`;
+            
+            const opcionesContenedor = document.getElementById('opciones-contenedor');
+            opcionesContenedor.innerHTML = '';
+            
+            pregunta.opciones.forEach((opcion, i) => {
+                const opcionElemento = document.createElement('div');
+                opcionElemento.className = 'opcion';
+                opcionElemento.textContent = opcion;
+                opcionElemento.dataset.indice = i;
+                opcionElemento.onclick = () => seleccionarRespuesta(i, opcionElemento);
+                opcionesContenedor.appendChild(opcionElemento);
+            });
+            
+            // Reiniciar selección
+            respuestaSeleccionada = null;
+            document.getElementById('verificar-btn').style.display = 'inline-block';
+            document.getElementById('siguiente-btn').style.display = 'none';
+            document.getElementById('retroalimentacion').style.display = 'none';
+        }
+
+        // Seleccionar respuesta
+        function seleccionarRespuesta(indice, elemento) {
+            if (juegoTerminado) return;
+            
+            // Remover selección anterior
+            const opciones = document.querySelectorAll('.opcion');
+            opciones.forEach(op => op.classList.remove('seleccionada'));
+            
+            // Seleccionar nueva opción
+            elemento.classList.add('seleccionada');
+            respuestaSeleccionada = indice;
+        }
+
+        // Verificar respuesta
+        function verificarRespuesta() {
+            if (respuestaSeleccionada === null) {
+                alert('Por favor, selecciona una respuesta antes de verificar.');
+                return;
+            }
+            
+            const pregunta = preguntas[preguntaActual];
+            const opciones = document.querySelectorAll('.opcion');
+            const retroalimentacion = document.getElementById('retroalimentacion');
+            
+            // Marcar respuesta correcta e incorrecta
+            opciones.forEach((opcion, i) => {
+                if (i === pregunta.respuestaCorrecta) {
+                    opcion.classList.add('correcta');
+                } else if (i === respuestaSeleccionada && i !== pregunta.respuestaCorrecta) {
+                    opcion.classList.add('incorrecta');
+                }
+            });
+            
+            // Mostrar retroalimentación
+            if (respuestaSeleccionada === pregunta.respuestaCorrecta) {
+                retroalimentacion.textContent = '¡Correcto! Has entendido bien el concepto.';
+                retroalimentacion.className = 'retroalimentacion correcta';
+                puntaje++;
+            } else {
+                retroalimentacion.textContent = `Incorrecto. La respuesta correcta es: ${pregunta.opciones[pregunta.respuestaCorrecta]}`;
+                retroalimentacion.className = 'retroalimentacion incorrecta';
+            }
+            
+            retroalimentacion.style.display = 'block';
+            document.getElementById('puntaje').textContent = puntaje;
+            document.getElementById('verificar-btn').style.display = 'none';
+            
+            // Mostrar botón siguiente o finalizar
+            if (preguntaActual < preguntas.length - 1) {
+                document.getElementById('siguiente-btn').style.display = 'inline-block';
+            } else {
+                mostrarResultadoFinal();
+            }
+        }
+
+        // Siguiente pregunta
+        function siguientePregunta() {
+            preguntaActual++;
+            mostrarPregunta(preguntaActual);
+        }
+
+        // Mostrar resultado final
+        function mostrarResultadoFinal() {
+            juegoTerminado = true;
+            const resultadoFinal = document.getElementById('resultado-final');
+            let mensaje = '';
+            
+            if (puntaje === preguntas.length) {
+                mensaje = `<h3><i class="fas fa-trophy"></i> ¡Excelente! ${puntaje}/${preguntas.length}</h3>
+                          <p>Eres un verdadero maestro de los módulos y paquetes en Python. Tu comprensión es sólida y estás listo para crear programas modulares y bien organizados.</p>`;
+            } else if (puntaje >= preguntas.length / 2) {
+                mensaje = `<h3><i class="fas fa-star"></i> ¡Buen trabajo! ${puntaje}/${preguntas.length}</h3>
+                          <p>Tienes una buena comprensión de los conceptos. Sigue practicando para dominar completamente el manejo de módulos y paquetes.</p>`;
+            } else {
+                mensaje = `<h3><i class="fas fa-book"></i> Sigue aprendiendo: ${puntaje}/${preguntas.length}</h3>
+                          <p>Revisa los conceptos nuevamente y practica creando tus propios módulos. Recuerda que la programación modular es clave para escribir código mantenible.</p>`;
+            }
+            
+            resultadoFinal.innerHTML = mensaje;
+            resultadoFinal.style.display = 'block';
+            document.querySelector('.boton-aceptar').style.display = 'inline-block';
+        }
+
+        // Reiniciar juego
+        function reiniciarJuego() {
+            preguntaActual = 0;
+            puntaje = 0;
+            respuestaSeleccionada = null;
+            juegoTerminado = false;
+            inicializarJuego();
+        }
+
+        // Función para mostrar pista en el reto final
+        function mostrarPista() {
+            const pista = document.getElementById('pista');
+            if (pista.style.display === 'none' || pista.style.display === '') {
+                pista.style.display = 'block';
+            } else {
+                pista.style.display = 'none';
+            }
+        }
+
+        // Inicializar cuando se carga la página
+        document.addEventListener('DOMContentLoaded', function() {
+            inicializarJuego();
+            
+            // Efecto de desplazamiento suave para enlaces internos
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 20,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

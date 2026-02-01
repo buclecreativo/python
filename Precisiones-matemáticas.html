@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python para Pensadores - Precisiones Matemáticas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --success-color: #2ecc71;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --gradient: linear-gradient(135deg, #3498db, #2c3e50);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        
+        /* Header */
+        header {
+            background: var(--gradient);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.1;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .logo i {
+            font-size: 2.5rem;
+            margin-right: 15px;
+            color: var(--light-color);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            max-width: 800px;
+            margin: 0 auto 20px;
+            opacity: 0.9;
+        }
+        
+        .topic {
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 12px 24px;
+            border-radius: 50px;
+            display: inline-block;
+            font-weight: 600;
+            margin-top: 10px;
+            backdrop-filter: blur(5px);
+        }
+        
+        /* Main content */
+        main {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .section:last-of-type {
+            border-bottom: none;
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--secondary-color);
+            display: inline-block;
+        }
+        
+        h2 i {
+            margin-right: 10px;
+            color: var(--secondary-color);
+        }
+        
+        .content-box {
+            background-color: var(--light-color);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            margin-bottom: 25px;
+            border-left: 5px solid var(--secondary-color);
+        }
+        
+        .content-box.challenge {
+            border-left-color: var(--accent-color);
+        }
+        
+        .content-box.game {
+            border-left-color: var(--success-color);
+        }
+        
+        p {
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+        
+        .highlight {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        /* Code examples */
+        .code-container {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #a0aec0;
+            font-size: 0.9rem;
+        }
+        
+        .copy-btn {
+            background-color: #4a5568;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .copy-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        pre {
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        
+        .keyword {
+            color: #ff79c6;
+        }
+        
+        .function {
+            color: #50fa7b;
+        }
+        
+        .string {
+            color: #f1fa8c;
+        }
+        
+        .comment {
+            color: #6272a4;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-game {
+            background-color: var(--success-color);
+        }
+        
+        .btn-game:hover {
+            background-color: #27ae60;
+        }
+        
+        /* Quiz game */
+        .quiz-container {
+            display: none;
+            background-color: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+        }
+        
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .score {
+            font-weight: bold;
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+        }
+        
+        .question {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        
+        @media (min-width: 768px) {
+            .options {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .option {
+            background-color: var(--light-color);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        
+        .option:hover {
+            background-color: #d6eaf8;
+            border-color: var(--secondary-color);
+        }
+        
+        .option.selected {
+            background-color: #d5f4e6;
+            border-color: var(--success-color);
+        }
+        
+        .option.correct {
+            background-color: #d5f4e6;
+            border-color: var(--success-color);
+        }
+        
+        .option.incorrect {
+            background-color: #fadbd8;
+            border-color: var(--accent-color);
+        }
+        
+        .feedback {
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: #d5f4e6;
+            color: #145a32;
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .feedback.incorrect {
+            background-color: #fadbd8;
+            color: #78281f;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 30px;
+        }
+        
+        footer p {
+            margin-bottom: 0;
+            opacity: 0.8;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            main {
+                padding: 20px;
+            }
+            
+            .section {
+                margin-bottom: 30px;
+                padding-bottom: 20px;
+            }
+        }
+        
+        /* Animation for quiz */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-code"></i>
+                <div>
+                    <h1>Python para pensadores</h1>
+                    <p class="subtitle">Taller diseñado con el corazón de un docente y la mente de un programador.</p>
+                </div>
+            </div>
+            <div class="topic">Precisiones matemáticas: abs() y round(), Manejo de la librería math</div>
+        </header>
+        
+        <main>
+            <!-- Objetivo de aprendizaje -->
+            <section class="section">
+                <h2><i class="fas fa-bullseye"></i> Objetivo de aprendizaje</h2>
+                <div class="content-box">
+                    <p>Dominar el uso de funciones matemáticas esenciales en Python para resolver problemas numéricos con precisión y eficiencia, desarrollando competencias técnicas en el manejo de valores absolutos, redondeo y operaciones matemáticas avanzadas; fomentando habilidades cognitivas de análisis, pensamiento crítico y resolución de problemas; y cultivando actitudes de curiosidad científica, rigor metodológico y perseverancia en la búsqueda de soluciones óptimas a desafíos computacionales.</p>
+                </div>
+            </section>
+            
+            <!-- Contextualización -->
+            <section class="section">
+                <h2><i class="fas fa-compass"></i> Contextualización</h2>
+                <div class="content-box">
+                    <p>Imagina que estás diseñando una aplicación para calcular la distancia entre dos puntos en un mapa de Quito, o que necesitas determinar cuántas losetas cuadradas necesitas para cubrir el piso de tu sala con dimensiones decimales. Quizás estás analizando datos de temperatura de los últimos meses en Guayaquil y necesitas redondear valores para hacer proyecciones.</p>
+                    <p>En nuestro mundo digital, los números no siempre son perfectos y enteros. A veces son negativos, a veces tienen decimales infinitos, a veces necesitamos aproximarlos para que tengan sentido práctico. Aquí es donde Python se convierte en nuestro aliado, ofreciendo herramientas precisas para manejar estas situaciones con elegancia matemática.</p>
+                    <p>En este taller, no solo aprenderás funciones de Python; descubrirás cómo pensar como un programador que resuelve problemas reales, transformando conceptos abstractos en soluciones tangibles que podrían aplicarse desde el cálculo de intereses bancarios hasta el diseño de videojuegos.</p>
+                </div>
+            </section>
+            
+            <!-- Desarrollo de la actividad -->
+            <section class="section">
+                <h2><i class="fas fa-cogs"></i> Desarrollo de la actividad</h2>
+                
+                <div class="content-box">
+                    <h3>1. abs() y round(): Precisión básica</h3>
+                    <p>Las funciones <code>abs()</code> y <code>round()</code> son herramientas fundamentales para trabajar con números en Python. Veamos cómo funcionan:</p>
+                    
+                    <div class="code-container">
+                        <div class="code-header">
+                            <span>Ejemplo 1: Valor absoluto y redondeo</span>
+                            <button class="copy-btn">Copiar código</button>
+                        </div>
+                        <pre><code><span class="comment"># Ejemplo de abs() - valor absoluto</span>
+<span class="keyword">print</span>(<span class="string">"Valor absoluto de -15:"</span>, <span class="function">abs</span>(-<span class="string">15</span>))  <span class="comment"># Resultado: 15</span>
+<span class="keyword">print</span>(<span class="string">"Valor absoluto de 3.7:"</span>, <span class="function">abs</span>(<span class="string">3.7</span>))   <span class="comment"># Resultado: 3.7</span>
+
+<span class="comment"># Ejemplo de round() - redondeo</span>
+<span class="keyword">print</span>(<span class="string">"Redondeo de 3.14159 a 2 decimales:"</span>, <span class="function">round</span>(<span class="string">3.14159</span>, <span class="string">2</span>))  <span class="comment"># Resultado: 3.14</span>
+<span class="keyword">print</span>(<span class="string">"Redondeo de 2.5:"</span>, <span class="function">round</span>(<span class="string">2.5</span>))        <span class="comment"># Resultado: 2 (redondeo bancario)</span>
+<span class="keyword">print</span>(<span class="string">"Redondeo de 3.5:"</span>, <span class="function">round</span>(<span class="string">3.5</span>))        <span class="comment"># Resultado: 4</span></code></pre>
+                    </div>
+                    
+                    <div class="highlight">
+                        <p><strong>Reflexión:</strong> ¿Por qué crees que <code>round(2.5)</code> devuelve 2 y no 3? Investiga sobre el "redondeo bancario" o "redondeo del par más cercano". ¿En qué situaciones sería útil este tipo de redondeo?</p>
+                    </div>
+                </div>
+                
+                <div class="content-box">
+                    <h3>2. La librería math: Potencia matemática</h3>
+                    <p>Para operaciones más avanzadas, Python nos ofrece la librería <code>math</code>. Debemos importarla primero:</p>
+                    
+                    <div class="code-container">
+                        <div class="code-header">
+                            <span>Ejemplo 2: Importando y usando la librería math</span>
+                            <button class="copy-btn">Copiar código</button>
+                        </div>
+                        <pre><code><span class="keyword">import</span> math
+
+<span class="comment"># math.fabs() - valor absoluto como float</span>
+<span class="keyword">print</span>(<span class="string">"math.fabs(-7.25):"</span>, math.<span class="function">fabs</span>(-<span class="string">7.25</span>))  <span class="comment"># Resultado: 7.25 (siempre como float)</span>
+
+<span class="comment"># math.sqrt() - raíz cuadrada</span>
+<span class="keyword">print</span>(<span class="string">"Raíz cuadrada de 16:"</span>, math.<span class="function">sqrt</span>(<span class="string">16</span>))  <span class="comment"># Resultado: 4.0</span>
+
+<span class="comment"># math.pi - constante π</span>
+radio = <span class="string">5</span>
+area_circulo = math.pi * radio ** <span class="string">2</span>
+<span class="keyword">print</span>(<span class="string">"Área de círculo con radio 5:"</span>, area_circulo)
+
+<span class="comment"># math.pow() - potencia</span>
+<span class="keyword">print</span>(<span class="string">"2 elevado a la 8:"</span>, math.<span class="function">pow</span>(<span class="string">2</span>, <span class="string">8</span>))  <span class="comment"># Resultado: 256.0 (siempre como float)</span></code></pre>
+                    </div>
+                    
+                    <p>Ahora exploremos funciones de redondeo más específicas:</p>
+                    
+                    <div class="code-container">
+                        <div class="code-header">
+                            <span>Ejemplo 3: Funciones de redondeo avanzadas</span>
+                            <button class="copy-btn">Copiar código</button>
+                        </div>
+                        <pre><code><span class="keyword">import</span> math
+
+numero = <span class="string">4.7</span>
+numero2 = <span class="string">4.2</span>
+numero3 = -<span class="string">3.7</span>
+
+<span class="comment"># math.ceil() - redondeo hacia arriba (techo)</span>
+<span class="keyword">print</span>(<span class="string">"math.ceil(4.2):"</span>, math.<span class="function">ceil</span>(numero2))  <span class="comment"># Resultado: 5</span>
+<span class="keyword">print</span>(<span class="string">"math.ceil(-3.7):"</span>, math.<span class="function">ceil</span>(numero3)) <span class="comment"># Resultado: -3</span>
+
+<span class="comment"># math.floor() - redondeo hacia abajo (piso)</span>
+<span class="keyword">print</span>(<span class="string">"math.floor(4.7):"</span>, math.<span class="function">floor</span>(numero))   <span class="comment"># Resultado: 4</span>
+<span class="keyword">print</span>(<span class="string">"math.floor(-3.7):"</span>, math.<span class="function">floor</span>(numero3)) <span class="comment"># Resultado: -4</span>
+
+<span class="comment"># math.trunc() - trunca la parte decimal</span>
+<span class="keyword">print</span>(<span class="string">"math.trunc(4.7):"</span>, math.<span class="function">trunc</span>(numero))   <span class="comment"># Resultado: 4</span>
+<span class="keyword">print</span>(<span class="string">"math.trunc(-3.7):"</span>, math.<span class="function">trunc</span>(numero3)) <span class="comment"># Resultado: -3</span></code></pre>
+                    </div>
+                    
+                    <div class="highlight">
+                        <p><strong>Experimento:</strong> Crea un programa que calcule el área de un círculo con radio 7.5, luego redondea el resultado usando las tres funciones de redondeo (ceil, floor, trunc). ¿Qué diferencias observas? ¿En qué situación real usarías cada una?</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- El reto final -->
+            <section class="section">
+                <h2><i class="fas fa-flag-checkered"></i> El reto final</h2>
+                <div class="content-box challenge">
+                    <p><strong>Desafío: Calculadora de material para construcción</strong></p>
+                    <p>Eres el responsable de calcular los materiales para construir una plataforma circular de observación en el Parque Nacional Cotopaxi. La plataforma tendrá un radio de 8.75 metros. Necesitas calcular:</p>
+                    <ol>
+                        <li>El área total de la plataforma (para comprar madera)</li>
+                        <li>La longitud del borde circular (para comprar barandas)</li>
+                        <li>La cantidad de losetas cuadradas de 0.5m² que necesitarás, considerando que solo puedes comprar unidades enteras</li>
+                    </ol>
+                    <p>Tu programa debe:</p>
+                    <ul>
+                        <li>Usar las constantes y funciones de la librería math</li>
+                        <li>Calcular el área con <code>math.pi</code> y <code>math.pow()</code></li>
+                        <li>Calcular el perímetro (longitud del borde)</li>
+                        <li>Determinar cuántas losetas necesitas usando <code>math.ceil()</code> (siempre debes redondear hacia arriba para tener material suficiente)</li>
+                        <li>Mostrar todos los resultados con precisión de 2 decimales usando <code>round()</code></li>
+                        <li>Incluir comentarios que expliquen cada paso del cálculo</li>
+                    </ul>
+                    <p><strong>Variante avanzada:</strong> Agrega la funcionalidad de calcular cuánto material sobrará (en m²) después de cubrir la plataforma con las losetas.</p>
+                    
+                    <button id="show-solution" class="btn">Ver posible solución</button>
+                    
+                    <div id="solution" class="code-container" style="display: none; margin-top: 20px;">
+                        <div class="code-header">
+                            <span>Solución al reto final</span>
+                            <button class="copy-btn">Copiar código</button>
+                        </div>
+                        <pre><code><span class="keyword">import</span> math
+
+<span class="comment"># Datos del problema</span>
+radio = <span class="string">8.75</span>  <span class="comment"># metros</span>
+area_loseta = <span class="string">0.5</span>  <span class="comment"># metros cuadrados</span>
+
+<span class="comment"># 1. Calcular área de la plataforma circular</span>
+area_plataforma = math.pi * math.<span class="function">pow</span>(radio, <span class="string">2</span>)
+<span class="keyword">print</span>(<span class="string">f"Área de la plataforma: {round(area_plataforma, 2)} m²"</span>)
+
+<span class="comment"># 2. Calcular perímetro (longitud del borde)</span>
+perimetro = <span class="string">2</span> * math.pi * radio
+<span class="keyword">print</span>(<span class="string">f"Longitud del borde: {round(perimetro, 2)} metros"</span>)
+
+<span class="comment"># 3. Calcular cantidad de losetas necesarias</span>
+<span class="comment"># Usamos math.ceil() para redondear hacia arriba (no queremos faltante)</span>
+cantidad_losetas = math.<span class="function">ceil</span>(area_plataforma / area_loseta)
+<span class="keyword">print</span>(<span class="string">f"Cantidad de losetas necesarias: {cantidad_losetas}"</span>)
+
+<span class="comment"># 4. (Variante avanzada) Calcular material sobrante</span>
+area_total_losetas = cantidad_losetas * area_loseta
+material_sobrante = area_total_losetas - area_plataforma
+<span class="keyword">print</span>(<span class="string">f"Material sobrante: {round(material_sobrante, 2)} m²"</span>)
+
+<span class="comment"># 5. Resumen con valores absolutos (por si hay errores de cálculo)</span>
+<span class="keyword">print</span>(<span class="string">"\n--- Resumen del proyecto ---"</span>)
+<span class="keyword">print</span>(<span class="string">f"Radio: {radio} m"</span>)
+<span class="keyword">print</span>(<span class="string">f"Área calculada: {round(math.fabs(area_plataforma), 2)} m²"</span>)
+<span class="keyword">print</span>(<span class="string">f"Perímetro calculado: {round(math.fabs(perimetro), 2)} m"</span>)
+<span class="keyword">print</span>(<span class="string">f"Losetas a comprar: {cantidad_losetas} unidades"</span>)</code></pre>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Evaluación lúdica -->
+            <section class="section">
+                <h2><i class="fas fa-gamepad"></i> Evaluación lúdica</h2>
+                <div class="content-box game">
+                    <p>¡Pon a prueba lo aprendido con este juego interactivo! Responde 5 preguntas sobre las funciones matemáticas en Python. Cada respuesta correcta te dará 20 puntos. ¡Intenta alcanzar el puntaje perfecto de 100!</p>
+                    
+                    <button id="start-quiz" class="btn btn-game">Comenzar evaluación</button>
+                    
+                    <div id="quiz-game" class="quiz-container">
+                        <div class="quiz-header">
+                            <div class="score">Puntaje: <span id="current-score">0</span>/100</div>
+                            <div id="question-counter">Pregunta 1 de 5</div>
+                        </div>
+                        
+                        <div id="question" class="question"></div>
+                        
+                        <div id="options" class="options"></div>
+                        
+                        <div id="feedback" class="feedback"></div>
+                        
+                        <div class="quiz-controls">
+                            <button id="prev-btn" class="btn" disabled>Anterior</button>
+                            <button id="next-btn" class="btn">Siguiente</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>Diseñado por: Edwin Méndez J.</p>
+            <p>Taller de Python: Precisiones matemáticas y librería math</p>
+        </footer>
+    </div>
+
+    <script>
+        // Variables globales para el juego
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = [];
+        
+        // Preguntas del quiz
+        const quizQuestions = [
+            {
+                question: "¿Cuál es la diferencia principal entre abs() y math.fabs()?",
+                options: [
+                    "abs() funciona con enteros y floats, math.fabs() siempre devuelve float",
+                    "abs() es más rápido que math.fabs()",
+                    "math.fabs() puede manejar números complejos, abs() no",
+                    "No hay diferencia, son funciones equivalentes"
+                ],
+                correctAnswer: 0,
+                feedback: "¡Correcto! abs() funciona con enteros y números complejos, devolviendo el tipo original, mientras que math.fabs() siempre devuelve un valor float, incluso si la entrada es un entero."
+            },
+            {
+                question: "Si aplicas math.ceil(3.2) y math.floor(3.8), ¿qué resultados obtienes?",
+                options: [
+                    "4 y 3",
+                    "3 y 4", 
+                    "4 y 4",
+                    "3 y 3"
+                ],
+                correctAnswer: 0,
+                feedback: "¡Excelente! math.ceil(3.2) redondea hacia arriba a 4, mientras que math.floor(3.8) redondea hacia abajo a 3."
+            },
+            {
+                question: "¿Qué hace la función math.trunc() con el número -4.9?",
+                options: [
+                    "Devuelve -4 (elimina la parte decimal)",
+                    "Devuelve -5 (redondea hacia abajo)",
+                    "Devuelve -4.0 (redondea al entero más cercano)",
+                    "Devuelve 4.9 (valor absoluto)"
+                ],
+                correctAnswer: 0,
+                feedback: "¡Muy bien! math.trunc() simplemente elimina la parte decimal, sin redondear. Por eso -4.9 se convierte en -4."
+            },
+            {
+                question: "¿Cuál de estas expresiones calcularía correctamente el área de un círculo con radio 5?",
+                options: [
+                    "math.pi * math.pow(5, 2)",
+                    "math.pi * 5 ** 2",
+                    "3.1416 * 5 * 5",
+                    "Todas las anteriores"
+                ],
+                correctAnswer: 3,
+                feedback: "¡Perfecto! Todas las opciones son formas válidas de calcular el área de un círculo con radio 5. math.pi es más preciso que 3.1416, pero ambas funcionan."
+            },
+            {
+                question: "¿Qué resultado produce round(2.675, 2) y por qué podría no ser lo esperado?",
+                options: [
+                    "2.67 debido a limitaciones de representación binaria de decimales",
+                    "2.68 porque sigue las reglas de redondeo estándar",
+                    "2.67 debido a un error en la función round()",
+                    "2.675 porque round() con 2 decimales mantiene 3 decimales"
+                ],
+                correctAnswer: 0,
+                feedback: "¡Correcto! round(2.675, 2) devuelve 2.67 en lugar de 2.68 debido a la limitación en la representación binaria de números decimales. 2.675 no se puede representar exactamente en binario."
+            }
+        ];
+        
+        // Elementos DOM
+        const startQuizBtn = document.getElementById('start-quiz');
+        const quizContainer = document.getElementById('quiz-game');
+        const questionElement = document.getElementById('question');
+        const optionsElement = document.getElementById('options');
+        const feedbackElement = document.getElementById('feedback');
+        const currentScoreElement = document.getElementById('current-score');
+        const questionCounterElement = document.getElementById('question-counter');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const showSolutionBtn = document.getElementById('show-solution');
+        const solutionElement = document.getElementById('solution');
+        
+        // Botones para copiar código
+        const copyButtons = document.querySelectorAll('.copy-btn');
+        
+        // Inicializar el juego
+        function initQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = new Array(quizQuestions.length).fill(null);
+            
+            // Actualizar UI
+            currentScoreElement.textContent = score;
+            questionCounterElement.textContent = `Pregunta 1 de ${quizQuestions.length}`;
+            
+            // Mostrar primera pregunta
+            showQuestion(currentQuestionIndex);
+            
+            // Configurar botones
+            prevBtn.disabled = true;
+            nextBtn.textContent = "Siguiente";
+            
+            // Mostrar contenedor del quiz
+            quizContainer.style.display = 'block';
+            quizContainer.classList.add('fade-in');
+            
+            // Desplazar hacia el quiz
+            quizContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Mostrar pregunta
+        function showQuestion(index) {
+            const question = quizQuestions[index];
+            
+            // Actualizar contador
+            questionCounterElement.textContent = `Pregunta ${index + 1} de ${quizQuestions.length}`;
+            
+            // Mostrar pregunta
+            questionElement.textContent = question.question;
+            
+            // Mostrar opciones
+            optionsElement.innerHTML = '';
+            question.options.forEach((option, optionIndex) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                if (userAnswers[index] === optionIndex) {
+                    optionElement.classList.add('selected');
+                }
+                optionElement.textContent = `${String.fromCharCode(65 + optionIndex)}) ${option}`;
+                
+                optionElement.addEventListener('click', () => selectOption(optionIndex));
+                optionsElement.appendChild(optionElement);
+            });
+            
+            // Actualizar botones
+            prevBtn.disabled = index === 0;
+            nextBtn.textContent = index === quizQuestions.length - 1 ? "Finalizar" : "Siguiente";
+            
+            // Ocultar feedback
+            feedbackElement.style.display = 'none';
+            feedbackElement.className = 'feedback';
+        }
+        
+        // Seleccionar opción
+        function selectOption(optionIndex) {
+            // Remover selección anterior
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            // Marcar opción seleccionada
+            options[optionIndex].classList.add('selected');
+            
+            // Guardar respuesta del usuario
+            userAnswers[currentQuestionIndex] = optionIndex;
+            
+            // Verificar si es correcta
+            const isCorrect = optionIndex === quizQuestions[currentQuestionIndex].correctAnswer;
+            
+            // Mostrar feedback
+            feedbackElement.textContent = isCorrect 
+                ? `✅ ${quizQuestions[currentQuestionIndex].feedback}` 
+                : `❌ Respuesta incorrecta. La opción correcta es: ${String.fromCharCode(65 + quizQuestions[currentQuestionIndex].correctAnswer)}) ${quizQuestions[currentQuestionIndex].options[quizQuestions[currentQuestionIndex].correctAnswer]}`;
+            
+            feedbackElement.className = isCorrect ? 'feedback correct' : 'feedback incorrect';
+            feedbackElement.style.display = 'block';
+            
+            // Actualizar puntaje si es la primera vez que responde
+            if (isCorrect && userAnswers[currentQuestionIndex] !== quizQuestions[currentQuestionIndex].correctAnswer) {
+                score += 20;
+                currentScoreElement.textContent = score;
+            }
+            
+            // Marcar visualmente opción correcta/incorrecta
+            options[quizQuestions[currentQuestionIndex].correctAnswer].classList.add('correct');
+            if (!isCorrect) {
+                options[optionIndex].classList.add('incorrect');
+            }
+        }
+        
+        // Navegación entre preguntas
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+            }
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            if (currentQuestionIndex < quizQuestions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+            } else {
+                // Finalizar quiz
+                endQuiz();
+            }
+        });
+        
+        // Finalizar quiz
+        function endQuiz() {
+            // Calcular puntaje final
+            let finalScore = 0;
+            userAnswers.forEach((answer, index) => {
+                if (answer === quizQuestions[index].correctAnswer) {
+                    finalScore += 20;
+                }
+            });
+            
+            // Mostrar resultados finales
+            questionElement.textContent = `¡Quiz completado! Tu puntaje final: ${finalScore}/100`;
+            optionsElement.innerHTML = '';
+            
+            // Mostrar resumen de respuestas
+            let summary = '<div style="text-align: left; margin-top: 15px;">';
+            quizQuestions.forEach((question, index) => {
+                const userAnswer = userAnswers[index];
+                const isCorrect = userAnswer === question.correctAnswer;
+                
+                summary += `<p><strong>Pregunta ${index + 1}:</strong> ${isCorrect ? '✅' : '❌'}`;
+                if (!isCorrect) {
+                    summary += ` (Correcta: ${String.fromCharCode(65 + question.correctAnswer)})`;
+                }
+                summary += '</p>';
+            });
+            summary += '</div>';
+            
+            optionsElement.innerHTML = summary;
+            
+            // Mostrar mensaje según puntaje
+            let message = '';
+            if (finalScore === 100) {
+                message = '¡Excelente! Dominas completamente estos conceptos de Python.';
+            } else if (finalScore >= 80) {
+                message = '¡Muy bien! Tienes un buen entendimiento de las funciones matemáticas.';
+            } else if (finalScore >= 60) {
+                message = 'Buen trabajo, pero hay algunos conceptos que necesitas reforzar.';
+            } else {
+                message = 'Revisa los conceptos nuevamente y sigue practicando.';
+            }
+            
+            feedbackElement.textContent = message;
+            feedbackElement.className = 'feedback';
+            feedbackElement.style.display = 'block';
+            
+            // Actualizar botones
+            prevBtn.disabled = false;
+            nextBtn.textContent = "Reintentar";
+            nextBtn.onclick = () => initQuiz();
+        }
+        
+        // Event listeners
+        startQuizBtn.addEventListener('click', initQuiz);
+        
+        // Mostrar/ocultar solución al reto
+        showSolutionBtn.addEventListener('click', () => {
+            if (solutionElement.style.display === 'none') {
+                solutionElement.style.display = 'block';
+                showSolutionBtn.textContent = 'Ocultar solución';
+                solutionElement.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                solutionElement.style.display = 'none';
+                showSolutionBtn.textContent = 'Ver posible solución';
+            }
+        });
+        
+        // Funcionalidad para copiar código
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const codeContainer = this.closest('.code-container');
+                const codeElement = codeContainer.querySelector('pre');
+                const textToCopy = codeElement.textContent;
+                
+                // Usar la API del portapapeles
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    // Feedback visual
+                    const originalText = this.textContent;
+                    this.textContent = '¡Copiado!';
+                    this.style.backgroundColor = '#2ecc71';
+                    
+                    setTimeout(() => {
+                        this.textContent = originalText;
+                        this.style.backgroundColor = '';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Error al copiar: ', err);
+                    this.textContent = 'Error';
+                    this.style.backgroundColor = '#e74c3c';
+                    
+                    setTimeout(() => {
+                        this.textContent = 'Copiar código';
+                        this.style.backgroundColor = '';
+                    }, 2000);
+                });
+            });
+        });
+        
+        // Efecto hover para todos los botones con clase .btn
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px)';
+                this.style.boxShadow = '0 6px 12px rgba(0, 0, 0, 0.15)';
+            });
+            
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+                this.style.boxShadow = '';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python: Programación Orientada a Objetos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Slab:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2A6F97;
+            --secondary: #468FAF;
+            --accent: #61A5C2;
+            --light: #A9D6E5;
+            --dark: #012A4A;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --error: #F44336;
+            --text: #333333;
+            --text-light: #666666;
+            --bg: #F8F9FA;
+            --card-bg: #FFFFFF;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px var(--shadow);
+            overflow: hidden;
+            margin: 20px;
+            position: relative;
+        }
+
+        /* Encabezado */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .logo {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo i {
+            color: var(--light);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 5px;
+            opacity: 0.9;
+            font-family: 'Roboto Slab', serif;
+            position: relative;
+            z-index: 1;
+        }
+
+        .theme {
+            background-color: rgba(255, 255, 255, 0.15);
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 50px;
+            margin-top: 15px;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Contenido principal */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+        }
+
+        .content-section {
+            padding: 30px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .content-section:last-of-type {
+            border-bottom: none;
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 i {
+            color: var(--accent);
+        }
+
+        .highlight-box {
+            background-color: rgba(42, 111, 151, 0.08);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            margin: 20px 0;
+        }
+
+        .code-container {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .code-keyword {
+            color: #ff79c6;
+        }
+
+        .code-class {
+            color: #8be9fd;
+        }
+
+        .code-function {
+            color: #50fa7b;
+        }
+
+        .code-string {
+            color: #f1fa8c;
+        }
+
+        .code-comment {
+            color: #6272a4;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            margin: 10px 5px;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary {
+            background-color: var(--accent);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary);
+        }
+
+        /* Evaluación lúdica */
+        .quiz-container {
+            background-color: rgba(168, 214, 229, 0.1);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .quiz-question {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-question:last-of-type {
+            border-bottom: none;
+        }
+
+        .question-text {
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .options-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 10px;
+        }
+
+        .option {
+            padding: 12px 15px;
+            background-color: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .option:hover {
+            background-color: rgba(42, 111, 151, 0.05);
+            border-color: var(--accent);
+        }
+
+        .option.selected {
+            border-color: var(--primary);
+            background-color: rgba(42, 111, 151, 0.1);
+        }
+
+        .option.correct {
+            border-color: var(--success);
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+
+        .option.incorrect {
+            border-color: var(--error);
+            background-color: rgba(244, 67, 54, 0.1);
+        }
+
+        .feedback {
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+            font-weight: 500;
+        }
+
+        .feedback.correct {
+            background-color: rgba(76, 175, 80, 0.1);
+            color: #2e7d32;
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background-color: rgba(244, 67, 54, 0.1);
+            color: #c62828;
+            display: block;
+        }
+
+        .score-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 3px 10px var(--shadow);
+        }
+
+        .score {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* Pie de página */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .designed-by {
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        .footer-icons {
+            display: flex;
+            gap: 15px;
+            font-size: 1.2rem;
+        }
+
+        .footer-icons i {
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .footer-icons i:hover {
+            color: var(--light);
+            transform: translateY(-3px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+            }
+            
+            .content-section {
+                padding: 20px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .options-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 20px;
+            }
+            
+            .logo {
+                font-size: 1.8rem;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .content-section {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .content-section:nth-child(1) { animation-delay: 0.1s; }
+        .content-section:nth-child(2) { animation-delay: 0.2s; }
+        .content-section:nth-child(3) { animation-delay: 0.3s; }
+        .content-section:nth-child(4) { animation-delay: 0.4s; }
+        .content-section:nth-child(5) { animation-delay: 0.5s; }
+        .content-section:nth-child(6) { animation-delay: 0.6s; }
+
+        /* Navegación */
+        .nav-indicator {
+            display: flex;
+            justify-content: center;
+            padding: 15px;
+            background-color: rgba(42, 111, 151, 0.05);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #ccc;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .nav-dot.active {
+            background-color: var(--primary);
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-laptop-code"></i>
+                <span>Python para pensadores</span>
+            </div>
+            <div class="subtitle">Taller diseñado con el corazón de un docente y la mente de un programador</div>
+            <div class="theme">Tema: Python - Programación Orientada a Objetos (POO)</div>
+        </header>
+        
+        <div class="nav-indicator">
+            <div class="nav-dot active" data-section="0"></div>
+            <div class="nav-dot" data-section="1"></div>
+            <div class="nav-dot" data-section="2"></div>
+            <div class="nav-dot" data-section="3"></div>
+            <div class="nav-dot" data-section="4"></div>
+            <div class="nav-dot" data-section="5"></div>
+        </div>
+        
+        <div class="main-content">
+            <!-- Objetivo de aprendizaje -->
+            <section class="content-section" id="section-0">
+                <h2><i class="fas fa-bullseye"></i> Objetivo de aprendizaje</h2>
+                <div class="highlight-box">
+                    <p>Dominar los fundamentos de la Programación Orientada a Objetos en Python, construyendo clases que modelen entidades del mundo real, aplicando los principios de encapsulación, herencia y polimorfismo mediante ejercicios prácticos, para desarrollar soluciones de software estructuradas, modulares y reutilizables que fomenten el pensamiento lógico, la creatividad técnica y una actitud colaborativa frente a problemas computacionales.</p>
+                </div>
+            </section>
+            
+            <!-- Contextualización -->
+            <section class="content-section" id="section-1">
+                <h2><i class="fas fa-globe-americas"></i> Contextualización</h2>
+                <p>Imagina que estás organizando una reunión con tus amigos. Tienes una lista de contactos, cada uno con nombre, teléfono y correo. En lugar de manejar tres listas separadas (una para nombres, otra para teléfonos, otra para correos), ¿no sería mejor tener un solo "objeto" que reúna toda la información de cada persona?</p>
+                
+                <p>Así es como piensa la Programación Orientada a Objetos: agrupando datos y comportamientos relacionados en entidades coherentes. Cuando juegas un videojuego, cada personaje, cada enemigo, cada item del inventario es un "objeto" que tiene propiedades (vida, posición, color) y acciones (moverse, atacar, usar).</p>
+                
+                <p>En este taller, vamos a aprender a crear nuestros propios "moldes" (clases) para generar objetos que representen cosas del mundo real: desde estudiantes y profesores hasta animales y vehículos. Verás cómo esta forma de pensar transforma problemas complejos en conjuntos de piezas que interactúan entre sí, como en un ecosistema digital.</p>
+            </section>
+            
+            <!-- Desarrollo de la actividad -->
+            <section class="content-section" id="section-2">
+                <h2><i class="fas fa-code"></i> Desarrollo de la actividad</h2>
+                <p>Vamos a explorar los cuatro pilares fundamentales de la POO con ejemplos prácticos y contextualizados a nuestra realidad:</p>
+                
+                <h3>1. Clases y objetos: Modelando estudiantes</h3>
+                <p>Una clase es como un molde para crear objetos. Por ejemplo, podemos crear una clase <strong>Estudiante</strong> que tenga propiedades como nombre, edad y promedio.</p>
+                
+                <div class="code-container">
+<pre><span class="code-keyword">class</span> <span class="code-class">Estudiante</span>:
+    <span class="code-comment"># Constructor: método especial que se ejecuta al crear un objeto</span>
+    <span class="code-keyword">def</span> <span class="code-function">__init__</span>(<span class="code-keyword">self</span>, nombre, edad, promedio):
+        <span class="code-keyword">self</span>.nombre = nombre      <span class="code-comment"># Atributo: nombre del estudiante</span>
+        <span class="code-keyword">self</span>.edad = edad        <span class="code-comment"># Atributo: edad del estudiante</span>
+        <span class="code-keyword">self</span>.promedio = promedio  <span class="code-comment"># Atributo: promedio académico</span>
+    
+    <span class="code-comment"># Método: acción que puede realizar el objeto</span>
+    <span class="code-keyword">def</span> <span class="code-function">estudiar</span>(<span class="code-keyword">self</span>, materia):
+        <span class="code-keyword">return</span> <span class="code-string">f"</span><span class="code-keyword">{self}</span><span class="code-string">.nombre está estudiando </span><span class="code-keyword">{materia}</span><span class="code-string">"</span>
+    
+    <span class="code-comment"># Método para mostrar información del estudiante</span>
+    <span class="code-keyword">def</span> <span class="code-function">mostrar_info</span>(<span class="code-keyword">self</span>):
+        <span class="code-keyword">return</span> <span class="code-string">f"Nombre: </span><span class="code-keyword">{self}</span><span class="code-string">.nombre, Edad: </span><span class="code-keyword">{self}</span><span class="code-string">.edad, Promedio: </span><span class="code-keyword">{self}</span><span class="code-string">.promedio"</span>
+
+<span class="code-comment"># Creando objetos (instancias) de la clase Estudiante</span>
+estudiante1 = Estudiante(<span class="code-string">"María García"</span>, <span class="code-keyword">16</span>, <span class="code-keyword">8.5</span>)
+estudiante2 = Estudiante(<span class="code-string">"Carlos Méndez"</span>, <span class="code-keyword">17</span>, <span class="code-keyword">9.2</span>)
+
+<span class="code-comment"># Usando los métodos de los objetos</span>
+<span class="code-function">print</span>(estudiante1.estudiar(<span class="code-string">"Matemáticas"</span>))
+<span class="code-function">print</span>(estudiante2.mostrar_info())</pre>
+                </div>
+                
+                <h3>2. Encapsulación: Protegiendo nuestros datos</h3>
+                <p>La encapsulación nos permite ocultar los detalles internos de una clase y exponer solo lo necesario. En Python, usamos convenciones como el guion bajo para indicar atributos "protegidos".</p>
+                
+                <div class="code-container">
+<pre><span class="code-keyword">class</span> <span class="code-class">CuentaBancaria</span>:
+    <span class="code-keyword">def</span> <span class="code-function">__init__</span>(<span class="code-keyword">self</span>, titular, saldo_inicial):
+        <span class="code-keyword">self</span>.titular = titular
+        <span class="code-keyword">self</span>._saldo = saldo_inicial  <span class="code-comment"># Atributo "protegido" (convención)</span>
+    
+    <span class="code-keyword">def</span> <span class="code-function">depositar</span>(<span class="code-keyword">self</span>, cantidad):
+        <span class="code-keyword">if</span> cantidad > <span class="code-keyword">0</span>:
+            <span class="code-keyword">self</span>._saldo += cantidad
+            <span class="code-keyword">return</span> <span class="code-keyword">True</span>
+        <span class="code-keyword">return</span> <span class="code-keyword">False</span>
+    
+    <span class="code-keyword">def</span> <span class="code-function">retirar</span>(<span class="code-keyword">self</span>, cantidad):
+        <span class="code-keyword">if</span> <span class="code-keyword">0</span> < cantidad <= <span class="code-keyword">self</span>._saldo:
+            <span class="code-keyword">self</span>._saldo -= cantidad
+            <span class="code-keyword">return</span> <span class="code-keyword">True</span>
+        <span class="code-keyword">return</span> <span class="code-keyword">False</span>
+    
+    <span class="code-keyword">def</span> <span class="code-function">consultar_saldo</span>(<span class="code-keyword">self</span>):
+        <span class="code-keyword">return</span> <span class="code-keyword">self</span>._saldo
+
+<span class="code-comment"># Uso de la clase con encapsulación</span>
+mi_cuenta = CuentaBancaria(<span class="code-string">"Ana López"</span>, <span class="code-keyword">1000</span>)
+mi_cuenta.depositar(<span class="code-keyword">500</span>)
+mi_cuenta.retirar(<span class="code-keyword">200</span>)
+<span class="code-function">print</span>(<span class="code-string">f"Saldo actual: </span><span class="code-keyword">{mi_cuenta.consultar_saldo()}</span><span class="code-string">"</span>)</pre>
+                </div>
+                
+                <button class="btn" id="run-code1">Ejecutar ejemplo 1</button>
+                <button class="btn btn-secondary" id="run-code2">Ejecutar ejemplo 2</button>
+                <div class="code-output" id="output1" style="margin-top: 15px; padding: 10px; background-color: #f5f5f5; border-radius: 8px; display: none;"></div>
+                <div class="code-output" id="output2" style="margin-top: 15px; padding: 10px; background-color: #f5f5f5; border-radius: 8px; display: none;"></div>
+            </section>
+            
+            <!-- El reto final -->
+            <section class="content-section" id="section-3">
+                <h2><i class="fas fa-flag-checkered"></i> El reto final</h2>
+                <p>Imagina que tu colegio quiere implementar un sistema para gestionar las actividades extracurriculares. Cada actividad tiene un nombre, un instructor, un cupo máximo de estudiantes y una lista de estudiantes inscritos.</p>
+                
+                <div class="highlight-box">
+                    <p><strong>Tu misión:</strong> Crea un sistema en Python que permita gestionar estas actividades extracurriculares utilizando todos los conceptos de POO que hemos aprendido.</p>
+                </div>
+                
+                <p><strong>Requisitos del sistema:</strong></p>
+                <ol>
+                    <li>Define una clase <strong>ActividadExtra</strong> con los atributos: nombre, instructor, cupo_maximo, estudiantes_inscritos (lista).</li>
+                    <li>Implementa métodos para:
+                        <ul>
+                            <li>Inscribir un estudiante (verificando que haya cupo disponible)</li>
+                            <li>Retirar un estudiante</li>
+                            <li>Mostrar la información de la actividad</li>
+                            <li>Mostrar la lista de estudiantes inscritos</li>
+                        </ul>
+                    </li>
+                    <li>Crea una clase <strong>Estudiante</strong> (como la del ejemplo) y úsala para crear objetos estudiantes.</li>
+                    <li>Crea al menos 3 actividades diferentes (música, deporte, robótica).</li>
+                    <li>Simula la inscripción de varios estudiantes a las actividades.</li>
+                    <li>Implementa una función que muestre un reporte general de todas las actividades.</li>
+                </ol>
+                
+                <p><strong>Desafío adicional (para los más curiosos):</strong></p>
+                <ul>
+                    <li>Crea una clase <strong>Instructor</strong> con sus propios atributos y métodos.</li>
+                    <li>Implementa herencia: crea una clase <strong>ActividadDeporte</strong> que herede de <strong>ActividadExtra</strong> y añada atributos específicos como "tipo_deporte" y "requiere_equipo".</li>
+                    <li>Añade validaciones para evitar que un estudiante se inscriba en dos actividades al mismo horario.</li>
+                </ul>
+                
+                <button class="btn" id="show-solution">Ver solución de ejemplo</button>
+                <div id="solution" style="display: none; margin-top: 20px;">
+                    <div class="code-container">
+<pre><span class="code-keyword">class</span> <span class="code-class">ActividadExtra</span>:
+    <span class="code-keyword">def</span> <span class="code-function">__init__</span>(<span class="code-keyword">self</span>, nombre, instructor, cupo_maximo):
+        <span class="code-keyword">self</span>.nombre = nombre
+        <span class="code-keyword">self</span>.instructor = instructor
+        <span class="code-keyword">self</span>.cupo_maximo = cupo_maximo
+        <span class="code-keyword">self</span>.estudiantes_inscritos = []
+    
+    <span class="code-keyword">def</span> <span class="code-function">inscribir_estudiante</span>(<span class="code-keyword">self</span>, estudiante):
+        <span class="code-keyword">if</span> <span class="code-function">len</span>(<span class="code-keyword">self</span>.estudiantes_inscritos) < <span class="code-keyword">self</span>.cupo_maximo:
+            <span class="code-keyword">self</span>.estudiantes_inscritos.append(estudiante)
+            <span class="code-keyword">return</span> <span class="code-keyword">True</span>
+        <span class="code-keyword">else</span>:
+            <span class="code-function">print</span>(<span class="code-string">f"No hay cupo disponible en </span><span class="code-keyword">{self}</span><span class="code-string">.nombre"</span>)
+            <span class="code-keyword">return</span> <span class="code-keyword">False</span>
+    
+    <span class="code-keyword">def</span> <span class="code-function">mostrar_info</span>(<span class="code-keyword">self</span>):
+        info = <span class="code-string">f"Actividad: </span><span class="code-keyword">{self}</span><span class="code-string">.nombre\n"</span>
+        info += <span class="code-string">f"Instructor: </span><span class="code-keyword">{self}</span><span class="code-string">.instructor\n"</span>
+        info += <span class="code-string">f"Cupo: </span><span class="code-keyword">{len(self.estudiantes_inscritos)}</span><span class="code-string">/</span><span class="code-keyword">{self}</span><span class="code-string">.cupo_maximo"</span>
+        <span class="code-keyword">return</span> info
+
+<span class="code-comment"># Código completo en el taller interactivo</span></pre>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Evaluación lúdica -->
+            <section class="content-section" id="section-4">
+                <h2><i class="fas fa-gamepad"></i> Evaluación lúdica</h2>
+                <p>¡Pon a prueba lo que has aprendido! Responde las siguientes preguntas. Cada respuesta correcta suma 20 puntos. ¡Intenta llegar a 100!</p>
+                
+                <div class="quiz-container">
+                    <!-- Pregunta 1 -->
+                    <div class="quiz-question">
+                        <div class="question-text">1. ¿Qué es una clase en Programación Orientada a Objetos?</div>
+                        <div class="options-container">
+                            <div class="option" data-question="1" data-option="1">Un tipo de dato primitivo como int o str</div>
+                            <div class="option" data-question="1" data-option="2">Una función especial que realiza operaciones matemáticas</div>
+                            <div class="option correct-option" data-question="1" data-option="3">Un molde o plantilla para crear objetos</div>
+                            <div class="option" data-question="1" data-option="4">Una variable global que almacena configuraciones</div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    
+                    <!-- Pregunta 2 -->
+                    <div class="quiz-question">
+                        <div class="question-text">2. ¿Cuál es la función del método __init__ en una clase Python?</div>
+                        <div class="options-container">
+                            <div class="option" data-question="2" data-option="1">Destruir el objeto cuando ya no se necesita</div>
+                            <div class="option correct-option" data-question="2" data-option="2">Inicializar el objeto (constructor)</div>
+                            <div class="option" data-question="2" data-option="3">Convertir el objeto a una representación de string</div>
+                            <div class="option" data-question="2" data-option="4">Comparar dos objetos para ver si son iguales</div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    
+                    <!-- Pregunta 3 -->
+                    <div class="quiz-question">
+                        <div class="question-text">3. ¿Qué principio de POO nos permite ocultar los detalles internos de una clase?</div>
+                        <div class="options-container">
+                            <div class="option" data-question="3" data-option="1">Herencia</div>
+                            <div class="option correct-option" data-question="3" data-option="2">Encapsulación</div>
+                            <div class="option" data-question="3" data-option="3">Polimorfismo</div>
+                            <div class="option" data-question="3" data-option="4">Abstracción</div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    
+                    <!-- Pregunta 4 -->
+                    <div class="quiz-question">
+                        <div class="question-text">4. En el ejemplo de la clase Estudiante, ¿qué representa "self.nombre"?</div>
+                        <div class="options-container">
+                            <div class="option" data-question="4" data-option="1">El nombre de la clase</div>
+                            <div class="option" data-question="4" data-option="2">Una variable global accesible desde cualquier parte</div>
+                            <div class="option correct-option" data-question="4" data-option="3">Un atributo del objeto (instancia)</div>
+                            <div class="option" data-question="4" data-option="4">El nombre del archivo Python</div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    
+                    <!-- Pregunta 5 -->
+                    <div class="quiz-question">
+                        <div class="question-text">5. Si creamos una clase "Perro" que hereda de una clase "Animal", ¿qué principio de POO estamos aplicando?</div>
+                        <div class="options-container">
+                            <div class="option" data-question="5" data-option="1">Encapsulación</div>
+                            <div class="option correct-option" data-question="5" data-option="2">Herencia</div>
+                            <div class="option" data-question="5" data-option="3">Polimorfismo</div>
+                            <div class="option" data-question="5" data-option="4">Cohesión</div>
+                        </div>
+                        <div class="feedback"></div>
+                    </div>
+                    
+                    <div class="score-container">
+                        <div>
+                            <h3>Tu puntuación</h3>
+                            <div class="score">0/100</div>
+                        </div>
+                        <button class="btn" id="check-answers">Comprobar respuestas</button>
+                        <button class="btn btn-secondary" id="reset-quiz">Reiniciar juego</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <footer>
+            <div class="footer-content">
+                <div class="designed-by">Diseñado por: Edwin Méndez J.</div>
+                <div class="footer-icons">
+                    <i class="fab fa-python" title="Python"></i>
+                    <i class="fas fa-code" title="Programación"></i>
+                    <i class="fas fa-graduation-cap" title="Educación"></i>
+                    <i class="fas fa-heart" title="Hecho con pasión"></i>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Navegación por puntos
+        const navDots = document.querySelectorAll('.nav-dot');
+        const sections = document.querySelectorAll('.content-section');
+        
+        navDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const sectionIndex = parseInt(dot.getAttribute('data-section'));
+                scrollToSection(sectionIndex);
+            });
+        });
+        
+        function scrollToSection(index) {
+            if (index >= 0 && index < sections.length) {
+                sections[index].scrollIntoView({ behavior: 'smooth' });
+                updateActiveDot(index);
+            }
+        }
+        
+        function updateActiveDot(index) {
+            navDots.forEach(dot => {
+                dot.classList.remove('active');
+            });
+            navDots[index].classList.add('active');
+        }
+        
+        // Observador para actualizar puntos de navegación al hacer scroll
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.5
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const sectionId = entry.target.id;
+                    const sectionIndex = parseInt(sectionId.split('-')[1]);
+                    updateActiveDot(sectionIndex);
+                }
+            });
+        }, observerOptions);
+        
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+        
+        // Ejecutar código de ejemplo
+        document.getElementById('run-code1').addEventListener('click', function() {
+            const outputDiv = document.getElementById('output1');
+            
+            // Simulación de la ejecución del código
+            const output = `María García está estudiando Matemáticas\nNombre: Carlos Méndez, Edad: 17, Promedio: 9.2`;
+            
+            outputDiv.textContent = output;
+            outputDiv.style.display = 'block';
+            
+            // Efecto visual
+            this.style.backgroundColor = 'var(--success)';
+            setTimeout(() => {
+                this.style.backgroundColor = 'var(--primary)';
+            }, 500);
+        });
+        
+        document.getElementById('run-code2').addEventListener('click', function() {
+            const outputDiv = document.getElementById('output2');
+            
+            // Simulación de la ejecución del código
+            const output = `Saldo actual: 1300`;
+            
+            outputDiv.textContent = output;
+            outputDiv.style.display = 'block';
+            
+            // Efecto visual
+            this.style.backgroundColor = 'var(--success)';
+            setTimeout(() => {
+                this.style.backgroundColor = 'var(--accent)';
+            }, 500);
+        });
+        
+        // Mostrar solución del reto
+        document.getElementById('show-solution').addEventListener('click', function() {
+            const solutionDiv = document.getElementById('solution');
+            
+            if (solutionDiv.style.display === 'none') {
+                solutionDiv.style.display = 'block';
+                this.textContent = 'Ocultar solución';
+            } else {
+                solutionDiv.style.display = 'none';
+                this.textContent = 'Ver solución de ejemplo';
+            }
+        });
+        
+        // Evaluación lúdica
+        const correctAnswers = {
+            1: 3,
+            2: 2,
+            3: 2,
+            4: 3,
+            5: 2
+        };
+        
+        const explanations = {
+            1: "¡Correcto! Una clase es un molde o plantilla que define las propiedades y comportamientos que tendrán los objetos creados a partir de ella.",
+            2: "¡Excelente! El método __init__ es el constructor de la clase y se ejecuta automáticamente cuando creamos un nuevo objeto.",
+            3: "¡Muy bien! La encapsulación nos permite ocultar los detalles internos de una clase, exponiendo solo lo necesario mediante métodos públicos.",
+            4: "¡Perfecto! 'self.nombre' es un atributo de instancia, lo que significa que cada objeto tiene su propio valor para este atributo.",
+            5: "¡Correcto! La herencia nos permite crear una nueva clase (Perro) basada en una clase existente (Animal), reutilizando y extendiendo su funcionalidad."
+        };
+        
+        let selectedAnswers = {};
+        let score = 0;
+        
+        // Manejar selección de opciones
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const question = this.getAttribute('data-question');
+                const optionNumber = parseInt(this.getAttribute('data-option'));
+                
+                // Remover selección previa de esta pregunta
+                document.querySelectorAll(`.option[data-question="${question}"]`).forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Seleccionar esta opción
+                this.classList.add('selected');
+                selectedAnswers[question] = optionNumber;
+                
+                // Limpiar feedback anterior
+                const feedbackDiv = this.parentElement.nextElementSibling;
+                feedbackDiv.className = 'feedback';
+                feedbackDiv.textContent = '';
+                feedbackDiv.style.display = 'none';
+            });
+        });
+        
+        // Comprobar respuestas
+        document.getElementById('check-answers').addEventListener('click', function() {
+            score = 0;
+            
+            // Verificar cada pregunta
+            for (let question = 1; question <= 5; question++) {
+                const selectedOption = selectedAnswers[question];
+                const correctOption = correctAnswers[question];
+                const options = document.querySelectorAll(`.option[data-question="${question}"]`);
+                const feedbackDiv = document.querySelector(`.option[data-question="${question}"]`).parentElement.nextElementSibling;
+                
+                if (selectedOption) {
+                    // Marcar opción seleccionada
+                    options.forEach(option => {
+                        if (parseInt(option.getAttribute('data-option')) === selectedOption) {
+                            if (selectedOption === correctOption) {
+                                option.classList.add('correct');
+                                feedbackDiv.textContent = explanations[question];
+                                feedbackDiv.classList.add('correct');
+                                feedbackDiv.style.display = 'block';
+                                score += 20;
+                            } else {
+                                option.classList.add('incorrect');
+                                feedbackDiv.textContent = `Incorrecto. La respuesta correcta es la opción ${correctOption}.`;
+                                feedbackDiv.classList.add('incorrect');
+                                feedbackDiv.style.display = 'block';
+                            }
+                        }
+                        
+                        // Marcar la opción correcta
+                        if (parseInt(option.getAttribute('data-option')) === correctOption) {
+                            option.classList.add('correct');
+                        }
+                    });
+                } else {
+                    // Si no se seleccionó ninguna opción
+                    feedbackDiv.textContent = `No seleccionaste una respuesta. La correcta es la opción ${correctOption}.`;
+                    feedbackDiv.classList.add('incorrect');
+                    feedbackDiv.style.display = 'block';
+                    
+                    // Marcar la opción correcta
+                    options.forEach(option => {
+                        if (parseInt(option.getAttribute('data-option')) === correctOption) {
+                            option.classList.add('correct');
+                        }
+                    });
+                }
+            }
+            
+            // Actualizar puntuación
+            document.querySelector('.score').textContent = `${score}/100`;
+            
+            // Efecto visual según puntuación
+            const scoreContainer = document.querySelector('.score-container');
+            if (score === 100) {
+                scoreContainer.style.boxShadow = '0 0 15px var(--success)';
+                setTimeout(() => {
+                    scoreContainer.style.boxShadow = '0 3px 10px var(--shadow)';
+                }, 2000);
+            }
+        });
+        
+        // Reiniciar juego
+        document.getElementById('reset-quiz').addEventListener('click', function() {
+            // Limpiar selecciones
+            selectedAnswers = {};
+            score = 0;
+            
+            // Limpiar estilos
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            // Limpiar feedback
+            document.querySelectorAll('.feedback').forEach(feedback => {
+                feedback.className = 'feedback';
+                feedback.textContent = '';
+                feedback.style.display = 'none';
+            });
+            
+            // Reiniciar puntuación
+            document.querySelector('.score').textContent = '0/100';
+        });
+    </script>
+</body>
+</html>

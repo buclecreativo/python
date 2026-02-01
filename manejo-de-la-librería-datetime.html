@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python datetime: Dominando el tiempo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-light: #60a5fa;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #7c3aed;
+            --secondary-light: #a78bfa;
+            --accent-color: #06b6d4;
+            --light-color: #f8fafc;
+            --dark-color: #1e293b;
+            --gray-light: #e2e8f0;
+            --gray-medium: #94a3b8;
+            --gray-dark: #475569;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --warning-color: #f59e0b;
+            --border-radius: 12px;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-light: 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f1f5f9;
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 95vh;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.2;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+        }
+
+        .main-title {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            font-weight: 300;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .topic {
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: inline-block;
+            font-weight: 600;
+            font-size: 1.2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Main content */
+        main {
+            flex: 1;
+            padding: 2.5rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--secondary-color);
+        }
+
+        .section-content {
+            background-color: var(--light-color);
+            padding: 1.8rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+        }
+
+        .content-text {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .content-text:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Code examples */
+        .code-block {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .code-comment {
+            color: #94a3b8;
+        }
+
+        .code-keyword {
+            color: #f472b6;
+        }
+
+        .code-function {
+            color: #60a5fa;
+        }
+
+        .code-string {
+            color: #34d399;
+        }
+
+        .code-number {
+            color: #fbbf24;
+        }
+
+        /* Interactive elements */
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary-light);
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+        }
+
+        .btn-accent:hover {
+            background-color: #0891b2;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        /* Quiz section */
+        .quiz-container {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: var(--shadow-light);
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .score-display {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+            background-color: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .question-container {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        @media (min-width: 768px) {
+            .options-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .option {
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid var(--gray-light);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .option:hover {
+            border-color: var(--primary-light);
+            background-color: rgba(37, 99, 235, 0.05);
+        }
+
+        .option.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(37, 99, 235, 0.1);
+        }
+
+        .option.correct {
+            border-color: var(--success-color);
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+
+        .option.incorrect {
+            border-color: var(--error-color);
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        .feedback {
+            padding: 12px 16px;
+            border-radius: var(--border-radius);
+            margin-top: 15px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .feedback.correct {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            border-left: 4px solid var(--success-color);
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--error-color);
+            border-left: 4px solid var(--error-color);
+            display: block;
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .results-container {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .results-title {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .results-score {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .results-message {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--gray-dark);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .footer-text {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .main-title {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            main {
+                padding: 1.5rem;
+            }
+            
+            .section {
+                margin-bottom: 2rem;
+                padding-bottom: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-code logo-icon"></i>
+                <div>
+                    <h1 class="main-title">Python para pensadores</h1>
+                    <p class="subtitle">Taller diseñado con el corazón de un docente y la mente de un programador</p>
+                </div>
+            </div>
+            <div class="topic">
+                <i class="far fa-clock"></i> Tema: Python - Manejo de la librería datetime
+            </div>
+        </header>
+
+        <main>
+            <section class="section">
+                <h2 class="section-title"><i class="fas fa-bullseye"></i> Objetivo de aprendizaje</h2>
+                <div class="section-content">
+                    <p class="content-text">
+                        <strong>Dominar</strong> el manejo de la librería datetime en Python para manipular fechas y tiempos con precisión, 
+                        <strong>explorando</strong> sus funciones principales a través de ejemplos prácticos y contextualizados, 
+                        <strong>desarrollando</strong> la capacidad de resolver problemas reales relacionados con gestión del tiempo, 
+                        y <strong>fomentando</strong> una actitud curiosa, metódica y colaborativa frente al código como herramienta para comprender y organizar nuestra realidad temporal.
+                    </p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title"><i class="fas fa-compass"></i> Contextualización</h2>
+                <div class="section-content">
+                    <p class="content-text">
+                        Imagina que estás organizando un evento importante: el festival de tu colegio. Tienes que coordinar ensayos, 
+                        reservar espacios, enviar recordatorios y asegurarte de que todo ocurra en el momento exacto. 
+                        La vida, como la programación, es una danza con el tiempo.
+                    </p>
+                    <p class="content-text">
+                        En Python, la librería <strong>datetime</strong> es como tener un reloj maestro y un calendario inteligente en tus manos. 
+                        Te permite capturar el instante preciso, calcular diferencias entre momentos importantes, proyectar fechas futuras 
+                        y organizar el tiempo de manera lógica y eficiente.
+                    </p>
+                    <p class="content-text">
+                        Este taller no es solo sobre código; es sobre cómo dominar una de las dimensiones más fundamentales 
+                        de nuestra existencia a través de la programación. Acompáñame a descubrir cómo Python puede ayudarnos 
+                        a entender y gestionar mejor nuestro tiempo, tanto en la pantalla como en la vida.
+                    </p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title"><i class="fas fa-cogs"></i> Desarrollo de la actividad</h2>
+                <div class="section-content">
+                    <p class="content-text">
+                        Vamos a explorar los componentes esenciales de la librería datetime: <strong>datetime</strong> para momentos específicos, 
+                        <strong>timedelta</strong> para períodos de tiempo, y <strong>date</strong> y <strong>time</strong> para trabajar con fechas y horas por separado.
+                    </p>
+                    
+                    <h3 style="color: var(--secondary-color); margin-top: 1.5rem;">1. Capturando el momento presente</h3>
+                    <p class="content-text">
+                        El objeto datetime nos permite trabajar con fecha y hora simultáneamente. 
+                        Así como fotografías un momento especial, datetime captura un instante preciso en el tiempo.
+                    </p>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">from</span> datetime <span class="code-keyword">import</span> datetime
+
+<span class="code-comment"># Capturar el momento actual</span>
+ahora = datetime.now()
+print(<span class="code-string">"Fecha y hora actual:"</span>, ahora)
+print(<span class="code-string">"Año:"</span>, ahora.year)
+print(<span class="code-string">"Mes:"</span>, ahora.month)
+print(<span class="code-string">"Día:"</span>, ahora.day)
+print(<span class="code-string">"Hora:"</span>, ahora.hour)
+print(<span class="code-string">"Minuto:"</span>, ahora.minute)
+
+<span class="code-comment"># Crear una fecha específica</span>
+mi_cumple = datetime(2024, 7, 15, 10, 30, 0)
+print(<span class="code-string">"Mi próximo cumpleaños:"</span>, mi_cumple)</code></pre>
+                    </div>
+                    
+                    <h3 style="color: var(--secondary-color); margin-top: 1.5rem;">2. Calculando diferencias con timedelta</h3>
+                    <p class="content-text">
+                        ¿Cuántos días faltan para tus vacaciones? ¿Cuánto tiempo ha pasado desde que empezó el año escolar? 
+                        timedelta es la herramienta perfecta para responder estas preguntas.
+                    </p>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">from</span> datetime <span class="code-keyword">import</span> datetime, timedelta
+
+<span class="code-comment"># Calcular fechas futuras y pasadas</span>
+hoy = datetime.now()
+print(<span class="code-string">"Hoy es:"</span>, hoy.date())
+
+<span class="code-comment"># ¿Qué día será en 10 días?</span>
+en_10_dias = hoy + timedelta(days=10)
+print(<span class="code-string">"En 10 días será:"</span>, en_10_dias.date())
+
+<span class="code-comment"># ¿Qué día fue hace 15 días?</span>
+hace_15_dias = hoy - timedelta(days=15)
+print(<span class="code-string">"Hace 15 días fue:"</span>, hace_15_dias.date())
+
+<span class="code-comment"># Calcular tiempo entre dos fechas</span>
+inicio_escolar = datetime(2024, 5, 2)
+tiempo_transcurrido = hoy - inicio_escolar
+print(<span class="code-string">"Días de clase transcurridos:"</span>, tiempo_transcurrido.days)
+print(<span class="code-string">"Semanas transcurridas:"</span>, tiempo_transcurrido.days // 7)</code></pre>
+                    </div>
+                    
+                    <h3 style="color: var(--secondary-color); margin-top: 1.5rem;">3. Formateando fechas para humanos</h3>
+                    <p class="content-text">
+                        Aprenderemos a presentar las fechas de manera comprensible y atractiva, 
+                        adaptándolas a diferentes contextos y necesidades de comunicación.
+                    </p>
+                    
+                    <div class="code-block">
+                        <pre><code><span class="code-keyword">from</span> datetime <span class="code-keyword">import</span> datetime
+
+evento = datetime(2024, 11, 15, 18, 30, 0)
+
+<span class="code-comment"># Formatear fecha de diferentes maneras</span>
+print(<span class="code-string">"Formato completo:"</span>, evento.strftime(<span class="code-string">"%A, %d de %B de %Y a las %I:%M %p"</span>))
+print(<span class="code-string">"Formato corto:"</span>, evento.strftime(<span class="code-string">"%d/%m/%Y"</span>))
+print(<span class="code-string">"Solo hora:"</span>, evento.strftime(<span class="code-string">"%H:%M"</span>))
+print(<span class="code-string">"Fecha amigable:"</span>, evento.strftime(<span class="code-string">"Evento: %d de %B"</span>))
+
+<span class="code-comment"># Convertir texto a fecha</span>
+texto_fecha = <span class="code-string">"15/11/2024 18:30"</span>
+fecha_desde_texto = datetime.strptime(texto_fecha, <span class="code-string">"%d/%m/%Y %H:%M"</span>)
+print(<span class="code-string">"Fecha desde texto:"</span>, fecha_desde_texto)</code></pre>
+                    </div>
+                    
+                    <div style="margin-top: 2rem; padding: 1.5rem; background-color: rgba(6, 182, 212, 0.1); border-radius: var(--border-radius); border-left: 4px solid var(--accent-color);">
+                        <h4 style="color: var(--accent-color); margin-bottom: 0.5rem;"><i class="fas fa-lightbulb"></i> Reflexión metacognitiva</h4>
+                        <p>
+                            Después de ejecutar estos ejemplos, tómate un momento para reflexionar: 
+                            ¿En qué situaciones de tu vida podrías aplicar estos conocimientos? 
+                            Piensa en proyectos personales, organizativos o académicos donde el manejo preciso del tiempo sea crucial.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title"><i class="fas fa-flag-checkered"></i> El reto final</h2>
+                <div class="section-content">
+                    <p class="content-text">
+                        <strong>El Planificador de Proyectos Escolares</strong>
+                    </p>
+                    <p class="content-text">
+                        Eres el coordinador del festival de fin de año de tu colegio. Debes crear un programa en Python que:
+                    </p>
+                    <ul style="margin-left: 2rem; margin-bottom: 1.5rem;">
+                        <li>Permita registrar los eventos principales (inauguración, presentaciones artísticas, premiaciones, clausura).</li>
+                        <li>Calcule automáticamente las fechas de los ensayos (2 semanas antes de cada evento).</li>
+                        <li>Genere recordatorios para los participantes (3 días antes de cada ensayo).</li>
+                        <li>Muestre un calendario completo del festival con fechas y horas formateadas de manera amigable.</li>
+                        <li>Calcule la duración total del festival y el tiempo entre eventos.</li>
+                    </ul>
+                    <p class="content-text">
+                        El reto te invita a pensar como un gestor de proyectos, tomando decisiones sobre cómo organizar el tiempo, 
+                        priorizar actividades y comunicar fechas de manera efectiva. No hay una única solución correcta; 
+                        explora diferentes enfoques y comparte tu perspectiva con tus compañeros.
+                    </p>
+                    <button class="btn btn-accent" id="hintBtn">
+                        <i class="fas fa-lightbulb"></i> Ver pista para comenzar
+                    </button>
+                    <div id="hintContainer" style="display: none; margin-top: 1.5rem; padding: 1rem; background-color: rgba(251, 191, 36, 0.1); border-radius: var(--border-radius);">
+                        <p><strong>Pista:</strong> Comienza definiendo una lista de eventos con sus fechas principales. Luego, crea funciones para calcular fechas de ensayos y recordatorios usando timedelta. Finalmente, diseña una función que imprima todo el calendario formateado.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title"><i class="fas fa-gamepad"></i> Evaluación lúdica</h2>
+                <div class="section-content">
+                    <p class="content-text">
+                        Pon a prueba lo aprendido con este juego interactivo. Responde 5 preguntas sobre datetime y timedelta. 
+                        ¡Cada respuesta correcta suma puntos!
+                    </p>
+                    
+                    <div class="quiz-container">
+                        <div class="quiz-header">
+                            <h3 class="quiz-title">Desafío DateTime</h3>
+                            <div class="score-display">Puntaje: <span id="score">0</span>/5</div>
+                        </div>
+                        
+                        <div id="question-container">
+                            <!-- Las preguntas se cargarán aquí mediante JavaScript -->
+                        </div>
+                        
+                        <div class="quiz-navigation">
+                            <button class="btn btn-secondary" id="prevBtn" disabled>
+                                <i class="fas fa-arrow-left"></i> Anterior
+                            </button>
+                            <button class="btn btn-primary" id="nextBtn">
+                                Siguiente <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p class="footer-text">Diseñado por: Edwin Méndez J.</p>
+            <p class="footer-text" style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.7;">
+                <i class="fas fa-heart" style="color: #f472b6;"></i> Con la serenidad del estoicismo y la potencia de la sinergia
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Datos para el cuestionario
+        const quizData = [
+            {
+                question: "¿Qué función de datetime se utiliza para obtener la fecha y hora actual?",
+                options: [
+                    "datetime.current()",
+                    "datetime.now()",
+                    "datetime.today()",
+                    "datetime.get()"
+                ],
+                correct: 1,
+                explanation: "Correcto. datetime.now() devuelve un objeto datetime con la fecha y hora actuales del sistema."
+            },
+            {
+                question: "¿Qué hace timedelta(days=7)?",
+                options: [
+                    "Resta 7 días a una fecha",
+                    "Crea un período de tiempo de 7 días",
+                    "Formatea una fecha para mostrar solo 7 caracteres",
+                    "Redondea una fecha a la semana más cercana"
+                ],
+                correct: 1,
+                explanation: "¡Excelente! timedelta(days=7) crea un objeto que representa un período de 7 días, que puede sumarse o restarse a un objeto datetime."
+            },
+            {
+                question: "¿Qué formato usarías en strftime para mostrar el nombre completo del mes?",
+                options: [
+                    "%m",
+                    "%b",
+                    "%B",
+                    "%M"
+                ],
+                correct: 2,
+                explanation: "Correcto. %B muestra el nombre completo del mes (ej. 'January', 'February'), mientras que %b muestra la abreviatura y %m el número."
+            },
+            {
+                question: "Si hoy es 15 de octubre de 2024, ¿qué fecha obtendrás con hoy + timedelta(days=20)?",
+                options: [
+                    "4 de noviembre de 2024",
+                    "5 de noviembre de 2024",
+                    "5 de octubre de 2024",
+                    "4 de octubre de 2024"
+                ],
+                correct: 1,
+                explanation: "¡Bien calculado! 15 de octubre + 20 días = 4 de noviembre (15+20=35, octubre tiene 31 días, 35-31=4 de noviembre)."
+            },
+            {
+                question: "¿Qué método se usa para convertir una cadena de texto en un objeto datetime?",
+                options: [
+                    "datetime.parse()",
+                    "datetime.fromstring()",
+                    "datetime.strptime()",
+                    "datetime.convert()"
+                ],
+                correct: 2,
+                explanation: "Exacto. datetime.strptime() (string parse time) convierte una cadena en un objeto datetime según el formato especificado."
+            }
+        ];
+
+        // Variables del juego
+        let currentQuestion = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+
+        // Elementos del DOM
+        const questionContainer = document.getElementById('question-container');
+        const scoreElement = document.getElementById('score');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const hintBtn = document.getElementById('hintBtn');
+        const hintContainer = document.getElementById('hintContainer');
+
+        // Función para mostrar la pregunta actual
+        function showQuestion() {
+            const question = quizData[currentQuestion];
+            
+            let html = `
+                <div class="question-container">
+                    <div class="question-text">Pregunta ${currentQuestion + 1}: ${question.question}</div>
+                    <div class="options-container">
+            `;
+            
+            question.options.forEach((option, index) => {
+                let optionClass = "option";
+                if (userAnswers[currentQuestion] === index) {
+                    optionClass += " selected";
+                }
+                
+                html += `
+                    <div class="${optionClass}" data-index="${index}">
+                        ${option}
+                    </div>
+                `;
+            });
+            
+            html += `</div>`;
+            
+            // Mostrar retroalimentación si ya respondió
+            if (userAnswers[currentQuestion] !== null) {
+                const isCorrect = userAnswers[currentQuestion] === question.correct;
+                const feedbackClass = isCorrect ? "correct" : "incorrect";
+                html += `
+                    <div class="feedback ${feedbackClass}">
+                        <strong>${isCorrect ? "¡Correcto!" : "Incorrecto"}</strong> ${question.explanation}
+                    </div>
+                `;
+            }
+            
+            html += `</div>`;
+            questionContainer.innerHTML = html;
+            
+            // Actualizar estado de los botones
+            prevBtn.disabled = currentQuestion === 0;
+            nextBtn.textContent = currentQuestion === quizData.length - 1 ? "Ver resultados" : `Siguiente <i class="fas fa-arrow-right"></i>`;
+            
+            // Agregar eventos a las opciones
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', selectOption);
+            });
+        }
+
+        // Función para seleccionar una opción
+        function selectOption(e) {
+            // Solo permitir selección si no ha respondido aún
+            if (userAnswers[currentQuestion] !== null) return;
+            
+            const selectedIndex = parseInt(e.currentTarget.getAttribute('data-index'));
+            userAnswers[currentQuestion] = selectedIndex;
+            
+            // Verificar si es correcta
+            const isCorrect = selectedIndex === quizData[currentQuestion].correct;
+            if (isCorrect) {
+                score++;
+                scoreElement.textContent = score;
+            }
+            
+            // Mostrar retroalimentación
+            showQuestion();
+        }
+
+        // Función para mostrar resultados
+        function showResults() {
+            let html = `
+                <div class="results-container">
+                    <h3 class="results-title">¡Desafío completado!</h3>
+                    <div class="results-score">${score}/${quizData.length}</div>
+                    <p class="results-message">
+                        ${score === quizData.length ? "¡Excelente! Dominas completamente datetime." : 
+                          score >= quizData.length / 2 ? "Buen trabajo. Tienes un buen manejo de datetime." : 
+                          "Sigue practicando. Revisa los conceptos y vuelve a intentarlo."}
+                    </p>
+                    <button class="btn btn-primary" id="restartBtn">
+                        <i class="fas fa-redo"></i> Reiniciar juego
+                    </button>
+                </div>
+            `;
+            
+            questionContainer.innerHTML = html;
+            
+            // Agregar evento al botón de reinicio
+            document.getElementById('restartBtn').addEventListener('click', restartQuiz);
+        }
+
+        // Función para reiniciar el juego
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            userAnswers = new Array(quizData.length).fill(null);
+            scoreElement.textContent = score;
+            showQuestion();
+        }
+
+        // Navegación entre preguntas
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentQuestion < quizData.length - 1) {
+                currentQuestion++;
+                showQuestion();
+            } else {
+                showResults();
+            }
+        });
+
+        // Mostrar/ocultar pista para el reto final
+        hintBtn.addEventListener('click', () => {
+            if (hintContainer.style.display === 'none') {
+                hintContainer.style.display = 'block';
+                hintBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Ocultar pista';
+            } else {
+                hintContainer.style.display = 'none';
+                hintBtn.innerHTML = '<i class="fas fa-lightbulb"></i> Ver pista para comenzar';
+            }
+        });
+
+        // Inicializar la primera pregunta
+        showQuestion();
+    </script>
+</body>
+</html>

@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python para pensadores: Manejo de cadenas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2D5D7C;
+            --primary-dark: #1A3A57;
+            --secondary: #FF7E5F;
+            --secondary-light: #FF9A8B;
+            --accent: #6CBF84;
+            --light: #F8F9FA;
+            --dark: #212529;
+            --gray: #6C757D;
+            --light-gray: #E9ECEF;
+            --shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --border-radius: 10px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        
+        /* Encabezado */
+        header {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 1rem;
+        }
+        
+        .logo i {
+            font-size: 2.5rem;
+            color: var(--accent);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+        
+        .tema {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            display: inline-block;
+            font-weight: 500;
+            font-size: 1.1rem;
+            border-left: 4px solid var(--accent);
+        }
+        
+        /* Navegación */
+        nav {
+            background-color: var(--light-gray);
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 0.5rem;
+        }
+        
+        .nav-btn {
+            background: none;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            margin: 0.3rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            color: var(--dark);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-btn:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .nav-btn.active {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 8px rgba(45, 93, 124, 0.3);
+        }
+        
+        /* Contenido principal */
+        .content {
+            padding: 2rem;
+        }
+        
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light-gray);
+            position: relative;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100px;
+            height: 2px;
+            background-color: var(--secondary);
+        }
+        
+        h3 {
+            color: var(--primary-dark);
+            margin: 1.5rem 0 1rem;
+            font-size: 1.4rem;
+        }
+        
+        p, li {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .highlight {
+            background-color: rgba(108, 191, 132, 0.1);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--accent);
+            margin: 1.5rem 0;
+        }
+        
+        .code-container {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .code-comment {
+            color: #6CBF84;
+        }
+        
+        .code-keyword {
+            color: #FF7E5F;
+        }
+        
+        .code-string {
+            color: #F9D342;
+        }
+        
+        .code-function {
+            color: #5DADE2;
+        }
+        
+        /* Interactivos */
+        .interactive-box {
+            background-color: var(--light-gray);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 1.5rem 0;
+            border: 2px dashed var(--gray);
+        }
+        
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            margin: 0.5rem 0.5rem 0.5rem 0;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(45, 93, 124, 0.3);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+        }
+        
+        .btn-accent:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        /* Test interactivo */
+        .test-container {
+            margin: 2rem 0;
+        }
+        
+        .question {
+            background-color: var(--light);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 10px;
+            margin-top: 1rem;
+        }
+        
+        .option {
+            padding: 0.8rem;
+            background-color: white;
+            border: 2px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .option:hover {
+            border-color: var(--primary);
+            background-color: rgba(45, 93, 124, 0.05);
+        }
+        
+        .option.selected {
+            border-color: var(--accent);
+            background-color: rgba(108, 191, 132, 0.1);
+        }
+        
+        .option.correct {
+            border-color: var(--accent);
+            background-color: rgba(108, 191, 132, 0.2);
+        }
+        
+        .option.incorrect {
+            border-color: var(--secondary);
+            background-color: rgba(255, 126, 95, 0.1);
+        }
+        
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: rgba(108, 191, 132, 0.1);
+            border-left: 4px solid var(--accent);
+            display: block;
+        }
+        
+        .feedback.incorrect {
+            background-color: rgba(255, 126, 95, 0.1);
+            border-left: 4px solid var(--secondary);
+            display: block;
+        }
+        
+        .score-container {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--light);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .score {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        /* Pie de página */
+        footer {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        footer p {
+            margin-bottom: 0;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 1.5rem;
+            }
+            
+            .nav-btn {
+                padding: 0.7rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .options {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            header {
+                padding: 1.5rem 1rem;
+            }
+            
+            h1 {
+                font-size: 1.7rem;
+            }
+            
+            .logo {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Encabezado -->
+        <header>
+            <div class="logo">
+                <i class="fas fa-code"></i>
+                <div>
+                    <h1>Python para pensadores</h1>
+                    <div class="subtitle">Taller diseñado con el corazón de un docente y la mente de un programador</div>
+                </div>
+            </div>
+            <div class="tema">Python: Manejo de cadenas de texto</div>
+        </header>
+        
+        <!-- Navegación -->
+        <nav>
+            <button class="nav-btn active" data-section="introduccion">Introducción</button>
+            <button class="nav-btn" data-section="objetivo">Objetivo</button>
+            <button class="nav-btn" data-section="contexto">Contexto</button>
+            <button class="nav-btn" data-section="desarrollo">Desarrollo</button>
+            <button class="nav-btn" data-section="reto">Reto final</button>
+            <button class="nav-btn" data-section="test">Evaluación lúdica</button>
+        </nav>
+        
+        <!-- Contenido principal -->
+        <div class="content">
+            <!-- Sección 1: Introducción -->
+            <section id="introduccion" class="section active">
+                <h2>Descubre el poder de las palabras en Python</h2>
+                <p>Bienvenidos, jóvenes pensadores. Hoy vamos a explorar uno de los aspectos más fascinantes de la programación: el manejo de texto. En un mundo digital donde la comunicación es fundamental, aprender a trabajar con cadenas de caracteres nos da el poder de transformar, analizar y dar sentido a la información.</p>
+                
+                <div class="highlight">
+                    <h3>¿Qué son las cadenas de texto?</h3>
+                    <p>En Python, las cadenas (strings) son secuencias de caracteres que nos permiten representar texto. Desde tu nombre hasta el último mensaje que enviaste por WhatsApp, todo es manipulable con las herramientas que aprenderás hoy.</p>
+                </div>
+                
+                <p>Este taller está diseñado para que no solo aprendas sintaxis, sino que desarrolles una forma de pensar analítica y creativa. Cada concepto que exploremos tendrá aplicaciones prácticas en problemas reales que podrías enfrentar como futuro desarrollador.</p>
+                
+                <div class="interactive-box">
+                    <h3>Explora un ejemplo básico</h3>
+                    <p>Intenta cambiar el valor de la variable <code>nombre</code> y haz clic en "Ejecutar" para ver el resultado:</p>
+                    <div class="code-container">
+                        <pre><code><span class="code-comment"># ¡Cambia el valor de 'nombre' y haz clic en ejecutar!</span>
+<span class="code-keyword">nombre</span> = <span class="code-string">"Carlos"</span>
+<span class="code-keyword">saludo</span> = <span class="code-string">"Hola, "</span> + <span class="code-keyword">nombre</span> + <span class="code-string">". ¡Bienvenido al taller!"</span>
+<span class="code-function">print</span>(<span class="code-keyword">saludo</span>)</code></pre>
+                    </div>
+                    <div>
+                        <input type="text" id="nombreInput" placeholder="Escribe tu nombre aquí" value="Carlos">
+                        <button class="btn" id="ejecutarBtn">Ejecutar código</button>
+                    </div>
+                    <div class="code-container" id="outputContainer" style="display:none;">
+                        <pre id="outputCode">Resultado aparecerá aquí</pre>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Sección 2: Objetivo -->
+            <section id="objetivo" class="section">
+                <h2>Objetivo de aprendizaje</h2>
+                <p>Dominar las operaciones fundamentales con cadenas de texto en Python para manipular, analizar y transformar datos textuales, desarrollando competencias técnicas mediante la práctica reflexiva de concatenación, indexación, slicing y aplicación de métodos específicos; cultivando habilidades cognitivas para resolver problemas complejos mediante la descomposición en partes manejables; y fomentando actitudes de curiosidad intelectual, perseverancia ante los errores y colaboración ética en la construcción de soluciones digitales con impacto social positivo.</p>
+                
+                <div class="highlight">
+                    <h3>Lo que lograrás al finalizar este taller</h3>
+                    <ul>
+                        <li>Crearás programas que procesen información textual de manera eficiente</li>
+                        <li>Podrás limpiar y organizar datos de fuentes diversas</li>
+                        <li>Desarrollarás un pensamiento algorítmico para resolver problemas con texto</li>
+                        <li>Ganarás confianza para enfrentar retos más complejos de programación</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <!-- Sección 3: Contexto -->
+            <section id="contexto" class="section">
+                <h2>Contextualización: El texto en nuestras vidas</h2>
+                <p>Imagina que tienes que organizar los contactos de tu teléfono, limpiar datos de una encuesta escolar, o crear un generador de nombres de usuario para un videojuego. En todas estas situaciones, el manejo de cadenas de texto se vuelve esencial.</p>
+                
+                <p>Cuando Carlos, un estudiante como tú, quiso crear una aplicación para ayudar a su abuela a organizar sus recetas, se dio cuenta que necesitaba separar ingredientes, convertir medidas y dar formato a las instrucciones. Cada receta era un texto que debía manipular con precisión.</p>
+                
+                <div class="interactive-box">
+                    <h3>Un problema real: Limpieza de datos</h3>
+                    <p>En tu colegio, han recopilado correos electrónicos de estudiantes para un torneo deportivo, pero algunos datos tienen espacios extra, mayúsculas inconsistentes o formatos incorrectos.</p>
+                    
+                    <div class="code-container">
+                        <pre><code><span class="code-comment"># Datos recolectados (con inconsistencias)</span>
+correos = [<span class="code-string">"  JuanPerez@gmail.com  "</span>, 
+           <span class="code-string">"MARIA.LOPEZ@hotmail.com"</span>, 
+           <span class="code-string">"carlos_rodriguez "</span>,  <span class="code-comment"># ¡Falta el dominio!</span>
+           <span class="code-string">"Ana.Garcia@yahoo.com"</span>]
+
+<span class="code-comment"># Necesitamos limpiar y validar estos datos</span>
+<span class="code-keyword">correos_limpios</span> = []
+
+<span class="code-keyword">for</span> correo <span class="code-keyword">in</span> correos:
+    <span class="code-comment"># Eliminar espacios al inicio y final</span>
+    correo = correo.<span class="code-function">strip</span>()
+    
+    <span class="code-comment"># Convertir a minúsculas</span>
+    correo = correo.<span class="code-function">lower</span>()
+    
+    <span class="code-comment"># Verificar si es un correo válido (contiene '@')</span>
+    <span class="code-keyword">if</span> <span class="code-string">"@"</span> <span class="code-keyword">in</span> correo:
+        correos_limpios.<span class="code-function">append</span>(correo)
+    <span class="code-keyword">else</span>:
+        <span class="code-function">print</span>(<span class="code-string">f"Correo inválido: {correo}"</span>)
+
+<span class="code-function">print</span>(<span class="code-string">"Correos válidos:"</span>, correos_limpios)</code></pre>
+                    </div>
+                    
+                    <p>Este es solo un ejemplo de cómo el manejo de cadenas resuelve problemas reales. A lo largo del taller, aprenderás todas las herramientas necesarias para enfrentar desafíos como este.</p>
+                </div>
+            </section>
+            
+            <!-- Sección 4: Desarrollo -->
+            <section id="desarrollo" class="section">
+                <h2>Desarrollo de la actividad</h2>
+                <p>Ahora exploraremos cada concepto paso a paso, con ejemplos prácticos y ejercicios para que experimentes directamente con el código.</p>
+                
+                <h3>1. Concatenación y repetición</h3>
+                <p>La concatenación nos permite unir cadenas, mientras que la repetición nos ayuda a crear patrones.</p>
+                
+                <div class="code-container">
+                    <pre><code><span class="code-comment"># Concatenación básica</span>
+nombre = <span class="code-string">"Ana"</span>
+apellido = <span class="code-string">"García"</span>
+nombre_completo = nombre + <span class="code-string">" "</span> + apellido
+<span class="code-function">print</span>(nombre_completo)  <span class="code-comment"># Resultado: Ana García</span>
+
+<span class="code-comment"># Repetición para crear patrones</span>
+separador = <span class="code-string">"-"</span> * 30
+<span class="code-function">print</span>(separador)  <span class="code-comment"># Resultado: ------------------------------</span>
+
+<span class="code-comment"># Crear un marco de asteriscos</span>
+marco = <span class="code-string">"*"</span> * 20
+<span class="code-function">print</span>(marco)
+<span class="code-function">print</span>(<span class="code-string">"*"</span> + <span class="code-string">" "</span> * 18 + <span class="code-string">"*"</span>)
+<span class="code-function">print</span>(<span class="code-string">"*   ¡BIENVENIDOS!   *"</span>)
+<span class="code-function">print</span>(<span class="code-string">"*"</span> + <span class="code-string">" "</span> * 18 + <span class="code-string">"*"</span>)
+<span class="code-function">print</span>(marco)</code></pre>
+                </div>
+                
+                <h3>2. Índices y Slicing (rebanado)</h3>
+                <p>Cada carácter en una cadena tiene una posición (índice). En Python, los índices comienzan en 0.</p>
+                
+                <div class="code-container">
+                    <pre><code>texto = <span class="code-string">"Python"</span>
+
+<span class="code-comment"># Acceso por índice</span>
+<span class="code-function">print</span>(texto[0])   <span class="code-comment"># P</span>
+<span class="code-function">print</span>(texto[2])   <span class="code-comment"># t</span>
+<span class="code-function">print</span>(texto[-1])  <span class="code-comment"># n (último carácter)</span>
+
+<span class="code-comment"># Slicing: obtener subcadenas</span>
+<span class="code-function">print</span>(texto[0:2])   <span class="code-comment"># Py (desde 0 hasta 2, sin incluir 2)</span>
+<span class="code-function">print</span>(texto[2:])    <span class="code-comment"># thon (desde 2 hasta el final)</span>
+<span class="code-function">print</span>(texto[:4])    <span class="code-comment"># Pyth (desde inicio hasta 4)</span>
+<span class="code-function">print</span>(texto[::2])   <span class="code-comment"># Pto (todos los caracteres, saltando de 2 en 2)</span>
+<span class="code-function">print</span>(texto[::-1])  <span class="code-comment"># nohtyP (inversa de la cadena)</span></code></pre>
+                </div>
+                
+                <h3>3. Métodos de transformación</h3>
+                <p>Python ofrece métodos integrados para modificar cadenas. Recordemos que las cadenas son inmutables, por lo que estos métodos devuelven una nueva cadena.</p>
+                
+                <div class="code-container">
+                    <pre><code>texto = <span class="code-string">"  Aprendiendo Python  "</span>
+
+<span class="code-comment"># Eliminar espacios</span>
+<span class="code-function">print</span>(texto.<span class="code-function">strip</span>())     <span class="code-comment"># "Aprendiendo Python"</span>
+<span class="code-function">print</span>(texto.<span class="code-function">lstrip</span>())    <span class="code-comment"># "Aprendiendo Python  "</span>
+<span class="code-function">print</span>(texto.<span class="code-function">rstrip</span>())    <span class="code-comment"># "  Aprendiendo Python"</span>
+
+<span class="code-comment"># Cambiar mayúsculas/minúsculas</span>
+<span class="code-function">print</span>(texto.<span class="code-function">upper</span>())     <span class="code-comment"># "  APRENDIENDO PYTHON  "</span>
+<span class="code-function">print</span>(texto.<span class="code-function">lower</span>())     <span class="code-comment"># "  aprendiendo python  "</span>
+<span class="code-function">print</span>(<span class="code-string">"python"</span>.<span class="code-function">capitalize</span>())  <span class="code-comment"># "Python"</span>
+
+<span class="code-comment"># Búsqueda en cadenas</span>
+frase = <span class="code-string">"El rápido zorro marrón salta"</span>
+<span class="code-function">print</span>(frase.<span class="code-function">find</span>(<span class="code-string">"zorro"</span>))    <span class="code-comment"># 10 (posición donde empieza)</span>
+<span class="code-function">print</span>(frase.<span class="code-function">find</span>(<span class="code-string">"perro"</span>))    <span class="code-comment"># -1 (no encontrado)</span>
+<span class="code-function">print</span>(frase.<span class="code-function">index</span>(<span class="code-string">"rápido"</span>))  <span class="code-comment"># 3</span>
+
+<span class="code-comment"># Dividir cadenas</span>
+datos = <span class="code-string">"Juan,25,Quito,Estudiante"</span>
+partes = datos.<span class="code-function">split</span>(<span class="code-string">","</span>)
+<span class="code-function">print</span>(partes)  <span class="code-comment"># ['Juan', '25', 'Quito', 'Estudiante']</span>
+
+<span class="code-comment"># Verificación de contenido</span>
+<span class="code-function">print</span>(<span class="code-string">"Python"</span>.<span class="code-function">isalpha</span>())    <span class="code-comment"># True (solo letras)</span>
+<span class="code-function">print</span>(<span class="code-string">"Python3"</span>.<span class="code-function">isalpha</span>())   <span class="code-comment"># False (tiene número)</span>
+<span class="code-function">print</span>(<span class="code-string">"123"</span>.<span class="code-function">isdigit</span>())      <span class="code-comment"># True (solo dígitos)</span>
+<span class="code-function">print</span>(<span class="code-string">"Python123"</span>.<span class="code-function">isalnum</span>()) <span class="code-comment"># True (letras y números)</span>
+<span class="code-function">print</span>(<span class="code-string">"   "</span>.<span class="code-function">isspace</span>())      <span class="code-comment"># True (solo espacios)</span></code></pre>
+                </div>
+                
+                <div class="interactive-box">
+                    <h3>Experimento con código</h3>
+                    <p>Prueba este código que combina varios conceptos. Luego intenta modificarlo:</p>
+                    
+                    <div class="code-container">
+                        <pre><code><span class="code-comment"># Análisis de texto simple</span>
+texto_usuario = <span class="code-string">"  Me encanta programar en Python. ¡Es fascinante!  "</span>
+
+<span class="code-comment"># Limpiar el texto</span>
+texto_limpio = texto_usuario.<span class="code-function">strip</span>()
+
+<span class="code-comment"># Convertir a mayúsculas</span>
+texto_mayus = texto_limpio.<span class="code-function">upper</span>()
+
+<span class="code-comment"># Contar palabras</span>
+palabras = texto_limpio.<span class="code-function">split</span>()
+num_palabras = <span class="code-function">len</span>(palabras)
+
+<span class="code-comment"># Mostrar resultados</span>
+<span class="code-function">print</span>(<span class="code-string">"Texto original:"</span>, texto_usuario)
+<span class="code-function">print</span>(<span class="code-string">"Texto limpio:"</span>, texto_limpio)
+<span class="code-function">print</span>(<span class="code-string">"En mayúsculas:"</span>, texto_mayus)
+<span class="code-function">print</span>(<span class="code-string">"Número de palabras:"</span>, num_palabras)
+<span class="code-function">print</span>(<span class="code-string">"Primeras 10 letras:"</span>, texto_limpio[:10])</code></pre>
+                    </div>
+                    
+                    <button class="btn" id="ejecutarExperimento">Ejecutar este código</button>
+                    <div class="code-container" id="experimentoOutput" style="display:none; margin-top: 1rem;">
+                        <pre id="outputExperimento">Resultado aparecerá aquí</pre>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Sección 5: Reto final -->
+            <section id="reto" class="section">
+                <h2>El reto final: Validador de contraseñas</h2>
+                <p>Ahora aplica todo lo aprendido en un proyecto integrador. Deberás crear un validador de contraseñas que verifique si una contraseña cumple con ciertos criterios de seguridad.</p>
+                
+                <div class="highlight">
+                    <h3>Especificaciones del reto</h3>
+                    <p>Tu programa debe:</p>
+                    <ol>
+                        <li>Solicitar al usuario que ingrese una contraseña</li>
+                        <li>Verificar que la contraseña tenga al menos 8 caracteres</li>
+                        <li>Verificar que contenga al menos una letra mayúscula</li>
+                        <li>Verificar que contenga al menos una letra minúscula</li>
+                        <li>Verificar que contenga al menos un número</li>
+                        <li>Verificar que contenga al menos un carácter especial (!, @, #, $, %, &, *)</li>
+                        <li>Mostrar un mensaje indicando qué criterios cumple y cuáles no</li>
+                        <li>Sugerir una contraseña segura si la ingresada no es válida</li>
+                    </ol>
+                </div>
+                
+                <div class="interactive-box">
+                    <h3>Pistas para resolver el reto</h3>
+                    <p>Puedes utilizar:</p>
+                    <ul>
+                        <li><code>len()</code> para verificar la longitud</li>
+                        <li>Bucles <code>for</code> para recorrer cada carácter</li>
+                        <li>Métodos como <code>.isupper()</code>, <code>.islower()</code>, <code>.isdigit()</code></li>
+                        <li>Condicionales <code>if</code> para verificar cada criterio</li>
+                        <li>La función <code>in</code> para verificar si un carácter está en una cadena</li>
+                    </ul>
+                    
+                    <div class="code-container">
+                        <pre><code><span class="code-comment"># Esqueleto del programa para empezar</span>
+
+<span class="code-keyword">def</span> <span class="code-function">validar_contraseña</span>(contraseña):
+    <span class="code-comment"># Aquí implementarás las validaciones</span>
+    <span class="code-keyword">pass</span>
+
+<span class="code-comment"># Solicitar contraseña al usuario</span>
+contraseña_ingresada = <span class="code-function">input</span>(<span class="code-string">"Ingresa tu contraseña: "</span>)
+
+<span class="code-comment"># Validar</span>
+resultado = <span class="code-function">validar_contraseña</span>(contraseña_ingresada)
+
+<span class="code-comment"># Mostrar resultados</span>
+<span class="code-function">print</span>(resultado)</code></pre>
+                    </div>
+                    
+                    <p><strong>Extensión opcional:</strong> Crea una función para generar contraseñas seguras que cumplan todos los criterios automáticamente.</p>
+                </div>
+                
+                <div class="highlight">
+                    <h3>Criterios de evaluación</h3>
+                    <ul>
+                        <li><strong>Correctitud (40%):</strong> El programa identifica correctamente contraseñas válidas e inválidas</li>
+                        <li><strong>Completitud (30%):</strong> Verifica todos los criterios solicitados</li>
+                        <li><strong>Interfaz de usuario (15%):</strong> Mensajes claros y útiles para el usuario</li>
+                        <li><strong>Creatividad (15%):</strong> Soluciones innovadoras o características adicionales</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <!-- Sección 6: Evaluación lúdica -->
+            <section id="test" class="section">
+                <h2>Evaluación lúdica: Demuestra lo aprendido</h2>
+                <p>Responde estas 5 preguntas para evaluar tu comprensión de los conceptos del taller. ¡Pon a prueba tu conocimiento!</p>
+                
+                <div class="test-container">
+                    <!-- Pregunta 1 -->
+                    <div class="question" id="q1">
+                        <h3>Pregunta 1: ¿Qué resultado produce el siguiente código?</h3>
+                        <div class="code-container" style="margin: 10px 0; padding: 10px; font-size: 0.9rem;">
+                            <code>texto = "Python"<br>print(texto[1:4])</code>
+                        </div>
+                        <div class="options">
+                            <div class="option" data-question="1" data-option="1">yth</div>
+                            <div class="option" data-question="1" data-option="2">Pyt</div>
+                            <div class="option" data-question="1" data-option="3">thon</div>
+                            <div class="option" data-question="1" data-option="4">ytho</div>
+                        </div>
+                        <div class="feedback" id="feedback1"></div>
+                    </div>
+                    
+                    <!-- Pregunta 2 -->
+                    <div class="question" id="q2">
+                        <h3>Pregunta 2: ¿Cuál es la diferencia entre .find() y .index()?</h3>
+                        <div class="options">
+                            <div class="option" data-question="2" data-option="1">.find() devuelve -1 si no encuentra la subcadena, .index() genera un error</div>
+                            <div class="option" data-question="2" data-option="2">.index() es más rápido que .find()</div>
+                            <div class="option" data-question="2" data-option="3">.find() solo busca al inicio, .index() busca en toda la cadena</div>
+                            <div class="option" data-question="2" data-option="4">No hay diferencia, son sinónimos</div>
+                        </div>
+                        <div class="feedback" id="feedback2"></div>
+                    </div>
+                    
+                    <!-- Pregunta 3 -->
+                    <div class="question" id="q3">
+                        <h3>Pregunta 3: ¿Qué hace el método .strip()?</h3>
+                        <div class="options">
+                            <div class="option" data-question="3" data-option="1">Elimina espacios al inicio y final de la cadena</div>
+                            <div class="option" data-question="3" data-option="2">Divide la cadena en partes</div>
+                            <div class="option" data-question="3" data-option="3">Convierte la cadena a mayúsculas</div>
+                            <div class="option" data-question="3" data-option="4">Busca una subcadena específica</div>
+                        </div>
+                        <div class="feedback" id="feedback3"></div>
+                    </div>
+                    
+                    <!-- Pregunta 4 -->
+                    <div class="question" id="q4">
+                        <h3>Pregunta 4: ¿Qué resultado produce "Python".isalpha()?</h3>
+                        <div class="options">
+                            <div class="option" data-question="4" data-option="1">True</div>
+                            <div class="option" data-question="4" data-option="2">False</div>
+                            <div class="option" data-question="4" data-option="3">Error</div>
+                            <div class="option" data-question="4" data-option="4">None</div>
+                        </div>
+                        <div class="feedback" id="feedback4"></div>
+                    </div>
+                    
+                    <!-- Pregunta 5 -->
+                    <div class="question" id="q5">
+                        <h3>Pregunta 5: ¿Qué hace el slicing [::-1]?</h3>
+                        <div class="options">
+                            <div class="option" data-question="5" data-option="1">Invierte la cadena</div>
+                            <div class="option" data-question="5" data-option="2">Toma cada segundo carácter</div>
+                            <div class="option" data-question="5" data-option="3">Elimina el primer y último carácter</div>
+                            <div class="option" data-question="5" data-option="4">Convierte la cadena a minúsculas</div>
+                        </div>
+                        <div class="feedback" id="feedback5"></div>
+                    </div>
+                    
+                    <!-- Resultados -->
+                    <div class="score-container">
+                        <h3>Tu puntuación</h3>
+                        <div class="score" id="score">0/5</div>
+                        <p id="score-message">Responde todas las preguntas para ver tu puntuación</p>
+                        <button class="btn btn-accent" id="checkAnswers">Verificar respuestas</button>
+                        <button class="btn btn-secondary" id="resetTest">Reiniciar test</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Pie de página -->
+        <footer>
+            <p>Diseñado por: Edwin Méndez J.</p>
+            <p>Python para pensadores - Taller de manejo de cadenas de texto</p>
+            <p>© 2023 - Todos los derechos reservados</p>
+        </footer>
+    </div>
+
+    <script>
+        // Navegación entre secciones
+        document.querySelectorAll('.nav-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remover clase active de todos los botones
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Agregar clase active al botón clickeado
+                button.classList.add('active');
+                
+                // Ocultar todas las secciones
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Mostrar la sección correspondiente
+                const sectionId = button.getAttribute('data-section');
+                document.getElementById(sectionId).classList.add('active');
+                
+                // Si es la sección del test, reiniciar
+                if (sectionId === 'test') {
+                    resetTest();
+                }
+            });
+        });
+        
+        // Ejecutar código interactivo - Introducción
+        document.getElementById('ejecutarBtn').addEventListener('click', () => {
+            const nombre = document.getElementById('nombreInput').value || "Carlos";
+            const output = `Hola, ${nombre}. ¡Bienvenido al taller!`;
+            
+            document.getElementById('outputCode').textContent = output;
+            document.getElementById('outputContainer').style.display = 'block';
+        });
+        
+        // Ejecutar código interactivo - Desarrollo
+        document.getElementById('ejecutarExperimento').addEventListener('click', () => {
+            const texto_usuario = "  Me encanta programar en Python. ¡Es fascinante!  ";
+            const texto_limpio = texto_usuario.trim();
+            const texto_mayus = texto_limpio.toUpperCase();
+            const palabras = texto_limpio.split(" ");
+            const num_palabras = palabras.length;
+            
+            const resultado = `Texto original: ${texto_usuario}
+Texto limpio: ${texto_limpio}
+En mayúsculas: ${texto_mayus}
+Número de palabras: ${num_palabras}
+Primeras 10 letras: ${texto_limpio.substring(0, 10)}`;
+            
+            document.getElementById('outputExperimento').textContent = resultado;
+            document.getElementById('experimentoOutput').style.display = 'block';
+        });
+        
+        // Sistema de evaluación lúdica
+        const correctAnswers = {
+            1: "1", // yth
+            2: "1", // .find() devuelve -1 si no encuentra la subcadena, .index() genera un error
+            3: "1", // Elimina espacios al inicio y final de la cadena
+            4: "1", // True
+            5: "1"  // Invierte la cadena
+        };
+        
+        const explanations = {
+            1: "Correcto: texto[1:4] toma los caracteres en las posiciones 1, 2 y 3 (recordemos que el índice final no se incluye). En 'Python', posición 1='y', 2='t', 3='h'.",
+            2: "Correcto: .find() devuelve -1 si no encuentra la subcadena, mientras que .index() genera un error ValueError. Por eso .find() es más seguro cuando no estamos seguros de que la subcadena exista.",
+            3: "Correcto: .strip() elimina espacios en blanco (y otros caracteres especificados) del inicio y final de una cadena. .lstrip() solo elimina al inicio y .rstrip() solo al final.",
+            4: "Correcto: .isalpha() devuelve True si todos los caracteres son letras del alfabeto. 'Python' solo contiene letras, por lo tanto devuelve True.",
+            5: "Correcto: [::-1] es un slicing especial que toma toda la cadena pero con paso -1, lo que invierte el orden de los caracteres."
+        };
+        
+        let userAnswers = {};
+        let score = 0;
+        
+        // Selección de opciones en el test
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', () => {
+                const question = option.getAttribute('data-question');
+                const selectedOption = option.getAttribute('data-option');
+                
+                // Remover selección anterior en esta pregunta
+                document.querySelectorAll(`.option[data-question="${question}"]`).forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Marcar la opción seleccionada
+                option.classList.add('selected');
+                
+                // Guardar respuesta del usuario
+                userAnswers[question] = selectedOption;
+            });
+        });
+        
+        // Verificar respuestas
+        document.getElementById('checkAnswers').addEventListener('click', () => {
+            score = 0;
+            
+            // Verificar cada pregunta
+            for (let i = 1; i <= 5; i++) {
+                const userAnswer = userAnswers[i];
+                const correctAnswer = correctAnswers[i];
+                const feedbackElement = document.getElementById(`feedback${i}`);
+                const questionElement = document.getElementById(`q${i}`);
+                
+                // Remover clases de retroalimentación previas
+                document.querySelectorAll(`.option[data-question="${i}"]`).forEach(option => {
+                    option.classList.remove('correct', 'incorrect');
+                });
+                
+                // Si el usuario respondió
+                if (userAnswer) {
+                    if (userAnswer === correctAnswer) {
+                        score++;
+                        // Marcar opción correcta
+                        document.querySelector(`.option[data-question="${i}"][data-option="${correctAnswer}"]`).classList.add('correct');
+                        
+                        // Mostrar retroalimentación positiva
+                        feedbackElement.textContent = explanations[i];
+                        feedbackElement.className = 'feedback correct';
+                        questionElement.style.borderLeftColor = '#6CBF84';
+                    } else {
+                        // Marcar opción incorrecta del usuario y opción correcta
+                        document.querySelector(`.option[data-question="${i}"][data-option="${userAnswer}"]`).classList.add('incorrect');
+                        document.querySelector(`.option[data-question="${i}"][data-option="${correctAnswer}"]`).classList.add('correct');
+                        
+                        // Mostrar retroalimentación correctiva
+                        feedbackElement.textContent = `Incorrecto. La respuesta correcta es: ${explanations[i]}`;
+                        feedbackElement.className = 'feedback incorrect';
+                        questionElement.style.borderLeftColor = '#FF7E5F';
+                    }
+                } else {
+                    // Si no respondió
+                    feedbackElement.textContent = 'No has seleccionado una respuesta para esta pregunta.';
+                    feedbackElement.className = 'feedback incorrect';
+                    questionElement.style.borderLeftColor = '#FF7E5F';
+                }
+            }
+            
+            // Actualizar puntuación
+            document.getElementById('score').textContent = `${score}/5`;
+            
+            // Mostrar mensaje según puntuación
+            const scoreMessages = [
+                "¡Anímate! Repasa los conceptos y vuelve a intentarlo.",
+                "Vas por buen camino, pero aún puedes mejorar.",
+                "Buen trabajo, has comprendido la mayoría de conceptos.",
+                "¡Excelente! Demuestras un gran entendimiento del tema.",
+                "¡Perfecto! Dominas completamente los conceptos del taller."
+            ];
+            
+            document.getElementById('score-message').textContent = scoreMessages[score];
+        });
+        
+        // Reiniciar test
+        document.getElementById('resetTest').addEventListener('click', resetTest);
+        
+        function resetTest() {
+            userAnswers = {};
+            score = 0;
+            
+            // Limpiar selecciones
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            // Limpiar retroalimentación
+            for (let i = 1; i <= 5; i++) {
+                const feedbackElement = document.getElementById(`feedback${i}`);
+                feedbackElement.textContent = '';
+                feedbackElement.className = 'feedback';
+                
+                const questionElement = document.getElementById(`q${i}`);
+                questionElement.style.borderLeftColor = '';
+            }
+            
+            // Reiniciar puntuación
+            document.getElementById('score').textContent = '0/5';
+            document.getElementById('score-message').textContent = 'Responde todas las preguntas para ver tu puntuación';
+        }
+        
+        // Permitir ejecutar código con Enter en el campo de nombre
+        document.getElementById('nombreInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('ejecutarBtn').click();
+            }
+        });
+    </script>
+</body>
+</html>

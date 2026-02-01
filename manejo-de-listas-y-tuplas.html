@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python: Manejo de Listas y Tuplas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --gray-light: #e2e8f0;
+            --gray: #94a3b8;
+            --gray-dark: #475569;
+            --transition: all 0.3s ease;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f9ff 0%, #fef7ff 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 95vh;
+        }
+
+        header {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 300;
+            margin-bottom: 15px;
+        }
+
+        .theme {
+            background-color: rgba(255, 255, 255, 0.15);
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        main {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        section {
+            background-color: var(--light);
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        section:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--accent);
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 i {
+            color: var(--secondary);
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        .code-container {
+            background-color: var(--dark);
+            color: var(--light);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .code-container pre {
+            font-family: 'Courier New', monospace;
+            line-height: 1.5;
+            font-size: 1rem;
+        }
+
+        .code-title {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .highlight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #6d28d9;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(124, 58, 237, 0.3);
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-accent:hover {
+            background-color: #0891b2;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(6, 182, 212, 0.3);
+        }
+
+        .challenge-box {
+            border-left: 5px solid var(--warning);
+            background-color: rgba(245, 158, 11, 0.05);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 var(--radius) var(--radius) 0;
+        }
+
+        .challenge-title {
+            color: var(--warning);
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .game-container {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .question-container {
+            margin-bottom: 25px;
+        }
+
+        .question {
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            color: var(--dark);
+        }
+
+        .options-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .option {
+            background-color: white;
+            border: 2px solid var(--gray-light);
+            border-radius: var(--radius);
+            padding: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background-color: rgba(37, 99, 235, 0.05);
+        }
+
+        .option.selected {
+            border-color: var(--primary);
+            background-color: rgba(37, 99, 235, 0.1);
+        }
+
+        .option.correct {
+            border-color: var(--success);
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+
+        .option.incorrect {
+            border-color: var(--error);
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        .option-letter {
+            background-color: var(--gray-light);
+            color: var(--dark);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .feedback {
+            padding: 15px;
+            border-radius: var(--radius);
+            margin-top: 15px;
+            display: none;
+            font-weight: 600;
+        }
+
+        .feedback.correct {
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background-color: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--error);
+            color: var(--error);
+            display: block;
+        }
+
+        .score-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid var(--gray-light);
+        }
+
+        .score {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .restart-btn {
+            background-color: var(--gray-dark);
+            color: white;
+        }
+
+        .restart-btn:hover {
+            background-color: var(--dark);
+        }
+
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 25px;
+            font-weight: 300;
+        }
+
+        footer p {
+            margin-bottom: 0;
+        }
+
+        .signature {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .python-logo {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                min-height: auto;
+            }
+            
+            main {
+                padding: 20px;
+                gap: 30px;
+            }
+            
+            section {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .options-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .buttons-container {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1><span class="python-logo">Python</span> para pensadores</h1>
+                <p class="tagline">Taller diseñado con el corazón de un docente y la mente de un programador</p>
+                <div class="theme">Python: Manejo de listas y tuplas</div>
+            </div>
+        </header>
+        
+        <main>
+            <section id="objective">
+                <h2><i class="fas fa-bullseye"></i> Objetivo de aprendizaje</h2>
+                <p>Dominar la creación, manipulación y aplicación de listas y tuplas en Python para resolver problemas computacionales reales, desarrollando competencias técnicas en estructuras de datos, habilidades cognitivas de análisis y síntesis, y actitudes de curiosidad, precisión y pensamiento lógico, con el fin de construir soluciones eficientes y elegantes que aborden desafíos cotidianos mediante la programación.</p>
+            </section>
+            
+            <section id="context">
+                <h2><i class="fas fa-globe-americas"></i> Contextualización</h2>
+                <p>Imagina que tienes en tus manos un canasto vacío. Cada vez que vas al mercado, lo llenas con frutas diferentes: manzanas, plátanos, uvas. Ese canasto es como una lista en Python: flexible, modificable, capaz de crecer y cambiar según lo necesites. Ahora piensa en las coordenadas de tu casa: latitud y longitud. Esos dos valores siempre irán juntos, inmutables, definiendo un lugar único en el mundo. Así son las tuplas: estructuras fijas que protegen lo esencial.</p>
+                <p>En nuestra vida digital, las listas y tuplas están en todas partes: desde la lista de amigos en redes sociales hasta las coordenadas de un mapa interactivo. Comprender su naturaleza te permitirá no solo escribir código, sino diseñar soluciones con conciencia de qué estructura elegir según el problema a resolver. Este conocimiento es el puente entre la teoría abstracta y el poder real de transformar datos en conocimiento.</p>
+            </section>
+            
+            <section id="activity">
+                <h2><i class="fas fa-code"></i> Desarrollo de la actividad</h2>
+                <p>Las listas en Python son como contenedores dinámicos que puedes modificar: agregar, eliminar o cambiar elementos. Son mutables y versátiles. Las tuplas, en cambio, son secuencias inmutables: una vez creadas, no puedes alterar su contenido, lo que las hace ideales para datos que no deben cambiar.</p>
+                
+                <div class="code-container">
+                    <div class="code-title"><i class="fas fa-list"></i> Listas: creación y manipulación</div>
+                    <pre>
+# Crear una lista de materias
+materias = ["Matemáticas", "Física", "Historia", "Programación"]
+print("Materias iniciales:", materias)
+
+# Agregar una nueva materia
+materias.append("Biología")
+print("Después de agregar Biología:", materias)
+
+# Insertar en una posición específica
+materias.insert(2, "Química")
+print("Después de insertar Química en posición 2:", materias)
+
+# Eliminar un elemento
+materias.remove("Historia")
+print("Después de eliminar Historia:", materias)
+
+# Acceder a elementos
+print("Primera materia:", materias[0])
+print("Última materia:", materias[-1])</pre>
+                </div>
+                
+                <div class="code-container">
+                    <div class="code-title"><i class="fas fa-lock"></i> Tuplas: estructuras inmutables</div>
+                    <pre>
+# Crear una tupla con coordenadas de ciudades de Ecuador
+quito = (-0.1807, -78.4678)
+guayaquil = (-2.1962, -79.8862)
+cuenca = (-2.9006, -79.0045)
+
+print("Coordenadas de Quito:", quito)
+print("Latitud de Guayaquil:", guayaquil[0])
+print("Longitud de Guayaquil:", guayaquil[1])
+
+# Las tuplas no se pueden modificar después de creadas
+# Esto causaría un error: quito[0] = 1.0
+
+# Tuplas útiles para retornar múltiples valores
+def calcular_promedio_y_maximo(calificaciones):
+    promedio = sum(calificaciones) / len(calificaciones)
+    maximo = max(calificaciones)
+    return (promedio, maximo)
+
+resultados = calcular_promedio_y_maximo([85, 92, 78, 90, 88])
+print(f"Promedio: {resultados[0]}, Máximo: {resultados[1]}")</pre>
+                </div>
+                
+                <div class="code-container">
+                    <div class="code-title"><i class="fas fa-exchange-alt"></i> Conversión entre listas y tuplas</div>
+                    <pre>
+# De lista a tupla
+lista_frutas = ["manzana", "banana", "naranja"]
+tupla_frutas = tuple(lista_frutas)
+print("Tupla de frutas:", tupla_frutas)
+
+# De tupla a lista
+coordenadas_tupla = (40.7128, -74.0060)  # Nueva York
+coordenadas_lista = list(coordenadas_tupla)
+print("Lista de coordenadas:", coordenadas_lista)
+
+# ¿Por qué convertir?
+# 1. Proteger datos: lista → tupla (inmutable)
+# 2. Modificar datos: tupla → lista (mutable)
+
+datos_sensibles = ["usuario", "contraseña", "email"]
+protegidos = tuple(datos_sensibles)
+print("Datos protegidos (inmutables):", protegidos)</pre>
+                </div>
+                
+                <p><span class="highlight">Reflexión:</span> ¿Cuándo usarías una lista y cuándo una tupla en una aplicación para gestionar las notas de tus materias? ¿Y en un sistema de geolocalización de sitios turísticos del Ecuador?</p>
+                
+                <div class="buttons-container">
+                    <button class="btn btn-primary" onclick="showExample('listExample')">
+                        <i class="fas fa-play-circle"></i> Ejecutar ejemplo de listas
+                    </button>
+                    <button class="btn btn-secondary" onclick="showExample('tupleExample')">
+                        <i class="fas fa-play-circle"></i> Ejecutar ejemplo de tuplas
+                    </button>
+                </div>
+            </section>
+            
+            <section id="challenge">
+                <h2><i class="fas fa-trophy"></i> El reto final</h2>
+                <div class="challenge-box">
+                    <div class="challenge-title">Sistema de gestión de calificaciones del bachillerato</div>
+                    <p>Eres el desarrollador de un sistema para gestionar las calificaciones del bachillerato en una institución educativa ecuatoriana. Tu tarea es crear un programa en Python que:</p>
+                    <ol>
+                        <li>Almacene en una <strong>lista de tuplas</strong> la información de 5 estudiantes, donde cada tupla contenga: (nombre, cedula, lista_de_calificaciones).</li>
+                        <li>Calcule para cada estudiante: promedio de calificaciones, calificación más alta y más baja.</li>
+                        <li>Determine cuál estudiante tiene el promedio más alto y cuál el más bajo.</li>
+                        <li>Muestre un informe ordenado alfabéticamente por nombre de estudiante.</li>
+                        <li>Permita al usuario buscar un estudiante por cédula y mostrar sus resultados.</li>
+                    </ol>
+                    <p><span class="highlight">Pistas:</span> Utiliza una lista principal que contenga tuplas. Cada tupla tendrá elementos de diferentes tipos (strings, números, lista). Investiga sobre las funciones <code>sorted()</code>, <code>max()</code>, <code>min()</code> y el método <code>.sort()</code> para listas.</p>
+                </div>
+                
+                <div class="buttons-container">
+                    <button class="btn btn-accent" onclick="showChallengeSolution()">
+                        <i class="fas fa-lightbulb"></i> Ver solución de referencia
+                    </button>
+                </div>
+            </section>
+            
+            <section id="game">
+                <h2><i class="fas fa-gamepad"></i> Evaluación lúdica</h2>
+                <p>Pon a prueba lo aprendido con este juego de preguntas. Cada respuesta correcta suma 10 puntos. ¡Intenta conseguir el puntaje máximo!</p>
+                
+                <div class="game-container">
+                    <div id="question-container" class="question-container">
+                        <!-- Las preguntas se cargarán aquí mediante JavaScript -->
+                    </div>
+                    
+                    <div id="feedback" class="feedback"></div>
+                    
+                    <div class="score-container">
+                        <div class="score">Puntaje: <span id="score">0</span>/50</div>
+                        <button class="btn restart-btn" onclick="restartGame()">
+                            <i class="fas fa-redo"></i> Reiniciar juego
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>Diseñado por: <span class="signature">Edwin Méndez J.</span></p>
+            <p>Taller educativo de programación - Python: Manejo de listas y tuplas</p>
+        </footer>
+    </div>
+
+    <script>
+        // Datos para el juego de preguntas
+        const questions = [
+            {
+                question: "¿Cuál es la principal diferencia entre listas y tuplas en Python?",
+                options: [
+                    "Las listas son inmutables y las tuplas mutables",
+                    "Las listas usan corchetes [] y las tuplas paréntesis ()",
+                    "Las listas son mutables y las tuplas inmutables",
+                    "Las listas son más rápidas que las tuplas"
+                ],
+                correct: 2,
+                explanation: "Correcto. La diferencia fundamental es que las listas son mutables (se pueden modificar después de creadas) mientras que las tuplas son inmutables (no se pueden modificar)."
+            },
+            {
+                question: "¿Cuál de estas operaciones NO se puede realizar en una tupla?",
+                options: [
+                    "Acceder a un elemento por índice",
+                    "Concatenar con otra tupla",
+                    "Agregar un nuevo elemento con append()",
+                    "Contar elementos con count()"
+                ],
+                correct: 2,
+                explanation: "Correcto. Las tuplas son inmutables, por lo que no se pueden agregar nuevos elementos después de creadas. El método append() solo existe para listas."
+            },
+            {
+                question: "¿Qué imprimirá este código?<br>frutas = ['manzana', 'banana', 'naranja']<br>frutas[1] = 'pera'<br>print(frutas)",
+                options: [
+                    "['manzana', 'banana', 'naranja']",
+                    "['manzana', 'pera', 'naranja']",
+                    "Error porque las listas son inmutables",
+                    "['pera', 'banana', 'naranja']"
+                ],
+                correct: 1,
+                explanation: "Correcto. Las listas son mutables, por lo que podemos modificar un elemento específico por su índice. En este caso, cambiamos el elemento en la posición 1 (banana) por 'pera'."
+            },
+            {
+                question: "¿Para qué tipo de datos sería más apropiado usar una tupla en lugar de una lista?",
+                options: [
+                    "Para almacenar los productos en un carrito de compras",
+                    "Para guardar las coordenadas geográficas de un lugar",
+                    "Para mantener una lista de tareas pendientes",
+                    "Para registrar los mensajes de un chat en tiempo real"
+                ],
+                correct: 1,
+                explanation: "Correcto. Las coordenadas geográficas (latitud y longitud) son datos que no deberían cambiar, por lo que una tupla es ideal para representarlas, aprovechando su inmutabilidad."
+            },
+            {
+                question: "¿Cómo convertirías una lista llamada 'numeros' en una tupla?",
+                options: [
+                    "tuple(numeros)",
+                    "numeros.tuple()",
+                    "toTuple(numeros)",
+                    "numeros.to_tuple()"
+                ],
+                correct: 0,
+                explanation: "Correcto. La función tuple() permite convertir cualquier iterable (como una lista) en una tupla. Esta es la forma estándar en Python."
+            }
+        ];
+
+        // Variables del juego
+        let currentQuestion = 0;
+        let score = 0;
+        let selectedOption = null;
+
+        // Inicializar el juego al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            loadQuestion();
+            
+            // Agregar eventos de clic a las opciones
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('option') || e.target.parentElement.classList.contains('option')) {
+                    const optionElem = e.target.classList.contains('option') ? e.target : e.target.parentElement;
+                    selectOption(optionElem);
+                }
+            });
+        });
+
+        // Cargar la pregunta actual
+        function loadQuestion() {
+            const questionContainer = document.getElementById('question-container');
+            const question = questions[currentQuestion];
+            
+            let optionsHTML = '';
+            question.options.forEach((option, index) => {
+                optionsHTML += `
+                    <div class="option" data-index="${index}">
+                        <div class="option-letter">${String.fromCharCode(65 + index)}</div>
+                        <div class="option-text">${option}</div>
+                    </div>
+                `;
+            });
+            
+            questionContainer.innerHTML = `
+                <div class="question">${question.question}</div>
+                <div class="options-container">${optionsHTML}</div>
+            `;
+            
+            // Limpiar feedback
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('feedback').textContent = '';
+            
+            // Actualizar puntaje
+            document.getElementById('score').textContent = score;
+        }
+
+        // Seleccionar una opción
+        function selectOption(optionElem) {
+            // Si ya hay una opción seleccionada, no hacer nada
+            if (document.querySelector('.option.selected')) return;
+            
+            const index = parseInt(optionElem.dataset.index);
+            selectedOption = index;
+            
+            // Marcar la opción seleccionada
+            optionElem.classList.add('selected');
+            
+            // Verificar si es correcta
+            const isCorrect = index === questions[currentQuestion].correct;
+            
+            // Mostrar feedback
+            const feedbackElem = document.getElementById('feedback');
+            if (isCorrect) {
+                feedbackElem.textContent = questions[currentQuestion].explanation;
+                feedbackElem.className = 'feedback correct';
+                score += 10;
+                optionElem.classList.add('correct');
+            } else {
+                feedbackElem.textContent = `Incorrecto. ${questions[currentQuestion].explanation}`;
+                feedbackElem.className = 'feedback incorrect';
+                optionElem.classList.add('incorrect');
+                
+                // Mostrar también la opción correcta
+                const correctIndex = questions[currentQuestion].correct;
+                const correctOption = document.querySelector(`.option[data-index="${correctIndex}"]`);
+                correctOption.classList.add('correct');
+            }
+            
+            // Actualizar puntaje
+            document.getElementById('score').textContent = score;
+            
+            // Avanzar a la siguiente pregunta después de un delay
+            setTimeout(() => {
+                if (currentQuestion < questions.length - 1) {
+                    currentQuestion++;
+                    loadQuestion();
+                } else {
+                    // Juego terminado
+                    const questionContainer = document.getElementById('question-container');
+                    let message = '';
+                    if (score === 50) {
+                        message = `<div class="feedback correct" style="display: block; text-align: center; padding: 30px; font-size: 1.3rem;">
+                            <i class="fas fa-trophy" style="font-size: 2rem; margin-bottom: 15px; display: block;"></i>
+                            <strong>¡Excelente!</strong> Obtuviste el puntaje máximo: ${score}/50.<br>
+                            Has dominado los conceptos de listas y tuplas en Python.
+                        </div>`;
+                    } else if (score >= 30) {
+                        message = `<div class="feedback correct" style="display: block; text-align: center; padding: 30px; font-size: 1.3rem;">
+                            <i class="fas fa-star" style="font-size: 2rem; margin-bottom: 15px; display: block;"></i>
+                            <strong>¡Buen trabajo!</strong> Puntaje: ${score}/50.<br>
+                            Tienes un buen entendimiento, pero sigue practicando.
+                        </div>`;
+                    } else {
+                        message = `<div class="feedback incorrect" style="display: block; text-align: center; padding: 30px; font-size: 1.3rem;">
+                            <i class="fas fa-redo" style="font-size: 2rem; margin-bottom: 15px; display: block;"></i>
+                            <strong>Puntaje: ${score}/50.</strong><br>
+                            Te recomendamos repasar los conceptos e intentar nuevamente.
+                        </div>`;
+                    }
+                    
+                    questionContainer.innerHTML = message;
+                }
+            }, 3000);
+        }
+
+        // Reiniciar el juego
+        function restartGame() {
+            currentQuestion = 0;
+            score = 0;
+            selectedOption = null;
+            loadQuestion();
+        }
+
+        // Funciones para los botones de ejemplo
+        function showExample(type) {
+            let message = '';
+            
+            if (type === 'listExample') {
+                message = `
+                <div class="feedback correct" style="display: block; margin-top: 20px;">
+                    <i class="fas fa-info-circle"></i> Ejemplo de listas ejecutado:<br>
+                    <code style="display: block; margin-top: 10px; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 5px;">
+                    materias = ["Matemáticas", "Física", "Historia", "Programación"]<br>
+                    materias.append("Biología")<br>
+                    materias.insert(2, "Química")<br>
+                    materias.remove("Historia")<br>
+                    print("Primera materia:", materias[0])  # Matemáticas<br>
+                    print("Última materia:", materias[-1]) # Biología
+                    </code>
+                </div>`;
+            } else if (type === 'tupleExample') {
+                message = `
+                <div class="feedback correct" style="display: block; margin-top: 20px;">
+                    <i class="fas fa-info-circle"></i> Ejemplo de tuplas ejecutado:<br>
+                    <code style="display: block; margin-top: 10px; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 5px;">
+                    quito = (-0.1807, -78.4678)<br>
+                    guayaquil = (-2.1962, -79.8862)<br>
+                    print("Latitud de Quito:", quito[0])  # -0.1807<br>
+                    print("Longitud de Guayaquil:", guayaquil[1])  # -79.8862<br><br>
+                    # Las tuplas son inmutables:<br>
+                    # quito[0] = 1.0  # Esto causaría un error
+                    </code>
+                </div>`;
+            }
+            
+            // Mostrar en el área de actividad
+            const activitySection = document.getElementById('activity');
+            const existingMessage = activitySection.querySelector('.example-message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'example-message';
+            messageDiv.innerHTML = message;
+            activitySection.appendChild(messageDiv);
+            
+            // Desplazar hacia el mensaje
+            messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            
+            // Eliminar después de 7 segundos
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.remove();
+                }
+            }, 7000);
+        }
+
+        // Mostrar solución del reto
+        function showChallengeSolution() {
+            const solution = `
+            <div class="code-container">
+                <div class="code-title"><i class="fas fa-lightbulb"></i> Solución de referencia para el reto</div>
+                <pre>
+# Sistema de gestión de calificaciones
+# Lista de tuplas: (nombre, cédula, [calificaciones])
+estudiantes = [
+    ("María González", "0951234567", [85, 90, 78, 92]),
+    ("Carlos Ruiz", "0957654321", [76, 88, 95, 81]),
+    ("Ana Mendoza", "0959876543", [90, 92, 94, 88]),
+    ("Diego Torres", "0954567890", [65, 70, 72, 68]),
+    ("Sofía Castro", "0952345678", [88, 85, 90, 92])
+]
+
+# Función para calcular estadísticas
+def calcular_estadisticas(calificaciones):
+    promedio = sum(calificaciones) / len(calificaciones)
+    maxima = max(calificaciones)
+    minima = min(calificaciones)
+    return (promedio, maxima, minima)
+
+# Procesar cada estudiante
+resultados = []
+for nombre, cedula, calificaciones in estudiantes:
+    promedio, maxima, minima = calcular_estadisticas(calificaciones)
+    resultados.append((nombre, cedula, promedio, maxima, minima))
+
+# Ordenar alfabéticamente
+resultados.sort(key=lambda x: x[0])
+
+# Mostrar informe
+print("=== INFORME DE CALIFICACIONES ===")
+for nombre, cedula, promedio, maxima, minima in resultados:
+    print(f"{nombre} (CI: {cedula}):")
+    print(f"  Promedio: {promedio:.2f}, Máxima: {maxima}, Mínima: {minima}")
+    print()
+
+# Encontrar mejores y peores promedios
+mejor_estudiante = max(resultados, key=lambda x: x[2])
+peor_estudiante = min(resultados, key=lambda x: x[2])
+print(f"Mejor promedio: {mejor_estudiante[0]} ({mejor_estudiante[2]:.2f})")
+print(f"Peor promedio: {peor_estudiante[0]} ({peor_estudiante[2]:.2f})")
+
+# Búsqueda por cédula
+cedula_busqueda = "0957654321"
+for nombre, cedula, promedio, maxima, minima in resultados:
+    if cedula == cedula_busqueda:
+        print(f"\\nResultados para {nombre}:")
+        print(f"Promedio: {promedio:.2f}, Máxima: {maxima}, Mínima: {minima}")
+        break</pre>
+            </div>`;
+            
+            const challengeSection = document.getElementById('challenge');
+            const existingSolution = challengeSection.querySelector('.solution-message');
+            if (existingSolution) {
+                existingSolution.remove();
+            }
+            
+            const solutionDiv = document.createElement('div');
+            solutionDiv.className = 'solution-message';
+            solutionDiv.innerHTML = solution;
+            challengeSection.appendChild(solutionDiv);
+            
+            // Desplazar hacia la solución
+            solutionDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
+</body>
+</html>

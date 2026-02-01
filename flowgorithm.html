@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creando Algoritmos Visualmente - Taller Flowgorithm</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variables de color y estilos globales */
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #7c3aed;
+            --accent-color: #06b6d4;
+            --light-color: #f0f9ff;
+            --dark-color: #1e293b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --gray-light: #f8fafc;
+            --gray-medium: #cbd5e1;
+            --gray-dark: #64748b;
+            --border-radius: 12px;
+            --box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Contenedor principal centrado */
+        .main-container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 90vh;
+        }
+        
+        /* Encabezado */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+        
+        .main-title {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            position: relative;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .theme {
+            font-style: italic;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 50px;
+            margin-top: 10px;
+            position: relative;
+        }
+        
+        /* Contenido principal */
+        .content {
+            display: flex;
+            flex: 1;
+        }
+        
+        /* Barra lateral de navegación */
+        .sidebar {
+            width: 250px;
+            background-color: var(--gray-light);
+            padding: 25px 20px;
+            border-right: 1px solid var(--gray-medium);
+        }
+        
+        .nav-list {
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-bottom: 15px;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            color: var(--dark-color);
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid transparent;
+        }
+        
+        .nav-link:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateX(5px);
+            border-left-color: var(--accent-color);
+        }
+        
+        .nav-link.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-left-color: var(--accent-color);
+        }
+        
+        .nav-icon {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        /* Área de contenido */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px dashed var(--gray-medium);
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+            background-color: var(--light-color);
+            padding: 10px;
+            border-radius: 50%;
+            color: var(--primary-color);
+        }
+        
+        .card {
+            background-color: var(--gray-light);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-top: 15px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.03);
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .objective-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .highlight {
+            background-color: rgba(6, 182, 212, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        /* Controles y botones */
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition);
+            text-decoration: none;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-secondary {
+            background-color: var(--gray-dark);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--dark-color);
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+        }
+        
+        .btn-success:hover {
+            background-color: #0da271;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+        
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+        
+        /* Juego de evaluación */
+        .quiz-container {
+            background-color: var(--gray-light);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-top: 20px;
+        }
+        
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .score-container {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            background-color: white;
+            padding: 8px 15px;
+            border-radius: 50px;
+        }
+        
+        .question {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+        
+        .options {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        
+        .option {
+            padding: 15px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+        
+        .option:hover {
+            background-color: var(--light-color);
+            border-color: var(--accent-color);
+        }
+        
+        .option.selected {
+            background-color: rgba(37, 99, 235, 0.1);
+            border-color: var(--primary-color);
+        }
+        
+        .option.correct {
+            background-color: rgba(16, 185, 129, 0.2);
+            border-color: var(--success-color);
+        }
+        
+        .option.incorrect {
+            background-color: rgba(239, 68, 68, 0.1);
+            border-color: var(--danger-color);
+        }
+        
+        .feedback {
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--success-color);
+            display: block;
+        }
+        
+        .feedback.incorrect {
+            background-color: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid var(--danger-color);
+            display: block;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        /* Pie de página */
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-top: 4px solid var(--accent-color);
+        }
+        
+        .footer-text {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Responsividad */
+        @media (max-width: 992px) {
+            .content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--gray-medium);
+            }
+            
+            .nav-list {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .nav-item {
+                margin: 5px;
+            }
+            
+            .nav-link {
+                min-width: 150px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.2rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Encabezado -->
+        <header class="header">
+            <h1 class="main-title">Construyendo Pensamiento Lógico</h1>
+            <p class="subtitle">Taller diseñado con el corazón de un docente y la mente de un programador</p>
+            <p class="theme">Creando Algoritmos de forma visual con Flowgorithm</p>
+        </header>
+        
+        <!-- Contenido principal -->
+        <div class="content">
+            <!-- Barra lateral de navegación -->
+            <nav class="sidebar">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#objetivo" class="nav-link active">
+                            <i class="nav-icon fas fa-bullseye"></i>
+                            <span>Objetivo</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#contexto" class="nav-link">
+                            <i class="nav-icon fas fa-globe-americas"></i>
+                            <span>Contexto</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#desarrollo" class="nav-link">
+                            <i class="nav-icon fas fa-code"></i>
+                            <span>Desarrollo</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#reto" class="nav-link">
+                            <i class="nav-icon fas fa-flag-checkered"></i>
+                            <span>Reto Final</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#evaluacion" class="nav-link">
+                            <i class="nav-icon fas fa-gamepad"></i>
+                            <span>Evaluación Lúdica</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Área de contenido principal -->
+            <main class="main-content">
+                <!-- Sección 1: Objetivo -->
+                <section id="objetivo" class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-bullseye"></i>
+                        Objetivo de Aprendizaje
+                    </h2>
+                    <div class="card">
+                        <p class="objective-text">
+                            <strong>Desarrollar</strong> la capacidad de diseñar algoritmos mediante representaciones visuales en Flowgorithm, <strong>integrando</strong> competencias técnicas como la identificación de estructuras de control (secuencia, decisión y repetición), <strong>aplicando</strong> pensamiento lógico y sistemático para resolver problemas del contexto cotidiano, y <strong>cultivando</strong> actitudes de perseverancia, curiosidad intelectual y ética digital, con el propósito de formar ciudadanos capaces de analizar situaciones complejas, tomar decisiones fundamentadas y crear soluciones innovadoras en un mundo tecnológico en constante evolución.
+                        </p>
+                    </div>
+                </section>
+                
+                <!-- Sección 2: Contextualización -->
+                <section id="contexto" class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-globe-americas"></i>
+                        Contextualización: Más allá del código
+                    </h2>
+                    <div class="card">
+                        <p>Imagina por un momento que te encuentras en la parada del bus escolar, observando cómo decenas de estudiantes suben y bajan de diferentes rutas. Sin darte cuenta, tu mente está ejecutando un algoritmo: identificar tu bus, verificar que tenga espacio, mostrar tu pase, encontrar asiento. La vida está llena de estos procesos lógicos que seguimos, a veces sin conciencia de ellos.</p>
+                        
+                        <p>Ahora piensa en Flowgorithm no como un software más, sino como un espacio donde esas secuencias lógicas toman forma, color y estructura. Cada figura que colocas en ese lienzo digital es un paso consciente en la construcción de tu pensamiento. Los algoritmos no son solo para máquinas; son la materialización de nuestra capacidad para ordenar el caos, para encontrar patrones donde otros ven confusión.</p>
+                        
+                        <p>En un Ecuador que se transforma digitalmente, entender la lógica de programación es como aprender un nuevo idioma: el idioma del futuro. Pero más importante aún, es desarrollar la resiliencia para enfrentar errores, la creatividad para imaginar soluciones y la ética para preguntarnos: ¿qué problemas vale la pena resolver?</p>
+                    </div>
+                </section>
+                
+                <!-- Sección 3: Desarrollo de la actividad -->
+                <section id="desarrollo" class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-code"></i>
+                        Desarrollo de la Actividad: Construyendo paso a paso
+                    </h2>
+                    <div class="card">
+                        <h3>Conceptos fundamentales</h3>
+                        <p>Un algoritmo es una secuencia <span class="highlight">ordenada y finita</span> de pasos para resolver un problema. En Flowgorithm, representamos estos pasos con símbolos:</p>
+                        
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li><strong>Óvalo:</strong> Inicio/Fin del algoritmo</li>
+                            <li><strong>Rectángulo:</strong> Proceso o asignación</li>
+                            <li><strong>Rombo:</strong> Decisión (Sí/No)</li>
+                            <li><strong>Paralelogramo:</strong> Entrada o salida de datos</li>
+                        </ul>
+                        
+                        <h3 style="margin-top: 20px;">Ejemplo práctico: Calculadora de promedio</h3>
+                        <p>Vamos a crear un algoritmo que calcule el promedio de tres notas:</p>
+                        
+                        <ol style="margin-left: 20px; margin-top: 10px;">
+                            <li>Iniciamos con un óvalo que dice "Inicio"</li>
+                            <li>Solicitamos tres notas (paralelogramos de entrada)</li>
+                            <li>Calculamos el promedio (rectángulo de proceso: (nota1 + nota2 + nota3) / 3)</li>
+                            <li>Preguntamos si el promedio es mayor o igual a 7 (rombo de decisión)</li>
+                            <li>Si es verdadero: mostramos "Aprobado"</li>
+                            <li>Si es falso: mostramos "Reprobado"</li>
+                            <li>Finalizamos con un óvalo que dice "Fin"</li>
+                        </ol>
+                        
+                        <div style="margin-top: 20px; padding: 15px; background-color: #e0f2fe; border-radius: 8px; border-left: 4px solid var(--accent-color);">
+                            <p><strong>Reflexión consciente:</strong> ¿Qué ocurriría si un estudiante ingresa una nota mayor a 10? ¿Cómo podríamos mejorar nuestro algoritmo para validar que las notas estén en el rango correcto? Piensa en cómo aplicarías este principio de validación en situaciones de tu vida diaria.</p>
+                        </div>
+                        
+                        <a href="#" class="btn" style="margin-top: 20px;">
+                            <i class="fas fa-download"></i> Descargar ejercicio en Flowgorithm
+                        </a>
+                    </div>
+                </section>
+                
+                <!-- Sección 4: Reto final -->
+                <section id="reto" class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-flag-checkered"></i>
+                        El Reto Final: Algoritmo para la vida real
+                    </h2>
+                    <div class="card">
+                        <h3>El dilema del emprendedor juvenil</h3>
+                        <p>Imagina que eres un joven emprendedor en Quito que ha comenzado a vender postres caseros. Cada fin de semana, debes decidir cuántas porciones de tres postres diferentes (torta de zanahoria, brownies y cheesecake) prepararás, considerando:</p>
+                        
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Costo de ingredientes para cada postre</li>
+                            <li>Precio de venta de cada postre</li>
+                            <li>Tiempo de preparación (tienes 8 horas disponibles)</li>
+                            <li>Demanda estimada basada en ventas anteriores</li>
+                            <li>Capacidad de tu horno (puedes hornear máximo 20 porciones a la vez)</li>
+                        </ul>
+                        
+                        <p><strong>Tu misión:</strong> Diseña en Flowgorithm un algoritmo que ayude a tomar la decisión óptima sobre cuántas porciones de cada postre preparar para maximizar las ganancias, sin exceder el tiempo disponible ni la capacidad del horno.</p>
+                        
+                        <div style="margin-top: 20px; padding: 15px; background-color: #fef3c7; border-radius: 8px; border-left: 4px solid var(--warning-color);">
+                            <p><strong>Pistas para la solución:</strong> Considera usar variables para almacenar costos, precios y tiempos. Utiliza estructuras condicionales para validar restricciones. Piensa en cómo representarías la capacidad del horno y el tiempo disponible. ¿Se te ocurre alguna forma de incluir un factor de "preferencia del cliente" en tu algoritmo?</p>
+                        </div>
+                        
+                        <div style="display: flex; gap: 15px; margin-top: 25px;">
+                            <a href="#" class="btn btn-success">
+                                <i class="fas fa-lightbulb"></i> Ver ejemplo de solución
+                            </a>
+                            <a href="#" class="btn">
+                                <i class="fas fa-users"></i> Trabajar en equipo
+                            </a>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Sección 5: Evaluación lúdica -->
+                <section id="evaluacion" class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-gamepad"></i>
+                        Evaluación Lúdica: Pon a prueba tu conocimiento
+                    </h2>
+                    
+                    <div class="quiz-container">
+                        <div class="quiz-header">
+                            <h3>Quiz: Algoritmos y Flowgorithm</h3>
+                            <div class="score-container">
+                                Puntuación: <span id="score">0</span>/5
+                            </div>
+                        </div>
+                        
+                        <div id="question-container">
+                            <p class="question" id="question-text">¿Cuál es el símbolo utilizado en Flowgorithm para representar una decisión?</p>
+                            
+                            <div class="options" id="options-container">
+                                <!-- Las opciones se llenarán con JavaScript -->
+                            </div>
+                            
+                            <div id="feedback" class="feedback"></div>
+                            
+                            <div class="controls">
+                                <button id="prev-btn" class="btn btn-secondary" disabled>
+                                    <i class="fas fa-arrow-left"></i> Anterior
+                                </button>
+                                
+                                <div>
+                                    <span id="question-counter">Pregunta 1 de 5</span>
+                                </div>
+                                
+                                <button id="next-btn" class="btn btn-success">
+                                    Siguiente <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div id="results-container" style="display: none; text-align: center; padding: 30px;">
+                            <h3 style="color: var(--primary-color); margin-bottom: 20px;">¡Quiz completado!</h3>
+                            <p id="final-score" style="font-size: 1.5rem; margin-bottom: 20px;"></p>
+                            <p id="result-message" style="margin-bottom: 25px;"></p>
+                            <button id="restart-btn" class="btn">
+                                <i class="fas fa-redo"></i> Reiniciar Quiz
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+        
+        <!-- Pie de página -->
+        <footer class="footer">
+            <p class="footer-text">Diseñado por: Edwin Méndez J.</p>
+            <p class="footer-text">Python para pensadores | Taller de algoritmos con Flowgorithm</p>
+        </footer>
+    </div>
+
+    <script>
+        // Datos para el quiz
+        const quizData = [
+            {
+                question: "¿Cuál es el símbolo utilizado en Flowgorithm para representar una decisión?",
+                options: ["Óvalo", "Rectángulo", "Rombo", "Paralelogramo"],
+                correct: 2,
+                explanation: "Correcto. El rombo es el símbolo utilizado para representar una decisión (estructuras condicionales) en un diagrama de flujo."
+            },
+            {
+                question: "¿Qué representa un algoritmo en el contexto de la programación?",
+                options: [
+                    "Un lenguaje de programación específico",
+                    "Una secuencia ordenada de pasos para resolver un problema",
+                    "Un tipo de variable especial",
+                    "Un error en el código"
+                ],
+                correct: 1,
+                explanation: "¡Excelente! Un algoritmo es precisamente una secuencia ordenada y finita de pasos para resolver un problema específico."
+            },
+            {
+                question: "En Flowgorithm, ¿qué tipo de estructura nos permite repetir un conjunto de instrucciones?",
+                options: [
+                    "Estructura secuencial",
+                    "Estructura condicional",
+                    "Estructura repetitiva",
+                    "Estructura de salida"
+                ],
+                correct: 2,
+                explanation: "Correcto. La estructura repetitiva (también llamada bucle o ciclo) nos permite ejecutar un conjunto de instrucciones múltiples veces."
+            },
+            {
+                question: "¿Cuál de estas NO es una característica esencial de un algoritmo?",
+                options: [
+                    "Debe ser preciso y sin ambigüedades",
+                    "Debe tener un número finito de pasos",
+                    "Debe resolver el problema para el que fue diseñado",
+                    "Debe estar escrito en un lenguaje de programación específico"
+                ],
+                correct: 3,
+                explanation: "Muy bien. Un algoritmo puede expresarse en lenguaje natural, diagramas o pseudocódigo; no necesita estar en un lenguaje de programación específico."
+            },
+            {
+                question: "En un diagrama de flujo, ¿qué símbolo se utiliza para representar la entrada o salida de datos?",
+                options: ["Óvalo", "Rectángulo", "Rombo", "Paralelogramo"],
+                correct: 3,
+                explanation: "¡Perfecto! El paralelogramo es el símbolo utilizado para representar operaciones de entrada o salida de datos en un diagrama de flujo."
+            }
+        ];
+
+        // Variables del estado del quiz
+        let currentQuestion = 0;
+        let score = 0;
+        let selectedOption = null;
+        let quizCompleted = false;
+
+        // Elementos DOM
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackContainer = document.getElementById('feedback');
+        const scoreElement = document.getElementById('score');
+        const questionCounter = document.getElementById('question-counter');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const resultsContainer = document.getElementById('results-container');
+        const questionContainer = document.getElementById('question-container');
+        const finalScoreElement = document.getElementById('final-score');
+        const resultMessageElement = document.getElementById('result-message');
+        const restartBtn = document.getElementById('restart-btn');
+
+        // Navegación por las secciones
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remover clase activa de todos los enlaces
+                document.querySelectorAll('.nav-link').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Agregar clase activa al enlace clickeado
+                this.classList.add('active');
+                
+                // Obtener el ID de la sección objetivo
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                
+                // Desplazar suavemente a la sección
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Inicializar el quiz
+        function loadQuestion() {
+            const currentQuizData = quizData[currentQuestion];
+            
+            // Actualizar texto de la pregunta
+            questionText.textContent = currentQuizData.question;
+            
+            // Actualizar contador
+            questionCounter.textContent = `Pregunta ${currentQuestion + 1} de ${quizData.length}`;
+            
+            // Limpiar opciones anteriores
+            optionsContainer.innerHTML = '';
+            
+            // Crear nuevas opciones
+            currentQuizData.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.classList.add('option');
+                optionElement.textContent = option;
+                optionElement.dataset.index = index;
+                
+                optionElement.addEventListener('click', () => selectOption(optionElement, index));
+                
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Reiniciar selección y feedback
+            selectedOption = null;
+            feedbackContainer.textContent = '';
+            feedbackContainer.className = 'feedback';
+            
+            // Actualizar estado de los botones
+            prevBtn.disabled = currentQuestion === 0;
+            
+            if (currentQuestion === quizData.length - 1) {
+                nextBtn.textContent = 'Finalizar ';
+                nextBtn.innerHTML = 'Finalizar <i class="fas fa-check"></i>';
+            } else {
+                nextBtn.textContent = 'Siguiente ';
+                nextBtn.innerHTML = 'Siguiente <i class="fas fa-arrow-right"></i>';
+            }
+            
+            // Actualizar puntuación
+            scoreElement.textContent = score;
+        }
+
+        // Seleccionar una opción
+        function selectOption(optionElement, optionIndex) {
+            if (quizCompleted) return;
+            
+            // Remover selección anterior
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            // Marcar opción seleccionada
+            optionElement.classList.add('selected');
+            selectedOption = optionIndex;
+            
+            const currentQuizData = quizData[currentQuestion];
+            
+            // Verificar si la respuesta es correcta
+            if (optionIndex === currentQuizData.correct) {
+                optionElement.classList.add('correct');
+                feedbackContainer.textContent = currentQuizData.explanation;
+                feedbackContainer.classList.add('correct');
+            } else {
+                optionElement.classList.add('incorrect');
+                feedbackContainer.textContent = "Incorrecto. " + currentQuizData.explanation;
+                feedbackContainer.classList.add('incorrect');
+                
+                // Mostrar también la respuesta correcta
+                const correctOption = document.querySelector(`.option[data-index="${currentQuizData.correct}"]`);
+                correctOption.classList.add('correct');
+            }
+        }
+
+        // Navegar a la siguiente pregunta
+        nextBtn.addEventListener('click', () => {
+            if (selectedOption === null && currentQuestion < quizData.length) {
+                alert("Por favor, selecciona una respuesta antes de continuar.");
+                return;
+            }
+            
+            // Sumar puntos si la respuesta es correcta
+            if (selectedOption === quizData[currentQuestion].correct) {
+                score++;
+                scoreElement.textContent = score;
+            }
+            
+            if (currentQuestion < quizData.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                // Mostrar resultados finales
+                showResults();
+            }
+        });
+
+        // Navegar a la pregunta anterior
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        });
+
+        // Mostrar resultados finales
+        function showResults() {
+            quizCompleted = true;
+            questionContainer.style.display = 'none';
+            resultsContainer.style.display = 'block';
+            
+            finalScoreElement.textContent = `Obtuviste ${score} de ${quizData.length} puntos`;
+            
+            // Mensaje personalizado según el puntaje
+            let message = "";
+            if (score === quizData.length) {
+                message = "¡Excelente! Dominas los conceptos fundamentales de algoritmos y Flowgorithm. Estás listo para enfrentar retos más complejos.";
+            } else if (score >= quizData.length * 0.7) {
+                message = "¡Muy buen trabajo! Tienes un sólido entendimiento de los conceptos clave. Sigue practicando para perfeccionar tus habilidades.";
+            } else if (score >= quizData.length * 0.5) {
+                message = "Buen comienzo. Entiendes los conceptos básicos, pero necesitas repasar algunos temas. La práctica constante es clave.";
+            } else {
+                message = "Es un buen punto de partida. Te recomiendo revisar los conceptos del taller y volver a intentarlo. Recuerda que el aprendizaje es un proceso.";
+            }
+            
+            resultMessageElement.textContent = message;
+        }
+
+        // Reiniciar el quiz
+        restartBtn.addEventListener('click', () => {
+            currentQuestion = 0;
+            score = 0;
+            quizCompleted = false;
+            
+            questionContainer.style.display = 'block';
+            resultsContainer.style.display = 'none';
+            
+            loadQuestion();
+        });
+
+        // Inicializar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            // Cargar la primera pregunta del quiz
+            loadQuestion();
+            
+            // Asegurar que la primera sección esté activa
+            document.querySelector('.nav-link').classList.add('active');
+        });
+    </script>
+</body>
+</html>
