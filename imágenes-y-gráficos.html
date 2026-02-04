@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python-tkinter: Administración de imágenes y gráficos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Slab:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2E5BFF;
+            --primary-light: #4A7BFF;
+            --secondary: #00C9A7;
+            --secondary-light: #0DE8C2;
+            --accent: #FF6B8B;
+            --dark: #2D3748;
+            --light: #F7FAFC;
+            --gray: #E2E8F0;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 0;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-family: 'Roboto Slab', serif;
+            font-size: 1.3rem;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .theme {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 1.1rem;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 3rem 0;
+        }
+
+        .section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 i {
+            color: var(--secondary);
+        }
+
+        h3 {
+            color: var(--dark);
+            margin: 1.5rem 0 1rem;
+            font-size: 1.4rem;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+        }
+
+        .highlight {
+            background-color: rgba(46, 91, 255, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Code blocks */
+        .code-container {
+            background-color: #1E1E1E;
+            color: #D4D4D4;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .code-keyword {
+            color: #569CD6;
+        }
+
+        .code-string {
+            color: #CE9178;
+        }
+
+        .code-comment {
+            color: #6A9955;
+        }
+
+        .code-function {
+            color: #DCDCAA;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 500;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(46, 91, 255, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary-light);
+            box-shadow: 0 6px 12px rgba(0, 201, 167, 0.2);
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+        }
+
+        .btn-accent:hover {
+            background-color: #FF8AA3;
+            box-shadow: 0 6px 12px rgba(255, 107, 139, 0.2);
+        }
+
+        /* Quiz Section */
+        .quiz-container {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .score {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        .question {
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .options {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .option {
+            background-color: white;
+            border: 2px solid var(--gray);
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option:hover {
+            border-color: var(--primary-light);
+            background-color: rgba(46, 91, 255, 0.05);
+        }
+
+        .option.selected {
+            border-color: var(--primary);
+            background-color: rgba(46, 91, 255, 0.1);
+        }
+
+        .option.correct {
+            border-color: var(--secondary);
+            background-color: rgba(0, 201, 167, 0.1);
+        }
+
+        .option.incorrect {
+            border-color: var(--accent);
+            background-color: rgba(255, 107, 139, 0.1);
+        }
+
+        .option-letter {
+            background-color: var(--gray);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .feedback {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .feedback.correct {
+            background-color: rgba(0, 201, 167, 0.1);
+            border-left: 4px solid var(--secondary);
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background-color: rgba(255, 107, 139, 0.1);
+            border-left: 4px solid var(--accent);
+            display: block;
+        }
+
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .author {
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+            color: var(--gray);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .section {
+                padding: 1.5rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .logo {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1 class="logo">Python para pensadores</h1>
+            <p class="subtitle">Taller diseñado con el corazón de un docente y la mente de un programador</p>
+            <div class="theme">Tema: Python-tkinter: Administración de imágenes y gráficos</div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Sección 1: Título principal -->
+        <section class="section">
+            <h2><i class="fas fa-palette"></i> Creando Mundos Visuales: El Arte de Programar con Imágenes</h2>
+            <p>Imagina que tus líneas de código pueden dibujar emociones, contar historias y transformar datos en experiencias visuales impactantes. En este taller, no solo aprenderás a manipular imágenes y gráficos, sino que descubrirás cómo la programación puede ser tu lienzo digital para expresar ideas complejas de manera intuitiva y poderosa.</p>
+        </section>
+
+        <!-- Sección 2: Objetivo de aprendizaje -->
+        <section class="section">
+            <h2><i class="fas fa-bullseye"></i> Objetivo de Aprendizaje</h2>
+            <p>Desarrollar interfaces gráficas funcionales y estéticas mediante la gestión de imágenes y gráficos en Python con Tkinter, integrando competencias técnicas como el manejo de formatos de imagen, sistemas de coordenadas y eventos, con habilidades cognitivas de análisis visual y resolución de problemas, y actitudes de curiosidad exploratoria y rigor estético, para crear aplicaciones que transformen datos abstractos en experiencias visuales significativas y accesibles.</p>
+        </section>
+
+        <!-- Sección 3: Contextualización -->
+        <section class="section">
+            <h2><i class="fas fa-compass"></i> Contextualización: ¿Por qué las imágenes importan?</h2>
+            <p>Recuerdas la última vez que una aplicación te sorprendió por su diseño, o cuando un gráfico te ayudó a comprender algo complejo en segundos. Detrás de esas experiencias hay programadores que entendieron que las imágenes no son solo decoración, son lenguaje. En un mundo saturado de información, la capacidad de crear visualizaciones claras y atractivas es superpoder. Desde el diseño de una app para registrar especies de aves en Mindo, hasta la visualización de datos climáticos en Galápagos, la manipulación de imágenes con Python puede ser tu herramienta para conectar tecnología con realidad.</p>
+            <div class="highlight">
+                <p><strong>Reflexión:</strong> Piensa en una aplicación que uses frecuentemente. ¿Qué elementos visuales hacen que sea intuitiva? ¿Cómo crees que fueron programados esos elementos?</p>
+            </div>
+        </section>
+
+        <!-- Sección 4: Desarrollo de la actividad -->
+        <section class="section">
+            <h2><i class="fas fa-code"></i> Desarrollo de la Actividad</h2>
+            
+            <h3>1. Los fundamentos: Canvas y PhotoImage</h3>
+            <p>El widget Canvas de Tkinter es nuestro lienzo digital. Permite dibujar formas, texto y mostrar imágenes. Para trabajar con imágenes, necesitamos el objeto PhotoImage.</p>
+            
+            <div class="code-container">
+                <pre><span class="code-keyword">import</span> tkinter <span class="code-keyword">as</span> tk
+<span class="code-keyword">from</span> tkinter <span class="code-keyword">import</span> ttk
+
+<span class="code-comment"># Crear ventana principal</span>
+ventana = tk.Tk()
+ventana.title(<span class="code-string">"Mi primera imagen en Tkinter"</span>)
+ventana.geometry(<span class="code-string">"500x400"</span>)
+
+<span class="code-comment"># Cargar una imagen (soporta formatos GIF, PGM, PPM)</span>
+imagen = tk.PhotoImage(file=<span class="code-string">"logo.png"</span>)
+
+<span class="code-comment"># Mostrar la imagen en un Label</span>
+etiqueta_imagen = tk.Label(ventana, image=imagen)
+etiqueta_imagen.pack(pady=20)
+
+<span class="code-comment"># Crear un canvas para dibujar</span>
+canvas = tk.Canvas(ventana, width=400, height=200, bg=<span class="code-string">"white"</span>)
+canvas.pack()
+
+<span class="code-comment"># Dibujar formas geométricas en el canvas</span>
+canvas.create_rectangle(50, 50, 150, 150, fill=<span class="code-string">"#2E5BFF"</span>, outline=<span class="code-string">""</span>)
+canvas.create_oval(200, 50, 300, 150, fill=<span class="code-string">"#00C9A7"</span>, outline=<span class="code-string">""</span>)
+canvas.create_text(350, 100, text=<span class="code-string">"¡Hola, mundo visual!"</span>, 
+                   font=(<span class="code-string">"Arial"</span>, 12), fill=<span class="code-string">"#2D3748"</span>)
+
+ventana.mainloop()</pre>
+            </div>
+            
+            <p><strong>Experimenta:</strong> Cambia las coordenadas de las formas, modifica los colores usando códigos hexadecimales, intenta cambiar el tamaño de la ventana.</p>
+            
+            <h3>2. Trabajando con imágenes modernas (PNG, JPG)</h3>
+            <p>PhotoImage de Tkinter tiene limitaciones con formatos modernos. Para superarlas, usamos PIL (Pillow), una poderosa biblioteca de procesamiento de imágenes.</p>
+            
+            <div class="code-container">
+                <pre><span class="code-comment"># Instala Pillow primero: pip install pillow</span>
+<span class="code-keyword">import</span> tkinter <span class="code-keyword">as</span> tk
+<span class="code-keyword">from</span> PIL <span class="code-keyword">import</span> Image, ImageTk
+
+<span class="code-function">def</span> cargar_imagen_moderna():
+    <span class="code-comment"># Abrir imagen con PIL</span>
+    imagen_pil = Image.open(<span class="code-string">"foto.jpg"</span>)
+    
+    <span class="code-comment"># Redimensionar si es muy grande</span>
+    <span class="code-keyword">if</span> imagen_pil.width > 400 <span class="code-keyword">or</span> imagen_pil.height > 300:
+        imagen_pil = imagen_pil.resize((400, 300), Image.Resampling.LANCZOS)
+    
+    <span class="code-comment"># Convertir a formato compatible con Tkinter</span>
+    imagen_tk = ImageTk.PhotoImage(imagen_pil)
+    
+    <span class="code-keyword">return</span> imagen_tk
+
+<span class="code-comment"># Configurar interfaz</span>
+ventana = tk.Tk()
+ventana.title(<span class="code-string">"Imágenes modernas con PIL"</span>)
+
+<span class="code-comment"># Cargar y mostrar imagen</span>
+imagen = cargar_imagen_moderna()
+label = tk.Label(ventana, image=imagen)
+label.image = imagen  <span class="code-comment"># ¡Referencia importante!</span>
+label.pack()
+
+<span class="code-comment"># Botón para cambiar imagen</span>
+<span class="code-function">def</span> cambiar_imagen():
+    nueva_imagen = cargar_imagen_moderna()
+    label.config(image=nueva_imagen)
+    label.image = nueva_imagen
+
+boton = tk.Button(ventana, text=<span class="code-string">"Cambiar imagen"</span>, 
+                  command=cambiar_imagen, bg=<span class="code-string">"#2E5BFF"</span>, fg=<span class="code-string">"white"</span>)
+boton.pack(pady=10)
+
+ventana.mainloop()</pre>
+            </div>
+            
+            <div class="highlight">
+                <p><strong>Para reflexionar:</strong> ¿Por qué crees que es importante mantener una referencia a la imagen (label.image = imagen)? ¿Qué pasa si no lo hacemos? Experimenta eliminando esa línea y observa lo que sucede.</p>
+            </div>
+            
+            <h3>3. Gráficos dinámicos y animaciones básicas</h3>
+            <p>Podemos crear movimiento y dinamismo combinando Canvas con métodos de actualización.</p>
+            
+            <div class="code-container">
+                <pre><span class="code-keyword">import</span> tkinter <span class="code-keyword">as</span> tk
+<span class="code-keyword">import</span> random
+
+<span class="code-function">class</span> <span class="code-function">AplicacionGraficos</span>:
+    <span class="code-function">def</span> <span class="code-function">__init__</span>(self, ventana):
+        self.ventana = ventana
+        self.ventana.title(<span class="code-string">"Gráficos Dinámicos"</span>)
+        
+        <span class="code-comment"># Crear canvas</span>
+        self.canvas = tk.Canvas(ventana, width=600, height=400, bg=<span class="code-string">"#F7FAFC"</span>)
+        self.canvas.pack()
+        
+        <span class="code-comment"># Lista para almacenar los objetos gráficos</span>
+        self.elementos = []
+        
+        <span class="code-comment"># Botones de control</span>
+        frame_botones = tk.Frame(ventana)
+        frame_botones.pack(pady=10)
+        
+        tk.Button(frame_botones, text=<span class="code-string">"Agregar círculo"</span>, 
+                  command=self.agregar_circulo, bg=<span class="code-string">"#00C9A7"</span>, fg=<span class="code-string">"white"</span>).pack(side=tk.LEFT, padx=5)
+        tk.Button(frame_botones, text=<span class="code-string">"Mover elementos"</span>, 
+                  command=self.mover_elementos, bg=<span class="code-string">"#2E5BFF"</span>, fg=<span class="code-string">"white"</span>).pack(side=tk.LEFT, padx=5)
+        tk.Button(frame_botones, text=<span class="code-string">"Limpiar canvas"</span>, 
+                  command=self.limpiar_canvas, bg=<span class="code-string">"#FF6B8B"</span>, fg=<span class="code-string">"white"</span>).pack(side=tk.LEFT, padx=5)
+    
+    <span class="code-function">def</span> <span class="code-function">agregar_circulo</span>(self):
+        <span class="code-comment"># Crear círculo en posición aleatoria</span>
+        x = random.randint(50, 550)
+        y = random.randint(50, 350)
+        radio = random.randint(20, 50)
+        
+        <span class="code-comment"># Color aleatorio en formato hexadecimal</span>
+        color = <span class="code-string">"#"</span> + <span class="code-string">''</span>.join(random.choices(<span class="code-string">"0123456789ABCDEF"</span>, k=6))
+        
+        circulo = self.canvas.create_oval(x-radio, y-radio, x+radio, y+radio, 
+                                          fill=color, outline=<span class="code-string">""</span>)
+        self.elementos.append(circulo)
+    
+    <span class="code-function">def</span> <span class="code-function">mover_elementos</span>(self):
+        <span class="code-keyword">for</span> elemento <span class="code-keyword">in</span> self.elementos:
+            <span class="code-comment"># Mover cada elemento una cantidad aleatoria</span>
+            dx = random.randint(-20, 20)
+            dy = random.randint(-20, 20)
+            self.canvas.move(elemento, dx, dy)
+    
+    <span class="code-function">def</span> <span class="code-function">limpiar_canvas</span>(self):
+        <span class="code-keyword">for</span> elemento <span class="code-keyword">in</span> self.elementos:
+            self.canvas.delete(elemento)
+        self.elementos.clear()
+
+<span class="code-keyword">if</span> __name__ == <span class="code-string">"__main__"</span>:
+    ventana = tk.Tk()
+    app = AplicacionGraficos(ventana)
+    ventana.mainloop()</pre>
+            </div>
+            
+            <p><strong>Desafío de exploración:</strong> Modifica el código para que los círculos reboten en los bordes del canvas. ¿Qué variables necesitas rastrear para cada círculo? ¿Cómo detectarías las colisiones entre círculos?</p>
+        </section>
+
+        <!-- Sección 5: El reto final -->
+        <section class="section">
+            <h2><i class="fas fa-flag-checkered"></i> El Reto Final: Galería Interactiva de Biodiversidad Ecuatoriana</h2>
+            <p>Crea una aplicación de escritorio que muestre una galería interactiva de especies emblemáticas del Ecuador. La aplicación debe incluir:</p>
+            
+            <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
+                <li>Una interfaz con menú de navegación para seleccionar categorías (Aves, Mamíferos, Flora, etc.)</li>
+                <li>Visualización de imágenes de al menos 6 especies diferentes (puedes usar imágenes de ejemplo o enlaces a recursos online)</li>
+                <li>Un panel informativo que muestre datos relevantes de cada especie al hacer clic en su imagen</li>
+                <li>Funcionalidad para "favoritar" especies y mostrarlas en una sección especial</li>
+                <li>Un gráfico simple que muestre la distribución de especies por región (Costa, Sierra, Amazonía, Galápagos)</li>
+            </ul>
+            
+            <div class="highlight">
+                <p><strong>Pistas para comenzar:</strong> Puedes estructurar tu solución usando frames para organizar la interfaz. Considera usar un diccionario para almacenar la información de cada especie. Para el gráfico de distribución, el método create_rectangle del canvas con diferentes alturas puede simular un gráfico de barras.</p>
+            </div>
+            
+            <button class="btn btn-secondary" id="showHint">Mostrar pista avanzada</button>
+            <div id="advancedHint" style="display: none; margin-top: 1rem; padding: 1rem; background-color: rgba(0, 201, 167, 0.1); border-radius: 8px;">
+                <p><strong>Pista avanzada:</strong> Considera crear una clase "Especie" con atributos como nombre, categoría, región, imagen_path, descripción. Luego puedes crear una lista de objetos Especie y recorrerla para generar la galería dinámicamente. Para el gráfico, puedes usar un Canvas y calcular la altura de cada barra proporcional al número de especies por región.</p>
+            </div>
+        </section>
+
+        <!-- Sección 6: Evaluación lúdica -->
+        <section class="section">
+            <h2><i class="fas fa-gamepad"></i> Evaluación Lúdica: Test de Conceptos Visuales</h2>
+            <p>Responde las siguientes preguntas para validar tu comprensión de los conceptos trabajados. ¡Cada respuesta correcta suma puntos!</p>
+            
+            <div class="quiz-container">
+                <div class="quiz-header">
+                    <h3>Quiz: Python-tkinter Gráficos</h3>
+                    <div class="score">Puntaje: <span id="score">0</span>/5</div>
+                </div>
+                
+                <div id="question-container">
+                    <!-- Las preguntas se cargarán aquí mediante JavaScript -->
+                </div>
+                
+                <div id="feedback" class="feedback"></div>
+                
+                <div class="quiz-controls">
+                    <button class="btn btn-accent" id="prev-btn" disabled>Anterior</button>
+                    <button class="btn btn-secondary" id="next-btn">Siguiente</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>Taller: Python-tkinter: Administración de imágenes y gráficos</p>
+            <p class="author">Diseñado por: Edwin Méndez J.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Datos para el quiz
+        const quizData = [
+            {
+                question: "¿Qué formato de imagen NO soporta nativamente PhotoImage de Tkinter?",
+                options: ["GIF", "PNG", "PGM", "PPM"],
+                correct: 1,
+                explanation: "PhotoImage de Tkinter soporta nativamente formatos GIF, PGM y PPM. Para trabajar con PNG, JPG y otros formatos modernos, necesitamos usar la biblioteca PIL (Pillow)."
+            },
+            {
+                question: "¿Por qué es importante guardar una referencia a la imagen cuando usamos PIL con Tkinter?",
+                options: [
+                    "Para evitar que el recolector de basura elimine la imagen",
+                    "Para poder cambiar la imagen más rápido",
+                    "Para reducir el uso de memoria",
+                    "Para compatibilidad con versiones antiguas de Python"
+                ],
+                correct: 0,
+                explanation: "Python's garbage collector puede eliminar la imagen si no mantenemos una referencia, causando que desaparezca de la interfaz. Por eso hacemos 'label.image = imagen_tk'."
+            },
+            {
+                question: "¿Qué método de Canvas se utiliza para crear un círculo?",
+                options: ["create_circle()", "create_oval()", "create_round()", "draw_circle()"],
+                correct: 1,
+                explanation: "En Canvas, los círculos se crean con create_oval(). Si el ancho y alto son iguales, obtendremos un círculo perfecto."
+            },
+            {
+                question: "¿Cuál es la función principal de PIL (Pillow) en el contexto de Tkinter?",
+                options: [
+                    "Mejorar el rendimiento de las animaciones",
+                    "Permitir el uso de formatos de imagen modernos",
+                    "Agregar efectos 3D a los gráficos",
+                    "Simplificar la creación de interfaces"
+                ],
+                correct: 1,
+                explanation: "PIL (Python Imaging Library) o Pillow permite abrir, manipular y guardar muchos formatos de imagen diferentes, extendiendo las capacidades nativas de Tkinter."
+            },
+            {
+                question: "¿Qué parámetro del método create_rectangle controla el color de relleno?",
+                options: ["color", "fill", "background", "bgcolor"],
+                correct: 1,
+                explanation: "El parámetro 'fill' determina el color de relleno de las formas en Canvas. Por ejemplo: create_rectangle(10, 10, 50, 50, fill='blue')."
+            }
+        ];
+
+        // Variables de estado del quiz
+        let currentQuestion = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+
+        // Elementos DOM
+        const questionContainer = document.getElementById('question-container');
+        const scoreElement = document.getElementById('score');
+        const feedbackElement = document.getElementById('feedback');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const showHintBtn = document.getElementById('showHint');
+        const advancedHint = document.getElementById('advancedHint');
+
+        // Función para mostrar la pregunta actual
+        function showQuestion() {
+            const questionData = quizData[currentQuestion];
+            
+            // Construir el HTML de la pregunta
+            let questionHTML = `<div class="question">${currentQuestion + 1}. ${questionData.question}</div>`;
+            questionHTML += `<div class="options">`;
+            
+            questionData.options.forEach((option, index) => {
+                let optionClass = "option";
+                if (userAnswers[currentQuestion] === index) {
+                    optionClass += " selected";
+                }
+                
+                questionHTML += `
+                    <div class="${optionClass}" data-index="${index}">
+                        <div class="option-letter">${String.fromCharCode(65 + index)}</div>
+                        <div class="option-text">${option}</div>
+                    </div>
+                `;
+            });
+            
+            questionHTML += `</div>`;
+            
+            questionContainer.innerHTML = questionHTML;
+            
+            // Actualizar estado de botones
+            prevBtn.disabled = currentQuestion === 0;
+            nextBtn.textContent = currentQuestion === quizData.length - 1 ? "Ver Resultado" : "Siguiente";
+            
+            // Ocultar feedback al cambiar pregunta
+            feedbackElement.className = "feedback";
+            feedbackElement.textContent = "";
+            feedbackElement.style.display = "none";
+            
+            // Agregar event listeners a las opciones
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', selectOption);
+            });
+        }
+
+        // Función para seleccionar una opción
+        function selectOption(e) {
+            const selectedIndex = parseInt(e.currentTarget.getAttribute('data-index'));
+            userAnswers[currentQuestion] = selectedIndex;
+            
+            // Mostrar feedback inmediato
+            const questionData = quizData[currentQuestion];
+            const isCorrect = selectedIndex === questionData.correct;
+            
+            // Actualizar puntaje si es correcto y no había respondido antes
+            if (isCorrect && userAnswers[currentQuestion] !== null && userAnswers[currentQuestion] !== questionData.correct) {
+                score++;
+                scoreElement.textContent = score;
+            }
+            
+            // Mostrar feedback visual
+            document.querySelectorAll('.option').forEach((option, index) => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+                
+                if (index === selectedIndex) {
+                    option.classList.add('selected');
+                    option.classList.add(isCorrect ? 'correct' : 'incorrect');
+                }
+                
+                if (index === questionData.correct) {
+                    option.classList.add('correct');
+                }
+            });
+            
+            // Mostrar explicación
+            feedbackElement.textContent = questionData.explanation;
+            feedbackElement.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+            feedbackElement.style.display = 'block';
+        }
+
+        // Función para mostrar la siguiente pregunta
+        function nextQuestion() {
+            if (currentQuestion < quizData.length - 1) {
+                currentQuestion++;
+                showQuestion();
+            } else {
+                // Mostrar resultado final
+                showResults();
+            }
+        }
+
+        // Función para mostrar la pregunta anterior
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion();
+            }
+        }
+
+        // Función para mostrar resultados finales
+        function showResults() {
+            let resultsHTML = `<div class="question">¡Quiz Completado!</div>`;
+            resultsHTML += `<p>Tu puntaje final: <strong>${score} de ${quizData.length}</strong></p>`;
+            
+            if (score === quizData.length) {
+                resultsHTML += `<p>¡Excelente! Dominas los conceptos fundamentales de gráficos en Tkinter.</p>`;
+            } else if (score >= quizData.length * 0.7) {
+                resultsHTML += `<p>Buen trabajo. Tienes una comprensión sólida, pero revisa los conceptos que te generaron dudas.</p>`;
+            } else {
+                resultsHTML += `<p>Revisa los conceptos nuevamente. La práctica constante te llevará al dominio.</p>`;
+            }
+            
+            resultsHTML += `<button class="btn btn-secondary" id="restart-btn">Reintentar Quiz</button>`;
+            
+            questionContainer.innerHTML = resultsHTML;
+            feedbackElement.style.display = 'none';
+            
+            // Event listener para reiniciar
+            document.getElementById('restart-btn').addEventListener('click', restartQuiz);
+        }
+
+        // Función para reiniciar el quiz
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            userAnswers.fill(null);
+            scoreElement.textContent = score;
+            showQuestion();
+        }
+
+        // Event listeners para botones
+        prevBtn.addEventListener('click', prevQuestion);
+        nextBtn.addEventListener('click', nextQuestion);
+
+        // Event listener para mostrar pista avanzada
+        showHintBtn.addEventListener('click', function() {
+            if (advancedHint.style.display === 'none') {
+                advancedHint.style.display = 'block';
+                this.textContent = 'Ocultar pista avanzada';
+            } else {
+                advancedHint.style.display = 'none';
+                this.textContent = 'Mostrar pista avanzada';
+            }
+        });
+
+        // Inicializar la primera pregunta
+        showQuestion();
+
+        // Efecto de desplazamiento suave para los enlaces internos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId && targetId !== '#') {
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
