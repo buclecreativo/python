@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bucle Creativo: Tu Viaje con los IDEs de Python</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --color-primary: #2c3e50;
+            --color-secondary: #3498db;
+            --color-accent: #e74c3c;
+            --color-light: #ecf0f1;
+            --color-dark: #2c3e50;
+            --color-success: #2ecc71;
+            --color-warning: #f39c12;
+            --color-bg: #f9f9f9;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --border-radius: 8px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+        
+        .theme {
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            display: inline-block;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Navigation */
+        nav {
+            background-color: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 0.8rem 0;
+        }
+        
+        .nav-btn {
+            background: none;
+            border: none;
+            color: var(--color-dark);
+            padding: 0.8rem 1.5rem;
+            margin: 0 0.5rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-btn:hover {
+            background-color: var(--color-secondary);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .nav-btn.active {
+            background-color: var(--color-primary);
+            color: white;
+        }
+        
+        /* Main content */
+        .main-content {
+            padding: 3rem 0;
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s forwards;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .section:nth-child(2) { animation-delay: 0.1s; }
+        .section:nth-child(3) { animation-delay: 0.2s; }
+        .section:nth-child(4) { animation-delay: 0.3s; }
+        .section:nth-child(5) { animation-delay: 0.4s; }
+        .section:nth-child(6) { animation-delay: 0.5s; }
+        .section:nth-child(7) { animation-delay: 0.6s; }
+        .section:nth-child(8) { animation-delay: 0.7s; }
+        
+        h2 {
+            color: var(--color-primary);
+            border-bottom: 3px solid var(--color-secondary);
+            padding-bottom: 0.8rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h2 i {
+            color: var(--color-secondary);
+        }
+        
+        h3 {
+            color: var(--color-secondary);
+            margin: 1.5rem 0 1rem;
+        }
+        
+        p {
+            margin-bottom: 1.2rem;
+        }
+        
+        .highlight {
+            background-color: rgba(52, 152, 219, 0.1);
+            border-left: 4px solid var(--color-secondary);
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+        
+        .objective {
+            background-color: rgba(46, 204, 113, 0.1);
+            border-left: 4px solid var(--color-success);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+        
+        .challenge {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid var(--color-accent);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+        
+        /* IDE Cards */
+        .ide-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--color-secondary);
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card h4 {
+            color: var(--color-primary);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .level-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+        
+        .beginner {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+        }
+        
+        .intermediate {
+            background-color: rgba(52, 152, 219, 0.2);
+            color: #2980b9;
+        }
+        
+        .professional {
+            background-color: rgba(155, 89, 182, 0.2);
+            color: #8e44ad;
+        }
+        
+        /* Comparison table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            box-shadow: var(--shadow);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .comparison-table th {
+            background-color: var(--color-primary);
+            color: white;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .comparison-table tr:hover {
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+        
+        /* Quiz section */
+        .quiz-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-top: 2rem;
+        }
+        
+        .quiz-question {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--color-primary);
+        }
+        
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .quiz-option {
+            padding: 1rem;
+            border: 2px solid #eee;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .quiz-option:hover {
+            background-color: rgba(52, 152, 219, 0.05);
+            border-color: var(--color-secondary);
+        }
+        
+        .quiz-option.selected {
+            background-color: rgba(52, 152, 219, 0.1);
+            border-color: var(--color-secondary);
+        }
+        
+        .quiz-option.correct {
+            background-color: rgba(46, 204, 113, 0.2);
+            border-color: var(--color-success);
+        }
+        
+        .quiz-option.incorrect {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-color: var(--color-accent);
+        }
+        
+        .quiz-feedback {
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        
+        .quiz-feedback.show {
+            display: block;
+        }
+        
+        .feedback-correct {
+            background-color: rgba(46, 204, 113, 0.1);
+            border-left: 4px solid var(--color-success);
+        }
+        
+        .feedback-incorrect {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid var(--color-accent);
+        }
+        
+        .quiz-score {
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+            margin: 1.5rem 0;
+            color: var(--color-primary);
+        }
+        
+        /* Buttons */
+        .btn {
+            background-color: var(--color-secondary);
+            color: white;
+            border: none;
+            padding: 0.9rem 1.8rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            background-color: var(--color-primary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-next {
+            background-color: var(--color-success);
+        }
+        
+        .btn-next:hover {
+            background-color: #27ae60;
+        }
+        
+        .btn-restart {
+            background-color: var(--color-accent);
+        }
+        
+        .btn-restart:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn-center {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--color-primary);
+            color: white;
+            padding: 2.5rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .signature {
+            font-style: italic;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .nav-container {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding: 0.8rem 10px;
+            }
+            
+            .section {
+                padding: 1.8rem;
+            }
+            
+            .ide-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .comparison-table {
+                font-size: 0.9rem;
+            }
+            
+            .comparison-table th, .comparison-table td {
+                padding: 0.8rem 0.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .section {
+                padding: 1.5rem;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--color-secondary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            opacity: 0;
+            visibility: hidden;
+            z-index: 99;
+        }
+        
+        .scroll-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-top:hover {
+            background-color: var(--color-primary);
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <h1>Bucle Creativo</h1>
+            <p class="subtitle">Taller diseñado con el corazón de un docente y la mente de un programador</p>
+            <div class="theme">Tema: El universo de los IDEs para Python - Tu espacio de creación</div>
+        </div>
+    </header>
+    
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-container">
+            <button class="nav-btn active" data-section="introduction"><i class="fas fa-home"></i> Introducción</button>
+            <button class="nav-btn" data-section="what-is-ide"><i class="fas fa-question-circle"></i> ¿Qué es un IDE?</button>
+            <button class="nav-btn" data-section="ides-list"><i class="fas fa-code"></i> IDEs para Python</button>
+            <button class="nav-btn" data-section="ide-functions"><i class="fas fa-cogs"></i> Funciones principales</button>
+            <button class="nav-btn" data-section="levels"><i class="fas fa-chart-line"></i> Por niveles</button>
+            <button class="nav-btn" data-section="specific-uses"><i class="fas fa-bullseye"></i> Usos específicos</button>
+            <button class="nav-btn" data-section="pros-cons"><i class="fas fa-balance-scale"></i> Ventajas/Desventajas</button>
+            <button class="nav-btn" data-section="challenge"><i class="fas fa-flag-checkered"></i> Reto final</button>
+            <button class="nav-btn" data-section="quiz"><i class="fas fa-gamepad"></i> Evaluación lúdica</button>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="container main-content">
+        <!-- Introduction -->
+        <section id="introduction" class="section">
+            <h2><i class="fas fa-rocket"></i> Tu viaje comienza aquí</h2>
+            
+            <div class="objective">
+                <h3>Objetivo de aprendizaje</h3>
+                <p>Dominar la selección y uso de Entornos de Desarrollo Integrado (IDE) para Python, integrando competencias técnicas (configuración y personalización), cognitivas (análisis comparativo y toma de decisiones) y actitudinales (curiosidad investigativa y ética digital), mediante la exploración práctica de herramientas que optimicen el proceso de programación y faciliten la materialización de ideas en código funcional, con el propósito de fortalecer la autonomía técnica y la capacidad de adaptación a diferentes contextos de desarrollo.</p>
+            </div>
+            
+            <h3>Contextualización: El espacio donde cobran vida tus ideas</h3>
+            <p>Imagina que tienes una idea brillante para una aplicación que podría ayudar a tu comunidad. La ves claramente en tu mente: colores, funciones, interacciones... Pero entre esa visión y el programa real hay un puente que debe construirse. Ese puente es el espacio donde escribes, pruebas y depuras tu código.</p>
+            
+            <p>Hace años, los programadores trabajaban con editores de texto simples y ejecutaban sus programas desde la terminal, cambiando constantemente entre ventanas. Era como intentar pintar un cuadro teniendo que ir a otra habitación cada vez que necesitabas un color diferente. Los IDEs nacieron para cambiar eso, para crear un espacio unificado donde todo lo necesario para programar esté a tu alcance.</p>
+            
+            <div class="highlight">
+                <p>Un IDE es más que un programa para escribir código. Es tu taller de creación digital, tu laboratorio de experimentación, el lienzo donde conviertes pensamientos abstractos en soluciones tangibles que pueden cambiar realidades.</p>
+            </div>
+            
+            <p>En este taller, exploraremos juntos este universo de herramientas, descubriendo cuál se adapta mejor a tu forma de pensar, a tu proyecto y a tu etapa como programador. Porque la herramienta correcta no solo hace el trabajo más fácil; puede inspirarte a crear cosas que ni siquiera habías imaginado.</p>
+        </section>
+        
+        <!-- What is an IDE -->
+        <section id="what-is-ide" class="section" style="display: none;">
+            <h2><i class="fas fa-question-circle"></i> ¿Qué es un IDE realmente?</h2>
+            
+            <h3>Definición de IDE</h3>
+            <p>Un <strong>Entorno de Desarrollo Integrado (IDE)</strong> es una aplicación que reúne todas las herramientas necesarias para el desarrollo de software en una sola interfaz. Piensa en él como un taller completo para construir programas, donde tienes no solo el espacio de trabajo, sino también todas las herramientas organizadas y listas para usar.</p>
+            
+            <h3>IDE vs Editor de texto vs Editor de código</h3>
+            
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Herramienta</th>
+                            <th>Características principales</th>
+                            <th>Ejemplos comunes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Editor de texto</strong></td>
+                            <td>Diseñado para crear y modificar archivos de texto plano. No tiene características específicas para programación.</td>
+                            <td>Bloc de notas (Windows), TextEdit (Mac)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Editor de código</strong></td>
+                            <td>Especializado para programación. Incluye resaltado de sintaxis, autocompletado básico y a veces integración con terminal.</td>
+                            <td>Sublime Text, Atom, Notepad++</td>
+                        </tr>
+                        <tr>
+                            <td><strong>IDE</strong></td>
+                            <td>Editor de código + depurador + compilador/intérprete + herramientas de gestión de proyectos + terminal integrada + muchas funciones más.</td>
+                            <td>PyCharm, Visual Studio Code, Spyder</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <h3>Ventajas de usar un IDE para Python</h3>
+            <div class="ide-cards">
+                <div class="card">
+                    <h4><i class="fas fa-bolt"></i> Eficiencia</h4>
+                    <p>Todas las herramientas en un solo lugar reducen el tiempo perdido cambiando entre aplicaciones.</p>
+                </div>
+                <div class="card">
+                    <h4><i class="fas fa-bug"></i> Depuración integrada</h4>
+                    <p>Identifica y corrige errores paso a paso sin salir del entorno de desarrollo.</p>
+                </div>
+                <div class="card">
+                    <h4><i class="fas fa-lightbulb"></i> Asistencia inteligente</h4>
+                    <p>Autocompletado, sugerencias y detección de errores en tiempo real mientras programas.</p>
+                </div>
+                <div class="card">
+                    <h4><i class="fas fa-project-diagram"></i> Gestión de proyectos</h4>
+                    <p>Organiza todos los archivos de tu proyecto, dependencias y configuraciones en una estructura clara.</p>
+                </div>
+            </div>
+            
+            <div class="highlight">
+                <p><strong>Reflexión:</strong> Imagina que estás construyendo una maqueta de arquitectura. ¿Preferirías tener todas tus herramientas (cortadores, pegamento, pinturas, pinceles) dispersas por la habitación, o organizadas en un maletín donde puedas alcanzar lo que necesitas en segundos? Un IDE es ese maletín organizado para el desarrollo de software.</p>
+            </div>
+        </section>
+        
+        <!-- IDEs for Python -->
+        <section id="ides-list" class="section" style="display: none;">
+            <h2><i class="fas fa-code"></i> IDEs más usados para Python</h2>
+            <p>Cada IDE tiene su personalidad, fortalezas y público objetivo. Conocerlos te permitirá elegir el que mejor se adapte a tu forma de trabajar.</p>
+            
+            <div class="ide-cards">
+                <div class="card">
+                    <h4><i class="fab fa-python"></i> PyCharm</h4>
+                    <p><strong>Community:</strong> Gratuita, ideal para desarrollo Python puro.</p>
+                    <p><strong>Professional:</strong> De pago, añade soporte para web, bases de datos y ciencia de datos.</p>
+                    <p>Desarrollado por JetBrains, es uno de los IDEs más completos para Python.</p>
+                </div>
+                <div class="card">
+                    <h4><i class="fas fa-code"></i> Visual Studio Code</h4>
+                    <p>Editor de código con capacidades de IDE mediante extensiones.</p>
+                    <p>Liviano, altamente personalizable y con un ecosistema enorme de extensiones.</p>
+                    <p>Gratuito y desarrollado por Microsoft.</p>
+                </div>
+                <div class="card">
+                    <h4><i class="fas fa-chart-bar"></i> Spyder</h4>
+                    <p>IDE especializado para ciencia de datos y computación científica.</p>
+                    <p>Incluye herramientas específicas para visualización de datos y análisis numérico.</p>
+                    <p>Viene incluido con distribuciones como Anaconda.</p>
+                </div>
+                <div class="card">
+                    <h4><i class="fas fa-terminal"></i> IDLE</h4>
+                    <p>IDE oficial de Python, incluido en la instalación estándar.</p>
+                    <p>Sencillo y minimalista, perfecto para primeros pasos.</p>
+                    <p>Limitado en funciones avanzadas pero fácil de usar.</p>
+                </div>
+                <div class="card">
+                    <h4><i class="fas fa-graduation-cap"></i> Thonny</h4>
+                    <p>IDE diseñado específicamente para principiantes.</p>
+                    <p>Incluye un depurador visual que muestra paso a paso la ejecución del código.</p>
+                    <p>Simplifica conceptos como variables y funciones para facilitar el aprendizaje.</p>
+                </div>
+            </div>
+            
+            <div class="highlight">
+                <p><strong>Experimentación:</strong> Te reto a descargar dos IDEs de esta lista (por ejemplo, VS Code y Thonny) y escribir el mismo programa sencillo en ambos. ¿Cómo se siente la experiencia en cada uno? ¿Cuál te hace sentir más cómodo? Esta exploración práctica es invaluable para encontrar tu herramienta ideal.</p>
+            </div>
+        </section>
+        
+        <!-- IDE Functions -->
+        <section id="ide-functions" class="section" style="display: none;">
+            <h2><i class="fas fa-cogs"></i> Funciones principales de un IDE para Python</h2>
+            <p>Los IDEs modernos son como navajas suizas para programadores. Veamos cada una de sus herramientas principales:</p>
+            
+            <h3><i class="fas fa-brush"></i> Resaltado de sintaxis</h3>
+            <p>Colorea diferentes elementos del código (palabras reservadas, variables, funciones) para facilitar su lectura. No es solo estética: tu cerebro procesa la información más rápido cuando está organizada visualmente.</p>
+            
+            <h3><i class="fas fa-magic"></i> Autocompletado de código</h3>
+            <p>También llamado IntelliSense o code completion. Sugiere opciones mientras escribes, basándose en el contexto. No solo ahorra tiempo tecleando; también reduce errores y te ayuda a descubrir funciones que no conocías.</p>
+            
+            <h3><i class="fas fa-bug"></i> Depuración (debugger)</h3>
+            <p>La herramienta más valiosa para resolver problemas. Te permite ejecutar el código paso a paso, examinar el valor de las variables en cada momento y encontrar exactamente dónde ocurre un error.</p>
+            
+            <h3><i class="fas fa-play-circle"></i> Ejecución de scripts</h3>
+            <p>Ejecuta tu código con un clic, sin necesidad de abrir la terminal manualmente. Muchos IDEs también permiten ejecutar solo una parte seleccionada del código, perfecto para probar funciones individuales.</p>
+            
+            <h3><i class="fas fa-project-diagram"></i> Gestión de proyectos</h3>
+            <p>Organiza todos los archivos relacionados en una estructura clara. Facilita trabajar con proyectos grandes que tienen docenas o cientos de archivos.</p>
+            
+            <h3><i class="fas fa-terminal"></i> Terminal integrada</h3>
+            <p>Una terminal dentro del mismo IDE, para ejecutar comandos, instalar paquetes o gestionar versiones con Git, sin cambiar de ventana.</p>
+            
+            <div class="highlight">
+                <p><strong>Actividad práctica:</strong> Abre tu IDE preferido (o descarga uno si aún no tienes) y busca cada una de estas funciones. ¿Dónde está el botón para ejecutar código? ¿Cómo activas el autocompletado? Familiarizarte con la ubicación de estas herramientas es el primer paso para usarlas eficientemente.</p>
+            </div>
+        </section>
+        
+        <!-- IDE by Level -->
+        <section id="levels" class="section" style="display: none;">
+            <h2><i class="fas fa-chart-line"></i> IDEs según tu nivel como programador</h2>
+            <p>No existe "el mejor IDE", sino "el mejor IDE para ti en este momento". Tu elección debe evolucionar junto con tus habilidades.</p>
+            
+            <h3><i class="fas fa-baby"></i> Para principiantes</h3>
+            <div class="ide-cards">
+                <div class="card">
+                    <h4><i class="fas fa-terminal"></i> IDLE</h4>
+                    <p>Viene con Python, no requiere configuración adicional.</p>
+                    <p>Interfaz simple que no abruma con opciones.</p>
+                    <p>Perfecto para concentrarte en aprender Python sin distracciones.</p>
+                    <span class="level-badge beginner">Principiante</span>
+                </div>
+                <div class="card">
+                    <h4><i class="fas fa-graduation-cap"></i> Thonny</h4>
+                    <p>Depurador visual que muestra el flujo de ejecución.</p>
+                    <p>Explica conceptos como alcance de variables de forma visual.</p>
+                    <p>Diseñado específicamente para el aprendizaje.</p>
+                    <span class="level-badge beginner">Principiante</span>
+                </div>
+            </div>
+            
+            <h3><i class="fas fa-user"></i> Nivel intermedio</h3>
+            <div class="ide-cards">
+                <div class="card">
+                    <h4><i class="fas fa-code"></i> Visual Studio Code</h4>
+                    <p>Balance perfecto entre simplicidad y potencia.</p>
+                    <p>Extensible mediante miles de extensiones gratuitas.</p>
+                    <p>Ideal cuando empiezas a trabajar en proyectos más complejos.</p>
+                    <span class="level-badge intermediate">Intermedio</span>
+                </div>
+                <div class="card">
+                    <h4><i class="fas fa-chart-bar"></i> Spyder</h4>
+                    <p>Especializado para análisis de datos y ciencia.</p>
+                    <p>Incluye herramientas específicas para visualización.</p>
+                    <p>Excelente si te orientas hacia la ciencia de datos.</p>
+                    <span class="level-badge intermediate">Intermedio</span>
+                </div>
+            </div>
+            
+            <h3><i class="fas fa-crown"></i> Nivel profesional</h3>
+            <div class="ide-cards">
+                <div class="card">
+                    <h4><i class="fab fa-python"></i> PyCharm Professional</h4>
+                    <p>Todas las funciones imaginables para desarrollo Python.</p>
+                    <p>Soporte integrado para frameworks web, bases de datos, etc.</p>
+                    <p>Para proyectos empresariales grandes y complejos.</p>
+                    <span class="level-badge professional">Profesional</span>
+                </div>
+                <div class="card">
+                    <h4><i class="fas fa-code"></i> VS Code avanzado</h4>
+                    <p>Con las extensiones correctas, compite con IDEs completos.</p>
+                    <p>Más ligero que PyCharm pero igualmente potente.</p>
+                    <p>Para quien valora la personalización y ligereza.</p>
+                    <span class="level-badge professional">Profesional</span>
+                </div>
+            </div>
+            
+            <div class="highlight">
+                <p><strong>Reflexión metacognitiva:</strong> ¿En qué nivel te ubicas actualmente? ¿Tu IDE actual está alineado con ese nivel? Recuerda: un IDE demasiado complejo puede frustrarte, pero uno demasiado simple puede limitar tu crecimiento. La clave está en encontrar el equilibrio adecuado para tu etapa actual.</p>
+            </div>
+        </section>
+        
+        <!-- Specific Uses -->
+        <section id="specific-uses" class="section" style="display: none;">
+            <h2><i class="fas fa-bullseye"></i> IDEs para usos específicos</h2>
+            <p>Así como un carpintero tiene herramientas diferentes para tallar, lijar y ensamblar, los programadores tenemos IDEs especializados para diferentes tipos de proyectos.</p>
+            
+            <h3><i class="fas fa-flask"></i> Ciencia de datos y análisis</h3>
+            <div class="ide-cards">
+                <div class="card">
+                    <h4><i class="fas fa-chart-bar"></i> Spyder</h4>
+                    <p>Variables Explorer para ver tus datos en tiempo real.</p>
+                    <p>Integración con Jupyter Notebooks.</p>
+                    <p>Herramientas de visualización integradas.</p>
+                </div>
+                <div class="card">
+                    <h4><i class="fas fa-book"></i> Jupyter Notebook/Lab</h4>
+                    <p>Documentación y código en un solo lugar.</p>
+                    <p>Ideal para análisis exploratorio y presentación de resultados.</p>
+                    <p>Cada celda se ejecuta independientemente.</p>
+                </div>
+            </div>
+            
+            <h3><i class="fas fa-globe"></i> Desarrollo web</h3>
+            <div class="ide-cards">
+                <div class="card">
+                    <h4><i class="fab fa-python"></i> PyCharm Professional</h4>
+                    <p>Soporte nativo para Django, Flask, FastAPI.</p>
+                    <p>Herramientas para bases de datos integradas.</p>
+                    <p>Depuración de aplicaciones web completa.</p>
+                </div>
+                <div class="card">
+                    <h4><i class="fas fa-code"></i> VS Code</h4>
+                    <p>Extensiones para todos los frameworks web populares.</p>
+                    <p>Live Server para ver cambios en tiempo real.</p>
+                    <p>Integración con herramientas frontend (HTML, CSS, JavaScript).</p>
+                </div>
+            </div>
+            
+            <h3><i class="fas fa-robot"></i> Machine Learning e IA</h3>
+            <p>Para proyectos de Machine Learning, muchos profesionales combinan:</p>
+            <ul>
+                <li><strong>Jupyter Notebooks</strong> para experimentación y prototipado rápido</li>
+                <li><strong>VS Code o PyCharm</strong> para desarrollar los módulos y scripts finales</li>
+                <li><strong>Herramientas especializadas</strong> como TensorBoard para visualizar modelos</li>
+            </ul>
+            
+            <div class="highlight">
+                <p><strong>Pensamiento crítico:</strong> ¿Qué tipo de proyectos te apasionan? ¿Análisis de datos, aplicaciones web, automatización? Tu elección de IDE puede potenciar o limitar tu eficiencia en ese campo específico. Investiga qué herramientas usan los profesionales en el área que te interesa.</p>
+            </div>
+        </section>
+        
+        <!-- Pros and Cons -->
+        <section id="pros-cons" class="section" style="display: none;">
+            <h2><i class="fas fa-balance-scale"></i> Ventajas y desventajas de los IDEs</h2>
+            <p>Toda herramienta tiene sus compensaciones. Conocerlas te ayudará a tomar decisiones informadas.</p>
+            
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspecto</th>
+                            <th>Ventajas</th>
+                            <th>Desventajas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Consumo de recursos</strong></td>
+                            <td>IDEs completos optimizan el flujo de trabajo</td>
+                            <td>Pueden consumir mucha RAM (especialmente PyCharm)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Facilidad de uso</strong></td>
+                            <td>Interfaces intuitivas con todo integrado</td>
+                            <td>Curva de aprendizaje para funciones avanzadas</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Curva de aprendizaje</strong></td>
+                            <td>Una vez aprendido, se vuelve muy eficiente</td>
+                            <td>Al inicio puede ser abrumador (especialmente IDEs complejos)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Personalización</strong></td>
+                            <td>Adaptable a tus preferencias y flujo de trabajo</td>
+                            <td>Configurar todo puede llevar tiempo inicialmente</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Productividad</strong></td>
+                            <td>Herramientas integradas ahorran tiempo</td>
+                            <td>Puede ser "pesado" para proyectos muy pequeños</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <h3>Extensiones y plugins para Python</h3>
+            <div class="ide-cards">
+                <div class="card">
+                    <h4><i class="fas fa-check-circle"></i> Linters</h4>
+                    <p>Analizan tu código en busca de errores y malas prácticas.</p>
+                    <p><strong>Pylint:</strong> Análisis completo de calidad de código.</p>
+                    <p><strong>Flake8:</strong> Combinación de varios verificadores.</p>
+                </div>
+                <div class="card">
+                    <h4><i class="fas fa-paint-brush"></i> Formateadores</h4>
+                    <p>Formatean tu código automáticamente según estándares.</p>
+                    <p><strong>Black:</strong> Formateador "opinionado" sin opciones.</p>
+                    <p><strong>autopep8:</strong> Aplica el estilo PEP8 automáticamente.</p>
+                </div>
+                <div class="card">
+                    <h4><i class="fab fa-git-alt"></i> Integración con Git</h4>
+                    <p>Control de versiones integrado en el IDE.</p>
+                    <p>Commit, push, pull sin usar la terminal.</p>
+                    <p>Resolución visual de conflictos.</p>
+                </div>
+                <div class="card">
+                    <h4><i class="fas fa-cube"></i> Soporte para frameworks</h4>
+                    <p>Extensiones específicas para Django, Flask, FastAPI.</p>
+                    <p>Plantillas, snippets y herramientas especializadas.</p>
+                    <p>Asistencia para testing en cada framework.</p>
+                </div>
+            </div>
+            
+            <div class="highlight">
+                <p><strong>Decisiones informadas:</strong> Tu elección de IDE y extensiones crea un ecosistema personalizado de desarrollo. No se trata de tener todas las extensiones posibles, sino las que realmente mejoran tu flujo de trabajo. Evalúa cada herramienta por el valor que añade a tu proceso específico.</p>
+            </div>
+        </section>
+        
+        <!-- Final Challenge -->
+        <section id="challenge" class="section" style="display: none;">
+            <h2><i class="fas fa-flag-checkered"></i> El reto final: Crea tu espacio de creación ideal</h2>
+            
+            <div class="challenge">
+                <h3>Tu misión</h3>
+                <p>Durante esta clase, vas a diseñar y configurar tu propio entorno de desarrollo personalizado para Python. Este no es solo un ejercicio técnico; es una declaración de cómo quieres trabajar, de qué tipo de programador quieres ser.</p>
+            </div>
+            
+            <h3>Fases del reto</h3>
+            
+            <div class="ide-cards">
+                <div class="card">
+                    <h4><i class="fas fa-search"></i> Fase 1: Investigación y decisión (30 min)</h4>
+                    <p>Elige dos IDEs de los mencionados (uno principal y uno alternativo).</p>
+                    <p>Investiga sus características específicas, extensiones recomendadas para Python.</p>
+                    <p>Toma la decisión fundamentada: ¿Por qué este IDE es el mejor para ti en este momento?</p>
+                </div>
+                <div class="card">
+                    <h4><i class="fas fa-download"></i> Fase 2: Instalación y configuración básica (30 min)</h4>
+                    <p>Descarga e instala tu IDE elegido.</p>
+                    <p>Configura el resaltado de sintaxis para Python.</p>
+                    <p>Instala al menos 3 extensiones/plugins que consideres esenciales.</p>
+                </div>
+                <div class="card">
+                    <h4><i class="fas fa-cogs"></i> Fase 3: Personalización (30 min)</h4>
+                    <p>Ajusta la interfaz a tus preferencias (tema oscuro/claro, fuentes, atajos de teclado).</p>
+                    <p>Configura un formateador automático (Black o autopep8).</p>
+                    <p>Establece un linter para verificar la calidad de tu código.</p>
+                </div>
+                <div class="card">
+                    <h4><i class="fas fa-vial"></i> Fase 4: Prueba de concepto (30 min)</h4>
+                    <p>Crea un pequeño proyecto Python que incluya:</p>
+                    <ul>
+                        <li>Un script principal que use funciones</li>
+                        <li>Un módulo separado con una clase</li>
+                        <li>Un error intencional para probar el depurador</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3>Criterios de evaluación</h3>
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Criterio</th>
+                            <th>Puntos</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Fundamentación de la elección</strong></td>
+                            <td>25 puntos</td>
+                            <td>Claridad y solidez de los argumentos para elegir ese IDE específico.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Configuración técnica</strong></td>
+                            <td>25 puntos</td>
+                            <td>Correcta instalación y configuración de extensiones esenciales.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Personalización efectiva</strong></td>
+                            <td>20 puntos</td>
+                            <td>Ajustes que realmente mejoran la experiencia de desarrollo.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Funcionalidad del proyecto</strong></td>
+                            <td>20 puntos</td>
+                            <td>El proyecto prueba correctamente las funciones del IDE.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Documentación y presentación</strong></td>
+                            <td>10 puntos</td>
+                            <td>Claridad al explicar tu configuración a compañeros.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="highlight">
+                <p><strong>Reflexión final:</strong> Este reto va más allá de instalar un programa. Estás construyendo tu espacio de creación digital, tu taller personal. Un espacio bien diseñado inspira creatividad, facilita la concentración y hace que el acto de programar sea una experiencia placentera. ¿Qué decisiones tomarás para crear un espacio que refleje tu identidad como programador?</p>
+            </div>
+            
+            <div class="btn-center">
+                <button class="btn" id="startQuizBtn">
+                    <i class="fas fa-gamepad"></i> ¿Listo para poner a prueba lo aprendido? ¡Vamos al juego!
+                </button>
+            </div>
+        </section>
+        
+        <!-- Quiz -->
+        <section id="quiz" class="section" style="display: none;">
+            <h2><i class="fas fa-gamepad"></i> Evaluación lúdica: Desafío IDE</h2>
+            <p>Responde estas 5 preguntas para verificar tu comprensión de los conceptos trabajados. ¡Cada respuesta correcta suma puntos!</p>
+            
+            <div class="quiz-container">
+                <div class="quiz-score" id="quizScore">Puntuación: 0/5</div>
+                
+                <div id="quizQuestion1" class="quiz-question-container">
+                    <div class="quiz-question">1. ¿Cuál es la principal diferencia entre un editor de código y un IDE?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-question="1" data-option="a">
+                            <span>A</span> El IDE solo sirve para Python, los editores son para cualquier lenguaje
+                        </div>
+                        <div class="quiz-option" data-question="1" data-option="b">
+                            <span>B</span> El IDE integra múltiples herramientas (editor, depurador, terminal) en una sola aplicación
+                        </div>
+                        <div class="quiz-option" data-question="1" data-option="c">
+                            <span>C</span> Los editores de código son gratuitos, los IDEs son de pago
+                        </div>
+                        <div class="quiz-option" data-question="1" data-option="d">
+                            <span>D</span> No hay diferencia, son términos intercambiables
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="quizQuestion2" class="quiz-question-container" style="display: none;">
+                    <div class="quiz-question">2. ¿Cuál de estos IDEs está específicamente diseñado para principiantes en Python?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-question="2" data-option="a">
+                            <span>A</span> PyCharm Professional
+                        </div>
+                        <div class="quiz-option" data-question="2" data-option="b">
+                            <span>B</span> Visual Studio Code
+                        </div>
+                        <div class="quiz-option" data-question="2" data-option="c">
+                            <span>C</span> Thonny
+                        </div>
+                        <div class="quiz-option" data-question="2" data-option="d">
+                            <span>D</span> Spyder
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="quizQuestion3" class="quiz-question-container" style="display: none;">
+                    <div class="quiz-question">3. ¿Qué función de un IDE te permite ejecutar tu código línea por línea para encontrar errores?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-question="3" data-option="a">
+                            <span>A</span> Resaltado de sintaxis
+                        </div>
+                        <div class="quiz-option" data-question="3" data-option="b">
+                            <span>B</span> Autocompletado
+                        </div>
+                        <div class="quiz-option" data-question="3" data-option="c">
+                            <span>C</span> Depuración (debugging)
+                        </div>
+                        <div class="quiz-option" data-question="3" data-option="d">
+                            <span>D</span> Gestión de proyectos
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="quizQuestion4" class="quiz-question-container" style="display: none;">
+                    <div class="quiz-question">4. Para un proyecto de ciencia de datos en Python, ¿cuál de estos IDEs sería más apropiado?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-question="4" data-option="a">
+                            <span>A</span> IDLE
+                        </div>
+                        <div class="quiz-option" data-question="4" data-option="b">
+                            <span>B</span> Spyder
+                        </div>
+                        <div class="quiz-option" data-question="4" data-option="c">
+                            <span>C</span> Thonny
+                        </div>
+                        <div class="quiz-option" data-question="4" data-option="d">
+                            <span>D</span> Ninguno, todos sirven igual
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="quizQuestion5" class="quiz-question-container" style="display: none;">
+                    <div class="quiz-question">5. ¿Cuál es una ventaja principal de usar extensiones como linters en tu IDE?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-question="5" data-option="a">
+                            <span>A</span> Hacen que el código se ejecute más rápido
+                        </div>
+                        <div class="quiz-option" data-question="5" data-option="b">
+                            <span>B</span> Detectan errores y malas prácticas antes de ejecutar el código
+                        </div>
+                        <div class="quiz-option" data-question="5" data-option="c">
+                            <span>C</span> Convierten el código Python a otros lenguajes
+                        </div>
+                        <div class="quiz-option" data-question="5" data-option="d">
+                            <span>D</span> Permiten programar sin necesidad de saber sintaxis
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="quizResults" class="quiz-question-container" style="display: none;">
+                    <div class="quiz-question">¡Resultados finales!</div>
+                    <div class="quiz-score" id="finalScore">Puntuación final: 0/5</div>
+                    <div id="performanceMessage" style="text-align: center; margin: 1.5rem 0;"></div>
+                    <div class="btn-center">
+                        <button class="btn btn-restart" id="restartQuizBtn">
+                            <i class="fas fa-redo"></i> Reintentar cuestionario
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="quiz-feedback" id="quizFeedback"></div>
+                
+                <div class="btn-center">
+                    <button class="btn btn-next" id="nextQuestionBtn" style="display: none;">
+                        <i class="fas fa-arrow-right"></i> Siguiente pregunta
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <p>Bucle creativo</p>
+            <p class="subtitle">Taller diseñado con el corazón de un docente y la mente de un programador</p>
+            <p class="signature">Diseñado por: Edwin Méndez J.</p>
+        </div>
+    </footer>
+    
+    <!-- Scroll to top button -->
+    <div class="scroll-top" id="scrollTopBtn">
+        <i class="fas fa-chevron-up"></i>
+    </div>
+    
+    <script>
+        // Navigation between sections
+        document.addEventListener('DOMContentLoaded', function() {
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const sections = document.querySelectorAll('.section');
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            const startQuizBtn = document.getElementById('startQuizBtn');
+            
+            // Show first section by default
+            sections[0].style.display = 'block';
+            
+            // Navigation button click handler
+            navButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetSection = this.getAttribute('data-section');
+                    
+                    // Update active button
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show target section, hide others
+                    sections.forEach(section => {
+                        if (section.id === targetSection) {
+                            section.style.display = 'block';
+                            // Trigger animation
+                            section.style.animation = 'none';
+                            setTimeout(() => {
+                                section.style.animation = 'fadeIn 0.8s forwards';
+                            }, 10);
+                        } else {
+                            section.style.display = 'none';
+                        }
+                    });
+                    
+                    // Scroll to top of section
+                    window.scrollTo({
+                        top: document.querySelector('.main-content').offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            // Start quiz button
+            if (startQuizBtn) {
+                startQuizBtn.addEventListener('click', function() {
+                    document.querySelector('[data-section="quiz"]').click();
+                });
+            }
+            
+            // Scroll to top button
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    scrollTopBtn.classList.add('show');
+                } else {
+                    scrollTopBtn.classList.remove('show');
+                }
+            });
+            
+            scrollTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Quiz functionality
+            initializeQuiz();
+        });
+        
+        // Quiz system
+        function initializeQuiz() {
+            const quizOptions = document.querySelectorAll('.quiz-option');
+            const nextQuestionBtn = document.getElementById('nextQuestionBtn');
+            const restartQuizBtn = document.getElementById('restartQuizBtn');
+            const quizScore = document.getElementById('quizScore');
+            const quizFeedback = document.getElementById('quizFeedback');
+            
+            let currentQuestion = 1;
+            let score = 0;
+            let userAnswers = {};
+            
+            // Correct answers
+            const correctAnswers = {
+                1: 'b',
+                2: 'c',
+                3: 'c',
+                4: 'b',
+                5: 'b'
+            };
+            
+            // Question texts for feedback
+            const questionTexts = {
+                1: "La principal diferencia es que un IDE integra múltiples herramientas (editor, depurador, terminal, gestor de proyectos) en una sola aplicación, mientras que un editor de código generalmente se enfoca solo en la edición.",
+                2: "Thonny está específicamente diseñado para principiantes, con un depurador visual y simplificación de conceptos para facilitar el aprendizaje.",
+                3: "La depuración (debugging) permite ejecutar el código línea por línea, examinar variables y encontrar errores de forma controlada.",
+                4: "Spyder está especializado en ciencia de datos, con herramientas integradas para visualización y análisis de datos.",
+                5: "Los linters analizan el código en busca de errores, malas prácticas y desviaciones de los estándares, ayudando a mejorar la calidad del código antes de ejecutarlo."
+            };
+            
+            // Option click handler
+            quizOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const questionNum = parseInt(this.getAttribute('data-question'));
+                    const selectedOption = this.getAttribute('data-option');
+                    
+                    // If this question was already answered, ignore
+                    if (userAnswers[questionNum]) return;
+                    
+                    // Clear previous selections for this question
+                    document.querySelectorAll(`.quiz-option[data-question="${questionNum}"]`).forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Mark this option as selected
+                    this.classList.add('selected');
+                    
+                    // Check if answer is correct
+                    const isCorrect = selectedOption === correctAnswers[questionNum];
+                    
+                    // Store user answer
+                    userAnswers[questionNum] = {
+                        option: selectedOption,
+                        correct: isCorrect
+                    };
+                    
+                    // Update score if correct
+                    if (isCorrect) {
+                        score++;
+                        quizScore.textContent = `Puntuación: ${score}/5`;
+                    }
+                    
+                    // Show feedback
+                    showFeedback(questionNum, isCorrect, selectedOption);
+                    
+                    // Show next question button
+                    nextQuestionBtn.style.display = 'block';
+                });
+            });
+            
+            // Next question button
+            nextQuestionBtn.addEventListener('click', function() {
+                // Hide current question
+                document.getElementById(`quizQuestion${currentQuestion}`).style.display = 'none';
+                
+                // Move to next question or show results
+                currentQuestion++;
+                
+                if (currentQuestion <= 5) {
+                    // Show next question
+                    document.getElementById(`quizQuestion${currentQuestion}`).style.display = 'block';
+                    // Hide feedback and next button
+                    quizFeedback.classList.remove('show');
+                    nextQuestionBtn.style.display = 'none';
+                } else {
+                    // Show results
+                    document.getElementById('quizResults').style.display = 'block';
+                    document.getElementById('finalScore').textContent = `Puntuación final: ${score}/5`;
+                    
+                    // Show performance message
+                    const performanceMessage = document.getElementById('performanceMessage');
+                    if (score === 5) {
+                        performanceMessage.innerHTML = '<p>¡Excelente! Dominas completamente los conceptos sobre IDEs para Python.</p>';
+                        performanceMessage.style.color = '#2ecc71';
+                    } else if (score >= 3) {
+                        performanceMessage.innerHTML = '<p>¡Buen trabajo! Tienes un buen entendimiento, pero hay espacio para mejorar.</p>';
+                        performanceMessage.style.color = '#f39c12';
+                    } else {
+                        performanceMessage.innerHTML = '<p>Revisa nuevamente los conceptos principales. ¡No te rindas!</p>';
+                        performanceMessage.style.color = '#e74c3c';
+                    }
+                    
+                    // Hide next button
+                    nextQuestionBtn.style.display = 'none';
+                }
+            });
+            
+            // Restart quiz button
+            if (restartQuizBtn) {
+                restartQuizBtn.addEventListener('click', function() {
+                    // Reset variables
+                    currentQuestion = 1;
+                    score = 0;
+                    userAnswers = {};
+                    
+                    // Reset UI
+                    quizScore.textContent = 'Puntuación: 0/5';
+                    quizFeedback.classList.remove('show');
+                    nextQuestionBtn.style.display = 'none';
+                    
+                    // Hide results and show first question
+                    document.getElementById('quizResults').style.display = 'none';
+                    
+                    // Show all questions (initially hidden except first)
+                    for (let i = 1; i <= 5; i++) {
+                        const questionEl = document.getElementById(`quizQuestion${i}`);
+                        if (i === 1) {
+                            questionEl.style.display = 'block';
+                        } else {
+                            questionEl.style.display = 'none';
+                        }
+                    }
+                    
+                    // Reset option selections
+                    document.querySelectorAll('.quiz-option').forEach(option => {
+                        option.classList.remove('selected', 'correct', 'incorrect');
+                    });
+                });
+            }
+            
+            // Show feedback function
+            function showFeedback(questionNum, isCorrect, selectedOption) {
+                // Mark correct/incorrect options visually
+                document.querySelectorAll(`.quiz-option[data-question="${questionNum}"]`).forEach(opt => {
+                    const optValue = opt.getAttribute('data-option');
+                    
+                    if (optValue === correctAnswers[questionNum]) {
+                        opt.classList.add('correct');
+                    } else if (optValue === selectedOption && !isCorrect) {
+                        opt.classList.add('incorrect');
+                    }
+                });
+                
+                // Set feedback message
+                if (isCorrect) {
+                    quizFeedback.innerHTML = `<p><strong>¡Correcto!</strong> ${questionTexts[questionNum]}</p>`;
+                    quizFeedback.className = 'quiz-feedback feedback-correct show';
+                } else {
+                    quizFeedback.innerHTML = `<p><strong>Incorrecto.</strong> La respuesta correcta es la opción ${correctAnswers[questionNum].toUpperCase()}. ${questionTexts[questionNum]}</p>`;
+                    quizFeedback.className = 'quiz-feedback feedback-incorrect show';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
