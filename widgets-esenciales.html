@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Tkinter: Widgets Esenciales</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --gray: #95a5a6;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Encabezado */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: 0;
+        }
+        
+        header > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header-title {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header-subtitle {
+            font-size: 1.4rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+        
+        .topic {
+            display: inline-block;
+            background-color: var(--accent);
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Contenedor principal */
+        .container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        
+        /* Tarjetas de contenido */
+        .card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            border-left: 5px solid var(--secondary);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-title {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-title i {
+            color: var(--secondary);
+        }
+        
+        .card-content {
+            font-size: 1.1rem;
+            color: #444;
+        }
+        
+        /* Ejemplos de código */
+        .code-container {
+            background-color: #2d3a4b;
+            color: #f8f8f2;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        
+        .code-keyword {
+            color: #ff79c6;
+        }
+        
+        .code-function {
+            color: #50fa7b;
+        }
+        
+        .code-string {
+            color: #f1fa8c;
+        }
+        
+        .code-comment {
+            color: #6272a4;
+        }
+        
+        /* Botones */
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+            margin: 0.5rem;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary);
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+        }
+        
+        .btn-accent:hover {
+            background-color: #c0392b;
+        }
+        
+        /* Juego de evaluación */
+        .quiz-container {
+            background-color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin-top: 2rem;
+        }
+        
+        .quiz-question {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .quiz-option {
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .quiz-option:hover {
+            background-color: #f0f8ff;
+            border-color: var(--secondary);
+        }
+        
+        .quiz-option.selected {
+            background-color: #e1f5fe;
+            border-color: var(--secondary);
+            font-weight: bold;
+        }
+        
+        .quiz-option.correct {
+            background-color: #d4edda;
+            border-color: var(--success);
+        }
+        
+        .quiz-option.incorrect {
+            background-color: #f8d7da;
+            border-color: var(--accent);
+        }
+        
+        .quiz-feedback {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .quiz-feedback.correct {
+            background-color: #d4edda;
+            color: #155724;
+            display: block;
+        }
+        
+        .quiz-feedback.incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+        
+        .score-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .score {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+        
+        /* Pie de página */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            color: var(--gray);
+            border-top: 1px solid #eee;
+            font-size: 1rem;
+        }
+        
+        /* Responsividad */
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .card-full {
+                grid-column: 1 / -1;
+            }
+            
+            .header-title {
+                font-size: 3.5rem;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado -->
+    <header>
+        <h1 class="header-title">Python para pensadores</h1>
+        <p class="header-subtitle">Taller diseñado con el corazón de un docente y la mente de un programador</p>
+        <div class="topic">Tema: Python-tkinter - Widgets (Listbox, Radiobutton, Checkbutton, Treeview)</div>
+    </header>
+    
+    <!-- Contenedor principal -->
+    <div class="container">
+        <!-- Objetivo de aprendizaje -->
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-bullseye"></i> Objetivo de aprendizaje</h2>
+            <div class="card-content">
+                <p>Desarrollar una interfaz gráfica funcional utilizando los widgets esenciales de Tkinter (Listbox, Radiobutton, Checkbutton y Treeview) que permita a los estudiantes aplicar principios de diseño de UI/UX, ejercitar el pensamiento lógico para estructurar datos visualmente, y fomentar la creatividad al resolver problemas de representación de información, con el fin de crear aplicaciones que respondan a necesidades reales de organización y presentación de datos en contextos educativos y comunitarios.</p>
+            </div>
+        </div>
+        
+        <!-- Contextualización -->
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-globe-americas"></i> Contextualización</h2>
+            <div class="card-content">
+                <p>Imagina que eres el coordinador del club de tecnología de tu colegio y necesitas crear un sistema para gestionar los proyectos que los estudiantes van a presentar en la feria científica. Tienes que organizar quiénes participan, qué categorías hay, qué materiales necesitan y el estado de cada proyecto. ¿Cómo representarías toda esta información de forma clara y atractiva?</p>
+                <p>En la vida cotidiana, constantemente interactuamos con interfaces que nos presentan opciones (como los menús de comida rápida), listas de elementos (como las playlists de música) y datos organizados en tablas (como las calificaciones en el portal estudiantil). Hoy aprenderemos a crear estas mismas experiencias usando Python, conectando la programación con las necesidades reales de organización y presentación de información que enfrentamos como estudiantes y ciudadanos digitales.</p>
+            </div>
+        </div>
+        
+        <!-- Desarrollo de la actividad -->
+        <div class="card card-full">
+            <h2 class="card-title"><i class="fas fa-code"></i> Desarrollo de la actividad</h2>
+            <div class="card-content">
+                <p>Vamos a construir paso a paso una aplicación para gestionar proyectos estudiantiles. Cada widget nos ayudará con una parte específica del sistema:</p>
+                
+                <h3>1. Listbox - Para mostrar la lista de proyectos</h3>
+                <p>El Listbox nos permite mostrar una lista de elementos de los cuales el usuario puede seleccionar uno o varios. Es perfecto para mostrar los nombres de los proyectos registrados.</p>
+                
+                <div class="code-container">
+<pre><span class="code-keyword">import</span> tkinter <span class="code-keyword">as</span> tk
+<span class="code-keyword">from</span> tkinter <span class="code-keyword">import</span> ttk
+
+<span class="code-comment"># Crear ventana principal</span>
+ventana = tk.Tk()
+ventana.title(<span class="code-string">"Gestor de Proyectos Estudiantiles"</span>)
+ventana.geometry(<span class="code-string">"800x600"</span>)
+
+<span class="code-comment"># Crear un Listbox para mostrar proyectos</span>
+label_proyectos = tk.Label(ventana, text=<span class="code-string">"Proyectos registrados:"</span>)
+label_proyectos.pack(pady=10)
+
+listbox_proyectos = tk.Listbox(ventana, height=8, selectmode=tk.SINGLE)
+listbox_proyectos.pack(pady=5, padx=20, fill=tk.BOTH, expand=True)
+
+<span class="code-comment"># Agregar algunos proyectos de ejemplo</span>
+proyectos = [<span class="code-string">"Robot seguidor de línea"</span>, <span class="code-string">"App para reciclaje"</span>, 
+             <span class="code-string">"Sistema de riego automático"</span>, <span class="code-string">"Videojuego educativo"</span>,
+             <span class="code-string">"Sistema de seguridad con Arduino"</span>]
+
+<span class="code-keyword">for</span> proyecto <span class="code-keyword">in</span> proyectos:
+    listbox_proyectos.insert(tk.END, proyecto)
+
+ventana.mainloop()</pre>
+                </div>
+                
+                <h3>2. Radiobutton - Para seleccionar la categoría del proyecto</h3>
+                <p>Los Radiobutton permiten seleccionar UNA sola opción de un conjunto. Ideal para escoger la categoría del proyecto (Ciencias, Tecnología, Arte, etc.).</p>
+                
+                <div class="code-container">
+<pre><span class="code-comment"># Crear Radiobuttons para categorías</span>
+label_categoria = tk.Label(ventana, text=<span class="code-string">"Selecciona la categoría del proyecto:"</span>)
+label_categoria.pack(pady=10)
+
+<span class="code-comment"># Variable para almacenar la selección</span>
+categoria_seleccionada = tk.StringVar(value=<span class="code-string">"Tecnología"</span>)
+
+categorias = [(<span class="code-string">"Ciencias"</span>, <span class="code-string">"Ciencias"</span>), 
+              (<span class="code-string">"Tecnología"</span>, <span class="code-string">"Tecnología"</span>),
+              (<span class="code-string">"Arte"</span>, <span class="code-string">"Arte"</span>), 
+              (<span class="code-string">"Sociales"</span>, <span class="code-string">"Sociales"</span>)]
+
+<span class="code-keyword">for</span> texto, valor <span class="code-keyword">in</span> categorias:
+    rb = tk.Radiobutton(ventana, text=texto, value=valor, 
+                       variable=categoria_seleccionada)
+    rb.pack(anchor=tk.W, padx=40)</pre>
+                </div>
+                
+                <h3>3. Checkbutton - Para indicar los recursos necesarios</h3>
+                <p>Los Checkbutton permiten seleccionar VARIAS opciones de un conjunto. Perfecto para marcar qué recursos necesita el proyecto (impresión 3D, componentes electrónicos, etc.).</p>
+                
+                <div class="code-container">
+<pre><span class="code-comment"># Crear Checkbuttons para recursos necesarios</span>
+label_recursos = tk.Label(ventana, text=<span class="code-string">"Recursos necesarios (puedes seleccionar varios):"</span>)
+label_recursos.pack(pady=10)
+
+<span class="code-comment"># Variables para cada Checkbutton</span>
+necesita_impresion = tk.BooleanVar()
+necesita_electronica = tk.BooleanVar()
+necesita_programacion = tk.BooleanVar()
+
+cb1 = tk.Checkbutton(ventana, text=<span class="code-string">"Impresión 3D"</span>, variable=necesita_impresion)
+cb2 = tk.Checkbutton(ventana, text=<span class="code-string">"Componentes electrónicos"</span>, variable=necesita_electronica)
+cb3 = tk.Checkbutton(ventana, text=<span class="code-string">"Asesoría en programación"</span>, variable=necesita_programacion)
+
+cb1.pack(anchor=tk.W, padx=40)
+cb2.pack(anchor=tk.W, padx=40)
+cb3.pack(anchor=tk.W, padx=40)</pre>
+                </div>
+                
+                <h3>4. Treeview - Para mostrar los detalles en formato tabla</h3>
+                <p>El Treeview es un widget poderoso que permite mostrar datos en formato de tabla con filas y columnas. Ideal para presentar un resumen de todos los proyectos con sus detalles.</p>
+                
+                <div class="code-container">
+<pre><span class="code-comment"># Crear un Treeview (tabla) para mostrar el resumen de proyectos</span>
+label_resumen = tk.Label(ventana, text=<span class="code-string">"Resumen de proyectos:"</span>, font=(<span class="code-string">"Arial"</span>, 12, <span class="code-string">"bold"</span>))
+label_resumen.pack(pady=10)
+
+<span class="code-comment"># Crear el Treeview con columnas</span>
+tree = ttk.Treeview(ventana, columns=(<span class="code-string">"Proyecto"</span>, <span class="code-string">"Categoría"</span>, <span class="code-string">"Recursos"</span>, <span class="code-string">"Estado"</span>), 
+                   show=<span class="code-string">"headings"</span>, height=6)
+
+<span class="code-comment"># Configurar las columnas</span>
+tree.heading(<span class="code-string">"Proyecto"</span>, text=<span class="code-string">"Nombre del Proyecto"</span>)
+tree.heading(<span class="code-string">"Categoría"</span>, text=<span class="code-string">"Categoría"</span>)
+tree.heading(<span class="code-string">"Recursos"</span>, text=<span class="code-string">"Recursos Necesarios"</span>)
+tree.heading(<span class="code-string">"Estado"</span>, text=<span class="code-string">"Estado"</span>)
+
+tree.column(<span class="code-string">"Proyecto"</span>, width=200)
+tree.column(<span class="code-string">"Categoría"</span>, width=100)
+tree.column(<span class="code-string">"Recursos"</span>, width=150)
+tree.column(<span class="code-string">"Estado"</span>, width=100)
+
+<span class="code-comment"># Insertar algunos datos de ejemplo</span>
+tree.insert(<span class="code-string">""</span>, tk.END, values=(<span class="code-string">"Robot seguidor de línea"</span>, <span class="code-string">"Tecnología"</span>, 
+                                 <span class="code-string">"Electrónica, Programación"</span>, <span class="code-string">"En progreso"</span>))
+tree.insert(<span class="code-string">""</span>, tk.END, values=(<span class="code-string">"App para reciclaje"</span>, <span class="code-string">"Sociales"</span>, 
+                                 <span class="code-string">"Programación"</span>, <span class="code-string">"Completado"</span>))
+
+tree.pack(pady=10, padx=20, fill=tk.BOTH, expand=True)</pre>
+                </div>
+                
+                <p>Reflexión: ¿Cómo cambiaría la experiencia del usuario si estos widgets estuvieran en diferentes posiciones? ¿Qué información adicional sería útil mostrar en cada uno? Experimenta cambiando los textos, colores y disposición de los widgets.</p>
+            </div>
+        </div>
+        
+        <!-- El reto final -->
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-flag-checkered"></i> El reto final</h2>
+            <div class="card-content">
+                <p>Tu desafío es crear una aplicación completa para gestionar los participantes de las olimpiadas de programación de tu institución. La aplicación debe incluir:</p>
+                <ol>
+                    <li>Un <strong>Listbox</strong> que muestre la lista de participantes inscritos</li>
+                    <li>Un grupo de <strong>Radiobuttons</strong> para seleccionar el nivel del participante (Principiante, Intermedio, Avanzado)</li>
+                    <li><strong>Checkbuttons</strong> para indicar en qué categorías puede participar (Algoritmos, Web, Móvil, Base de datos)</li>
+                    <li>Un <strong>Treeview</strong> que muestre una tabla con todos los participantes y sus detalles</li>
+                    <li>Botones para agregar nuevos participantes y eliminar los seleccionados</li>
+                </ol>
+                <p>Piensa críticamente: ¿Cómo validarías que no se ingresen datos duplicados? ¿Qué hacer si un participante quiere cambiar de categoría? ¿Cómo harías para exportar esta información a un archivo?</p>
+                <p>Este reto te prepara para situaciones reales donde necesitas organizar información de manera eficiente y crear interfaces intuitivas que solucionen problemas concretos de tu comunidad.</p>
+                <button class="btn btn-accent" id="retoBtn">¡Acepto el Reto!</button>
+            </div>
+        </div>
+        
+        <!-- Evaluación lúdica -->
+        <div class="quiz-container card-full">
+            <h2 class="card-title"><i class="fas fa-gamepad"></i> Evaluación lúdica: Python Widgets Quiz</h2>
+            
+            <div class="score-container">
+                <div>Pregunta: <span id="question-number">1</span>/5</div>
+                <div>Puntuación: <span class="score" id="score">0</span> puntos</div>
+            </div>
+            
+            <div class="quiz-question" id="question">¿Cuál de estos widgets permite seleccionar UNA sola opción de un conjunto?</div>
+            
+            <div class="quiz-options" id="options">
+                <div class="quiz-option" data-value="1">Checkbutton</div>
+                <div class="quiz-option" data-value="2">Radiobutton</div>
+                <div class="quiz-option" data-value="3">Listbox</div>
+                <div class="quiz-option" data-value="4">Treeview</div>
+            </div>
+            
+            <div class="quiz-feedback" id="feedback"></div>
+            
+            <div style="text-align: center;">
+                <button class="btn" id="next-btn" disabled>Siguiente Pregunta</button>
+                <button class="btn btn-accent" id="restart-btn">Reiniciar Quiz</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pie de página -->
+    <footer>
+        <p>Diseñado por: Edwin Méndez J.</p>
+        <p>Taller de Python Tkinter - Widgets Esenciales</p>
+        <p>© 2023 Python para pensadores. Todos los derechos reservados.</p>
+    </footer>
+    
+    <script>
+        // Datos para el quiz
+        const quizData = [
+            {
+                question: "¿Cuál de estos widgets permite seleccionar UNA sola opción de un conjunto?",
+                options: ["Checkbutton", "Radiobutton", "Listbox", "Treeview"],
+                correct: 1
+            },
+            {
+                question: "¿Qué widget es más adecuado para mostrar datos en formato de tabla con filas y columnas?",
+                options: ["Listbox", "Radiobutton", "Checkbutton", "Treeview"],
+                correct: 3
+            },
+            {
+                question: "¿Cuál es la principal diferencia entre Radiobutton y Checkbutton en Tkinter?",
+                options: [
+                    "Radiobutton permite múltiple selección, Checkbutton solo una",
+                    "Checkbutton permite múltiple selección, Radiobutton solo una",
+                    "Ambos permiten múltiple selección",
+                    "Ninguna de las anteriores"
+                ],
+                correct: 1
+            },
+            {
+                question: "¿Qué método se utiliza para agregar elementos a un Listbox en Tkinter?",
+                options: ["add()", "insert()", "append()", "push()"],
+                correct: 1
+            },
+            {
+                question: "¿Cuál de estos widgets requiere importar el módulo ttk además de tkinter?",
+                options: ["Listbox", "Radiobutton", "Checkbutton", "Treeview"],
+                correct: 3
+            }
+        ];
+        
+        // Variables del quiz
+        let currentQuestion = 0;
+        let score = 0;
+        let selectedOption = null;
+        
+        // Elementos del DOM
+        const questionElement = document.getElementById('question');
+        const optionsElement = document.getElementById('options');
+        const feedbackElement = document.getElementById('feedback');
+        const nextButton = document.getElementById('next-btn');
+        const restartButton = document.getElementById('restart-btn');
+        const scoreElement = document.getElementById('score');
+        const questionNumberElement = document.getElementById('question-number');
+        const retoButton = document.getElementById('retoBtn');
+        
+        // Inicializar el quiz
+        function loadQuestion() {
+            const currentQuizData = quizData[currentQuestion];
+            
+            questionElement.textContent = currentQuizData.question;
+            questionNumberElement.textContent = currentQuestion + 1;
+            
+            optionsElement.innerHTML = '';
+            currentQuizData.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.classList.add('quiz-option');
+                optionElement.textContent = option;
+                optionElement.setAttribute('data-value', index);
+                optionElement.addEventListener('click', selectOption);
+                optionsElement.appendChild(optionElement);
+            });
+            
+            feedbackElement.textContent = '';
+            feedbackElement.className = 'quiz-feedback';
+            nextButton.disabled = true;
+            selectedOption = null;
+        }
+        
+        // Seleccionar una opción
+        function selectOption(e) {
+            // Si ya hay una selección, no hacer nada
+            if (selectedOption !== null) return;
+            
+            // Remover selección anterior
+            const options = document.querySelectorAll('.quiz-option');
+            options.forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Marcar la opción seleccionada
+            const selectedElement = e.currentTarget;
+            selectedElement.classList.add('selected');
+            selectedOption = parseInt(selectedElement.getAttribute('data-value'));
+            
+            // Verificar si es correcta
+            const correct = quizData[currentQuestion].correct === selectedOption;
+            
+            // Mostrar retroalimentación
+            if (correct) {
+                feedbackElement.textContent = '¡Correcto! Bien hecho.';
+                feedbackElement.classList.add('correct');
+                score += 10;
+                scoreElement.textContent = score;
+                selectedElement.classList.add('correct');
+            } else {
+                feedbackElement.textContent = 'Incorrecto. Sigue practicando.';
+                feedbackElement.classList.add('incorrect');
+                selectedElement.classList.add('incorrect');
+                
+                // Resaltar la opción correcta
+                const correctIndex = quizData[currentQuestion].correct;
+                options[correctIndex].classList.add('correct');
+            }
+            
+            // Habilitar el botón de siguiente
+            nextButton.disabled = false;
+        }
+        
+        // Siguiente pregunta
+        function nextQuestion() {
+            currentQuestion++;
+            
+            if (currentQuestion < quizData.length) {
+                loadQuestion();
+            } else {
+                // Fin del quiz
+                questionElement.textContent = `¡Quiz completado! Tu puntuación final es: ${score}/${quizData.length * 10}`;
+                optionsElement.innerHTML = '';
+                feedbackElement.textContent = '¡Excelente trabajo! Has demostrado un buen entendimiento de los widgets de Tkinter.';
+                feedbackElement.classList.add('correct');
+                feedbackElement.style.display = 'block';
+                nextButton.style.display = 'none';
+            }
+        }
+        
+        // Reiniciar el quiz
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            scoreElement.textContent = score;
+            nextButton.style.display = 'inline-block';
+            loadQuestion();
+        }
+        
+        // Botón del reto final
+        retoButton.addEventListener('click', function() {
+            alert('¡Excelente decisión! Ahora abre tu entorno de Python y comienza a codificar tu aplicación para gestionar participantes. Recuerda: cada error es una oportunidad para aprender. ¡Tú puedes!');
+        });
+        
+        // Event listeners
+        nextButton.addEventListener('click', nextQuestion);
+        restartButton.addEventListener('click', restartQuiz);
+        
+        // Iniciar el quiz
+        loadQuestion();
+        
+        // Efecto hover para botones
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05)';
+            });
+            
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+        
+        // Centrar la ventana (simulación)
+        console.log("La página está diseñada para mostrarse centrada en pantalla con márgenes automáticos.");
+    </script>
+</body>
+</html>

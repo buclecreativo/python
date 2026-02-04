@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python-tkinter: Usos de canvas | Taller educativo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variables de colores y estilos */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        /* Estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Estilos del encabezado */
+        .header {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+
+        .header .tema {
+            font-style: italic;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        /* Estilos para las secciones */
+        .section {
+            background-color: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .section h2 {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h2 i {
+            color: var(--secondary-color);
+        }
+
+        /* Estilos para objetivos y contextualización */
+        .highlight-box {
+            background-color: #e8f4fc;
+            padding: 1.5rem;
+            border-left: 5px solid var(--secondary-color);
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Estilos para el código */
+        .code-container {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .code-comment {
+            color: #81e6d9;
+        }
+
+        .code-keyword {
+            color: #ff7b72;
+        }
+
+        .code-string {
+            color: #a5d6ff;
+        }
+
+        .code-function {
+            color: #d2a8ff;
+        }
+
+        /* Estilos para botones */
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+        }
+
+        .btn-accent:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+        }
+
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+
+        /* Estilos para el juego de evaluación */
+        .quiz-container {
+            background-color: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 1.5rem;
+        }
+
+        .question {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option {
+            padding: 1rem;
+            background-color: white;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .option:hover {
+            background-color: #e3f2fd;
+            border-color: var(--secondary-color);
+        }
+
+        .option.selected {
+            background-color: #d1e7dd;
+            border-color: var(--success-color);
+        }
+
+        .option.wrong {
+            background-color: #f8d7da;
+            border-color: var(--accent-color);
+        }
+
+        .feedback {
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .feedback.correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .feedback.incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .score-container {
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 1rem 0;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+
+        /* Estilos para el pie de página */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+
+        .footer p {
+            margin: 0.5rem 0;
+        }
+
+        /* Responsividad */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 1.5rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .controls .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado -->
+    <header class="header">
+        <h1>Python para pensadores</h1>
+        <p class="subtitle">Taller diseñado con el corazón de un docente y la mente de un programador</p>
+        <div class="tema">Python-tkinter: Usos de canvas</div>
+    </header>
+
+    <!-- Sección 1: Título principal -->
+    <section class="section">
+        <h2><i class="fas fa-palette"></i> Creando mundos interactivos con Python y tkinter</h2>
+        <p>Imagina un lienzo en blanco, listo para transformarse en lo que tu creatividad imagine. Así es el widget Canvas de tkinter: un espacio infinito donde líneas, formas, colores y movimiento se unen para dar vida a tus ideas. Este taller te invita a convertirte en un artista digital que domina tanto la lógica como la estética.</p>
+    </section>
+
+    <!-- Sección 2: Objetivo de aprendizaje -->
+    <section class="section">
+        <h2><i class="fas fa-bullseye"></i> Objetivo de aprendizaje</h2>
+        <div class="highlight-box">
+            <p>Dominar el uso del widget Canvas en tkinter para crear interfaces gráficas interactivas mediante la implementación de formas geométricas, manejo de eventos y animaciones básicas, desarrollando así competencias técnicas en programación gráfica, habilidades cognitivas de resolución de problemas y actitudes de persistencia y creatividad, con el propósito de aplicar estos conocimientos en la creación de visualizaciones de datos, juegos educativos o herramientas de simulación que respondan a necesidades reales del entorno.</p>
+        </div>
+    </section>
+
+    <!-- Sección 3: Contextualización -->
+    <section class="section">
+        <h2><i class="fas fa-globe-americas"></i> Contextualización: Del código a la experiencia visual</h2>
+        <p>¿Alguna vez has usado una app que te mostró gráficos de tu progreso en el ejercicio? ¿O jugado un videojuego con personajes que se mueven en pantalla? Detrás de esas experiencias hay un "lienzo digital" similar al Canvas de tkinter.</p>
+        
+        <p>En nuestro contexto ecuatoriano, piensa en aplicaciones como:</p>
+        <ul style="padding-left: 1.5rem; margin-top: 1rem;">
+            <li>Simuladores del sistema solar para entender astronomía</li>
+            <li>Visualizaciones del cambio climático en los Andes</li>
+            <li>Juegos educativos sobre la biodiversidad galápagos</li>
+            <li>Herramientas para graficar ecuaciones en física y matemáticas</li>
+        </ul>
+        
+        <p>Canvas es esa puerta entre el código abstracto y la experiencia visual concreta. Cuando dominas Canvas, no solo programas, sino que das forma visual a tus ideas.</p>
+    </section>
+
+    <!-- Sección 4: Desarrollo de la actividad -->
+    <section class="section">
+        <h2><i class="fas fa-code"></i> Desarrollo de la actividad: Explorando el lienzo digital</h2>
+        
+        <h3 style="margin-top: 1.5rem; color: var(--secondary-color);">Conceptos fundamentales</h3>
+        <p>Canvas es un widget de tkinter que funciona como un área rectangular donde puedes dibujar gráficos, crear figuras, escribir texto y mostrar imágenes. Sus coordenadas empiezan en (0,0) en la esquina superior izquierda.</p>
+        
+        <h3 style="margin-top: 1.5rem; color: var(--secondary-color);">Ejemplo 1: Creando tu primer lienzo</h3>
+        <div class="code-container">
+<pre><span class="code-comment"># Importar tkinter</span>
+<span class="code-keyword">import</span> tkinter <span class="code-keyword">as</span> tk
+<span class="code-keyword">from</span> tkinter <span class="code-keyword">import</span> ttk
+
+<span class="code-comment"># Crear ventana principal</span>
+ventana = tk.Tk()
+ventana.title(<span class="code-string">"Mi primer Canvas"</span>)
+ventana.geometry(<span class="code-string">"600x400"</span>)
+
+<span class="code-comment"># Crear el widget Canvas</span>
+lienzo = tk.Canvas(ventana, width=580, height=350, bg=<span class="code-string">"white"</span>)
+lienzo.pack(pady=20)
+
+<span class="code-comment"># Dibujar formas básicas</span>
+<span class="code-comment"># Rectángulo: (x1, y1, x2, y2)</span>
+lienzo.create_rectangle(50, 50, 150, 150, fill=<span class="code-string">"blue"</span>, outline=<span class="code-string">"black"</span>)
+
+<span class="code-comment"># Óvalo</span>
+lienzo.create_oval(200, 50, 300, 150, fill=<span class="code-string">"red"</span>, outline=<span class="code-string">"black"</span>)
+
+<span class="code-comment"># Línea</span>
+lienzo.create_line(350, 50, 450, 150, width=3, fill=<span class="code-string">"green"</span>)
+
+<span class="code-comment"># Texto</span>
+lienzo.create_text(300, 200, text=<span class="code-string">"¡Bienvenido al mundo de Canvas!"</span>, 
+                   font=(<span class="code-string">"Arial"</span>, 14), fill=<span class="code-string">"purple"</span>)
+
+<span class="code-comment"># Ejecutar la aplicación</span>
+ventana.mainloop()</pre>
+        </div>
+        
+        <h3 style="margin-top: 1.5rem; color: var(--secondary-color);">Ejemplo 2: Interactividad con eventos</h3>
+        <p>El verdadero poder de Canvas aparece cuando combinamos dibujo con interacción. Vamos a crear un lienzo que responda a clics del mouse:</p>
+        
+        <div class="code-container">
+<pre><span class="code-keyword">import</span> tkinter <span class="code-keyword">as</span> tk
+<span class="code-keyword">import</span> random
+
+<span class="code-function">def</span> <span class="code-keyword">dibujar_circulo</span>(evento):
+    <span class="code-comment"># Generar color aleatorio</span>
+    colores = [<span class="code-string">"red"</span>, <span class="code-string">"blue"</span>, <span class="code-string">"green"</span>, <span class="code-string">"yellow"</span>, <span class="code-string">"orange"</span>, <span class="code-string">"purple"</span>]
+    color = random.choice(colores)
+    
+    <span class="code-comment"># Dibujar un círculo en la posición del clic</span>
+    x, y = evento.x, evento.y
+    lienzo.create_oval(x-20, y-20, x+20, y+20, fill=color, outline=<span class="code-string">"black"</span>)
+    
+    <span class="code-comment"># Actualizar contador</span>
+    global contador
+    contador += 1
+    etiqueta.config(text=<span class="code-string">f"Círculos creados: {contador}"</span>)
+
+<span class="code-comment"># Configurar ventana</span>
+ventana = tk.Tk()
+ventana.title(<span class="code-string">"Canvas Interactivo"</span>)
+ventana.geometry(<span class="code-string">"600x500"</span>)
+
+<span class="code-comment"># Variables</span>
+contador = 0
+
+<span class="code-comment"># Crear widgets</span>
+lienzo = tk.Canvas(ventana, width=580, height=400, bg=<span class="code-string">"white"</span>)
+lienzo.pack(pady=10)
+
+<span class="code-comment"># Vincular evento de clic</span>
+lienzo.bind(<span class="code-string">"&lt;Button-1&gt;"</span>, dibujar_circulo)
+
+<span class="code-comment"># Etiqueta para mostrar contador</span>
+etiqueta = tk.Label(ventana, text=<span class="code-string">"Círculos creados: 0"</span>, font=(<span class="code-string">"Arial"</span>, 12))
+etiqueta.pack()
+
+<span class="code-comment"># Botón para limpiar</span>
+boton_limpiar = tk.Button(ventana, text=<span class="code-string">"Limpiar lienzo"</span>, 
+                          command=<span class="code-keyword">lambda</span>: lienzo.delete(<span class="code-string">"all"</span>))
+boton_limpiar.pack(pady=10)
+
+ventana.mainloop()</pre>
+        </div>
+        
+        <div class="highlight-box">
+            <p><strong>Reflexión consciente:</strong> ¿Qué diferencias notas entre programar una interfaz de texto y una gráfica? ¿Cómo cambia tu forma de pensar cuando programas elementos visuales e interactivos? Piensa en tres aplicaciones de la vida real que podrían beneficiarse de esta tecnología.</p>
+        </div>
+    </section>
+    <h3 style="margin-top: 1.5rem; color: var(--secondary-color);">Ejemplo 3: Gráficos dinámicos y animaciones básicas</h3>
+
+            <p>Podemos crear movimiento y dinamismo combinando Canvas con métodos de actualización.</p>
+            
+            <div class="code-container">
+                <pre><span class="code-keyword">import</span> tkinter <span class="code-keyword">as</span> tk
+<span class="code-keyword">import</span> random
+
+<span class="code-function">class</span> <span class="code-function">AplicacionGraficos</span>:
+    <span class="code-function">def</span> <span class="code-function">__init__</span>(self, ventana):
+        self.ventana = ventana
+        self.ventana.title(<span class="code-string">"Gráficos Dinámicos"</span>)
+        
+        <span class="code-comment"># Crear canvas</span>
+        self.canvas = tk.Canvas(ventana, width=600, height=400, bg=<span class="code-string">"#F7FAFC"</span>)
+        self.canvas.pack()
+        
+        <span class="code-comment"># Lista para almacenar los objetos gráficos</span>
+        self.elementos = []
+        
+        <span class="code-comment"># Botones de control</span>
+        frame_botones = tk.Frame(ventana)
+        frame_botones.pack(pady=10)
+        
+        tk.Button(frame_botones, text=<span class="code-string">"Agregar círculo"</span>, 
+                  command=self.agregar_circulo, bg=<span class="code-string">"#00C9A7"</span>, fg=<span class="code-string">"white"</span>).pack(side=tk.LEFT, padx=5)
+        tk.Button(frame_botones, text=<span class="code-string">"Mover elementos"</span>, 
+                  command=self.mover_elementos, bg=<span class="code-string">"#2E5BFF"</span>, fg=<span class="code-string">"white"</span>).pack(side=tk.LEFT, padx=5)
+        tk.Button(frame_botones, text=<span class="code-string">"Limpiar canvas"</span>, 
+                  command=self.limpiar_canvas, bg=<span class="code-string">"#FF6B8B"</span>, fg=<span class="code-string">"white"</span>).pack(side=tk.LEFT, padx=5)
+    
+    <span class="code-function">def</span> <span class="code-function">agregar_circulo</span>(self):
+        <span class="code-comment"># Crear círculo en posición aleatoria</span>
+        x = random.randint(50, 550)
+        y = random.randint(50, 350)
+        radio = random.randint(20, 50)
+        
+        <span class="code-comment"># Color aleatorio en formato hexadecimal</span>
+        color = <span class="code-string">"#"</span> + <span class="code-string">''</span>.join(random.choices(<span class="code-string">"0123456789ABCDEF"</span>, k=6))
+        
+        circulo = self.canvas.create_oval(x-radio, y-radio, x+radio, y+radio, 
+                                          fill=color, outline=<span class="code-string">""</span>)
+        self.elementos.append(circulo)
+    
+    <span class="code-function">def</span> <span class="code-function">mover_elementos</span>(self):
+        <span class="code-keyword">for</span> elemento <span class="code-keyword">in</span> self.elementos:
+            <span class="code-comment"># Mover cada elemento una cantidad aleatoria</span>
+            dx = random.randint(-20, 20)
+            dy = random.randint(-20, 20)
+            self.canvas.move(elemento, dx, dy)
+    
+    <span class="code-function">def</span> <span class="code-function">limpiar_canvas</span>(self):
+        <span class="code-keyword">for</span> elemento <span class="code-keyword">in</span> self.elementos:
+            self.canvas.delete(elemento)
+        self.elementos.clear()
+
+<span class="code-keyword">if</span> __name__ == <span class="code-string">"__main__"</span>:
+    ventana = tk.Tk()
+    app = AplicacionGraficos(ventana)
+    ventana.mainloop()</pre>
+            </div>
+            
+            <p><strong>Desafío de exploración:</strong> Modifica el código para que los círculos reboten en los bordes del canvas. ¿Qué variables necesitas rastrear para cada círculo? ¿Cómo detectarías las colisiones entre círculos?</p>
+        </section>
+
+
+
+    <!-- Sección 5: El reto final -->
+    <section class="section">
+        <h2><i class="fas fa-trophy"></i> El reto final: Crea tu propio simulador visual</h2>
+        <p>Ahora es tu turno de aplicar todo lo aprendido. Tu misión es crear un <strong>simulador de ecosistema acuático</strong> usando Canvas de tkinter.</p>
+        
+        <div class="highlight-box">
+            <h3 style="color: var(--primary-color); margin-top: 0;">Especificaciones del reto:</h3>
+            <ol style="padding-left: 1.5rem;">
+                <li>Crea un lienzo que represente un cuerpo de agua (lago, río o mar)</li>
+                <li>Dibuja al menos 3 tipos diferentes de peces usando formas geométricas</li>
+                <li>Implementa movimiento para al menos un tipo de pez (pueden moverse en patrones simples)</li>
+                <li>Añade elementos del entorno: plantas, rocas, burbujas</li>
+                <li>Incluye interactividad: al hacer clic en alguna parte del agua, aparece comida para los peces</li>
+                <li>Agrega un contador que muestre cuánta "comida" has proporcionado</li>
+                <li>Personaliza tu simulador con colores y detalles que lo hagan único</li>
+            </ol>
+        </div>
+        
+        <p><strong>Preguntas para guiar tu desarrollo:</strong></p>
+        <ul style="padding-left: 1.5rem; margin-bottom: 1.5rem;">
+            <li>¿Cómo puedes hacer que los peces parezcan vivos y no estáticos?</li>
+            <li>¿Qué eventos de tkinter podrías usar para mejorar la interactividad?</li>
+            <li>¿Cómo representarías visualmente diferentes estados del ecosistema?</li>
+        </ul>
+        
+        <p>Recuerda: no hay una sola solución correcta. Tu creatividad y capacidad para resolver problemas son lo más importante. ¡Comparte tu creación con tus compañeros y docentes!</p>
+        
+        <button class="btn btn-accent" id="retoBtn">
+            <i class="fas fa-lightbulb"></i> Ver pistas para el reto
+        </button>
+        
+        <div id="pistas" style="display: none; margin-top: 1.5rem; padding: 1rem; background-color: #fff8e1; border-radius: 5px; border-left: 4px solid var(--warning-color);">
+            <p><strong>Pistas útiles:</strong></p>
+            <ul style="padding-left: 1.5rem;">
+                <li>Usa <code>create_oval</code> para los peces y <code>create_polygon</code> para las aletas</li>
+                <li>Para el movimiento, investiga el método <code>after</code> de tkinter para animaciones</li>
+                <li>Puedes almacenar los objetos del lienzo en listas para manipularlos después</li>
+                <li>Considera usar gradientes de color para el agua (azul claro arriba, oscuro abajo)</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Sección 6: Evaluación lúdica -->
+    <section class="section">
+        <h2><i class="fas fa-gamepad"></i> Evaluación lúdica: ¿Eres un maestro del Canvas?</h2>
+        <p>Responde estas preguntas para poner a prueba tu comprensión de los conceptos trabajados. ¡Cada respuesta correcta te da puntos!</p>
+        
+        <div class="quiz-container">
+            <div class="score-container">
+                Puntuación: <span id="score">0</span>/5
+            </div>
+            
+            <div id="question-container">
+                <div class="question" id="question">Cargando preguntas...</div>
+                <div class="options" id="options-container">
+                    <!-- Las opciones se cargarán aquí dinámicamente -->
+                </div>
+                <div class="feedback" id="feedback"></div>
+            </div>
+            
+            <div class="controls">
+                <div id="progress">Pregunta 1 de 5</div>
+                <button class="btn btn-success" id="next-btn" disabled>
+                    Siguiente pregunta <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pie de página -->
+    <footer class="footer">
+        <p>Taller educativo: Python-tkinter - Usos de canvas</p>
+        <p>Diseñado por: Edwin Méndez J.</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">"Enseñar no es transferir conocimiento, sino crear las posibilidades para su producción." - Paulo Freire</p>
+    </footer>
+
+    <script>
+        // Preguntas para el juego de evaluación
+        const questions = [
+            {
+                question: "¿Qué método de Canvas se utiliza para dibujar un rectángulo?",
+                options: [
+                    "create_rectangle()",
+                    "draw_rectangle()",
+                    "rectangle()",
+                    "add_rectangle()"
+                ],
+                correct: 0,
+                explanation: "Correcto. El método create_rectangle() recibe las coordenadas (x1, y1, x2, y2) y opciones como fill y outline."
+            },
+            {
+                question: "¿Dónde se encuentra el punto (0,0) en un widget Canvas de tkinter?",
+                options: [
+                    "En el centro del lienzo",
+                    "En la esquina superior izquierda",
+                    "En la esquina inferior izquierda",
+                    "En la esquina superior derecha"
+                ],
+                correct: 1,
+                explanation: "¡Muy bien! En tkinter, al igual que en muchos sistemas gráficos, el punto (0,0) se encuentra en la esquina superior izquierda del widget."
+            },
+            {
+                question: "¿Qué evento de tkinter se activa cuando se hace clic con el botón izquierdo del mouse?",
+                options: [
+                    "<Button-2>",
+                    "<MouseClick>",
+                    "<Button-1>",
+                    "<LeftClick>"
+                ],
+                correct: 2,
+                explanation: "Correcto. En tkinter, <Button-1> representa el clic del botón izquierdo, <Button-2> es la rueda del mouse, y <Button-3> es el botón derecho."
+            },
+            {
+                question: "¿Cuál es la función del parámetro 'fill' en los métodos de dibujo de Canvas?",
+                options: [
+                    "Define el color del borde de la figura",
+                    "Define el color de relleno de la figura",
+                    "Define la transparencia de la figura",
+                    "Define el grosor del borde de la figura"
+                ],
+                correct: 1,
+                explanation: "Exacto. El parámetro 'fill' establece el color de relleno de la figura, mientras que 'outline' define el color del borde."
+            },
+            {
+                question: "¿Qué método se utiliza para eliminar todos los elementos dibujados en un Canvas?",
+                options: [
+                    "clear()",
+                    "reset()",
+                    "delete('all')",
+                    "remove_all()"
+                ],
+                correct: 2,
+                explanation: "¡Perfecto! El método delete('all') elimina todos los elementos dibujados en el Canvas, dejándolo en blanco."
+            }
+        ];
+
+        // Variables del juego
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedOption = null;
+
+        // Elementos del DOM
+        const questionElement = document.getElementById('question');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackElement = document.getElementById('feedback');
+        const nextButton = document.getElementById('next-btn');
+        const scoreElement = document.getElementById('score');
+        const progressElement = document.getElementById('progress');
+        const retoBtn = document.getElementById('retoBtn');
+        const pistas = document.getElementById('pistas');
+
+        // Función para cargar la pregunta actual
+        function loadQuestion() {
+            // Reiniciar estado
+            selectedOption = null;
+            feedbackElement.style.display = 'none';
+            nextButton.disabled = true;
+            
+            // Obtener pregunta actual
+            const currentQuestion = questions[currentQuestionIndex];
+            
+            // Mostrar pregunta
+            questionElement.textContent = currentQuestion.question;
+            
+            // Limpiar opciones anteriores
+            optionsContainer.innerHTML = '';
+            
+            // Crear y mostrar opciones
+            currentQuestion.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.classList.add('option');
+                optionElement.textContent = `${index + 1}. ${option}`;
+                optionElement.dataset.index = index;
+                
+                optionElement.addEventListener('click', () => selectOption(optionElement, index));
+                
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Actualizar progreso
+            progressElement.textContent = `Pregunta ${currentQuestionIndex + 1} de ${questions.length}`;
+        }
+
+        // Función para seleccionar una opción
+        function selectOption(optionElement, index) {
+            // Si ya hay una selección, no hacer nada
+            if (selectedOption !== null) return;
+            
+            // Marcar opción seleccionada
+            optionElement.classList.add('selected');
+            selectedOption = index;
+            
+            // Verificar si es correcta
+            const currentQuestion = questions[currentQuestionIndex];
+            const isCorrect = index === currentQuestion.correct;
+            
+            // Mostrar retroalimentación
+            feedbackElement.textContent = currentQuestion.explanation;
+            feedbackElement.classList.remove('correct', 'incorrect');
+            feedbackElement.classList.add(isCorrect ? 'correct' : 'incorrect');
+            feedbackElement.style.display = 'block';
+            
+            // Si es incorrecta, mostrar cuál era la correcta
+            if (!isCorrect) {
+                const correctOption = optionsContainer.children[currentQuestion.correct];
+                correctOption.classList.add('selected');
+                optionElement.classList.add('wrong');
+            } else {
+                // Incrementar puntuación si es correcta
+                score++;
+                scoreElement.textContent = score;
+            }
+            
+            // Habilitar botón siguiente
+            nextButton.disabled = false;
+        }
+
+        // Función para pasar a la siguiente pregunta
+        function nextQuestion() {
+            currentQuestionIndex++;
+            
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                // Juego terminado
+                questionElement.textContent = "¡Evaluación completada!";
+                optionsContainer.innerHTML = '';
+                feedbackElement.textContent = `Obtuviste ${score} de ${questions.length} puntos. ¡${score >= 4 ? 'Excelente trabajo!' : 'Sigue practicando, lo harás mejor!'}`;
+                feedbackElement.classList.remove('correct', 'incorrect');
+                feedbackElement.classList.add(score >= 3 ? 'correct' : 'incorrect');
+                feedbackElement.style.display = 'block';
+                nextButton.style.display = 'none';
+                progressElement.textContent = "Evaluación finalizada";
+            }
+        }
+
+        // Mostrar/ocultar pistas para el reto
+        retoBtn.addEventListener('click', function() {
+            if (pistas.style.display === 'none') {
+                pistas.style.display = 'block';
+                retoBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Ocultar pistas';
+            } else {
+                pistas.style.display = 'none';
+                retoBtn.innerHTML = '<i class="fas fa-lightbulb"></i> Ver pistas para el reto';
+            }
+        });
+
+        // Inicializar juego
+        loadQuestion();
+        
+        // Configurar evento del botón siguiente
+        nextButton.addEventListener('click', nextQuestion);
+    </script>
+</body>
+</html>

@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python-tkinter: Crear y gestionar múltiples ventanas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --text-color: #34495e;
+            --bg-color: #f9f9f9;
+            --card-bg: #ffffff;
+            --hover-color: #2980b9;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+        }
+        
+        .header-content h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header-content h2 {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+        
+        .theme-tag {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-top: 15px;
+        }
+        
+        /* Section Styles */
+        section {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+        
+        section:hover {
+            transform: translateY(-5px);
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h2 i {
+            color: var(--secondary-color);
+        }
+        
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:hover {
+            background-color: var(--hover-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-retro {
+            background-color: var(--accent-color);
+        }
+        
+        /* Code Block Styles */
+        .code-container {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .code-keyword {
+            color: #63b3ed;
+        }
+        
+        .code-function {
+            color: #68d391;
+        }
+        
+        .code-string {
+            color: #fbd38d;
+        }
+        
+        .code-comment {
+            color: #a0aec0;
+        }
+        
+        /* Quiz Styles */
+        .quiz-container {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+        
+        .question-container {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question-number {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .option {
+            background-color: var(--light-color);
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+        
+        .option:hover {
+            background-color: #d6eaf8;
+            border-color: var(--secondary-color);
+        }
+        
+        .option.correct {
+            background-color: #d4edda;
+            border-color: var(--success-color);
+        }
+        
+        .option.incorrect {
+            background-color: #f8d7da;
+            border-color: var(--accent-color);
+        }
+        
+        .score-container {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 20px 0;
+        }
+        
+        .feedback {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: #d4edda;
+            color: #155724;
+            display: block;
+        }
+        
+        .feedback.incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+        
+        /* Footer Styles */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 25px;
+            border-radius: 20px 20px 0 0;
+            margin-top: 40px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content h1 {
+                font-size: 2rem;
+            }
+            
+            .header-content h2 {
+                font-size: 1.2rem;
+            }
+            
+            section {
+                padding: 20px;
+            }
+            
+            .code-container {
+                padding: 15px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* Utility Classes */
+        .highlight {
+            background-color: #fff3cd;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .note {
+            background-color: #e8f4fc;
+            border-left: 5px solid var(--secondary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .challenge-box {
+            background: linear-gradient(135deg, #fdfcfb, #e2d1c3);
+            border: 2px dashed var(--warning-color);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+        }
+        
+        .competence-tag {
+            display: inline-block;
+            background-color: var(--light-color);
+            color: var(--primary-color);
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <h1><i class="fas fa-code"></i> Python para pensadores</h1>
+            <h2 style="color: white;">Taller diseñado con el corazón de un docente y la mente de un programador</h2>
+            <div class="theme-tag">Tema: Crear y gestionar múltiples ventanas con Python tkinter</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Sección 1: Título principal -->
+        <section id="title-section">
+            <h2><i class="fas fa-brain"></i> Despierta el arquitecto digital que hay en ti</h2>
+            <p>Imagina que tienes el poder de diseñar espacios digitales donde las ideas cobran vida, donde cada ventana es un nuevo mundo de posibilidades. En este taller, no solo aprenderás a programar interfaces gráficas con Python, sino que descubrirás cómo organizar el flujo de información entre diferentes espacios visuales, cultivando un pensamiento estructurado, creativo y estratégico.</p>
+            <p>Te guiaré en un viaje donde la lógica de programación se encuentra con la intuición del diseño, donde cada línea de código es una decisión consciente que construye experiencias significativas para quien interactúe con tu creación.</p>
+        </section>
+
+        <!-- Sección 2: Objetivo de aprendizaje -->
+        <section id="objective-section">
+            <h2><i class="fas fa-bullseye"></i> ¿Qué construirás en este viaje?</h2>
+            <p><strong>Objetivo de aprendizaje:</strong> Dominar la creación y gestión de múltiples ventanas en aplicaciones de escritorio usando Python y tkinter, integrando competencias técnicas como el manejo de widgets y el control de eventos, con habilidades cognitivas de diseño de flujos de información y resolución de problemas, así como actitudes de curiosidad, perseverancia y atención al detalle, para desarrollar aplicaciones funcionales que respondan a necesidades reales de interacción persona-computadora, fortaleciendo así la capacidad de traducir ideas abstractas en soluciones concretas y elegantes.</p>
+            
+            <div style="margin-top: 20px;">
+                <span class="competence-tag"><i class="fas fa-cogs"></i> Competencia técnica</span>
+                <span class="competence-tag"><i class="fas fa-lightbulb"></i> Pensamiento crítico</span>
+                <span class="competence-tag"><i class="fas fa-hands-helping"></i> Trabajo colaborativo</span>
+                <span class="competence-tag"><i class="fas fa-palette"></i> Creatividad</span>
+            </div>
+        </section>
+
+        <!-- Sección 3: Contextualización -->
+        <section id="context-section">
+            <h2><i class="fas fa-globe-americas"></i> Un puente entre tu realidad y el código</h2>
+            <p>Piensa en la última aplicación que usaste en tu teléfono o computadora. ¿Notaste cómo se mueve entre diferentes pantallas? Al ingresar a tu banco en línea, primero ves la ventana de login, luego la de tu dashboard, después la de transferencias... Cada ventana tiene un propósito específico, y juntas forman una experiencia coherente.</p>
+            
+            <div class="note">
+                <p><strong>Reflexión:</strong> Así como en la vida real nos movemos entre diferentes espacios (casa, colegio, parque), en el mundo digital las ventanas son esos espacios donde ocurren interacciones específicas. Programar múltiples ventanas es como diseñar el plano de una casa digital, donde cada habitación tiene una función y todas se conectan de manera intuitiva.</p>
+            </div>
+            
+            <p>En Ecuador, donde la tecnología se integra cada vez más en nuestra cotidianidad, entender estos principios te permitirá no solo consumir tecnología, sino crearla con sentido, considerando las necesidades de personas reales en contextos reales.</p>
+        </section>
+
+        <!-- Sección 4: Desarrollo de la actividad -->
+        <section id="development-section">
+            <h2><i class="fas fa-hands"></i> Manos al código: Construyendo tu primera aplicación multicventana</h2>
+            
+            <h3 style="color: var(--secondary-color); margin-top: 20px;">Concepto fundamental: La ventana principal (root)</h3>
+            <p>Toda aplicación tkinter comienza con una ventana principal, el contenedor de todos los demás elementos. Es nuestra base, nuestro punto de partida.</p>
+            
+            <div class="code-container">
+                <pre><code><span class="code-keyword">import</span> tkinter <span class="code-keyword">as</span> tk
+<span class="code-keyword">from</span> tkinter <span class="code-keyword">import</span> messagebox
+
+<span class="code-comment"># Crear la ventana principal</span>
+<span class="code-function">root</span> = tk.Tk()
+<span class="code-function">root.title</span>(<span class="code-string">"Mi primera aplicación"</span>)
+<span class="code-function">root.geometry</span>(<span class="code-string">"400x300"</span>)
+
+<span class="code-comment"># Widgets básicos (botones, etiquetas, etc.)</span>
+<span class="code-function">label_titulo</span> = tk.Label(root, text=<span class="code-string">"Bienvenido a mi app"</span>, font=(<span class="code-string">"Arial"</span>, 16))
+<span class="code-function">label_titulo.pack</span>(pady=20)
+
+<span class="code-keyword">def</span> saludar():
+    <span class="code-function">messagebox.showinfo</span>(<span class="code-string">"Saludo"</span>, <span class="code-string">"¡Hola, futuro programador!"</span>)
+
+<span class="code-function">boton_saludo</span> = tk.Button(root, text=<span class="code-string">"Saludar"</span>, command=saludar)
+<span class="code-function">boton_saludo.pack</span>(pady=10)
+
+<span class="code-comment"># Ejecutar el bucle principal</span>
+<span class="code-function">root.mainloop</span>()</code></pre>
+            </div>
+            
+            <h3 style="color: var(--secondary-color); margin-top: 30px;">El gran paso: Crear ventanas secundarias (Toplevel)</h3>
+            <p>Las ventanas secundarias se crean a partir de la principal y permiten organizar funcionalidades específicas. Son como nuevas habitaciones en nuestra casa digital.</p>
+            
+            <div class="code-container">
+                <pre><code><span class="code-keyword">def</span> abrir_ventana_secundaria():
+    <span class="code-comment"># Crear una nueva ventana (secundaria)</span>
+    <span class="code-function">ventana_nueva</span> = tk.Toplevel(root)
+    <span class="code-function">ventana_nueva.title</span>(<span class="code-string">"Ventana de configuración"</span>)
+    <span class="code-function">ventana_nueva.geometry</span>(<span class="code-string">"300x200"</span>)
+    
+    <span class="code-comment"># Agregar contenido a la ventana nueva</span>
+    <span class="code-function">label_config</span> = tk.Label(ventana_nueva, text=<span class="code-string">"Ajusta tus preferencias"</span>)
+    <span class="code-function">label_config.pack</span>(pady=20)
+    
+    <span class="code-comment"># Botón para cerrar solo esta ventana</span>
+    <span class="code-function">boton_cerrar</span> = tk.Button(ventana_nueva, text=<span class="code-string">"Cerrar ventana"</span>, 
+                             command=ventana_nueva.destroy)
+    <span class="code-function">boton_cerrar.pack</span>(pady=10)
+
+<span class="code-comment"># Botón en la ventana principal para abrir la secundaria</span>
+<span class="code-function">boton_abrir</span> = tk.Button(root, text=<span class="code-string">"Abrir ventana secundaria"</span>, 
+                        command=abrir_ventana_secundaria)
+<span class="code-function">boton_abrir.pack</span>(pady=20)</code></pre>
+            </div>
+            
+            <div class="note">
+                <p><strong>Experimenta:</strong> Modifica el código anterior cambiando los tamaños de las ventanas, los textos y colores. ¿Qué pasa si creas una tercera ventana? ¿Y si intentas abrir la misma ventana secundaria varias veces? Observa, prueba, reflexiona sobre lo que ocurre.</p>
+            </div>
+            
+            <h3 style="color: var(--secondary-color); margin-top: 30px;">Comunicación entre ventanas: Compartiendo datos</h3>
+            <p>El verdadero poder de las múltiples ventanas aparece cuando pueden compartir información entre sí. Veamos cómo lograrlo:</p>
+            
+            <div class="code-container">
+                <pre><code><span class="code-keyword">class</span> AplicacionMultiVentana:
+    <span class="code-keyword">def</span> __init__(self):
+        self.<span class="code-function">ventana_principal</span> = tk.Tk()
+        self.<span class="code-function">ventana_principal.title</span>(<span class="code-string">"App con comunicación entre ventanas"</span>)
+        
+        <span class="code-comment"># Variable para compartir entre ventanas</span>
+        self.<span class="code-function">datos_compartidos</span> = <span class="code-string">"Información inicial"</span>
+        
+        <span class="code-comment"># Interfaz de la ventana principal</span>
+        self.<span class="code-function">label_estado</span> = tk.Label(self.ventana_principal, 
+                                     text=f<span class="code-string">"Estado: {self.datos_compartidos}"</span>)
+        self.<span class="code-function">label_estado.pack</span>(pady=20)
+        
+        <span class="code-function">boton_cambiar</span> = tk.Button(self.ventana_principal, text=<span class="code-string">"Abrir editor"</span>,
+                                 command=self.abrir_editor)
+        <span class="code-function">boton_cambiar.pack</span>(pady=10)
+    
+    <span class="code-keyword">def</span> abrir_editor(self):
+        <span class="code-comment"># Crear ventana de edición</span>
+        <span class="code-function">ventana_editor</span> = tk.Toplevel(self.ventana_principal)
+        <span class="code-function">ventana_editor.title</span>(<span class="code-string">"Editor de datos"</span>)
+        
+        <span class="code-comment"># Campo para editar los datos compartidos</span>
+        <span class="code-function">label_instruccion</span> = tk.Label(ventana_editor, text=<span class="code-string">"Edita la información:"</span>)
+        <span class="code-function">label_instruccion.pack</span>(pady=10)
+        
+        <span class="code-function">self.entry_datos</span> = tk.Entry(ventana_editor, width=40)
+        <span class="code-function">self.entry_datos.insert</span>(0, self.datos_compartidos)
+        <span class="code-function">self.entry_datos.pack</span>(pady=10)
+        
+        <span class="code-function">boton_guardar</span> = tk.Button(ventana_editor, text=<span class="code-string">"Guardar cambios"</span>,
+                               command=lambda: self.guardar_cambios(ventana_editor))
+        <span class="code-function">boton_guardar.pack</span>(pady=10)
+    
+    <span class="code-keyword">def</span> guardar_cambios(self, ventana_editor):
+        <span class="code-comment"># Actualizar los datos compartidos</span>
+        self.<span class="code-function">datos_compartidos</span> = self.entry_datos.get()
+        
+        <span class="code-comment"># Actualizar la etiqueta en la ventana principal</span>
+        self.<span class="code-function">label_estado.config</span>(text=f<span class="code-string">"Estado: {self.datos_compartidos}"</span>)
+        
+        <span class="code-comment"># Cerrar la ventana de edición</span>
+        <span class="code-function">ventana_editor.destroy</span>()
+        
+        <span class="code-function">messagebox.showinfo</span>(<span class="code-string">"Éxito"</span>, <span class="code-string">"Datos actualizados correctamente"</span>)
+
+<span class="code-comment"># Para ejecutar la aplicación</span>
+<span class="code-keyword">if</span> __name__ == <span class="code-string">"__main__"</span>:
+    <span class="code-function">app</span> = AplicacionMultiVentana()
+    <span class="code-function">app.ventana_principal.mainloop</span>()</code></pre>
+            </div>
+            
+            <p style="margin-top: 20px;">Ahora es tu turno: copia este código en tu entorno Python, ejecútalo y explora. Modifica, añade nuevas funcionalidades, juega con las posibilidades. La programación se aprende programando, cometiendo errores y descubriendo soluciones.</p>
+        </section>
+
+        <!-- Sección 5: El reto final -->
+        <section id="challenge-section">
+            <h2><i class="fas fa-flag-checkered"></i> Tu gran desafío: El organizador de tareas multicventana</h2>
+            
+            <div class="challenge-box">
+                <h3 style="color: var(--warning-color);">🎯 El reto:</h3>
+                <p>Crea una aplicación de escritorio con Python y tkinter que permita gestionar tareas pendientes utilizando <strong>tres ventanas diferentes</strong> que se comuniquen entre sí.</p>
+                
+                <h4 style="margin-top: 20px; color: var(--primary-color);">Requisitos específicos:</h4>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>Ventana principal:</strong> Muestra la lista de tareas con su estado (pendiente/completada) y un botón para agregar nuevas tareas.</li>
+                    <li><strong>Ventana de creación:</strong> Se abre al hacer clic en "Agregar tarea" y contiene un formulario para ingresar título, descripción y prioridad de la tarea.</li>
+                    <li><strong>Ventana de detalles:</strong> Al hacer clic en una tarea de la lista, se abre una ventana que muestra todos los detalles de esa tarea y permite marcarla como completada.</li>
+                    <li><strong>Comunicación:</strong> Los datos deben mantenerse sincronizados entre todas las ventanas.</li>
+                    <li><strong>Extras (para los más aventureros):</strong> Agrega la opción de editar tareas existentes, filtrar por prioridad o agregar fechas de vencimiento.</li>
+                </ul>
+                
+                <div style="margin-top: 25px; text-align: center;">
+                    <button class="btn" id="hint-btn"><i class="fas fa-lightbulb"></i> ¿Necesitas una pista?</button>
+                    <div id="hint-content" class="hidden" style="margin-top: 15px; padding: 15px; background-color: #f8f9fa; border-radius: 10px;">
+                        <p><strong>Pista:</strong> Considera crear una clase <span class="highlight">Tarea</span> con atributos como título, descripción, prioridad y estado. Luego, mantén una lista de objetos Tarea que sea accesible desde todas las ventanas. Puedes usar el patrón de la clase <span class="highlight">AplicacionMultiVentana</span> que vimos antes como punto de partida.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="note">
+                <p><strong>Reflexión metacognitiva:</strong> Al finalizar el reto, pregúntate: ¿qué estrategias usé para resolver los problemas que encontré? ¿Cómo organicé mi código para que fuera mantenible? ¿Qué haría diferente si tuviera que empezar de nuevo? Esta reflexión es tan importante como el código mismo.</p>
+            </div>
+        </section>
+
+        <!-- Sección 6: Evaluación lúdica -->
+        <section id="quiz-section">
+            <h2><i class="fas fa-gamepad"></i> Pon a prueba tu comprensión: El desafío tkinter</h2>
+            <p>Responde estas 5 preguntas para consolidar lo aprendido. ¡Cada respuesta correcta suma puntos!</p>
+            
+            <div class="quiz-container">
+                <div class="score-container">
+                    Puntuación: <span id="score">0</span>/5
+                </div>
+                
+                <div id="question-container">
+                    <!-- Las preguntas se cargarán aquí mediante JavaScript -->
+                </div>
+                
+                <div class="feedback" id="feedback"></div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn" id="next-btn" disabled><i class="fas fa-forward"></i> Siguiente pregunta</button>
+                    <button class="btn btn-retro" id="restart-btn" style="margin-left: 10px;"><i class="fas fa-redo"></i> Reiniciar juego</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>Diseñado por: Edwin Méndez J.</p>
+            <p style="margin-top: 10px; opacity: 0.8;">Con la convicción de que cada estudiante tiene el potencial de transformar el mundo a través del código</p>
+        </div>
+    </footer>
+
+    <script>
+        // Preguntas para el quiz
+        const questions = [
+            {
+                question: "En tkinter, ¿cuál es la diferencia principal entre Tk() y Toplevel()?",
+                options: [
+                    "Tk() crea la ventana principal, Toplevel() crea ventanas secundarias",
+                    "Tk() es para Linux, Toplevel() para Windows",
+                    "Tk() crea ventanas modales, Toplevel() ventanas no modales",
+                    "No hay diferencia, son sinónimos"
+                ],
+                correct: 0,
+                explanation: "¡Correcto! Tk() crea la ventana principal (root) de la aplicación, mientras que Toplevel() crea ventanas secundarias que dependen de la principal."
+            },
+            {
+                question: "¿Qué método se usa para cerrar una ventana específica en tkinter?",
+                options: [
+                    "close()",
+                    "destroy()",
+                    "quit()",
+                    "exit()"
+                ],
+                correct: 1,
+                explanation: "¡Excelente! El método destroy() cierra una ventana específica. quit() cierra toda la aplicación."
+            },
+            {
+                question: "Para que una ventana secundaria aparezca centrada respecto a la ventana principal, ¿qué técnica es más apropiada?",
+                options: [
+                    "Usar geometry() con coordenadas fijas",
+                    "Calcular la posición manualmente usando winfo_x() y winfo_y()",
+                    "Usar el método center() que tkinter proporciona",
+                    "Usar position() con valores 'center'"
+                ],
+                correct: 1,
+                explanation: "¡Muy bien! Aunque tkinter no tiene un método center() directo, podemos calcular la posición manualmente usando las dimensiones de las ventanas para centrarlas."
+            },
+            {
+                question: "¿Qué sucede si llamamos a mainloop() más de una vez en una aplicación tkinter?",
+                options: [
+                    "La aplicación se ejecuta más rápido",
+                    "Se crean hilos paralelos para cada ventana",
+                    "La aplicación se bloquea o se comporta de manera impredecible",
+                    "Cada ventana obtiene su propio bucle de eventos"
+                ],
+                correct: 2,
+                explanation: "¡Correcto! Solo debemos llamar a mainloop() una vez, al final del script. Llamarlo múltiples veces causa problemas en el bucle de eventos."
+            },
+            {
+                question: "Para compartir datos entre ventanas en tkinter, ¿cuál es la mejor práctica?",
+                options: [
+                    "Usar variables globales",
+                    "Crear una clase que contenga los datos y pasarla entre ventanas",
+                    "Guardar los datos en un archivo temporal",
+                    "Usar la clipboard del sistema operativo"
+                ],
+                correct: 1,
+                explanation: "¡Perfecto! Crear una clase (como vimos en el ejemplo) que contenga los datos y las referencias a las ventanas es la forma más organizada y mantenible de compartir información entre ventanas."
+            }
+        ];
+
+        // Variables del juego
+        let currentQuestion = 0;
+        let score = 0;
+        let userAnswers = [];
+        
+        // Elementos del DOM
+        const questionContainer = document.getElementById('question-container');
+        const feedbackElement = document.getElementById('feedback');
+        const nextButton = document.getElementById('next-btn');
+        const restartButton = document.getElementById('restart-btn');
+        const scoreElement = document.getElementById('score');
+        const hintButton = document.getElementById('hint-btn');
+        const hintContent = document.getElementById('hint-content');
+        
+        // Función para mostrar una pregunta
+        function showQuestion() {
+            const question = questions[currentQuestion];
+            
+            let optionsHTML = '';
+            question.options.forEach((option, index) => {
+                optionsHTML += `
+                    <div class="option" data-index="${index}">
+                        <span class="option-letter">${String.fromCharCode(65 + index)})</span> ${option}
+                    </div>
+                `;
+            });
+            
+            questionContainer.innerHTML = `
+                <div class="question-container">
+                    <div>
+                        <span class="question-number">${currentQuestion + 1}</span>
+                        <span style="font-weight: bold; font-size: 1.2rem;">${question.question}</span>
+                    </div>
+                    <div class="options-container">
+                        ${optionsHTML}
+                    </div>
+                </div>
+            `;
+            
+            // Reiniciar feedback
+            feedbackElement.className = 'feedback';
+            feedbackElement.textContent = '';
+            
+            // Deshabilitar botón siguiente hasta que responda
+            nextButton.disabled = true;
+            
+            // Agregar event listeners a las opciones
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', selectOption);
+            });
+        }
+        
+        // Función para seleccionar una opción
+        function selectOption(e) {
+            const selectedOption = e.currentTarget;
+            const selectedIndex = parseInt(selectedOption.getAttribute('data-index'));
+            
+            // Guardar respuesta del usuario
+            userAnswers[currentQuestion] = selectedIndex;
+            
+            // Mostrar resultado
+            const correctIndex = questions[currentQuestion].correct;
+            const isCorrect = selectedIndex === correctIndex;
+            
+            // Aplicar estilos visuales
+            document.querySelectorAll('.option').forEach((option, index) => {
+                if (index === correctIndex) {
+                    option.classList.add('correct');
+                } else if (index === selectedIndex && !isCorrect) {
+                    option.classList.add('incorrect');
+                }
+                option.style.pointerEvents = 'none'; // Deshabilitar más clics
+            });
+            
+            // Mostrar feedback
+            feedbackElement.textContent = isCorrect 
+                ? `¡Correcto! ${questions[currentQuestion].explanation}` 
+                : `Incorrecto. La respuesta correcta es: ${questions[currentQuestion].options[correctIndex]}`;
+            
+            feedbackElement.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+            
+            // Actualizar puntaje si es correcto
+            if (isCorrect) {
+                score++;
+                scoreElement.textContent = score;
+            }
+            
+            // Habilitar botón siguiente
+            nextButton.disabled = false;
+        }
+        
+        // Función para mostrar siguiente pregunta
+        function nextQuestion() {
+            currentQuestion++;
+            
+            if (currentQuestion < questions.length) {
+                showQuestion();
+            } else {
+                // Fin del juego
+                const percentage = Math.round((score / questions.length) * 100);
+                let message = '';
+                
+                if (percentage === 100) {
+                    message = '¡Excelente! Dominas completamente el tema.';
+                } else if (percentage >= 70) {
+                    message = '¡Muy bien! Tienes un buen entendimiento del tema.';
+                } else if (percentage >= 50) {
+                    message = 'Buen intento. Revisa los conceptos nuevamente.';
+                } else {
+                    message = 'Sigue practicando, lo lograrás.';
+                }
+                
+                questionContainer.innerHTML = `
+                    <div class="question-container" style="text-align: center;">
+                        <h3>¡Juego terminado!</h3>
+                        <p>Tu puntuación final: <strong>${score}/${questions.length}</strong> (${percentage}%)</p>
+                        <p>${message}</p>
+                        <p style="margin-top: 20px;">Has completado el taller. ¡Sigue programando y explorando!</p>
+                    </div>
+                `;
+                
+                nextButton.disabled = true;
+            }
+        }
+        
+        // Función para reiniciar el juego
+        function restartGame() {
+            currentQuestion = 0;
+            score = 0;
+            userAnswers = [];
+            scoreElement.textContent = '0';
+            showQuestion();
+        }
+        
+        // Mostrar/ocultar pista para el reto
+        hintButton.addEventListener('click', () => {
+            hintContent.classList.toggle('hidden');
+        });
+        
+        // Event listeners
+        nextButton.addEventListener('click', nextQuestion);
+        restartButton.addEventListener('click', restartGame);
+        
+        // Inicializar juego
+        showQuestion();
+        
+        // Efecto de desplazamiento suave para enlaces internos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Centrar la ventana principal al cargar
+        window.addEventListener('load', function() {
+            const mainContainer = document.querySelector('.container');
+            mainContainer.style.margin = '0 auto';
+        });
+    </script>
+</body>
+</html>

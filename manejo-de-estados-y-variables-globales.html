@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python-tkinter: Manejo de Estados y Variables Globales</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --shadow: rgba(44, 62, 80, 0.2);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px var(--shadow);
+            overflow: hidden;
+            margin: 20px auto;
+            padding: 0;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.3;
+            z-index: 0;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .logo i {
+            color: var(--accent);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            font-weight: 300;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+        
+        .theme {
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: 500;
+            backdrop-filter: blur(5px);
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid var(--secondary);
+            transition: var(--transition);
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-title {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: var(--accent);
+        }
+        
+        /* Cards */
+        .card {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+        
+        /* Code Styling */
+        .code-container {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .code-keyword {
+            color: #ff79c6;
+        }
+        
+        .code-function {
+            color: #50fa7b;
+        }
+        
+        .code-string {
+            color: #f1fa8c;
+        }
+        
+        .code-comment {
+            color: #6272a4;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-danger {
+            background-color: var(--accent);
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+        }
+        
+        /* Quiz Styles */
+        .quiz-container {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 20px;
+            border: 2px dashed var(--secondary);
+        }
+        
+        .question {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .option {
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid #e0e0e0;
+        }
+        
+        .option:hover {
+            background-color: #f0f7ff;
+            border-color: var(--secondary);
+        }
+        
+        .option.selected {
+            background-color: #e1f5fe;
+            border-color: var(--secondary);
+        }
+        
+        .option.correct {
+            background-color: #d4edda;
+            border-color: var(--success);
+        }
+        
+        .option.incorrect {
+            background-color: #f8d7da;
+            border-color: var(--accent);
+        }
+        
+        .feedback {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: #d4edda;
+            color: #155724;
+            display: block;
+        }
+        
+        .feedback.incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+        
+        .score-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: var(--light);
+            border-radius: 8px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--primary);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 1.7rem;
+            }
+            
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-code"></i>
+                    <span>Python para pensadores</span>
+                </div>
+                <h1>Domina el Estado: Variables Globales en Tkinter</h1>
+                <p class="subtitle">Taller diseñado con el corazón de un docente y la mente de un programador.</p>
+                <div class="theme">
+                    <h2>Tema: Python-tkinter: Manejo de estados y variables globales</h2>
+                </div>
+            </div>
+        </header>
+        
+        <main class="main-content">
+            <!-- Objetivo de aprendizaje -->
+            <section class="section">
+                <h2 class="section-title"><i class="fas fa-bullseye"></i> Objetivo de aprendizaje</h2>
+                <div class="card">
+                    <p>Desarrollar una aplicación GUI funcional en Python usando Tkinter que implemente el manejo adecuado de variables globales y estados de la interfaz, integrando competencias técnicas como la creación de componentes interactivos, cognitivas como el análisis de flujo de datos en programas con interfaces gráficas, y actitudinales como la curiosidad para experimentar con diferentes aproximaciones al problema y la ética en la creación de software accesible e intuitivo, con el propósito de construir aplicaciones que respondan dinámicamente a las interacciones del usuario y gestionen información de forma consistente a lo largo de la ejecución del programa.</p>
+                </div>
+            </section>
+            
+            <!-- Contextualización -->
+            <section class="section">
+                <h2 class="section-title"><i class="fas fa-compass"></i> Contextualización: El arte de recordar</h2>
+                <div class="card">
+                    <p>Imagina que estás creando una lista de tareas en una aplicación. Añades un pendiente, lo marcas como completado, agregas otro... pero al cerrar la ventana y abrirla nuevamente, todo ha desaparecido. ¿Te suena familiar? En el mundo de las aplicaciones, los programas tienen memoria limitada: solo recuerdan lo que nosotros, como programadores, les enseñamos a recordar.</p>
+                    <p>En este taller, exploraremos cómo darle memoria a nuestras aplicaciones con Tkinter. Aprenderás a crear programas que no solo reaccionen a tus acciones inmediatas, sino que mantengan un estado, una historia, una identidad a lo largo del tiempo. Conectaremos conceptos de programación con emociones humanas como la frustración cuando una app "olvida" nuestros datos, o la satisfacción cuando todo fluye de forma natural.</p>
+                    <p>Python con Tkinter nos ofrece un lienzo donde la lógica se encuentra con la experiencia del usuario, donde las variables dejan de ser simples contenedores de datos para convertirse en los guardianes de la continuidad de nuestras interacciones.</p>
+                </div>
+            </section>
+            
+            <!-- Desarrollo de la actividad -->
+            <section class="section">
+                <h2 class="section-title"><i class="fas fa-cogs"></i> Desarrollo de la actividad: Estados que persisten</h2>
+                <div class="card">
+                    <h3>Conceptos fundamentales</h3>
+                    <p>En Tkinter, el manejo de estados se refiere a cómo tu aplicación recuerda y gestiona información a lo largo del tiempo. Las variables globales son una herramienta poderosa para este propósito, pero deben usarse con cuidado para mantener nuestro código organizado y predecible.</p>
+                    
+                    <h4>Variables de control en Tkinter</h4>
+                    <p>Tkinter proporciona variables especiales que se pueden vincular directamente a los widgets:</p>
+                    
+                    <div class="code-container">
+<pre><span class="code-keyword">import</span> tkinter <span class="code-keyword">as</span> tk
+<span class="code-keyword">from</span> tkinter <span class="code-keyword">import</span> ttk
+
+<span class="code-comment"># Crear una ventana principal</span>
+ventana = tk.Tk()
+ventana.title(<span class="code-string">"Gestión de Estados"</span>)
+
+<span class="code-comment"># Variables de control de Tkinter (se actualizan automáticamente)</span>
+<span class="code-comment"># StringVar para textos, IntVar para números enteros, BooleanVar para valores True/False</span>
+texto_var = tk.StringVar(value=<span class="code-string">"Texto inicial"</span>)
+contador_var = tk.IntVar(value=<span class="code-string">0</span>)
+activo_var = tk.BooleanVar(value=<span class="code-keyword">True</span>)
+
+<span class="code-comment"># Widgets vinculados a las variables</span>
+etiqueta = ttk.Label(ventana, textvariable=texto_var)
+etiqueta.pack(pady=<span class="code-string">10</span>)
+
+entrada = ttk.Entry(ventana, textvariable=texto_var)
+entrada.pack(pady=<span class="code-string">10</span>)
+
+<span class="code-comment"># Función que usa las variables</span>
+<span class="code-keyword">def</span> <span class="code-function">incrementar_contador</span>():
+    <span class="code-comment"># Obtener el valor actual, incrementar y establecer el nuevo valor</span>
+    valor_actual = contador_var.get()
+    contador_var.set(valor_actual + <span class="code-string">1</span>)
+    texto_var.set(<span class="code-string">f"Contador: {contador_var.get()}"</span>)
+
+boton = ttk.Button(ventana, text=<span class="code-string">"Incrementar"</span>, command=incrementar_contador)
+boton.pack(pady=<span class="code-string">10</span>)
+
+ventana.mainloop()</pre>
+                    </div>
+                    
+                    <h4>Variables globales vs variables de control</h4>
+                    <p>A veces necesitamos variables globales tradicionales para almacenar información que no está directamente vinculada a widgets:</p>
+                    
+                    <div class="code-container">
+<pre><span class="code-keyword">import</span> tkinter <span class="code-keyword">as</span> tk
+
+<span class="code-comment"># Variables globales (fuera de cualquier función)</span>
+usuarios_registrados = []
+configuracion = {
+    <span class="code-string">"tema"</span>: <span class="code-string">"oscuro"</span>,
+    <span class="code-string">"idioma"</span>: <span class="code-string">"español"</span>,
+    <span class="code-string">"notificaciones"</span>: <span class="code-keyword">True</span>
+}
+
+<span class="code-keyword">def</span> <span class="code-function">crear_interfaz</span>():
+    ventana = tk.Tk()
+    ventana.title(<span class="code-string">"App con Estado Global"</span>)
+    
+    <span class="code-comment"># Función que accede y modifica variables globales</span>
+    <span class="code-keyword">def</span> <span class="code-function">agregar_usuario</span>():
+        <span class="code-keyword">global</span> usuarios_registrados  <span class="code-comment"># Necesario para modificar la variable global</span>
+        
+        nombre = entrada_nombre.get()
+        <span class="code-keyword">if</span> nombre:
+            usuarios_registrados.append(nombre)
+            <span class="code-comment"># Actualizar la lista visual</span>
+            lista_usuarios.delete(<span class="code-string">0</span>, tk.END)
+            <span class="code-keyword">for</span> usuario <span class="code-keyword">in</span> usuarios_registrados:
+                lista_usuarios.insert(tk.END, usuario)
+            entrada_nombre.delete(<span class="code-string">0</span>, tk.END)
+    
+    <span class="code-comment"># Widgets de la interfaz</span>
+    ttk.Label(ventana, text=<span class="code-string">"Nombre del usuario:"</span>).pack(pady=<span class="code-string">5</span>)
+    entrada_nombre = ttk.Entry(ventana)
+    entrada_nombre.pack(pady=<span class="code-string">5</span>)
+    
+    ttk.Button(ventana, text=<span class="code-string">"Agregar usuario"</span>, command=agregar_usuario).pack(pady=<span class="code-string">10</span>)
+    
+    lista_usuarios = tk.Listbox(ventana, height=<span class="code-string">5</span>)
+    lista_usuarios.pack(pady=<span class="code-string">10</span>)
+    
+    ventana.mainloop()
+
+<span class="code-comment"># Iniciar la aplicación</span>
+<span class="code-keyword">if</span> __name__ == <span class="code-string">"__main__"</span>:
+    crear_interfaz()</pre>
+                    </div>
+                    
+                    <h4>Exploración práctica</h4>
+                    <p>Prueba estos conceptos creando una pequeña aplicación de lista de tareas. Experimenta con:</p>
+                    <ol>
+                        <li>Agregar y eliminar elementos de una lista global</li>
+                        <li>Marcar tareas como completadas usando variables BooleanVar</li>
+                        <li>Contar cuántas tareas has completado vs pendientes</li>
+                        <li>Intentar prescindir de variables globales para ver cómo la aplicación "olvida" el estado entre interacciones</li>
+                    </ol>
+                    
+                    <button class="btn" id="showExample">Ver ejemplo completo</button>
+                    
+                    <div id="fullExample" style="display: none; margin-top: 20px;">
+                        <div class="code-container">
+<pre><span class="code-keyword">import</span> tkinter <span class="code-keyword">as</span> tk
+<span class="code-keyword">from</span> tkinter <span class="code-keyword">import</span> ttk, messagebox
+
+<span class="code-keyword">class</span> <span class="code-function">AplicacionTareas</span>:
+    <span class="code-keyword">def</span> <span class="code-function">__init__</span>(<span class="code-keyword">self</span>, ventana):
+        <span class="code-comment"># Variables globales de la aplicación</span>
+        <span class="code-keyword">self</span>.tareas = []  <span class="code-comment"># Lista de tareas</span>
+        <span class="code-keyword">self</span>.contador_completadas = <span class="code-string">0</span>
+        
+        <span class="code-comment"># Configuración de la ventana</span>
+        ventana.title(<span class="code-string">"Gestor de Tareas"</span>)
+        ventana.geometry(<span class="code-string">"400x500"</span>)
+        
+        <span class="code-comment"># Crear widgets</span>
+        <span class="code-keyword">self</span>.crear_widgets(ventana)
+    
+    <span class="code-keyword">def</span> <span class="code-function">crear_widgets</span>(<span class="code-keyword">self</span>, ventana):
+        <span class="code-comment"># Marco para entrada de datos</span>
+        marco_entrada = ttk.Frame(ventana)
+        marco_entrada.pack(pady=<span class="code-string">10</span>, padx=<span class="code-string">10</span>, fill=<span class="code-string">"x"</span>)
+        
+        ttk.Label(marco_entrada, text=<span class="code-string">"Nueva tarea:"</span>).pack(side=<span class="code-string">"left"</span>)
+        
+        <span class="code-keyword">self</span>.entrada_tarea = ttk.Entry(marco_entrada, width=<span class="code-string">30</span>)
+        <span class="code-keyword">self</span>.entrada_tarea.pack(side=<span class="code-string">"left"</span>, padx=<span class="code-string">5</span>)
+        <span class="code-keyword">self</span>.entrada_tarea.bind(<span class="code-string">"&lt;Return&gt;"</span>, <span class="code-keyword">lambda</span> e: <span class="code-keyword">self</span>.agregar_tarea())
+        
+        ttk.Button(marco_entrada, text=<span class="code-string">"Agregar"</span>, command=<span class="code-keyword">self</span>.agregar_tarea).pack(side=<span class="code-string">"left"</span>)
+        
+        <span class="code-comment"># Lista de tareas</span>
+        <span class="code-keyword">self</span>.lista_tareas = tk.Listbox(ventana, height=<span class="code-string">15</span>)
+        <span class="code-keyword">self</span>.lista_tareas.pack(pady=<span class="code-string">10</span>, padx=<span class="code-string">10</span>, fill=<span class="code-string">"both"</span>, expand=<span class="code-keyword">True</span>)
+        
+        <span class="code-keyword">self</span>.lista_tareas.bind(<span class="code-string">"&lt;Double-Button-1&gt;"</span>, <span class="code-keyword">lambda</span> e: <span class="code-keyword">self</span>.alternar_completada())
+        
+        <span class="code-comment"># Marco para botones de acción</span>
+        marco_botones = ttk.Frame(ventana)
+        marco_botones.pack(pady=<span class="code-string">10</span>, padx=<span class="code-string">10</span>)
+        
+        ttk.Button(marco_botones, text=<span class="code-string">"Marcar como completada"</span>, command=<span class="code-keyword">self</span>.alternar_completada).pack(side=<span class="code-string">"left"</span>, padx=<span class="code-string">5</span>)
+        ttk.Button(marco_botones, text=<span class="code-string">"Eliminar tarea"</span>, command=<span class="code-keyword">self</span>.eliminar_tarea).pack(side=<span class="code-string">"left"</span>, padx=<span class="code-string">5</span>)
+        
+        <span class="code-comment"># Etiqueta para estadísticas</span>
+        <span class="code-keyword">self</span>.etiqueta_estadisticas = ttk.Label(ventana, text=<span class="code-string">"Tareas completadas: 0/0"</span>)
+        <span class="code-keyword">self</span>.etiqueta_estadisticas.pack(pady=<span class="code-string">5</span>)
+    
+    <span class="code-keyword">def</span> <span class="code-function">agregar_tarea</span>(<span class="code-keyword">self</span>):
+        <span class="code-comment"># Obtener texto de la entrada</span>
+        texto = <span class="code-keyword">self</span>.entrada_tarea.get().strip()
+        
+        <span class="code-keyword">if</span> texto:
+            <span class="code-comment"># Agregar a la lista global de tareas</span>
+            <span class="code-keyword">self</span>.tareas.append({<span class="code-string">"texto"</span>: texto, <span class="code-string">"completada"</span>: <span class="code-keyword">False</span>})
+            
+            <span class="code-comment"># Actualizar la lista visual</span>
+            <span class="code-keyword">self</span>.actualizar_lista()
+            
+            <span class="code-comment"># Limpiar la entrada</span>
+            <span class="code-keyword">self</span>.entrada_tarea.delete(<span class="code-string">0</span>, tk.END)
+    
+    <span class="code-keyword">def</span> <span class="code-function">actualizar_lista</span>(<span class="code-keyword">self</span>):
+        <span class="code-comment"># Limpiar la lista actual</span>
+        <span class="code-keyword">self</span>.lista_tareas.delete(<span class="code-string">0</span>, tk.END)
+        
+        <span class="code-comment"># Contador de tareas completadas</span>
+        <span class="code-keyword">self</span>.contador_completadas = <span class="code-string">0</span>
+        
+        <span class="code-comment"># Agregar cada tarea con formato</span>
+        <span class="code-keyword">for</span> i, tarea <span class="code-keyword">in</span> enumerate(<span class="code-keyword">self</span>.tareas):
+            texto = tarea[<span class="code-string">"texto"</span>]
+            <span class="code-keyword">if</span> tarea[<span class="code-string">"completada"</span>]:
+                texto = <span class="code-string">f"✓ {texto}"</span>
+                <span class="code-keyword">self</span>.contador_completadas += <span class="code-string">1</span>
+                <span class="code-keyword">self</span>.lista_tareas.insert(tk.END, texto)
+                <span class="code-keyword">self</span>.lista_tareas.itemconfig(i, fg=<span class="code-string">"green"</span>)
+            <span class="code-keyword">else</span>:
+                texto = <span class="code-string">f"○ {texto}"</span>
+                <span class="code-keyword">self</span>.lista_tareas.insert(tk.END, texto)
+        
+        <span class="code-comment"># Actualizar estadísticas</span>
+        <span class="code-keyword">self</span>.etiqueta_estadisticas.config(
+            text=<span class="code-string">f"Tareas completadas: {self.contador_completadas}/{len(self.tareas)}"</span>
+        )
+    
+    <span class="code-keyword">def</span> <span class="code-function">alternar_completada</span>(<span class="code-keyword">self</span>):
+        <span class="code-comment"># Obtener índice seleccionado</span>
+        seleccion = <span class="code-keyword">self</span>.lista_tareas.curselection()
+        
+        <span class="code-keyword">if</span> seleccion:
+            indice = seleccion[<span class="code-string">0</span>]
+            
+            <span class="code-comment"># Cambiar estado en la lista global</span>
+            <span class="code-keyword">self</span>.tareas[indice][<span class="code-string">"completada"</span>] = <span class="code-keyword">not</span> <span class="code-keyword">self</span>.tareas[indice][<span class="code-string">"completada"</span>]
+            
+            <span class="code-comment"># Actualizar la lista visual</span>
+            <span class="code-keyword">self</span>.actualizar_lista()
+    
+    <span class="code-keyword">def</span> <span class="code-function">eliminar_tarea</span>(<span class="code-keyword">self</span>):
+        seleccion = <span class="code-keyword">self</span>.lista_tareas.curselection()
+        
+        <span class="code-keyword">if</span> seleccion:
+            indice = seleccion[<span class="code-string">0</span>]
+            
+            <span class="code-comment"># Eliminar de la lista global</span>
+            <span class="code-keyword">del</span> <span class="code-keyword">self</span>.tareas[indice]
+            
+            <span class="code-comment"># Actualizar la lista visual</span>
+            <span class="code-keyword">self</span>.actualizar_lista()
+
+<span class="code-keyword">if</span> __name__ == <span class="code-string">"__main__"</span>:
+    ventana = tk.Tk()
+    app = AplicacionTareas(ventana)
+    ventana.mainloop()</pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Reto final -->
+            <section class="section">
+                <h2 class="section-title"><i class="fas fa-flag-checkered"></i> El reto final: Creador de hábitos digital</h2>
+                <div class="card">
+                    <p>Crea una aplicación de seguimiento de hábitos que permita a los usuarios registrar y visualizar su progreso en metas personales. La aplicación debe:</p>
+                    
+                    <ol>
+                        <li><strong>Permitir definir hábitos</strong> (ejercicio, lectura, meditación) con nombre, descripción y meta diaria/semanal.</li>
+                        <li><strong>Registrar cumplimientos</strong> mediante un botón o marcador para cada día.</li>
+                        <li><strong>Visualizar progreso</strong> con gráficos o barras que muestren el porcentaje de cumplimiento.</li>
+                        <li><strong>Mantener el estado</strong> entre sesiones (idealmente guardando los datos en un archivo, pero al menos usando variables globales durante la ejecución).</li>
+                        <li><strong>Incluir un sistema de recompensas</strong> visual (mensajes motivacionales, cambio de color al alcanzar metas, etc.).</li>
+                    </ol>
+                    
+                    <p><strong>Preguntas para tu reflexión:</strong></p>
+                    <ul>
+                        <li>¿Cómo estructurarías las variables globales para almacenar múltiples hábitos con sus respectivos registros?</li>
+                        <li>¿Qué widgets de Tkinter serían más apropiados para la visualización del progreso?</li>
+                        <li>¿Cómo evitarías que el código se vuelva confuso al manejar muchos estados diferentes?</li>
+                        <li>¿Qué pasaría si quisieras que los datos persistan después de cerrar la aplicación?</li>
+                    </ul>
+                    
+                    <p>Este reto integra todo lo aprendido: variables globales para almacenar el estado, variables de control para vincular widgets, funciones para manipular datos, y una interfaz que responde dinámicamente a las interacciones del usuario.</p>
+                    
+                    <button class="btn btn-success" id="startChallenge">¡Aceptar el reto!</button>
+                </div>
+            </section>
+            
+            <!-- Evaluación lúdica -->
+            <section class="section">
+                <h2 class="section-title"><i class="fas fa-gamepad"></i> Evaluación lúdica: Pon a prueba tu conocimiento</h2>
+                <div class="quiz-container">
+                    <div id="quiz">
+                        <!-- Las preguntas se insertarán aquí mediante JavaScript -->
+                    </div>
+                    
+                    <div class="score-container">
+                        <div id="score">Puntuación: 0/5</div>
+                        <button class="btn" id="nextQuestion" disabled>Siguiente pregunta</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <div class="footer-content">
+                <h3>Python para pensadores</h3>
+                <p>Taller diseñado con el corazón de un docente y la mente de un programador.</p>
+                <p><strong>Diseñado por: Edwin Méndez J.</strong></p>
+                <p>© 2023 - Todos los derechos reservados</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Mostrar/ocultar ejemplo completo
+        document.getElementById('showExample').addEventListener('click', function() {
+            const exampleDiv = document.getElementById('fullExample');
+            if (exampleDiv.style.display === 'none') {
+                exampleDiv.style.display = 'block';
+                this.textContent = 'Ocultar ejemplo';
+            } else {
+                exampleDiv.style.display = 'none';
+                this.textContent = 'Ver ejemplo completo';
+            }
+        });
+        
+        // Botón para iniciar el reto
+        document.getElementById('startChallenge').addEventListener('click', function() {
+            alert('¡Excelente! Comienza creando un nuevo archivo Python y diseña la estructura de datos para almacenar los hábitos. Recuerda: empieza simple, luego agrega complejidad.');
+        });
+        
+        // Sistema de evaluación lúdica
+        const questions = [
+            {
+                question: "¿Cuál es la principal ventaja de usar variables globales en una aplicación Tkinter?",
+                options: [
+                    "Permiten que los datos persistan entre diferentes funciones y eventos",
+                    "Hacen que el código se ejecute más rápido",
+                    "Reducen la cantidad de memoria utilizada",
+                    "Eliminan la necesidad de usar funciones"
+                ],
+                correct: 0,
+                feedback: "Correcto. Las variables globales permiten que diferentes partes de la aplicación accedan y modifiquen los mismos datos, manteniendo un estado coherente."
+            },
+            {
+                question: "¿Cuál de estas NO es una variable de control de Tkinter?",
+                options: [
+                    "StringVar",
+                    "IntVar",
+                    "ListVar",
+                    "BooleanVar"
+                ],
+                correct: 2,
+                feedback: "¡Exacto! Tkinter no tiene una variable de control llamada ListVar. Las principales son StringVar, IntVar, DoubleVar y BooleanVar."
+            },
+            {
+                question: "¿Qué palabra clave se usa en Python para modificar una variable global dentro de una función?",
+                options: [
+                    "global",
+                    "nonlocal",
+                    "extern",
+                    "var"
+                ],
+                correct: 0,
+                feedback: "Correcto. La palabra clave 'global' se usa dentro de una función para indicar que queremos modificar una variable global, no crear una local con el mismo nombre."
+            },
+            {
+                question: "¿Cuál es un riesgo potencial de usar demasiadas variables globales?",
+                options: [
+                    "El código se vuelve más difícil de entender y depurar",
+                    "La aplicación consume más memoria de video",
+                    "Los widgets de Tkinter dejan de funcionar",
+                    "Python lanza automáticamente más excepciones"
+                ],
+                correct: 0,
+                feedback: "Muy bien. El uso excesivo de variables globales puede crear 'acoplamiento oculto' entre partes del código, haciéndolo más difícil de mantener y depurar."
+            },
+            {
+                question: "Cuando un widget de Tkinter está vinculado a una variable de control (como StringVar), ¿qué sucede cuando el usuario modifica el widget?",
+                options: [
+                    "La variable de control se actualiza automáticamente",
+                    "Se debe llamar manualmente a una función de actualización",
+                    "La variable de control no cambia",
+                    "Se genera un evento que debe ser capturado con bind()"
+                ],
+                correct: 0,
+                feedback: "¡Perfecto! Las variables de control de Tkinter se actualizan automáticamente cuando el usuario interactúa con los widgets vinculados, y viceversa."
+            }
+        ];
+        
+        let currentQuestion = 0;
+        let score = 0;
+        let userAnswers = [];
+        
+        const quizContainer = document.getElementById('quiz');
+        const scoreElement = document.getElementById('score');
+        const nextButton = document.getElementById('nextQuestion');
+        
+        function loadQuestion() {
+            const question = questions[currentQuestion];
+            
+            let html = `
+                <div class="question">Pregunta ${currentQuestion + 1} de ${questions.length}: ${question.question}</div>
+                <div class="options">
+            `;
+            
+            question.options.forEach((option, index) => {
+                html += `
+                    <div class="option" data-index="${index}">
+                        ${option}
+                    </div>
+                `;
+            });
+            
+            html += `</div>`;
+            
+            // Limpiar cualquier feedback anterior
+            const existingFeedback = document.querySelector('.feedback');
+            if (existingFeedback) {
+                existingFeedback.remove();
+            }
+            
+            quizContainer.innerHTML = html;
+            
+            // Agregar event listeners a las opciones
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // Deshabilitar todas las opciones después de seleccionar una
+                    document.querySelectorAll('.option').forEach(opt => {
+                        opt.style.pointerEvents = 'none';
+                    });
+                    
+                    const selectedIndex = parseInt(this.getAttribute('data-index'));
+                    userAnswers[currentQuestion] = selectedIndex;
+                    
+                    // Verificar si la respuesta es correcta
+                    const isCorrect = selectedIndex === question.correct;
+                    
+                    if (isCorrect) {
+                        this.classList.add('correct');
+                        score++;
+                    } else {
+                        this.classList.add('incorrect');
+                        // Mostrar la opción correcta
+                        document.querySelectorAll('.option')[question.correct].classList.add('correct');
+                    }
+                    
+                    // Mostrar feedback
+                    const feedback = document.createElement('div');
+                    feedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+                    feedback.textContent = question.feedback;
+                    quizContainer.appendChild(feedback);
+                    
+                    // Actualizar puntuación
+                    scoreElement.textContent = `Puntuación: ${score}/${questions.length}`;
+                    
+                    // Habilitar el botón de siguiente pregunta
+                    nextButton.disabled = false;
+                });
+            });
+            
+            // Deshabilitar el botón de siguiente pregunta hasta que se responda
+            nextButton.disabled = true;
+        }
+        
+        nextButton.addEventListener('click', function() {
+            currentQuestion++;
+            
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                // Mostrar resultados finales
+                let resultHTML = `
+                    <div class="question">¡Cuestionario completado!</div>
+                    <div class="card">
+                        <h3>Tu puntuación final: ${score}/${questions.length}</h3>
+                        <p>${score >= 4 ? '¡Excelente! Dominas los conceptos clave del manejo de estados en Tkinter.' : score >= 3 ? 'Buen trabajo. Tienes una base sólida, pero revisa los conceptos que te fallaron.' : 'Revisa los conceptos y practica con los ejemplos. ¡Tú puedes!'}</p>
+                        <h4>Resumen de respuestas:</h4>
+                        <ul>
+                `;
+                
+                questions.forEach((question, index) => {
+                    const userAnswer = userAnswers[index];
+                    const isCorrect = userAnswer === question.correct;
+                    
+                    resultHTML += `
+                        <li>Pregunta ${index + 1}: ${isCorrect ? '✓ Correcta' : '✗ Incorrecta'}</li>
+                    `;
+                });
+                
+                resultHTML += `
+                        </ul>
+                        <button class="btn" id="restartQuiz">Reiniciar cuestionario</button>
+                    </div>
+                `;
+                
+                quizContainer.innerHTML = resultHTML;
+                
+                document.getElementById('restartQuiz').addEventListener('click', function() {
+                    currentQuestion = 0;
+                    score = 0;
+                    userAnswers = [];
+                    scoreElement.textContent = `Puntuación: ${score}/${questions.length}`;
+                    loadQuestion();
+                });
+            }
+        });
+        
+        // Cargar la primera pregunta al iniciar
+        loadQuestion();
+    </script>
+</body>
+</html>
