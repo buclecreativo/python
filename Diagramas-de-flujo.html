@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagramas de Flujo - Bucle Creativo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #1e3a8a;
+            --primary-red: #dc2626;
+            --light-blue: #3b82f6;
+            --light-red: #f87171;
+            --bg-cream: #fef3c7;
+            --text-dark: #1f2937;
+            --white: #ffffff;
+            --gradient-1: linear-gradient(135deg, #1e3a8a 0%, #dc2626 100%);
+            --gradient-2: linear-gradient(135deg, #3b82f6 0%, #f87171 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: linear-gradient(to bottom, #f0f9ff 0%, #fffbeb 100%);
+        }
+
+        /* Header Fijo */
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--gradient-1);
+            color: var(--white);
+            padding: 1rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .fixed-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.25rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .fixed-header p {
+            font-size: 0.9rem;
+            font-style: italic;
+            opacity: 0.9;
+        }
+
+        /* Main Container */
+        .container {
+            margin-top: 100px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--gradient-2);
+            color: var(--white);
+            padding: 4rem 2rem;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+
+        /* Sections */
+        .section {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--primary-blue);
+            transition: transform 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .section-red {
+            border-left-color: var(--primary-red);
+        }
+
+        .section h3 {
+            color: var(--primary-blue);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-red h3 {
+            color: var(--primary-red);
+        }
+
+        .icon {
+            font-size: 2rem;
+        }
+
+        /* Objetivo */
+        .objetivo-box {
+            background: linear-gradient(135deg, #dbeafe 0%, #fee2e2 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 2px solid var(--light-blue);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        /* Competencia */
+        .competencia-card {
+            background: var(--gradient-1);
+            color: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* Activación */
+        .story-box {
+            background: #fef3c7;
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 5px solid var(--primary-red);
+            margin: 1.5rem 0;
+            font-style: italic;
+            position: relative;
+        }
+
+        .story-box::before {
+            content: '"';
+            font-size: 4rem;
+            color: var(--primary-red);
+            opacity: 0.3;
+            position: absolute;
+            top: -10px;
+            left: 10px;
+        }
+
+        .image-container {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .image-caption {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        /* Contenido */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .concept-card {
+            background: linear-gradient(135deg, #eff6ff 0%, #fff1f2 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .concept-card:hover {
+            border-color: var(--primary-blue);
+            transform: scale(1.02);
+        }
+
+        .concept-card h4 {
+            color: var(--primary-blue);
+            margin-bottom: 0.75rem;
+            font-size: 1.2rem;
+        }
+
+        /* Tabla de símbolos */
+        .symbols-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            overflow-x: auto;
+            display: block;
+        }
+
+        .symbols-table th,
+        .symbols-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .symbols-table th {
+            background: var(--gradient-1);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .symbols-table tr:hover {
+            background: #f3f4f6;
+        }
+
+        .symbol-preview {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background: var(--primary-blue);
+            margin-right: 1rem;
+            vertical-align: middle;
+            border-radius: 5px;
+        }
+
+        /* Ejemplo práctico */
+        .code-box {
+            background: #1f2937;
+            color: #10b981;
+            padding: 1.5rem;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--primary-red);
+        }
+
+        .step-list {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .step-list li {
+            counter-increment: step-counter;
+            padding: 1rem;
+            margin: 1rem 0;
+            background: linear-gradient(135deg, #dbeafe 0%, #fee2e2 100%);
+            border-radius: 8px;
+            position: relative;
+            padding-left: 4rem;
+        }
+
+        .step-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--gradient-1);
+            color: white;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Actividad */
+        .challenge-box {
+            background: var(--gradient-1);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .challenge-box h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .challenge-box p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* Quiz */
+        .quiz-container {
+            background: linear-gradient(135deg, #eff6ff 0%, #fef3c7 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+
+        .question-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 1.5rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .option {
+            padding: 1rem 1.5rem;
+            background: #f3f4f6;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .option:hover {
+            background: #dbeafe;
+            border-color: var(--light-blue);
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            background: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
+        }
+
+        .option.correct {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+        }
+
+        .option.incorrect {
+            background: var(--primary-red);
+            color: white;
+            border-color: var(--primary-red);
+        }
+
+        .feedback {
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .feedback.incorrect {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .btn {
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .score-display {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-blue);
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 12px;
+            display: none;
+        }
+
+        .score-display.show {
+            display: block;
+            animation: bounce 1s ease;
+        }
+
+        /* Footer */
+        .fixed-footer {
+            background: var(--gradient-1);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            font-size: 1.1rem;
+        }
+
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .section {
+                padding: 1.5rem;
+            }
+            
+            .symbols-table {
+                font-size: 0.9rem;
+            }
+            
+            .fixed-header h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Utilidades */
+        .highlight {
+            background: linear-gradient(120deg, #fef3c7 0%, #fef3c7 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 40%;
+            background-position: 0 88%;
+            padding: 0 4px;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="fixed-header">
+        <h1>🎨 Bucle creativo</h1>
+        <p>Taller diseñado con el corazón de un docente y la mente de un programador.</p>
+    </header>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h2>🗺️ Diagramas de Flujo: El Mapa que Transforma Ideas en Realidad</h2>
+            <p>Descubre el poder de visualizar tus pensamientos antes de escribir una sola línea de código. Porque programar no es solo teclear: es pensar, crear y resolver.</p>
+        </section>
+
+        <!-- Objetivo -->
+        <section class="section">
+            <h3><span class="icon">🎯</span>Objetivo de Aprendizaje</h3>
+            <div class="objetivo-box">
+                <strong>Diseñar y construir diagramas de flujo claros y funcionales</strong> que permitan representar algoritmos de manera visual y estructurada, aplicando símbolos estandarizados y principios de lógica computacional para resolver problemas cotidianos y académicos, desarrollando así el pensamiento algorítmico, la capacidad de descomposición de problemas complejos en pasos manejables, y la habilidad de comunicar soluciones técnicas de forma efectiva, mientras se cultiva la paciencia, la precisión y la confianza necesarias para enfrentar desafíos de programación con una mentalidad resiliente y creativa que valore tanto el proceso de planificación como la ejecución del código.
+            </div>
+        </section>
+
+        <!-- Competencia -->
+        <section class="section section-red">
+            <h3><span class="icon">💪</span>Competencia a Alcanzar</h3>
+            <div class="competencia-card">
+                "El estudiante será capaz de analizar problemas del entorno real, descomponerlos en pasos lógicos secuenciales y representarlos mediante diagramas de flujo estandarizados, demostrando dominio de los símbolos básicos, capacidad de toma de decisiones condicionales y pensamiento estructurado, mientras desarrolla actitudes de perseverancia, trabajo colaborativo y comunicación efectiva de ideas técnicas."
+            </div>
+        </section>
+
+        <!-- Activación -->
+        <section class="section">
+            <h3><span class="icon">🚀</span>Activación: La Historia de María y el Café Perfecto</h3>
+            
+            <div class="story-box">
+                Imagina a María, una estudiante de bachillerato de Quito que cada mañana enfrenta el mismo desafío: preparar el café perfecto para su familia antes de salir al colegio. Un día, cansada de quemar el agua o olvidar el azúcar, decide escribir en su cuaderno los pasos exactos que debe seguir: "1. Poner agua en la cafetera, 2. Encender la estufa, 3. Esperar a que hierva..." Pero pronto se da cuenta de que necesita tomar decisiones: "¿Con azúcar o sin azúcar? ¿Leche o negro?" Y así, sin saberlo, María acaba de crear su primer algoritmo con decisiones y procesos.
+            </div>
+
+            <div class="image-container">
+                <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=400&fit=crop" alt="Persona resolviendo problemas cotidianos">
+                <p class="image-caption">Cada día resolvemos algoritmos sin darnos cuenta. ¿Listo para hacerlos visibles?</p>
+            </div>
+
+            <p style="font-size: 1.1rem; margin-top: 1.5rem; text-align: center; color: var(--primary-blue);">
+                <strong>🤔 Reflexiona:</strong> ¿Cuántas decisiones tomas cada mañana antes de salir de casa? Cada una de esas decisiones es una bifurcación en tu diagrama de flujo personal.
+            </p>
+        </section>
+
+        <!-- Contenido -->
+        <section class="section section-red">
+            <h3><span class="icon">📚</span>Contenido: El Lenguaje Universal de los Diagramas</h3>
+            
+            <p style="font-size: 1.1rem; margin-bottom: 1.5rem; text-align: justify;">
+                Al igual que un arquitecto no construye una casa sin planos, un programador no debería escribir código sin antes visualizar su solución. Los <span class="highlight">diagramas de flujo</span> son ese puente mágico entre tu mente y la computadora: te permiten ver el camino completo antes de dar el primer paso.
+            </p>
+
+            <div class="image-container">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop" alt="Diagrama de flujo visual">
+                <p class="image-caption">Un diagrama bien diseñado vale más que mil líneas de código confuso</p>
+            </div>
+
+            <h4 style="color: var(--primary-red); margin: 2rem 0 1rem 0; font-size: 1.4rem;">🎨 Los Símbolos que Dan Vida a tus Ideas</h4>
+            
+            <p style="margin-bottom: 1rem;">Así como un artista usa diferentes pinceles, tú usarás distintos símbolos. Cada uno tiene un propósito específico:</p>
+
+            <table class="symbols-table">
+                <thead>
+                    <tr>
+                        <th>Símbolo</th>
+                        <th>Nombre</th>
+                        <th>Función</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span style="display:inline-block; width:60px; height:30px; background:var(--primary-blue); border-radius:15px; margin-right:10px;"></span></td>
+                        <td><strong>Terminador</strong> (Óvalo)</td>
+                        <td>Marca el inicio o fin del algoritmo</td>
+                        <td>"Inicio", "Fin"</td>
+                    </tr>
+                    <tr>
+                        <td><span style="display:inline-block; width:40px; height:40px; background:var(--primary-red); margin-right:10px;"></span></td>
+                        <td><strong>Proceso</strong> (Rectángulo)</td>
+                        <td>Operación, cálculo o asignación</td>
+                        <td>"suma = a + b"</td>
+                    </tr>
+                    <tr>
+                        <td><span style="display:inline-block; width:50px; height:35px; background:var(--light-blue); transform:skew(-20deg); margin-right:10px;"></span></td>
+                        <td><strong>Entrada/Salida</strong> (Paralelogramo)</td>
+                        <td>Lectura de datos o mostrar resultados</td>
+                        <td>"Leer edad", "Imprimir resultado"</td>
+                    </tr>
+                    <tr>
+                        <td><span style="display:inline-block; width:40px; height:40px; background:var(--primary-blue); transform:rotate(45deg); margin-right:10px;"></span></td>
+                        <td><strong>Decisión</strong> (Rombo)</td>
+                        <td>Evalúa condición (Sí/No)</td>
+                        <td>"¿edad ≥ 18?"</td>
+                    </tr>
+                    <tr>
+                        <td><span style="display:inline-block; width:50px; height:3px; background:var(--text-dark); margin-right:10px;"></span>→</td>
+                        <td><strong>Flecha</strong></td>
+                        <td>Dirección del flujo</td>
+                        <td>Conecta todos los símbolos</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>🧩 Descomposición Visual</h4>
+                    <p>Los diagramas te obligan a dividir problemas gigantes en pasos pequeños y manejables. Como armar un rompecabezas: pieza por pieza.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>🔍 Detección Temprana de Errores</h4>
+                    <p>Es más fácil ver un bucle infinito en un diagrama que descubrirlo después de horas de programación. ¡Tu yo del futuro te lo agradecerá!</p>
+                </div>
+                <div class="concept-card">
+                    <h4>🤝 Comunicación Efectiva</h4>
+                    <p>Cualquiera puede seguir tu lógica sin saber programar. Perfecto para trabajar en equipo o explicar tus ideas a profesores y compañeros.</p>
+                </div>
+                <div class="concept-card">
+                    <h4> Documentación Viva</h4>
+                    <p>Tu diagrama servirá como referencia futura. Dentro de seis meses, entenderás tu propio código gracias a este mapa visual.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Desarrollo de la Actividad -->
+        <section class="section">
+            <h3><span class="icon">🔧</span>Desarrollo de la Actividad: Construyendo Paso a Paso</h3>
+            
+            <p style="font-size: 1.1rem; margin-bottom: 2rem;">
+                Vamos a aprender con un ejemplo que todos entendemos: <strong>determinar si un número es par o impar</strong>. Parece simple, pero esconde lecciones poderosas.
+            </p>
+
+            <h4 style="color: var(--primary-blue); margin: 1.5rem 0 1rem 0;">📝 Paso 1: Identificar los Pasos Lógicos</h4>
+            
+            <ol class="step-list">
+                <li>Iniciar el proceso</li>
+                <li>Pedir al usuario que ingrese un número</li>
+                <li>Leer el número ingresado</li>
+                <li>Evaluar: ¿el número es divisible por 2 sin residuo?</li>
+                <li>Si es verdadero → Mostrar "Es par"</li>
+                <li>Si es falso → Mostrar "Es impar"</li>
+                <li>Finalizar el proceso</li>
+            </ol>
+
+            <h4 style="color: var(--primary-blue); margin: 1.5rem 0 1rem 0;">🎯 Paso 2: Asignar Símbolos Correctos</h4>
+            
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>⬭ Terminador</h4>
+                    <p>Usamos óvalos para "Inicio" y "Fin". Son los guardianes que marcan los límites de nuestro algoritmo.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>▱ Entrada/Salida</h4>
+                    <p>El paralelogramo es nuestra ventana al mundo exterior: por aquí entran datos y salen resultados.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>◇ Decisión</h4>
+                    <p>El rombo es el corazón del pensamiento lógico. Aquí preguntamos: "n % 2 == 0" y el camino se divide.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>▭ Proceso</h4>
+                    <p>El rectángulo representa la acción pura: imprimir mensajes, realizar cálculos, transformar datos.</p>
+                </div>
+            </div>
+
+            <h4 style="color: var(--primary-red); margin: 2rem 0 1rem 0;">💡 Paso 3: Estructura Visual Detallada</h4>
+            <div>
+              <img src="https://blogger.googleusercontent.com/img/a/AVvXsEisok7G5ds46WYgZLRYY3Aj5w8xed61XXT3pACVGP0TD3Mcakxdj8jPYTW9Ozq1jS0kpVKmXKJE_1kNshlYkGEdHc4bSx8oVbkSpBfO1vR8aa0vg20npkdwkjyEudwQOrz6eLsFDnRrWBkQ7X7zo2AxwAFUhwK8b557EPVe1LhT_30aDaW0SWuw2OeeGJg" alt="Diagrama de flujo">    
+            </div>
+            
+            <h4 style="color: var(--primary-blue); margin: 1.5rem 0 1rem 0;">✅ Paso 4: Verificación del Diagrama</h4>
+            
+            <ul style="list-style: none; padding-left: 0;">
+                <li style="padding: 0.75rem; margin: 0.5rem 0; background: #d1fae5; border-radius: 8px; border-left: 4px solid #10b981;">
+                    <strong>✓</strong> ¿Todas las rutas terminan en Fin? <em>Sí, ambas bifurcaciones convergen al final.</em>
+                </li>
+                <li style="padding: 0.75rem; margin: 0.5rem 0; background: #d1fae5; border-radius: 8px; border-left: 4px solid #10b981;">
+                    <strong>✓</strong> ¿Hay condiciones no contempladas? <em>No, todo número es par o impar, no hay tercera opción.</em>
+                </li>
+                <li style="padding: 0.75rem; margin: 0.5rem 0; background: #d1fae5; border-radius: 8px; border-left: 4px solid #10b981;">
+                    <strong>✓</strong> ¿El flujo es lógico y sin repeticiones? <em>Sí, cada paso tiene un propósito claro.</em>
+                </li>
+            </ul>
+
+            <div class="image-container">
+                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop" alt="Estudiante trabajando en diagramas">
+                <p class="image-caption">La práctica constante transforma la teoría en habilidad real</p>
+            </div>
+        </section>
+
+        <!-- Desarrollo Práctico -->
+        <section class="section section-red">
+            <h3><span class="icon">🎮</span>Desarrollo Práctico: Tu Turno de Crear</h3>
+            
+            <p style="font-size: 1.1rem; margin-bottom: 2rem;">
+                Ahora que has visto el ejemplo, es momento de que <strong>tú</strong> tomes el control. La programación se aprende haciendo, equivocándose y volviendo a intentar.
+            </p>
+
+            <div class="challenge-box">
+                <h4>🏆 Tu Desafío: El Semáforo Inteligente</h4>
+                <p>
+                    Imagina que debes diseñar el algoritmo para un semáforo peatonal en una esquina de Guayaquil. 
+                    El sistema debe:<br><br>
+                    • Leer si hay un peatón presionando el botón<br>
+                    • Si hay peatón, esperar 5 segundos y poner la luz roja para autos<br>
+                    • Mostrar "Cruce seguro" durante 10 segundos<br>
+                    • Volver a verde para autos<br>
+                    • Si no hay peatón, mantener verde para autos<br><br>
+                    <strong>Tu misión:</strong> Dibuja el diagrama de flujo completo usando todos los símbolos aprendidos.
+                </p>
+            </div>
+
+            <h4 style="color: var(--primary-blue); margin: 2rem 0 1rem 0;">🔬 Ejercicio de Exploración:</h4>
+            
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>🎲 Prueba con Diferentes Valores</h4>
+                    <p>Toma el ejemplo del número par/impar y prueba mentalmente con: 0, -4, 15, 100. ¿Funciona siempre? ¿Por qué?</p>
+                </div>
+                <div class="concept-card">
+                    <h4>🔄 Agrega Complejidad</h4>
+                    <p>Modifica el algoritmo para que además indique si el número es positivo, negativo o cero. ¿Cuántas decisiones adicionales necesitas?</p>
+                </div>
+                <div class="concept-card">
+                    <h4>🎨 Herramientas Digitales</h4>
+                    <p>Usa <strong>draw.io</strong> o <strong>Excalidraw</strong> (gratuitas) para digitalizar tu diagrama del semáforo. Experimenta con colores y formas.</p>
+                </div>
+                <div class="concept-card">
+                    <h4>🤝 Trabaja en Pareja</h4>
+                    <p>Intercambia tu diagrama con un compañero. ¿Puede él entender tu lógica sin explicación verbal? La claridad es clave.</p>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #fef3c7 0%, #fee2e2 100%); padding: 2rem; border-radius: 12px; margin: 2rem 0; border: 2px dashed var(--primary-red);">
+                <h4 style="color: var(--primary-red); margin-bottom: 1rem;">📋 Tarea Integradora: "Mi Día Algorítmico"</h4>
+                <p style="font-size: 1.1rem; line-height: 1.8;">
+                    <strong>Contexto:</strong> Vas a crear el diagrama de flujo de tu rutina matutina completa, desde que suena la alarma hasta que sales de casa.<br><br>
+                    
+                    <strong>Requisitos:</strong><br>
+                    • Mínimo 15 pasos<br>
+                    • Al menos 3 decisiones (rombos)<br>
+                    • Incluye situaciones imprevistas (¿qué pasa si no hay luz? ¿si llueve?)<br>
+                    • Usa todos los símbolos aprendidos<br>
+                    • Presenta tu diagrama en formato digital o dibujado a mano<br><br>
+                    
+                    <strong>Reflexión final:</strong> Escribe un párrafo sobre qué parte de tu rutina es más compleja de representar y por qué. Esto desarrollará tu <span class="highlight">pensamiento metacognitivo</span>.
+                </p>
+            </div>
+
+            <p style="text-align: center; font-size: 1.2rem; color: var(--primary-blue); font-style: italic; margin-top: 2rem;">
+                "No temas cometer errores en tu primer diagrama. Cada flecha mal puesta es una lección que tu cerebro graba para siempre."
+            </p>
+        </section>
+
+        <!-- Evaluación Lúdica -->
+        <section class="section">
+            <h3><span class="icon">🎯</span>Evaluación Lúdica: Pon a Prueba tu Conocimiento</h3>
+            
+            <p style="font-size: 1.1rem; margin-bottom: 1rem; text-align: center;">
+                Responde las siguientes preguntas. Cada respuesta correcta te acerca a dominar los diagramas de flujo. ¡Tú puedes! 💪
+            </p>
+
+            <div class="quiz-container" id="quizContainer">
+                <div class="score-display" id="scoreDisplay"></div>
+                
+                <div id="quizContent">
+                    <!-- Las preguntas se generan con JavaScript -->
+                </div>
+
+                <button class="btn" id="nextBtn" style="display: none;" onclick="nextQuestion()">
+                    Siguiente Pregunta →
+                </button>
+
+                <button class="btn" id="restartBtn" style="display: none; background: linear-gradient(135deg, #10b981 0%, #059669 100%);" onclick="restartQuiz()">
+                    🔄 Intentar de Nuevo
+                </button>
+            </div>
+        </section>
+
+        <!-- Cierre Motivacional -->
+        <section class="section" style="text-align: center; background: var(--gradient-1); color: white;">
+            <h3 style="color: white; justify-content: center;">🌟 Palabras Finales</h3>
+            <p style="font-size: 1.2rem; line-height: 1.8; max-width: 800px; margin: 0 auto;">
+                Los diagramas de flujo no son solo una herramienta técnica: son un <strong>entrenamiento para la vida</strong>. 
+                Te enseñan a pensar antes de actuar, a visualizar caminos alternativos, a anticipar problemas y a comunicar 
+                ideas complejas de forma simple. Estas son habilidades que trascienden la programación y te acompañarán 
+                en cada desafío que enfrentes.<br><br>
+                <em>"El programador que dibuja antes de codificar, construye cimientos sólidos antes de levantar rascacielos."</em>
+            </p>
+        </section>
+    </div>
+
+    <footer class="fixed-footer">
+        <p><strong>Diseñado por: Edwin Méndez J.</strong></p>
+        <p style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.9;">
+            Con pasión por la enseñanza y la programación 🇪🇨
+        </p>
+    </footer>
+
+    <script>
+        // Banco de preguntas
+        const questions = [
+            {
+                question: "¿Qué símbolo se utiliza para representar el inicio o fin de un algoritmo?",
+                options: [
+                    "Rectángulo",
+                    "Rombo",
+                    "Óvalo o rectángulo redondeado",
+                    "Paralelogramo"
+                ],
+                correct: 2,
+                explanation: "¡Correcto! El óvalo (terminador) marca los puntos de inicio y fin. Es como la puerta de entrada y salida de tu algoritmo."
+            },
+            {
+                question: "Si necesitas leer un dato ingresado por el usuario, ¿qué símbolo debes usar?",
+                options: [
+                    "Rombo",
+                    "Paralelogramo",
+                    "Rectángulo",
+                    "Círculo"
+                ],
+                correct: 1,
+                explanation: "¡Excelente! El paralelogramo representa entrada/salida de datos. Es la ventana de comunicación con el usuario."
+            },
+            {
+                question: "¿Qué símbolo se utiliza cuando necesitas tomar una decisión (Sí/No)?",
+                options: [
+                    "Rectángulo",
+                    "Óvalo",
+                    "Rombo",
+                    "Flecha"
+                ],
+                correct: 2,
+                explanation: "¡Perfecto! El rombo es el corazón de la lógica condicional. De él salen al menos dos caminos: Sí y No."
+            },
+            {
+                question: "En el ejemplo del número par/impar, ¿qué operación matemática usamos para determinar si es par?",
+                options: [
+                    "División normal (n / 2)",
+                    "Módulo o residuo (n % 2)",
+                    "Multiplicación (n * 2)",
+                    "Resta (n - 2)"
+                ],
+                correct: 1,
+                explanation: "¡Muy bien! El operador módulo (%) nos da el residuo. Si n % 2 == 0, significa que es divisible exactamente por 2."
+            },
+            {
+                question: "¿Cuál es una ventaja principal de usar diagramas de flujo antes de programar?",
+                options: [
+                    "Hacen el código más largo",
+                    "Permiten detectar errores lógicos antes de codificar",
+                    "Solo sirven para estudiantes principiantes",
+                    "Reemplazan la necesidad de escribir código"
+                ],
+                correct: 1,
+                explanation: "¡Exacto! Los diagramas te permiten ver el flujo completo y detectar problemas como bucles infinitos o condiciones contradictorias antes de escribir una sola línea de código."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = false;
+
+        function loadQuestion() {
+            const quizContent = document.getElementById('quizContent');
+            const question = questions[currentQuestion];
+            
+            let html = `
+                <div class="question-box" id="questionBox">
+                    <div class="question-text">
+                        <span style="color: var(--primary-red); font-size: 1.5rem;">Pregunta ${currentQuestion + 1} de ${questions.length}</span><br><br>
+                        ${question.question}
+                    </div>
+                    <div class="options">
+            `;
+            
+            question.options.forEach((option, index) => {
+                html += `<div class="option" onclick="selectOption(${index})" id="option${index}">${option}</div>`;
+            });
+            
+            html += `
+                    </div>
+                    <div class="feedback" id="feedback"></div>
+                </div>
+            `;
+            
+            quizContent.innerHTML = html;
+            answered = false;
+            document.getElementById('nextBtn').style.display = 'none';
+        }
+
+        function selectOption(index) {
+            if (answered) return;
+            
+            answered = true;
+            const question = questions[currentQuestion];
+            const feedback = document.getElementById('feedback');
+            const selectedOption = document.getElementById(`option${index}`);
+            
+            // Deshabilitar todas las opciones
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.style.pointerEvents = 'none';
+            });
+            
+            if (index === question.correct) {
+                score++;
+                selectedOption.classList.add('correct');
+                feedback.className = 'feedback correct show';
+                feedback.innerHTML = `✅ ${question.explanation}`;
+            } else {
+                selectedOption.classList.add('incorrect');
+                document.getElementById(`option${question.correct}`).classList.add('correct');
+                feedback.className = 'feedback incorrect show';
+                feedback.innerHTML = `❌ ${question.explanation}`;
+            }
+            
+            if (currentQuestion < questions.length - 1) {
+                document.getElementById('nextBtn').style.display = 'inline-block';
+            } else {
+                setTimeout(showFinalScore, 2000);
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            loadQuestion();
+        }
+
+        function showFinalScore() {
+            const quizContent = document.getElementById('quizContent');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const nextBtn = document.getElementById('nextBtn');
+            const restartBtn = document.getElementById('restartBtn');
+            
+            let message = '';
+            let emoji = '';
+            
+            if (score === 5) {
+                message = '¡Excelente! Dominas los diagramas de flujo. ¡Eres un crack! 🏆';
+                emoji = '🌟';
+            } else if (score >= 3) {
+                message = '¡Muy bien! Tienes buenos conocimientos. Sigue practicando. 💪';
+                emoji = '👍';
+            } else {
+                message = 'Buen intento. Repasa el contenido y vuelve a intentarlo. ¡Tú puedes! 📚';
+                emoji = '🌱';
+            }
+            
+            scoreDisplay.innerHTML = `
+                <div style="font-size: 4rem; margin-bottom: 1rem;">${emoji}</div>
+                <div>Tu puntuación: ${score} de ${questions.length}</div>
+                <div style="font-size: 1.2rem; margin-top: 1rem; color: var(--primary-red);">${message}</div>
+            `;
+            scoreDisplay.classList.add('show');
+            
+            quizContent.style.display = 'none';
+            nextBtn.style.display = 'none';
+            restartBtn.style.display = 'inline-block';
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            document.getElementById('scoreDisplay').classList.remove('show');
+            document.getElementById('quizContent').style.display = 'block';
+            document.getElementById('restartBtn').style.display = 'none';
+            loadQuestion();
+        }
+
+        // Iniciar quiz al cargar
+        window.onload = function() {
+            loadQuestion();
+        };
+
+        // Animación suave al hacer scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
