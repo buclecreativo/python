@@ -3,856 +3,953 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creando Algoritmos Visualmente - Taller Flowgorithm</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Bucle Creativo - Flowgorithm</title>
     <style>
-        /* Variables de color y estilos globales */
-        :root {
-            --primary-color: #2563eb;
-            --secondary-color: #7c3aed;
-            --accent-color: #06b6d4;
-            --light-color: #f0f9ff;
-            --dark-color: #1e293b;
-            --success-color: #10b981;
-            --warning-color: #f59e0b;
-            --danger-color: #ef4444;
-            --gray-light: #f8fafc;
-            --gray-medium: #cbd5e1;
-            --gray-dark: #64748b;
-            --border-radius: 12px;
-            --box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-        }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --accent: #14b8a6;
+            --bg-light: #f8fafc;
+            --bg-white: #ffffff;
+            --text-dark: #1e293b;
+            --text-gray: #64748b;
+            --success: #22c55e;
+            --error: #ef4444;
+            --warning: #f59e0b;
+        }
+
         body {
-            background-color: var(--light-color);
-            color: var(--dark-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            padding: 20px;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
-        
-        /* Contenedor principal centrado */
-        .main-container {
-            width: 100%;
-            max-width: 1200px;
-            background-color: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            min-height: 90vh;
-        }
-        
-        /* Encabezado */
-        .header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 30px;
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 2rem 1rem;
             text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .header::before {
-            content: "";
-            position: absolute;
+            position: sticky;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
-            background-size: cover;
+            z-index: 1000;
         }
-        
-        .main-title {
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-            position: relative;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+
+        header h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
         }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            margin-bottom: 15px;
-            position: relative;
-        }
-        
-        .theme {
+
+        header p {
+            color: var(--text-gray);
+            font-size: 1.1rem;
             font-style: italic;
-            background-color: rgba(255, 255, 255, 0.2);
-            display: inline-block;
-            padding: 8px 20px;
-            border-radius: 50px;
-            margin-top: 10px;
-            position: relative;
         }
-        
-        /* Contenido principal */
-        .content {
-            display: flex;
-            flex: 1;
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
         }
-        
-        /* Barra lateral de navegación */
-        .sidebar {
-            width: 250px;
-            background-color: var(--gray-light);
-            padding: 25px 20px;
-            border-right: 1px solid var(--gray-medium);
-        }
-        
-        .nav-list {
-            list-style: none;
-        }
-        
-        .nav-item {
-            margin-bottom: 15px;
-        }
-        
-        .nav-link {
-            display: flex;
-            align-items: center;
-            padding: 12px 15px;
-            background-color: white;
-            border-radius: var(--border-radius);
-            color: var(--dark-color);
-            text-decoration: none;
-            transition: var(--transition);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            border-left: 4px solid transparent;
-        }
-        
-        .nav-link:hover {
-            background-color: var(--primary-color);
-            color: white;
-            transform: translateX(5px);
-            border-left-color: var(--accent-color);
-        }
-        
-        .nav-link.active {
-            background-color: var(--primary-color);
-            color: white;
-            border-left-color: var(--accent-color);
-        }
-        
-        .nav-icon {
-            margin-right: 10px;
-            font-size: 1.2rem;
-        }
-        
-        /* Área de contenido */
-        .main-content {
-            flex: 1;
-            padding: 30px;
-            overflow-y: auto;
-        }
-        
-        .section {
-            margin-bottom: 40px;
-            padding-bottom: 30px;
-            border-bottom: 1px dashed var(--gray-medium);
-        }
-        
-        .section-title {
-            font-size: 1.8rem;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .section-title i {
-            margin-right: 10px;
-            background-color: var(--light-color);
-            padding: 10px;
-            border-radius: 50%;
-            color: var(--primary-color);
-        }
-        
+
         .card {
-            background-color: var(--gray-light);
-            border-radius: var(--border-radius);
-            padding: 25px;
-            margin-top: 15px;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.03);
-            border-left: 4px solid var(--accent-color);
+            background: var(--bg-white);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
         }
-        
-        .objective-text {
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 4px solid var(--secondary);
+            display: inline-block;
+        }
+
+        .objective-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
             font-size: 1.1rem;
             line-height: 1.8;
         }
-        
-        .highlight {
-            background-color: rgba(6, 182, 212, 0.1);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: 600;
+
+        .competency-box {
+            background: var(--bg-light);
+            border-left: 5px solid var(--accent);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 10px 10px 0;
         }
-        
-        /* Controles y botones */
-        .btn {
-            display: inline-block;
-            padding: 12px 25px;
-            background-color: var(--primary-color);
+
+        .story-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white;
-            border: none;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: var(--transition);
-            text-decoration: none;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            font-style: italic;
+            position: relative;
+            overflow: hidden;
         }
-        
-        .btn:hover {
-            background-color: var(--secondary-color);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+
+        .story-box::before {
+            content: '"';
+            font-size: 6rem;
+            position: absolute;
+            top: -20px;
+            left: 10px;
+            opacity: 0.3;
         }
-        
-        .btn-secondary {
-            background-color: var(--gray-dark);
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
         }
-        
-        .btn-secondary:hover {
-            background-color: var(--dark-color);
+
+        .content-text {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-dark);
         }
-        
-        .btn-success {
-            background-color: var(--success-color);
+
+        .content-image {
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
-        
-        .btn-success:hover {
-            background-color: #0da271;
+
+        .highlight-box {
+            background: #fef3c7;
+            border-left: 5px solid var(--warning);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 10px 10px 0;
         }
-        
-        .btn-danger {
-            background-color: var(--danger-color);
+
+        .exercise-box {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
         }
-        
-        .btn-danger:hover {
-            background-color: #dc2626;
+
+        .exercise-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
         }
-        
-        /* Juego de evaluación */
-        .quiz-container {
-            background-color: var(--gray-light);
-            border-radius: var(--border-radius);
-            padding: 25px;
-            margin-top: 20px;
+
+        .steps-list {
+            list-style: none;
+            padding: 0;
         }
-        
-        .quiz-header {
+
+        .steps-list li {
+            padding: 0.8rem 0;
+            padding-left: 2.5rem;
+            position: relative;
+        }
+
+        .steps-list li::before {
+            content: attr(data-step);
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--secondary);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .score-container {
-            font-size: 1.2rem;
+            justify-content: center;
             font-weight: bold;
-            color: var(--primary-color);
-            background-color: white;
-            padding: 8px 15px;
-            border-radius: 50px;
         }
-        
+
+        .challenge-box {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .challenge-box h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Quiz Styles */
+        .quiz-container {
+            background: var(--bg-white);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .quiz-header h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .score-board {
+            background: var(--bg-light);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            display: inline-block;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .question-container {
+            margin-bottom: 2rem;
+        }
+
         .question {
             font-size: 1.3rem;
-            margin-bottom: 20px;
-            color: var(--dark-color);
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
         }
-        
+
         .options {
-            display: grid;
-            gap: 12px;
-            margin-bottom: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
-        
+
         .option {
-            padding: 15px;
-            background-color: white;
-            border-radius: var(--border-radius);
+            background: var(--bg-light);
+            border: 3px solid transparent;
+            padding: 1.2rem;
+            border-radius: 10px;
             cursor: pointer;
-            transition: var(--transition);
-            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            font-size: 1.05rem;
         }
-        
+
         .option:hover {
-            background-color: var(--light-color);
-            border-color: var(--accent-color);
+            border-color: var(--primary);
+            transform: translateX(5px);
         }
-        
+
         .option.selected {
-            background-color: rgba(37, 99, 235, 0.1);
-            border-color: var(--primary-color);
+            border-color: var(--primary);
+            background: #e0e7ff;
         }
-        
+
         .option.correct {
-            background-color: rgba(16, 185, 129, 0.2);
-            border-color: var(--success-color);
+            border-color: var(--success);
+            background: #dcfce7;
         }
-        
+
         .option.incorrect {
-            background-color: rgba(239, 68, 68, 0.1);
-            border-color: var(--danger-color);
+            border-color: var(--error);
+            background: #fee2e2;
         }
-        
+
         .feedback {
-            padding: 15px;
-            border-radius: var(--border-radius);
-            margin-top: 15px;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            display: none;
+            font-weight: 600;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .feedback.incorrect {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            margin-top: 1rem;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: var(--bg-light);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
+        }
+
+        .result-message {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.5rem;
             display: none;
         }
-        
-        .feedback.correct {
-            background-color: rgba(16, 185, 129, 0.1);
-            border-left: 4px solid var(--success-color);
+
+        .result-message.show {
             display: block;
         }
-        
-        .feedback.incorrect {
-            background-color: rgba(239, 68, 68, 0.1);
-            border-left: 4px solid var(--danger-color);
-            display: block;
-        }
-        
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-        
-        /* Pie de página */
-        .footer {
-            background-color: var(--dark-color);
-            color: white;
-            padding: 20px;
+
+        footer {
+            background: rgba(255, 255, 255, 0.95);
             text-align: center;
-            border-top: 4px solid var(--accent-color);
+            padding: 2rem;
+            margin-top: 3rem;
+            color: var(--text-gray);
         }
-        
-        .footer-text {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-        
-        /* Responsividad */
-        @media (max-width: 992px) {
-            .content {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                width: 100%;
-                border-right: none;
-                border-bottom: 1px solid var(--gray-medium);
-            }
-            
-            .nav-list {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            .nav-item {
-                margin: 5px;
-            }
-            
-            .nav-link {
-                min-width: 150px;
-            }
-        }
-        
+
         @media (max-width: 768px) {
-            .main-title {
-                font-size: 2.2rem;
+            .content-grid {
+                grid-template-columns: 1fr;
             }
             
-            .section-title {
-                font-size: 1.5rem;
+            header h1 {
+                font-size: 1.8rem;
             }
             
-            .controls {
-                flex-direction: column;
-                gap: 10px;
+            .card {
+                padding: 1.5rem;
             }
-            
-            .btn {
-                width: 100%;
-            }
+        }
+
+        .flowgorithm-shape {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            margin: 0.3rem;
+            border-radius: 8px;
+            font-weight: 600;
+            background: var(--bg-light);
+        }
+
+        .shape-oval {
+            border: 3px solid var(--accent);
+            border-radius: 50%;
+        }
+
+        .shape-rect {
+            border: 3px solid var(--primary);
+        }
+
+        .shape-diamond {
+            border: 3px solid var(--secondary);
+            transform: rotate(45deg);
+            display: inline-block;
+            padding: 1rem;
+            margin: 1rem;
+        }
+
+        .shape-diamond span {
+            transform: rotate(-45deg);
+            display: inline-block;
+        }
+
+        .shape-parallelogram {
+            border: 3px solid var(--warning);
+            transform: skew(-20deg);
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            margin: 0.5rem;
+        }
+
+        .shape-parallelogram span {
+            transform: skew(20deg);
+            display: inline-block;
+        }
+
+        .quote-box {
+            background: var(--bg-light);
+            border-left: 5px solid var(--primary);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            border-radius: 0 10px 10px 0;
         }
     </style>
 </head>
 <body>
-    <div class="main-container">
-        <!-- Encabezado -->
-        <header class="header">
-            <h1 class="main-title">Construyendo Pensamiento Lógico</h1>
-            <p class="subtitle">Taller diseñado con el corazón de un docente y la mente de un programador</p>
-            <p class="theme">Creando Algoritmos de forma visual con Flowgorithm</p>
-        </header>
-        
-        <!-- Contenido principal -->
-        <div class="content">
-            <!-- Barra lateral de navegación -->
-            <nav class="sidebar">
-                <ul class="nav-list">
-                    <li class="nav-item">
-                        <a href="#objetivo" class="nav-link active">
-                            <i class="nav-icon fas fa-bullseye"></i>
-                            <span>Objetivo</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#contexto" class="nav-link">
-                            <i class="nav-icon fas fa-globe-americas"></i>
-                            <span>Contexto</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#desarrollo" class="nav-link">
-                            <i class="nav-icon fas fa-code"></i>
-                            <span>Desarrollo</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#reto" class="nav-link">
-                            <i class="nav-icon fas fa-flag-checkered"></i>
-                            <span>Reto Final</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#evaluacion" class="nav-link">
-                            <i class="nav-icon fas fa-gamepad"></i>
-                            <span>Evaluación Lúdica</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            
-            <!-- Área de contenido principal -->
-            <main class="main-content">
-                <!-- Sección 1: Objetivo -->
-                <section id="objetivo" class="section">
-                    <h2 class="section-title">
-                        <i class="fas fa-bullseye"></i>
-                        Objetivo de Aprendizaje
-                    </h2>
-                    <div class="card">
-                        <p class="objective-text">
-                            <strong>Desarrollar</strong> la capacidad de diseñar algoritmos mediante representaciones visuales en Flowgorithm, <strong>integrando</strong> competencias técnicas como la identificación de estructuras de control (secuencia, decisión y repetición), <strong>aplicando</strong> pensamiento lógico y sistemático para resolver problemas del contexto cotidiano, y <strong>cultivando</strong> actitudes de perseverancia, curiosidad intelectual y ética digital, con el propósito de formar ciudadanos capaces de analizar situaciones complejas, tomar decisiones fundamentadas y crear soluciones innovadoras en un mundo tecnológico en constante evolución.
-                        </p>
-                    </div>
-                </section>
-                
-                <!-- Sección 2: Contextualización -->
-                <section id="contexto" class="section">
-                    <h2 class="section-title">
-                        <i class="fas fa-globe-americas"></i>
-                        Contextualización: Más allá del código
-                    </h2>
-                    <div class="card">
-                        <p>Imagina por un momento que te encuentras en la parada del bus escolar, observando cómo decenas de estudiantes suben y bajan de diferentes rutas. Sin darte cuenta, tu mente está ejecutando un algoritmo: identificar tu bus, verificar que tenga espacio, mostrar tu pase, encontrar asiento. La vida está llena de estos procesos lógicos que seguimos, a veces sin conciencia de ellos.</p>
-                        
-                        <p>Ahora piensa en Flowgorithm no como un software más, sino como un espacio donde esas secuencias lógicas toman forma, color y estructura. Cada figura que colocas en ese lienzo digital es un paso consciente en la construcción de tu pensamiento. Los algoritmos no son solo para máquinas; son la materialización de nuestra capacidad para ordenar el caos, para encontrar patrones donde otros ven confusión.</p>
-                        
-                        <p>En un Ecuador que se transforma digitalmente, entender la lógica de programación es como aprender un nuevo idioma: el idioma del futuro. Pero más importante aún, es desarrollar la resiliencia para enfrentar errores, la creatividad para imaginar soluciones y la ética para preguntarnos: ¿qué problemas vale la pena resolver?</p>
-                    </div>
-                </section>
-                
-                <!-- Sección 3: Desarrollo de la actividad -->
-                <section id="desarrollo" class="section">
-                    <h2 class="section-title">
-                        <i class="fas fa-code"></i>
-                        Desarrollo de la Actividad: Construyendo paso a paso
-                    </h2>
-                    <div class="card">
-                        <h3>Conceptos fundamentales</h3>
-                        <p>Un algoritmo es una secuencia <span class="highlight">ordenada y finita</span> de pasos para resolver un problema. En Flowgorithm, representamos estos pasos con símbolos:</p>
-                        
-                        <ul style="margin-left: 20px; margin-top: 10px;">
-                            <li><strong>Óvalo:</strong> Inicio/Fin del algoritmo</li>
-                            <li><strong>Rectángulo:</strong> Proceso o asignación</li>
-                            <li><strong>Rombo:</strong> Decisión (Sí/No)</li>
-                            <li><strong>Paralelogramo:</strong> Entrada o salida de datos</li>
-                        </ul>
-                        
-                        <h3 style="margin-top: 20px;">Ejemplo práctico: Calculadora de promedio</h3>
-                        <p>Vamos a crear un algoritmo que calcule el promedio de tres notas:</p>
-                        
-                        <ol style="margin-left: 20px; margin-top: 10px;">
-                            <li>Iniciamos con un óvalo que dice "Inicio"</li>
-                            <li>Solicitamos tres notas (paralelogramos de entrada)</li>
-                            <li>Calculamos el promedio (rectángulo de proceso: (nota1 + nota2 + nota3) / 3)</li>
-                            <li>Preguntamos si el promedio es mayor o igual a 7 (rombo de decisión)</li>
-                            <li>Si es verdadero: mostramos "Aprobado"</li>
-                            <li>Si es falso: mostramos "Reprobado"</li>
-                            <li>Finalizamos con un óvalo que dice "Fin"</li>
-                        </ol>
-                        
-                        <div style="margin-top: 20px; padding: 15px; background-color: #e0f2fe; border-radius: 8px; border-left: 4px solid var(--accent-color);">
-                            <p><strong>Reflexión consciente:</strong> ¿Qué ocurriría si un estudiante ingresa una nota mayor a 10? ¿Cómo podríamos mejorar nuestro algoritmo para validar que las notas estén en el rango correcto? Piensa en cómo aplicarías este principio de validación en situaciones de tu vida diaria.</p>
-                        </div>
-                        
-                        <a href="#" class="btn" style="margin-top: 20px;">
-                            <i class="fas fa-download"></i> Descargar ejercicio en Flowgorithm
-                        </a>
-                    </div>
-                </section>
-                
-                <!-- Sección 4: Reto final -->
-                <section id="reto" class="section">
-                    <h2 class="section-title">
-                        <i class="fas fa-flag-checkered"></i>
-                        El Reto Final: Algoritmo para la vida real
-                    </h2>
-                    <div class="card">
-                        <h3>El dilema del emprendedor juvenil</h3>
-                        <p>Imagina que eres un joven emprendedor en Quito que ha comenzado a vender postres caseros. Cada fin de semana, debes decidir cuántas porciones de tres postres diferentes (torta de zanahoria, brownies y cheesecake) prepararás, considerando:</p>
-                        
-                        <ul style="margin-left: 20px; margin-top: 10px;">
-                            <li>Costo de ingredientes para cada postre</li>
-                            <li>Precio de venta de cada postre</li>
-                            <li>Tiempo de preparación (tienes 8 horas disponibles)</li>
-                            <li>Demanda estimada basada en ventas anteriores</li>
-                            <li>Capacidad de tu horno (puedes hornear máximo 20 porciones a la vez)</li>
-                        </ul>
-                        
-                        <p><strong>Tu misión:</strong> Diseña en Flowgorithm un algoritmo que ayude a tomar la decisión óptima sobre cuántas porciones de cada postre preparar para maximizar las ganancias, sin exceder el tiempo disponible ni la capacidad del horno.</p>
-                        
-                        <div style="margin-top: 20px; padding: 15px; background-color: #fef3c7; border-radius: 8px; border-left: 4px solid var(--warning-color);">
-                            <p><strong>Pistas para la solución:</strong> Considera usar variables para almacenar costos, precios y tiempos. Utiliza estructuras condicionales para validar restricciones. Piensa en cómo representarías la capacidad del horno y el tiempo disponible. ¿Se te ocurre alguna forma de incluir un factor de "preferencia del cliente" en tu algoritmo?</p>
-                        </div>
-                        
-                        <div style="display: flex; gap: 15px; margin-top: 25px;">
-                            <a href="#" class="btn btn-success">
-                                <i class="fas fa-lightbulb"></i> Ver ejemplo de solución
-                            </a>
-                            <a href="#" class="btn">
-                                <i class="fas fa-users"></i> Trabajar en equipo
-                            </a>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Sección 5: Evaluación lúdica -->
-                <section id="evaluacion" class="section">
-                    <h2 class="section-title">
-                        <i class="fas fa-gamepad"></i>
-                        Evaluación Lúdica: Pon a prueba tu conocimiento
-                    </h2>
-                    
-                    <div class="quiz-container">
-                        <div class="quiz-header">
-                            <h3>Quiz: Algoritmos y Flowgorithm</h3>
-                            <div class="score-container">
-                                Puntuación: <span id="score">0</span>/5
-                            </div>
-                        </div>
-                        
-                        <div id="question-container">
-                            <p class="question" id="question-text">¿Cuál es el símbolo utilizado en Flowgorithm para representar una decisión?</p>
-                            
-                            <div class="options" id="options-container">
-                                <!-- Las opciones se llenarán con JavaScript -->
-                            </div>
-                            
-                            <div id="feedback" class="feedback"></div>
-                            
-                            <div class="controls">
-                                <button id="prev-btn" class="btn btn-secondary" disabled>
-                                    <i class="fas fa-arrow-left"></i> Anterior
-                                </button>
-                                
-                                <div>
-                                    <span id="question-counter">Pregunta 1 de 5</span>
-                                </div>
-                                
-                                <button id="next-btn" class="btn btn-success">
-                                    Siguiente <i class="fas fa-arrow-right"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div id="results-container" style="display: none; text-align: center; padding: 30px;">
-                            <h3 style="color: var(--primary-color); margin-bottom: 20px;">¡Quiz completado!</h3>
-                            <p id="final-score" style="font-size: 1.5rem; margin-bottom: 20px;"></p>
-                            <p id="result-message" style="margin-bottom: 25px;"></p>
-                            <button id="restart-btn" class="btn">
-                                <i class="fas fa-redo"></i> Reiniciar Quiz
-                            </button>
-                        </div>
-                    </div>
-                </section>
-            </main>
+    <header>
+        <h1>Bucle creativo</h1>
+        <p>Taller diseñado con el corazón de un docente y la mente de un programador.</p>
+    </header>
+
+    <div class="container">
+        <!-- Título Principal -->
+        <div class="card">
+            <h2 class="section-title">🎨 Domina la Lógica Visual: Tu Primer Paso hacia la Programación Inteligente</h2>
+            <p style="font-size: 1.2rem; color: var(--text-gray); margin-top: 1rem;">
+                Descubre cómo transformar ideas en algoritmos poderosos usando Flowgorithm, la herramienta que hará que programar sea tan natural como dibujar tus sueños.
+            </p>
         </div>
-        
-        <!-- Pie de página -->
-        <footer class="footer">
-            <p class="footer-text">Diseñado por: Edwin Méndez J.</p>
-            <p class="footer-text">Python para pensadores | Taller de algoritmos con Flowgorithm</p>
-        </footer>
+
+        <!-- Objetivo de Aprendizaje -->
+        <div class="card">
+            <h2 class="section-title">🎯 Objetivo de Aprendizaje</h2>
+            <div class="objective-box">
+                <strong>Diseñar y construir algoritmos visuales funcionales</strong> utilizando el entorno de Flowgorithm, aplicando las estructuras fundamentales de control (secuencia, decisión y repetición) para resolver problemas cotidianos mediante el pensamiento lógico-computacional, desarrollando competencias técnicas en la representación gráfica de procesos, habilidades cognitivas de descomposición y abstracción de problemas complejos, y actitudes de perseverancia, creatividad y trabajo sistemático que permitan a los estudiantes ecuatorianos comprender la esencia de la programación antes de abordar lenguajes de código textual, fortaleciendo su confianza en la resolución de desafíos tecnológicos con una mentalidad de crecimiento y resiliencia ante los errores como oportunidades de aprendizaje.
+            </div>
+        </div>
+
+        <!-- Competencia -->
+        <div class="card">
+            <h2 class="section-title">💪 Competencia a Alcanzar</h2>
+            <div class="competency-box">
+                <strong>Competencia:</strong> El estudiante será capaz de diseñar, implementar y ejecutar diagramas de flujo funcionales en Flowgorithm que resuelvan problemas reales mediante la aplicación correcta de estructuras secuenciales, condicionales y cíclicas, demostrando pensamiento lógico, creatividad en la solución de problemas y capacidad de abstracción para modelar situaciones del mundo real en algoritmos ejecutables.
+            </div>
+        </div>
+
+        <!-- Activación de la Clase -->
+        <div class="card">
+            <h2 class="section-title">🚀 Activación: El Arquitecto de Sueños Digitales</h2>
+            <div class="story-box">
+                Imagina por un momento que eres un arquitecto. Tienes en tus manos los planos de un edificio extraordinario. Pero antes de colocar el primer ladrillo, antes de mezclar el concreto, necesitas ver cómo encajan las vigas, cómo fluyen los espacios, cómo las personas se moverán por ese lugar. Los planos no son solo líneas en papel: son la materialización de una visión, la promesa de algo que aún no existe pero que tomará forma si sigues cada instrucción con precisión.
+            </div>
+            
+            <div class="content-grid">
+                <div class="content-text">
+                    <p style="font-size: 1.1rem; line-height: 1.8;">
+                        Así funciona <strong>Flowgorithm</strong>: es tu lienzo digital, tu taller de creación, el espacio donde tus ideas dejan de ser pensamientos abstractos para convertirse en estructuras lógicas tangibles. No necesitas conocer sintaxis complejas ni memorizar palabras clave extrañas. Solo necesitas tu creatividad y la voluntad de dar instrucciones precisas a una máquina que obedecerá cada orden con disciplina inquebrantable.
+                    </p>
+                    <div class="quote-box" style="margin-top: 1.5rem;">
+                        "Un algoritmo debe ser visto como algo mágico: una receta que, si se sigue, siempre produce el mismo pastel." <br>
+                        <strong>— Donald Knuth</strong>
+                    </div>
+                </div>
+                <div>
+                    <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&h=400&fit=crop" 
+                         alt="Programador trabajando en código" 
+                         class="content-image">
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido Fundamental -->
+        <div class="card">
+            <h2 class="section-title"> Contenido: Las Tres Columnas de la Lógica Computacional</h2>
+            
+            <div class="content-grid">
+                <div>
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&h=400&fit=crop" 
+                         alt="Diagrama de flujo conceptual" 
+                         class="content-image">
+                </div>
+                <div class="content-text">
+                    <h3 style="color: var(--primary); margin: 1.5rem 0 1rem 0;">El Entorno Flowgorithm: Tu Nuevo Taller</h3>
+                    <p>
+                        Flowgorithm es mucho más que una herramienta: es un puente entre el pensamiento humano y la ejecución mecánica. Al abrir el programa, te encontrarás con un espacio limpio, sin distracciones, donde cada elemento tiene un propósito claro:
+                    </p>
+                    <ul style="margin: 1rem 0; padding-left: 2rem;">
+                        <li style="margin: 0.5rem 0;"><strong>El Óvalo (Terminador):</strong> Marca el inicio y fin de tu algoritmo. Es la portada y contraportada de tu historia lógica.</li>
+                        <li style="margin: 0.5rem 0;"><strong>El Rectángulo (Proceso):</strong> Tu caballo de batalla. Aquí ocurren las acciones, los cálculos, las asignaciones.</li>
+                        <li style="margin: 0.5rem 0;"><strong>El Rombo (Decisión):</strong> Donde tu algoritmo cobra inteligencia. Evalúa condiciones y bifurca el camino.</li>
+                        <li style="margin: 0.5rem 0;"><strong>El Paralelogramo (Entrada/Salida):</strong> La ventana de diálogo entre tu programa y el mundo exterior.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h4 style="color: var(--warning); margin-bottom: 1rem;">💡 Reflexión Estoica</h4>
+                <p>
+                    Los estoicos decían que no controlamos los eventos externos, pero sí nuestra respuesta ante ellos. En programación, esto se traduce en la estructura condicional: <strong>SI</strong> ocurre X, <strong>ENTONCES</strong> hacemos Y; <strong>SINO</strong>, hacemos Z. Esta claridad mental es programación para la vida.
+                </p>
+            </div>
+
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem 0;">1. La Secuencia: El Ritmo Sagrado del Orden</h3>
+            <div class="content-grid">
+                <div class="content-text">
+                    <p>
+                        Imagina tu ritual matutino: apagar el despertador, salir de la cama, cepillarte los dientes, vestirte. ¿Qué pasaría si inviertes el orden? ¿Vestirte antes de salir de la cama? El caos. La <strong>secuencia</strong> es la estructura más elemental: ejecutar una instrucción tras otra, en el orden exacto, con disciplina inquebrantable.
+                    </p>
+                    <p style="margin-top: 1rem;">
+                        En Flowgorithm, cada flecha que conecta bloques es una secuencia. Es el latido del corazón de cualquier algoritmo: bum... bum... bum. Uno tras otro. Sin sorpresas. Sin atajos.
+                    </p>
+                </div>
+                <div>
+                    <img src="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=600&h=400&fit=crop" 
+                         alt="Secuencia y orden" 
+                         class="content-image">
+                </div>
+            </div>
+
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem 0;">2. La Decisión: El Punto de Bifurcación</h3>
+            <div class="content-grid">
+                <div>
+                    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&h=400&fit=crop" 
+                         alt="Toma de decisiones" 
+                         class="content-image">
+                </div>
+                <div class="content-text">
+                    <p>
+                        ¿Debería llevar paraguas hoy? Tu mente evalúa en milisegundos: "¿Está lloviendo o es probable que llueva?" Si la respuesta es SÍ, agarras el paraguas. Si es NO, lo dejas en casa. Esa bifurcación es la <strong>toma de decisiones</strong>.
+                    </p>
+                    <p style="margin-top: 1rem;">
+                        En Flowgorithm, el <strong>rombo</strong> es el héroe de esta estructura. Tiene una entrada y dos salidas: True (Verdadero) y False (Falso). Como un guardavía en una vía de tren, dirige el flujo por un camino u otro.
+                    </p>
+                    <div class="quote-box" style="margin-top: 1rem;">
+                        <strong>Estructura SI... ENTONCES... SINO:</strong><br>
+                        • SI (IF): La pregunta, la condición<br>
+                        • ENTONCES (THEN): El camino si es VERDADERO<br>
+                        • SINO (ELSE): El plan B si es FALSO
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem 0;">3. La Repetición: El Superpoder de los Bucles</h3>
+            <div class="content-grid">
+                <div class="content-text">
+                    <p>
+                        Las computadoras no se aburren. No se distraen. No protestan. Y aquí descubrimos el tercer superpoder: <strong>los bucles</strong>. Un bucle repite un bloque de instrucciones múltiples veces, convirtiendo una tarea monótona de 1000 pasos en una instrucción simple y elegante.
+                    </p>
+                    <p style="margin-top: 1rem;">
+                        <strong>Bucle MIENTRAS (WHILE):</strong> "Repite MIENTRAS una condición sea verdadera". Es como un guardia en una puerta que te pregunta una y otra vez si tienes permiso. Mientras digas SÍ, entras. Cuando digas NO, el ciclo se rompe.
+                    </p>
+                    <p style="margin-top: 1rem;">
+                        <strong>Bucle PARA (FOR):</strong> "Repite PARA un número específico de veces". Es como un corredor que sabe que debe dar exactamente 10 vueltas. Lleva la cuenta internamente y se detiene automáticamente al llegar al límite.
+                    </p>
+                </div>
+                <div>
+                    <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&h=400&fit=crop" 
+                         alt="Ciclos y repetición" 
+                         class="content-image">
+                </div>
+            </div>
+        </div>
+
+        <!-- Desarrollo de la Actividad -->
+        <div class="card">
+            <h2 class="section-title">🛠️ Desarrollo de la Actividad: De la Teoría a la Práctica</h2>
+            
+            <div class="exercise-box">
+                <h3>Ejercicio 1: "¡Hola, Mundo!" Visual</h3>
+                <p style="margin-bottom: 1rem;">Tu primer hechizo en cualquier lenguaje de programación es hacer que la computadora te salude. Hoy lo haremos de forma visual.</p>
+                <ol class="steps-list" style="color: white;">
+                    <li data-step="1">Abre Flowgorithm y haz clic en la flecha para comenzar</li>
+                    <li data-step="2">Selecciona la forma <strong>Paralelogramo (salida)</strong></li>
+                    <li data-step="3">Haz doble clic en el paralelogramo y escribe: <em>"¡Hola, Mundo! Bienvenido a mi taller."</em> (incluye las comillas)</li>
+                    <li data-step="4">Ejecuta tu programa presionando F5 o el botón de "play"</li>
+                    <li data-step="5">Observa cómo se abre la consola y muestra tu mensaje</li>
+                </ol>
+                <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(255,255,255,0.2); border-radius: 10px;">
+                    <strong>Reflexión:</strong> ¿Qué representa cada forma? ¿Por qué es importante la flecha que las conecta? ¿Cómo te sentiste al ver las instrucciones ejecutarse en el orden exacto que diseñaste?
+                </div>
+            </div>
+
+            <div class="exercise-box" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                <h3>Ejercicio 2: El Algoritmo del "Café Perfecto"</h3>
+                <p style="margin-bottom: 1rem;">Diseña un algoritmo que guíe a un amigo (o a una hipotética máquina de café torpe) en la preparación de una taza de café con leche y azúcar. Usa solo la estructura de <strong>Secuencia</strong>.</p>
+                <div style="margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.2); border-radius: 10px;">
+                    <strong>Pistas:</strong>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>Usa Paralelogramos (Output) para mostrar mensajes instructivos</li>
+                        <li>Usa Rectángulos (Proceso) para cálculos simples (ej: total_liquido = cafe + leche)</li>
+                        <li>Sé extremadamente específico: "Calentar el agua", "Verter el agua caliente", "Añadir la leche"</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="exercise-box" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                <h3>Ejercicio 3: El Guardián del Cine</h3>
+                <p style="margin-bottom: 1rem;">Diseña un algoritmo que actúe como guardián de un cine. La película es para mayores de 16 años y cuesta $10. El algoritmo debe:</p>
+                <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                    <li>Preguntar al usuario su edad y cuánto dinero tiene</li>
+                    <li>Usar un Rombo (Decisión) para evaluar AMBAS condiciones (edad Y dinero)</li>
+                    <li>Mostrar mensaje personalizado: "¡Entrada aprobada!" o "Entrada denegada" (especificando por qué)</li>
+                </ul>
+                <div style="padding: 1rem; background: rgba(255,255,255,0.2); border-radius: 10px;">
+                    <strong>Pista técnica:</strong> La condición en el rombo sería: <code>(edad >= 16) and (dinero >= 10)</code>
+                </div>
+            </div>
+        </div>
+
+        <!-- Desarrollo Práctico -->
+        <div class="card">
+            <h2 class="section-title">🎯 Desarrollo Práctico: El Semáforo Peatonal Inteligente</h2>
+            
+            <div class="challenge-box">
+                <h3>🏙️ Actividad: El Arquitecto de la Ciudad</h3>
+                <p style="font-size: 1.1rem; margin-bottom: 1rem;">
+                    <em>"El orden no es presión que se impone desde fuera, sino equilibrio que nace desde dentro."</em>
+                </p>
+                <p style="font-size: 1.2rem;">
+                    La alcaldía te ha contratado como consultor en sistemas inteligentes. Tu misión: diseñar el algoritmo para un nuevo semáforo peatonal que sea más seguro y eficiente que los tradicionales.
+                </p>
+            </div>
+
+            <div class="highlight-box">
+                <h4 style="color: var(--warning); margin-bottom: 1rem;">📋 Especificaciones Técnicas del Sistema</h4>
+                <ol style="margin-left: 1.5rem; line-height: 2;">
+                    <li><strong>Estado Inicial:</strong> El semáforo comienza en ROJO</li>
+                    <li><strong>Interacción:</strong> Un peatón puede PULSAR un botón para solicitar cruzar</li>
+                    <li><strong>Lógica Principal:</strong>
+                        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                            <li>Cuando se pulsa el botón, espera a que sea seguro</li>
+                            <li><strong>SI</strong> han pasado 5 segundos en ROJO desde el último cambio:
+                                <ul style="margin-left: 1.5rem; margin-top: 0.3rem;">
+                                    <li>Cambia a VERDE por 10 segundos</li>
+                                    <li>Parpadea en VERDE 3 veces (cada parpadeo dura 1 segundo)</li>
+                                    <li>Vuelve a ROJO</li>
+                                </ul>
+                            </li>
+                            <li><strong>SINO</strong> (si no ha pasado el tiempo mínimo): muestra "Espere, por favor" y permanece en ROJO</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="content-grid">
+                <div class="content-text">
+                    <h4 style="color: var(--primary); margin: 1.5rem 0 1rem 0;">Fase 1: Descomposición y Abstracción (En Papel)</h4>
+                    <p>Antes de abrir Flowgorithm, dibuja en una hoja el diagrama de flujo abstracto. Identifica:</p>
+                    <ul style="margin: 1rem 0; padding-left: 2rem;">
+                        <li>¿Cuáles son las variables clave? (tiempo_rojo, boton_pulsado)</li>
+                        <li>¿Dónde está el bucle principal que hace que el semáforo funcione para siempre? (Usa MIENTRAS True)</li>
+                        <li>¿Dónde necesitas una decisión (SI... ENTONCES... SINO) para verificar el tiempo de seguridad?</li>
+                        <li>¿Dónde puedes usar un bucle PARA para manejar los 3 parpadeos verdes?</li>
+                    </ul>
+
+                    <h4 style="color: var(--primary); margin: 1.5rem 0 1rem 0;">Fase 2: Construcción en el Taller (Flowgorithm)</h4>
+                    <ol style="margin-left: 1.5rem; line-height: 2;">
+                        <li><strong>Bucle Infinito:</strong> Usa MIENTRAS(True) para que el semáforo esté siempre operativo</li>
+                        <li><strong>Entrada del Botón:</strong> Dentro del bucle, simula el botón con un Input: "¿Botón pulsado? (sí/no)"</li>
+                        <li><strong>Toma de Decisión:</strong> Usa un Rombo para preguntar: (boton=="sí") Y (tiempo_rojo>= 5)
+                            <ul style="margin-left: 1.5rem; margin-top: 0.3rem;">
+                                <li><strong>Rama VERDADERA:</strong> Cambia a VERDE, espera 10 segundos, parpadea 3 veces, vuelve a ROJO</li>
+                                <li><strong>Rama FALSA:</strong> Muestra "Luz ROJO - Espere, por favor"</li>
+                            </ul>
+                        </li>
+                        <li><strong>Contador de Tiempo:</strong> Incrementa tiempo_rojo en 1 después de cada decisión (simulando 1 segundo)</li>
+                    </ol>
+                </div>
+                <div>
+                    <img src="https://images.unsplash.com/photo-1565514020128-2a9dc2f6cc0e?w=600&h=400&fit=crop" 
+                         alt="Semáforo inteligente" 
+                         class="content-image">
+                </div>
+            </div>
+
+            <div class="exercise-box" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <h3>🎓 Tu Desafío Final</h3>
+                <p style="margin-bottom: 1rem;">Construye el semáforo peatonal inteligente en Flowgorithm y prepara un informe que incluya:</p>
+                <ol style="margin-left: 1.5rem; line-height: 2;">
+                    <li>Tu nombre: El arquitecto del sistema</li>
+                    <li>Captura de pantalla de tu diagrama de flujo (limpio y bien organizado)</li>
+                    <li>Una breve memoria descriptiva explicando:
+                        <ul style="margin-left: 1.5rem; margin-top: 0.3rem;">
+                            <li>Cómo tu algoritmo asegura la seguridad de los peatones</li>
+                            <li>Una mejora que le harías (ej: tiempo de verde mayor si se detecta mucha gente)</li>
+                        </ul>
+                    </li>
+                </ol>
+                <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(255,255,255,0.2); border-radius: 10px; text-align: center;">
+                    <strong>Prueba rigurosamente:</strong><br>
+                    • Caso 1: Pulsa "sí" inmediatamente. ¿Muestra "Espere"?<br>
+                    • Caso 2: Espera 5 segundos y luego pulsa "sí". ¿Cambia a verde?<br>
+                    • Caso 3: ¿Parpadea 3 veces antes de volver a rojo?
+                </div>
+            </div>
+        </div>
+
+        <!-- Evaluación Lúdica -->
+        <div class="card">
+            <div class="quiz-container">
+                <div class="quiz-header">
+                    <h2>🎮 Evaluación Interactiva: Pon a Prueba tu Conocimiento</h2>
+                    <div class="score-board">
+                        Puntaje: <span id="score">0</span> / 50 puntos
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div id="quizContent">
+                    <!-- Las preguntas se generarán dinámicamente con JavaScript -->
+                </div>
+
+                <div class="result-message" id="resultMessage"></div>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>Siguiente Pregunta →</button>
+                    <button class="btn" id="restartBtn" onclick="restartQuiz()" style="display: none; background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);">🔄 Reiniciar Evaluación</button>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <footer>
+        <p><strong>Diseñado por: Edwin Méndez J.</strong></p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Con ❤️ para los futuros programadores del Ecuador</p>
+    </footer>
+
     <script>
-        // Datos para el quiz
-        const quizData = [
+        const questions = [
             {
-                question: "¿Cuál es el símbolo utilizado en Flowgorithm para representar una decisión?",
-                options: ["Óvalo", "Rectángulo", "Rombo", "Paralelogramo"],
-                correct: 2,
-                explanation: "Correcto. El rombo es el símbolo utilizado para representar una decisión (estructuras condicionales) en un diagrama de flujo."
-            },
-            {
-                question: "¿Qué representa un algoritmo en el contexto de la programación?",
+                question: "¿Qué forma en Flowgorithm se utiliza para representar el inicio y fin de un algoritmo?",
                 options: [
-                    "Un lenguaje de programación específico",
-                    "Una secuencia ordenada de pasos para resolver un problema",
-                    "Un tipo de variable especial",
-                    "Un error en el código"
+                    "El Rectángulo (Proceso)",
+                    "El Óvalo (Terminador)",
+                    "El Rombo (Decisión)",
+                    "El Paralelogramo (Entrada/Salida)"
                 ],
                 correct: 1,
-                explanation: "¡Excelente! Un algoritmo es precisamente una secuencia ordenada y finita de pasos para resolver un problema específico."
+                feedback: "¡Correcto! El Óvalo marca el inicio (Start) y fin (End) de todo algoritmo, como la portada y contraportada de un libro."
             },
             {
-                question: "En Flowgorithm, ¿qué tipo de estructura nos permite repetir un conjunto de instrucciones?",
+                question: "Si necesitas que tu programa tome una decisión basada en una condición (SI... ENTONCES... SINO), ¿qué forma debes usar?",
                 options: [
-                    "Estructura secuencial",
-                    "Estructura condicional",
-                    "Estructura repetitiva",
-                    "Estructura de salida"
+                    "El Rectángulo",
+                    "El Paralelogramo",
+                    "El Rombo (Decisión)",
+                    "La Flecha"
                 ],
                 correct: 2,
-                explanation: "Correcto. La estructura repetitiva (también llamada bucle o ciclo) nos permite ejecutar un conjunto de instrucciones múltiples veces."
+                feedback: "¡Excelente! El Rombo evalúa condiciones y tiene dos salidas: True (Verdadero) y False (Falso), dirigiendo el flujo por diferentes caminos."
             },
             {
-                question: "¿Cuál de estas NO es una característica esencial de un algoritmo?",
+                question: "¿Cuál es la diferencia principal entre un bucle MIENTRAS (WHILE) y un bucle PARA (FOR)?",
                 options: [
-                    "Debe ser preciso y sin ambigüedades",
-                    "Debe tener un número finito de pasos",
-                    "Debe resolver el problema para el que fue diseñado",
-                    "Debe estar escrito en un lenguaje de programación específico"
+                    "No hay diferencia, son lo mismo",
+                    "MIENTRAS repite un número específico de veces; PARA repite mientras una condición sea verdadera",
+                    "MIENTRAS repite mientras una condición sea verdadera; PARA repite un número específico de veces",
+                    "MIENTRAS es más rápido que PARA"
                 ],
-                correct: 3,
-                explanation: "Muy bien. Un algoritmo puede expresarse en lenguaje natural, diagramas o pseudocódigo; no necesita estar en un lenguaje de programación específico."
+                correct: 2,
+                feedback: "¡Perfecto! MIENTRAS es como un guardia que pregunta repetidamente (condición), mientras que PARA es como un corredor que sabe exactamente cuántas vueltas debe dar (contador definido)."
             },
             {
-                question: "En un diagrama de flujo, ¿qué símbolo se utiliza para representar la entrada o salida de datos?",
-                options: ["Óvalo", "Rectángulo", "Rombo", "Paralelogramo"],
-                correct: 3,
-                explanation: "¡Perfecto! El paralelogramo es el símbolo utilizado para representar operaciones de entrada o salida de datos en un diagrama de flujo."
+                question: "En el algoritmo del semáforo peatonal inteligente, ¿por qué es importante verificar que hayan pasado al menos 5 segundos en ROJO antes de cambiar a VERDE?",
+                options: [
+                    "Para hacer el programa más complejo",
+                    "Para garantizar la seguridad, permitiendo que los vehículos se detengan completamente",
+                    "Porque Flowgorithm lo requiere así",
+                    "Para consumir más tiempo de procesamiento"
+                ],
+                correct: 1,
+                feedback: "¡Muy bien! La programación con responsabilidad significa pensar en la seguridad. El tiempo mínimo en rojo asegura que los vehículos tengan tiempo de detenerse antes de que los peatones crucen."
+            },
+            {
+                question: "¿Qué estructura de control representa la ejecución de instrucciones una tras otra, en el orden exacto en que fueron diseñadas?",
+                options: [
+                    "Decisión (Condicional)",
+                    "Repetición (Bucle)",
+                    "Secuencia",
+                    "Paralelismo"
+                ],
+                correct: 2,
+                feedback: "¡Correcto! La Secuencia es la estructura más elemental: es el flujo lineal, el ritmo natural de un proceso que no requiere decisiones, solo ejecución ordenada. Es el latido del corazón de cualquier algoritmo."
             }
         ];
 
-        // Variables del estado del quiz
         let currentQuestion = 0;
         let score = 0;
-        let selectedOption = null;
-        let quizCompleted = false;
+        let answered = false;
 
-        // Elementos DOM
-        const questionText = document.getElementById('question-text');
-        const optionsContainer = document.getElementById('options-container');
-        const feedbackContainer = document.getElementById('feedback');
-        const scoreElement = document.getElementById('score');
-        const questionCounter = document.getElementById('question-counter');
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
-        const resultsContainer = document.getElementById('results-container');
-        const questionContainer = document.getElementById('question-container');
-        const finalScoreElement = document.getElementById('final-score');
-        const resultMessageElement = document.getElementById('result-message');
-        const restartBtn = document.getElementById('restart-btn');
-
-        // Navegación por las secciones
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // Remover clase activa de todos los enlaces
-                document.querySelectorAll('.nav-link').forEach(item => {
-                    item.classList.remove('active');
-                });
-                
-                // Agregar clase activa al enlace clickeado
-                this.classList.add('active');
-                
-                // Obtener el ID de la sección objetivo
-                const targetId = this.getAttribute('href').substring(1);
-                const targetSection = document.getElementById(targetId);
-                
-                // Desplazar suavemente a la sección
-                targetSection.scrollIntoView({ behavior: 'smooth' });
-            });
-        });
-
-        // Inicializar el quiz
         function loadQuestion() {
-            const currentQuizData = quizData[currentQuestion];
+            const quizContent = document.getElementById('quizContent');
+            const question = questions[currentQuestion];
             
-            // Actualizar texto de la pregunta
-            questionText.textContent = currentQuizData.question;
-            
-            // Actualizar contador
-            questionCounter.textContent = `Pregunta ${currentQuestion + 1} de ${quizData.length}`;
-            
-            // Limpiar opciones anteriores
-            optionsContainer.innerHTML = '';
-            
-            // Crear nuevas opciones
-            currentQuizData.options.forEach((option, index) => {
-                const optionElement = document.createElement('div');
-                optionElement.classList.add('option');
-                optionElement.textContent = option;
-                optionElement.dataset.index = index;
-                
-                optionElement.addEventListener('click', () => selectOption(optionElement, index));
-                
-                optionsContainer.appendChild(optionElement);
+            let optionsHTML = '';
+            question.options.forEach((option, index) => {
+                optionsHTML += `
+                    <div class="option" onclick="selectOption(${index})" id="option${index}">
+                        ${option}
+                    </div>
+                `;
             });
-            
-            // Reiniciar selección y feedback
-            selectedOption = null;
-            feedbackContainer.textContent = '';
-            feedbackContainer.className = 'feedback';
-            
-            // Actualizar estado de los botones
-            prevBtn.disabled = currentQuestion === 0;
-            
-            if (currentQuestion === quizData.length - 1) {
-                nextBtn.textContent = 'Finalizar ';
-                nextBtn.innerHTML = 'Finalizar <i class="fas fa-check"></i>';
-            } else {
-                nextBtn.textContent = 'Siguiente ';
-                nextBtn.innerHTML = 'Siguiente <i class="fas fa-arrow-right"></i>';
-            }
-            
-            // Actualizar puntuación
-            scoreElement.textContent = score;
+
+            quizContent.innerHTML = `
+                <div class="question-container">
+                    <div class="question">
+                        Pregunta ${currentQuestion + 1} de ${questions.length}:<br>
+                        ${question.question}
+                    </div>
+                    <div class="options">
+                        ${optionsHTML}
+                    </div>
+                    <div class="feedback" id="feedback"></div>
+                </div>
+            `;
+
+            answered = false;
+            document.getElementById('nextBtn').disabled = true;
+            updateProgressBar();
         }
 
-        // Seleccionar una opción
-        function selectOption(optionElement, optionIndex) {
-            if (quizCompleted) return;
+        function selectOption(selectedIndex) {
+            if (answered) return;
             
-            // Remover selección anterior
-            document.querySelectorAll('.option').forEach(opt => {
-                opt.classList.remove('selected', 'correct', 'incorrect');
-            });
+            answered = true;
+            const question = questions[currentQuestion];
+            const feedback = document.getElementById('feedback');
+            const nextBtn = document.getElementById('nextBtn');
             
-            // Marcar opción seleccionada
-            optionElement.classList.add('selected');
-            selectedOption = optionIndex;
-            
-            const currentQuizData = quizData[currentQuestion];
-            
-            // Verificar si la respuesta es correcta
-            if (optionIndex === currentQuizData.correct) {
-                optionElement.classList.add('correct');
-                feedbackContainer.textContent = currentQuizData.explanation;
-                feedbackContainer.classList.add('correct');
-            } else {
-                optionElement.classList.add('incorrect');
-                feedbackContainer.textContent = "Incorrecto. " + currentQuizData.explanation;
-                feedbackContainer.classList.add('incorrect');
+            // Mark all options
+            for (let i = 0; i < question.options.length; i++) {
+                const option = document.getElementById(`option${i}`);
+                option.style.pointerEvents = 'none';
                 
-                // Mostrar también la respuesta correcta
-                const correctOption = document.querySelector(`.option[data-index="${currentQuizData.correct}"]`);
-                correctOption.classList.add('correct');
+                if (i === question.correct) {
+                    option.classList.add('correct');
+                } else if (i === selectedIndex && i !== question.correct) {
+                    option.classList.add('incorrect');
+                }
+            }
+
+            // Show feedback
+            feedback.textContent = question.feedback;
+            feedback.classList.add('show');
+            
+            if (selectedIndex === question.correct) {
+                score += 10;
+                feedback.classList.add('correct');
+                document.getElementById('score').textContent = score;
+            } else {
+                feedback.classList.add('incorrect');
+            }
+
+            nextBtn.disabled = false;
+            
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.textContent = 'Ver Resultados Finales';
             }
         }
 
-        // Navegar a la siguiente pregunta
-        nextBtn.addEventListener('click', () => {
-            if (selectedOption === null && currentQuestion < quizData.length) {
-                alert("Por favor, selecciona una respuesta antes de continuar.");
-                return;
-            }
+        function nextQuestion() {
+            currentQuestion++;
             
-            // Sumar puntos si la respuesta es correcta
-            if (selectedOption === quizData[currentQuestion].correct) {
-                score++;
-                scoreElement.textContent = score;
-            }
-            
-            if (currentQuestion < quizData.length - 1) {
-                currentQuestion++;
+            if (currentQuestion < questions.length) {
                 loadQuestion();
             } else {
-                // Mostrar resultados finales
                 showResults();
             }
-        });
-
-        // Navegar a la pregunta anterior
-        prevBtn.addEventListener('click', () => {
-            if (currentQuestion > 0) {
-                currentQuestion--;
-                loadQuestion();
-            }
-        });
-
-        // Mostrar resultados finales
-        function showResults() {
-            quizCompleted = true;
-            questionContainer.style.display = 'none';
-            resultsContainer.style.display = 'block';
-            
-            finalScoreElement.textContent = `Obtuviste ${score} de ${quizData.length} puntos`;
-            
-            // Mensaje personalizado según el puntaje
-            let message = "";
-            if (score === quizData.length) {
-                message = "¡Excelente! Dominas los conceptos fundamentales de algoritmos y Flowgorithm. Estás listo para enfrentar retos más complejos.";
-            } else if (score >= quizData.length * 0.7) {
-                message = "¡Muy buen trabajo! Tienes un sólido entendimiento de los conceptos clave. Sigue practicando para perfeccionar tus habilidades.";
-            } else if (score >= quizData.length * 0.5) {
-                message = "Buen comienzo. Entiendes los conceptos básicos, pero necesitas repasar algunos temas. La práctica constante es clave.";
-            } else {
-                message = "Es un buen punto de partida. Te recomiendo revisar los conceptos del taller y volver a intentarlo. Recuerda que el aprendizaje es un proceso.";
-            }
-            
-            resultMessageElement.textContent = message;
         }
 
-        // Reiniciar el quiz
-        restartBtn.addEventListener('click', () => {
+        function showResults() {
+            const quizContent = document.getElementById('quizContent');
+            const resultMessage = document.getElementById('resultMessage');
+            const nextBtn = document.getElementById('nextBtn');
+            const restartBtn = document.getElementById('restartBtn');
+            
+            nextBtn.style.display = 'none';
+            restartBtn.style.display = 'inline-block';
+            
+            let message = '';
+            let emoji = '';
+            
+            if (score === 50) {
+                message = '¡Excelente! Dominas los conceptos de Flowgorithm. ¡Estás listo para crear algoritmos increíbles!';
+                emoji = '🏆';
+            } else if (score >= 30) {
+                message = '¡Muy bien! Tienes una buena comprensión. Sigue practicando y serás un experto.';
+                emoji = '🌟';
+            } else {
+                message = 'Buen intento. Repasa los conceptos y vuelve a intentarlo. ¡La práctica hace al maestro!';
+                emoji = '💪';
+            }
+            
+            resultMessage.innerHTML = `
+                <div style="font-size: 4rem; margin-bottom: 1rem;">${emoji}</div>
+                <div style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;">
+                    Puntaje Final: ${score} / 50
+                </div>
+                <div style="color: var(--text-gray);">
+                    ${message}
+                </div>
+            `;
+            resultMessage.classList.add('show');
+            quizContent.style.display = 'none';
+            
+            document.getElementById('progressBar').style.width = '100%';
+        }
+
+        function restartQuiz() {
             currentQuestion = 0;
             score = 0;
-            quizCompleted = false;
-            
-            questionContainer.style.display = 'block';
-            resultsContainer.style.display = 'none';
-            
+            document.getElementById('score').textContent = '0';
+            document.getElementById('quizContent').style.display = 'block';
+            document.getElementById('resultMessage').classList.remove('show');
+            document.getElementById('nextBtn').style.display = 'inline-block';
+            document.getElementById('nextBtn').textContent = 'Siguiente Pregunta →';
+            document.getElementById('restartBtn').style.display = 'none';
             loadQuestion();
-        });
+        }
 
-        // Inicializar la página
-        document.addEventListener('DOMContentLoaded', () => {
-            // Cargar la primera pregunta del quiz
+        function updateProgressBar() {
+            const progress = ((currentQuestion) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        // Initialize quiz on page load
+        window.onload = function() {
             loadQuestion();
-            
-            // Asegurar que la primera sección esté activa
-            document.querySelector('.nav-link').classList.add('active');
-        });
+        };
     </script>
 </body>
 </html>
