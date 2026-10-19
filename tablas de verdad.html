@@ -1,0 +1,1853 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bucle Creativo — Tablas de verdad y operadores lógicos en Python</title>
+    <style>
+        /* ===== Variables ===== */
+        :root {
+            --color-primary: #0b2545;
+            --color-secondary: #13315c;
+            --color-accent: #f48024;
+            --color-accent-dark: #d96c13;
+            --color-background: #f4f6fa;
+            --color-surface: #ffffff;
+            --color-text: #1f2933;
+            --color-text-soft: #52606d;
+            --color-border: #dfe4ec;
+            --color-success: #1b7f4d;
+            --color-success-bg: #e3f5eb;
+            --color-error: #b42318;
+            --color-error-bg: #fdeceb;
+            --color-code-bg: #0b1f33;
+            --color-code-text: #e6edf5;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 22px;
+            --shadow-sm: 0 2px 6px rgba(11, 37, 69, 0.08);
+            --shadow-md: 0 10px 24px rgba(11, 37, 69, 0.10);
+            --font-main: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            --font-code: "Cascadia Code", "Consolas", "Courier New", monospace;
+        }
+
+        /* ===== Reset ===== */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.65;
+            font-size: 17px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        img, svg {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* ===== Base ===== */
+        h1, h2, h3, h4 {
+            line-height: 1.25;
+            color: var(--color-primary);
+        }
+
+        h1 { font-size: clamp(2rem, 5vw, 3rem); }
+        h2 { font-size: clamp(1.5rem, 3.2vw, 2.1rem); margin-bottom: 0.6em; }
+        h3 { font-size: clamp(1.2rem, 2.4vw, 1.45rem); margin-bottom: 0.5em; }
+        h4 { font-size: 1.05rem; margin-bottom: 0.4em; }
+
+        p { margin-bottom: 1em; }
+
+        a {
+            color: var(--color-secondary);
+        }
+
+        strong { color: var(--color-primary); }
+
+        code {
+            font-family: var(--font-code);
+            background: #eef2f8;
+            color: var(--color-secondary);
+            padding: 0.12em 0.4em;
+            border-radius: 5px;
+            font-size: 0.92em;
+            word-break: break-word;
+        }
+
+        .contenedor {
+            width: min(1100px, 92%);
+            margin-inline: auto;
+        }
+
+        /* ===== Header ===== */
+        header.hero {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 60%, #1b4b82 100%);
+            color: #ffffff;
+            padding: 3.5rem 0 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header.hero::after {
+            content: "";
+            position: absolute;
+            right: -80px;
+            top: -80px;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(244, 128, 36, 0.35), transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-marca {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.85rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #ffc99b;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+        }
+
+        .hero-logo {
+            width: 38px;
+            height: 38px;
+        }
+
+        header.hero h1 {
+            color: #ffffff;
+            letter-spacing: -0.5px;
+        }
+
+        header.hero h1 .acento {
+            color: var(--color-accent);
+        }
+
+        .hero-subtitulo {
+            margin-top: 0.8rem;
+            font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+            color: #d5e3f5;
+            max-width: 720px;
+        }
+
+        .hero-descripcion {
+            margin-top: 1rem;
+            color: #aec5e3;
+            max-width: 720px;
+            font-size: 1rem;
+        }
+
+        .hero-etiquetas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .etiqueta {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            font-size: 0.82rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 999px;
+        }
+
+        /* ===== Navegación ===== */
+        nav.principal {
+            background: var(--color-surface);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .nav-lista {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+            justify-content: center;
+            padding: 0.5rem 0;
+        }
+
+        .nav-lista a {
+            display: inline-block;
+            text-decoration: none;
+            color: var(--color-text-soft);
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 0.5rem 0.85rem;
+            border-radius: 999px;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .nav-lista a:hover,
+        .nav-lista a:focus-visible {
+            background: #eef2f8;
+            color: var(--color-primary);
+        }
+
+        /* ===== Secciones ===== */
+        main {
+            padding: 2.5rem 0 1rem;
+        }
+
+        section.bloque {
+            padding: 2.2rem 0;
+        }
+
+        .titulo-seccion {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .titulo-seccion .pildora {
+            background: var(--color-accent);
+            color: #ffffff;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.25rem 0.7rem;
+            border-radius: 999px;
+            white-space: nowrap;
+        }
+
+        .seccion-intro {
+            color: var(--color-text-soft);
+            max-width: 780px;
+            margin-bottom: 1.6rem;
+        }
+
+        /* ===== Tarjetas ===== */
+        .tarjeta {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--color-border);
+            padding: 1.6rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .tarjeta:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .rejilla {
+            display: grid;
+            gap: 1.2rem;
+        }
+
+        .rejilla-2 { grid-template-columns: repeat(2, 1fr); }
+        .rejilla-3 { grid-template-columns: repeat(3, 1fr); }
+
+        .objetivo-card {
+            border-left: 6px solid var(--color-accent);
+        }
+
+        /* ===== Activación ===== */
+        .activacion {
+            background: linear-gradient(135deg, #eef4fc, #ffffff);
+            border-radius: var(--radius-lg);
+            padding: 1.8rem;
+            border: 1px dashed #c4d4ea;
+        }
+
+        .pregunta-gancho {
+            margin-top: 1.2rem;
+            background: var(--color-primary);
+            color: #ffffff;
+            border-radius: var(--radius-md);
+            padding: 1rem 1.2rem;
+            font-weight: 600;
+        }
+
+        .pregunta-gancho strong { color: var(--color-accent); }
+
+        /* ===== Niveles ===== */
+        .nivel {
+            border-left: 5px solid var(--color-secondary);
+            padding-left: 1rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .nivel .nivel-num {
+            display: inline-block;
+            background: var(--color-secondary);
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.2rem 0.7rem;
+            border-radius: 999px;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ===== Sub-bloques didácticos ===== */
+        .bloque-didactico {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 1.2rem 1.3rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .bloque-didactico h4 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .icono-mini {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+        }
+
+        .badge {
+            display: inline-block;
+            font-size: 0.74rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            margin-bottom: 0.4rem;
+        }
+
+        .badge-ejemplo { background: #e8f0fb; color: var(--color-secondary); }
+        .badge-analogia { background: #fff1e3; color: var(--color-accent-dark); }
+        .badge-aplicacion { background: #e3f5eb; color: var(--color-success); }
+        .badge-recomendacion { background: #eef2f8; color: var(--color-primary); }
+        .badge-error { background: var(--color-error-bg); color: var(--color-error); }
+        .badge-reflexiona { background: #f0e9fb; color: #5b3fa8; }
+        .badge-explora { background: #e6f4f9; color: #0f6b8c; }
+
+        /* ===== Código ===== */
+        pre.bloque-codigo {
+            background: var(--color-code-bg);
+            color: var(--color-code-text);
+            border-radius: var(--radius-md);
+            padding: 1.1rem 1.2rem;
+            overflow-x: auto;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 0.7rem 0;
+            border: 1px solid #16324f;
+        }
+
+        pre.bloque-codigo code {
+            background: none;
+            color: inherit;
+            padding: 0;
+            font-size: inherit;
+            white-space: pre;
+        }
+
+        .tok-kw { color: #7cc4ff; }
+        .tok-str { color: #ffca7a; }
+        .tok-bool { color: #ff9d6e; font-weight: 600; }
+        .tok-num { color: #b7f0c0; }
+        .tok-com { color: #8aa0b8; font-style: italic; }
+        .tok-fn { color: #c7a8ff; }
+
+        .salida {
+            background: #102a43;
+            color: #9fe8b5;
+            border-left: 4px solid var(--color-accent);
+            border-radius: var(--radius-sm);
+            padding: 0.6rem 0.9rem;
+            font-family: var(--font-code);
+            font-size: 0.86rem;
+            margin: 0.5rem 0 0.9rem;
+        }
+
+        .salida span.rotulo {
+            display: block;
+            color: #7d97b3;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.2rem;
+            font-family: var(--font-main);
+        }
+
+        /* ===== Tablas de verdad ===== */
+        .tabla-envoltura {
+            overflow-x: auto;
+            margin: 0.8rem 0;
+        }
+
+        table.tabla-verdad {
+            border-collapse: collapse;
+            width: 100%;
+            min-width: 320px;
+            font-size: 0.95rem;
+        }
+
+        table.tabla-verdad caption {
+            text-align: left;
+            font-weight: 700;
+            color: var(--color-primary);
+            padding-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        table.tabla-verdad th,
+        table.tabla-verdad td {
+            border: 1px solid var(--color-border);
+            padding: 0.55rem 0.8rem;
+            text-align: center;
+        }
+
+        table.tabla-verdad th {
+            background: var(--color-primary);
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        table.tabla-verdad tbody tr:nth-child(even) {
+            background: #f6f8fc;
+        }
+
+        table.tabla-verdad td.verdadero {
+            color: var(--color-success);
+            font-weight: 700;
+        }
+
+        table.tabla-verdad td.falso {
+            color: var(--color-error);
+            font-weight: 700;
+        }
+
+        /* ===== Operador destacado ===== */
+        .operador-destacado {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-accent);
+            color: #ffffff;
+            font-family: var(--font-code);
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 0.15rem 0.7rem;
+            border-radius: var(--radius-sm);
+            margin-right: 0.4rem;
+        }
+
+        /* ===== Reto ===== */
+        .reto-contenedor {
+            background: linear-gradient(135deg, var(--color-primary), #173e6b);
+            color: #e8f1fb;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .reto-contenedor h2,
+        .reto-contenedor h3 {
+            color: #ffffff;
+        }
+
+        .reto-contenedor .badge {
+            background: var(--color-accent);
+            color: #ffffff;
+        }
+
+        .reto-tarjeta {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: var(--radius-md);
+            padding: 1.2rem 1.3rem;
+            margin-top: 1rem;
+        }
+
+        .reto-tarjeta h3 {
+            font-size: 1.15rem;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .reto-contenedor ul {
+            margin: 0.5rem 0 0.5rem 1.2rem;
+        }
+
+        .reto-contenedor li {
+            margin-bottom: 0.45rem;
+        }
+
+        .reto-contenedor code {
+            background: rgba(255, 255, 255, 0.14);
+            color: #ffd9b5;
+        }
+
+        /* ===== Quiz ===== */
+        .quiz-contenedor {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--color-border);
+            padding: 1.8rem;
+            max-width: 780px;
+            margin-inline: auto;
+        }
+
+        .quiz-cabecera {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.9rem;
+        }
+
+        .quiz-contador {
+            font-weight: 700;
+            color: var(--color-secondary);
+        }
+
+        .quiz-puntos {
+            background: #eef2f8;
+            color: var(--color-primary);
+            font-weight: 700;
+            padding: 0.25rem 0.8rem;
+            border-radius: 999px;
+            font-size: 0.9rem;
+        }
+
+        .barra-progreso {
+            height: 10px;
+            background: #e6ebf3;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-bottom: 1.4rem;
+        }
+
+        .barra-progreso span {
+            display: block;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--color-accent), #ffb066);
+            border-radius: 999px;
+            transition: width 0.35s ease;
+        }
+
+        .pregunta-texto {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+        }
+
+        .pregunta-nivel {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            color: var(--color-accent-dark);
+            background: #fff1e3;
+            padding: 0.15rem 0.6rem;
+            border-radius: 999px;
+            margin-bottom: 0.6rem;
+        }
+
+        .opciones {
+            display: grid;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+        }
+
+        .opcion {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            text-align: left;
+            width: 100%;
+            background: #f8fafd;
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 0.8rem 1rem;
+            font-size: 1rem;
+            font-family: inherit;
+            color: var(--color-text);
+            cursor: pointer;
+            transition: border-color 0.18s ease, background-color 0.18s ease, transform 0.12s ease;
+        }
+
+        .opcion:hover:not(:disabled) {
+            border-color: var(--color-accent);
+            background: #fff8f1;
+        }
+
+        .opcion:focus-visible {
+            outline: 3px solid var(--color-accent);
+            outline-offset: 2px;
+        }
+
+        .opcion:disabled {
+            cursor: default;
+        }
+
+        .opcion .letra {
+            flex-shrink: 0;
+            width: 28px;
+            height: 28px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: #e6ebf3;
+            color: var(--color-secondary);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .opcion.correcta {
+            border-color: var(--color-success);
+            background: var(--color-success-bg);
+        }
+
+        .opcion.correcta .letra {
+            background: var(--color-success);
+            color: #ffffff;
+        }
+
+        .opcion.incorrecta {
+            border-color: var(--color-error);
+            background: var(--color-error-bg);
+        }
+
+        .opcion.incorrecta .letra {
+            background: var(--color-error);
+            color: #ffffff;
+        }
+
+        .retroalimentacion {
+            border-radius: var(--radius-md);
+            padding: 0.9rem 1.1rem;
+            font-size: 0.96rem;
+            margin-bottom: 1rem;
+            border-left: 5px solid transparent;
+            display: none;
+        }
+
+        .retroalimentacion.visible {
+            display: block;
+        }
+
+        .retroalimentacion.ok {
+            background: var(--color-success-bg);
+            border-left-color: var(--color-success);
+            color: #14532d;
+        }
+
+        .retroalimentacion.mal {
+            background: var(--color-error-bg);
+            border-left-color: var(--color-error);
+            color: #7a1a12;
+        }
+
+        .retroalimentacion strong {
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .boton {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: var(--color-accent);
+            color: #ffffff;
+            border: none;
+            border-radius: 999px;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-family: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
+            box-shadow: 0 4px 12px rgba(244, 128, 36, 0.3);
+        }
+
+        .boton:hover:not(:disabled) {
+            background: var(--color-accent-dark);
+            transform: translateY(-1px);
+        }
+
+        .boton:focus-visible {
+            outline: 3px solid var(--color-primary);
+            outline-offset: 3px;
+        }
+
+        .boton:disabled {
+            background: #c9d2de;
+            color: #6b7a8c;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .boton.secundario {
+            background: var(--color-secondary);
+            box-shadow: 0 4px 12px rgba(19, 49, 92, 0.25);
+        }
+
+        .boton.secundario:hover:not(:disabled) {
+            background: var(--color-primary);
+        }
+
+        .quiz-pie {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 0.4rem;
+        }
+
+        .resultado-final {
+            text-align: center;
+            display: none;
+        }
+
+        .resultado-final.visible {
+            display: block;
+        }
+
+        .resultado-puntos {
+            font-size: 2.6rem;
+            font-weight: 800;
+            color: var(--color-secondary);
+            line-height: 1.1;
+        }
+
+        .resultado-porcentaje {
+            color: var(--color-text-soft);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .resultado-mensaje {
+            background: #fff8f1;
+            border: 1px dashed var(--color-accent);
+            border-radius: var(--radius-md);
+            padding: 1rem 1.2rem;
+            margin: 1rem 0 1.4rem;
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+
+        .quiz-panel {
+            display: block;
+        }
+
+        .quiz-panel.oculto {
+            display: none;
+        }
+
+        /* ===== Reflexión / metacognición ===== */
+        .reflexion textarea {
+            width: 100%;
+            min-height: 90px;
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 0.8rem 1rem;
+            font-family: inherit;
+            font-size: 0.97rem;
+            color: var(--color-text);
+            resize: vertical;
+            background: #f8fafd;
+        }
+
+        .reflexion textarea:focus-visible {
+            outline: 3px solid var(--color-accent);
+            outline-offset: 2px;
+            border-color: var(--color-accent);
+        }
+
+        .reflexion label {
+            display: block;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 0.4rem;
+            margin-top: 1rem;
+        }
+
+        .nota-local {
+            font-size: 0.82rem;
+            color: var(--color-text-soft);
+            margin-top: 0.6rem;
+        }
+
+        /* ===== Footer ===== */
+        footer.pie {
+            background: var(--color-primary);
+            color: #c9d8ea;
+            text-align: center;
+            padding: 2.2rem 1rem;
+            margin-top: 2rem;
+            font-size: 0.95rem;
+        }
+
+        footer.pie .frase-docente {
+            color: #ffffff;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+
+        footer.pie .creditos {
+            color: var(--color-accent);
+            font-weight: 700;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 900px) {
+            .rejilla-3 { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 720px) {
+            body { font-size: 16px; }
+            .rejilla-2,
+            .rejilla-3 { grid-template-columns: 1fr; }
+            .quiz-contenedor { padding: 1.3rem; }
+            .reto-contenedor { padding: 1.4rem; }
+            .nav-lista { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; padding: 0.5rem 0.6rem; }
+            .nav-lista a { white-space: nowrap; }
+            header.hero { padding: 2.6rem 0 2.2rem; }
+        }
+
+        @media (max-width: 420px) {
+            .hero-marca { font-size: 0.72rem; letter-spacing: 0.12em; }
+            .opcion { padding: 0.7rem 0.8rem; font-size: 0.95rem; }
+            .boton { width: 100%; }
+            .quiz-pie { justify-content: stretch; }
+        }
+
+        /* ===== Accesibilidad ===== */
+        .visualmente-oculto {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hero" id="inicio">
+        <div class="contenedor">
+            <p class="hero-marca">
+                <svg class="hero-logo" viewBox="0 0 48 48" role="img" aria-label="Logotipo de Bucle Creativo">
+                    <circle cx="24" cy="24" r="20" fill="none" stroke="#f48024" stroke-width="3"/>
+                    <path d="M14 24c0-6 4-10 10-10s10 4 10 10-4 10-10 10" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+                    <circle cx="34" cy="24" r="3" fill="#f48024"/>
+                </svg>
+                Bucle Creativo
+            </p>
+            <h1>Tablas de verdad y <span class="acento">operadores lógicos</span> en Python</h1>
+            <p class="hero-subtitulo">Aprende a decidir como un programador: True, False y el arte de combinar condiciones.</p>
+            <p class="hero-descripcion">
+                Un taller interactivo para comprender cómo funcionan <code>and</code>, <code>or</code> y <code>not</code>,
+                interpretar tablas de verdad y aplicar la lógica booleana en situaciones reales de tu colegio, tus proyectos y tu vida cotidiana.
+            </p>
+            <div class="hero-etiquetas">
+                <span class="etiqueta">Programación</span>
+                <span class="etiqueta">Lógica booleana</span>
+                <span class="etiqueta">Python</span>
+                <span class="etiqueta">Bachillerato</span>
+            </div>
+        </div>
+    </header>
+
+    <nav class="principal" aria-label="Navegación principal del taller">
+        <div class="contenedor">
+            <ul class="nav-lista">
+                <li><a href="#objetivo">Objetivo</a></li>
+                <li><a href="#activacion">Activación</a></li>
+                <li><a href="#desarrollo">Desarrollo</a></li>
+                <li><a href="#reto">Reto</a></li>
+                <li><a href="#evaluacion">Evaluación</a></li>
+                <li><a href="#reflexion">Reflexión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="contenedor">
+
+        <!-- ===== OBJETIVO ===== -->
+        <section class="bloque" id="objetivo" aria-labelledby="titulo-objetivo">
+            <div class="titulo-seccion">
+                <span class="pildora">Objetivo</span>
+                <h2 id="titulo-objetivo">¿Qué vas a lograr en este taller?</h2>
+            </div>
+            <article class="tarjeta objetivo-card">
+                <p>
+                    <strong>Analizar y aplicar</strong> los operadores lógicos <code>and</code>, <code>or</code> y <code>not</code> junto con las tablas de verdad,
+                    para <strong>interpretar y construir condiciones</strong> en programas Python, desarrollando el razonamiento lógico,
+                    la resolución de problemas y la capacidad de justificar decisiones, mediante explicaciones progresivas,
+                    ejemplos contextualizados, ejercicios guiados y un reto integrador, de modo que puedas
+                    <strong>predecir el comportamiento de un programa</strong> antes de ejecutarlo y aplicar esta lógica en proyectos escolares,
+                    emprendimientos y situaciones cotidianas.
+                </p>
+            </article>
+        </section>
+
+        <!-- ===== ACTIVACIÓN ===== -->
+        <section class="bloque" id="activacion" aria-labelledby="titulo-activacion">
+            <div class="titulo-seccion">
+                <span class="pildora">Activación</span>
+                <h2 id="titulo-activacion">Antes de programar, piensa como una máquina</h2>
+            </div>
+            <div class="activacion">
+                <p>
+                    Imagina que eres el encargado de la puerta de entrada al concierto del colegio. Tienes dos reglas:
+                    <strong>solo entra quien tiene entrada</strong> y <strong>solo entra quien es mayor de edad</strong>.
+                    Un compañero llega con entrada, pero tiene 16 años. ¿Lo dejas pasar?
+                </p>
+                <p>
+                    Ahora cambia la regla: <em>entra quien tenga entrada</em> <strong>o</strong> <em>quien esté en la lista de invitados</em>.
+                    ¿Cambia tu decisión? ¿Por qué?
+                </p>
+                <p>
+                    Los programas hacen exactamente lo mismo: evalúan condiciones y deciden. Pero a diferencia de nosotros,
+                    necesitan reglas absolutamente claras: <strong>verdadero</strong> o <strong>falso</strong>, sin grises.
+                </p>
+                <div class="pregunta-gancho">
+                    ¿Qué pasa cuando combinamos varias condiciones a la vez?
+                    ¿Cómo puede una computadora saber si debe decir <strong>True</strong> o <strong>False</strong>?
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== DESARROLLO ===== -->
+        <section class="bloque" id="desarrollo" aria-labelledby="titulo-desarrollo">
+            <div class="titulo-seccion">
+                <span class="pildora">Desarrollo</span>
+                <h2 id="titulo-desarrollo">La lógica booleana, paso a paso</h2>
+            </div>
+            <p class="seccion-intro">
+                Vamos a avanzar en cinco niveles: desde los fundamentos hasta la transferencia a situaciones nuevas.
+                Cada nivel incluye explicaciones, ejemplos, analogías, recomendaciones y pequeñas actividades.
+            </p>
+
+            <!-- NIVEL 1 -->
+            <div class="nivel">
+                <span class="nivel-num">Nivel 1 · Fundamentos</span>
+                <h3>¿Qué es la lógica booleana?</h3>
+            </div>
+
+            <div class="bloque-didactico">
+                <h4>¿Qué es?</h4>
+                <p>
+                    En programación, muchas veces necesitamos tomar decisiones según se cumplan o no determinadas condiciones.
+                    Por ejemplo, un sistema puede permitir el acceso a un usuario si su contraseña es correcta,
+                    o un estudiante puede aprobar si cumple ciertos requisitos.
+                </p>
+                <p>
+                    Para resolver estas situaciones utilizamos la <strong>lógica booleana</strong>, que trabaja con dos valores:
+                </p>
+                <ul>
+                    <li><strong>True</strong>: representa verdadero.</li>
+                    <li><strong>False</strong>: representa falso.</li>
+                </ul>
+                <p>En Python, estos valores pertenecen al tipo de dato <code>bool</code>.</p>
+
+                <pre class="bloque-codigo"><code><span class="tok-com"># Valores booleanos en Python</span>
+es_mayor_de_edad = <span class="tok-bool">True</span>
+tiene_licencia = <span class="tok-bool">False</span>
+
+<span class="tok-fn">print</span>(es_mayor_de_edad)
+<span class="tok-fn">print</span>(tiene_licencia)</code></pre>
+
+                <div class="salida" role="status">
+                    <span class="rotulo">Salida esperada</span>
+                    True<br>False
+                </div>
+
+                <p>Los operadores lógicos principales que estudiaremos son:</p>
+                <ul>
+                    <li><span class="operador-destacado">and</span> (AND): verdadero cuando ambas condiciones son verdaderas.</li>
+                    <li><span class="operador-destacado">or</span> (OR): verdadero cuando al menos una condición es verdadera.</li>
+                    <li><span class="operador-destacado">not</span> (NOT): invierte el valor lógico; transforma verdadero en falso y falso en verdadero.</li>
+                </ul>
+
+                <div class="badge badge-analogia">Analogía</div>
+                <p>
+                    Piensa en un semáforo: <strong>verde</strong> puede ser <code>True</code> y <strong>rojo</strong> <code>False</code>.
+                    Si cruzas solo cuando está verde, estás usando una condición booleana.
+                </p>
+
+                <div class="badge badge-recomendacion">Recomendación</div>
+                <p>
+                    Antes de ejecutar un programa, identifica los valores de cada variable y determina el resultado esperado.
+                    Esta práctica ayuda a desarrollar el razonamiento lógico y a detectar errores en el código.
+                </p>
+
+                <div class="badge badge-reflexiona">Piensa y responde</div>
+                <p>
+                    ¿Qué decisiones de tu día a día podrían representarse con valores <code>True</code> y <code>False</code>?
+                    Escribe al menos dos ejemplos.
+                </p>
+            </div>
+
+            <!-- NIVEL 2 -->
+            <div class="nivel">
+                <span class="nivel-num">Nivel 2 · Comprensión</span>
+                <h3>Tablas de verdad y operadores</h3>
+            </div>
+
+            <div class="bloque-didactico">
+                <h4>¿Qué son las tablas de verdad?</h4>
+                <p>
+                    Una <strong>tabla de verdad</strong> es una representación que muestra todos los posibles valores de entrada
+                    de una operación lógica y el resultado que se obtiene en cada caso.
+                </p>
+                <p>
+                    Por ejemplo, si tenemos dos condiciones, A y B, cada una puede ser verdadera o falsa.
+                    Por tanto, existen cuatro combinaciones posibles:
+                </p>
+
+                <div class="tabla-envoltura">
+                    <table class="tabla-verdad">
+                        <caption>Combinaciones posibles de dos condiciones</caption>
+                        <thead>
+                            <tr><th>A</th><th>B</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Verdadero</td><td>Verdadero</td></tr>
+                            <tr><td>Verdadero</td><td>Falso</td></tr>
+                            <tr><td>Falso</td><td>Verdadero</td></tr>
+                            <tr><td>Falso</td><td>Falso</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    Las tablas de verdad nos ayudan a comprender cómo funcionan los operadores lógicos antes de utilizarlos en un programa.
+                    En los ejemplos siguientes usaremos <code>True</code> y <code>False</code>, que son las representaciones de verdadero
+                    y falso en Python.
+                </p>
+            </div>
+
+            <div class="bloque-didactico">
+                <h4><span class="operador-destacado">and</span> Operador AND</h4>
+                <p>
+                    El operador <code>and</code> devuelve <code>True</code> únicamente cuando las dos condiciones son verdaderas.
+                    Si al menos una condición es falsa, el resultado es <code>False</code>.
+                </p>
+
+                <div class="tabla-envoltura">
+                    <table class="tabla-verdad">
+                        <caption>Tabla de verdad de AND</caption>
+                        <thead>
+                            <tr><th>A</th><th>B</th><th>A and B</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>True</td><td>True</td><td class="verdadero">True</td></tr>
+                            <tr><td>True</td><td>False</td><td class="falso">False</td></tr>
+                            <tr><td>False</td><td>True</td><td class="falso">False</td></tr>
+                            <tr><td>False</td><td>False</td><td class="falso">False</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="badge badge-ejemplo">Ejemplo en Python</div>
+                <p>Imaginemos que un estudiante necesita aprobar dos evaluaciones para superar una asignatura.</p>
+
+                <pre class="bloque-codigo"><code>aprobo_teoria = <span class="tok-bool">True</span>
+aprobo_practica = <span class="tok-bool">True</span>
+resultado = aprobo_teoria <span class="tok-kw">and</span> aprobo_practica
+<span class="tok-fn">print</span>(resultado)</code></pre>
+
+                <div class="salida" role="status">
+                    <span class="rotulo">Salida esperada</span>
+                    True
+                </div>
+
+                <p>Explicación: el estudiante aprobó tanto la teoría como la práctica, por lo que ambas condiciones son verdaderas.</p>
+                <p>Si cambiamos la segunda variable:</p>
+
+                <pre class="bloque-codigo"><code>aprobo_teoria = <span class="tok-bool">True</span>
+aprobo_practica = <span class="tok-bool">False</span>
+resultado = aprobo_teoria <span class="tok-kw">and</span> aprobo_practica
+<span class="tok-fn">print</span>(resultado)</code></pre>
+
+                <div class="salida" role="status">
+                    <span class="rotulo">Salida esperada</span>
+                    False
+                </div>
+
+                <p>Esto ocurre porque una de las dos condiciones es falsa.</p>
+
+                <div class="badge badge-ejemplo">Ejemplo con una condición</div>
+                <pre class="bloque-codigo"><code>edad = <span class="tok-num">20</span>
+tiene_entrada = <span class="tok-bool">True</span>
+
+<span class="tok-kw">if</span> edad &gt;= <span class="tok-num">18</span> <span class="tok-kw">and</span> tiene_entrada:
+    <span class="tok-fn">print</span>(<span class="tok-str">"Puede ingresar"</span>)
+<span class="tok-kw">else</span>:
+    <span class="tok-fn">print</span>(<span class="tok-str">"No puede ingresar"</span>)</code></pre>
+
+                <div class="salida" role="status">
+                    <span class="rotulo">Salida esperada</span>
+                    Puede ingresar
+                </div>
+
+                <p>Para ingresar, la persona debe tener al menos 18 años y poseer una entrada.</p>
+
+                <div class="badge badge-error">Error frecuente</div>
+                <p>
+                    Confundir <code>and</code> con <code>or</code>. Recuerda: <code>and</code> es exigente, necesita que <strong>todas</strong>
+                    las condiciones se cumplan. Si una falla, todo falla.
+                </p>
+
+                <div class="badge badge-aplicacion">Aplicación real</div>
+                <p>
+                    Un sistema de acceso a una plataforma escolar que exige usuario correcto <strong>y</strong> contraseña correcta
+                    usa el operador <code>and</code>.
+                </p>
+            </div>
+
+            <div class="bloque-didactico">
+                <h4><span class="operador-destacado">or</span> Operador OR</h4>
+                <p>
+                    El operador <code>or</code> devuelve <code>True</code> cuando al menos una de las condiciones es verdadera.
+                    Solo devuelve <code>False</code> cuando todas las condiciones son falsas.
+                </p>
+
+                <div class="tabla-envoltura">
+                    <table class="tabla-verdad">
+                        <caption>Tabla de verdad de OR</caption>
+                        <thead>
+                            <tr><th>A</th><th>B</th><th>A or B</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>True</td><td>True</td><td class="verdadero">True</td></tr>
+                            <tr><td>True</td><td>False</td><td class="verdadero">True</td></tr>
+                            <tr><td>False</td><td>True</td><td class="verdadero">True</td></tr>
+                            <tr><td>False</td><td>False</td><td class="falso">False</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="badge badge-ejemplo">Ejemplo en Python</div>
+                <p>
+                    Imaginemos que un estudiante puede acceder a una actividad si tiene una beca o si ha pagado la inscripción.
+                </p>
+
+                <pre class="bloque-codigo"><code>tiene_beca = <span class="tok-bool">False</span>
+pago_inscripcion = <span class="tok-bool">True</span>
+puede_participar = tiene_beca <span class="tok-kw">or</span> pago_inscripcion
+<span class="tok-fn">print</span>(puede_participar)</code></pre>
+
+                <div class="salida" role="status">
+                    <span class="rotulo">Salida esperada</span>
+                    True
+                </div>
+
+                <p>
+                    Explicación: el estudiante no tiene beca, pero sí ha pagado la inscripción.
+                    Como una de las condiciones es verdadera, puede participar.
+                </p>
+
+                <div class="badge badge-ejemplo">Ejemplo con una condición</div>
+                <pre class="bloque-codigo"><code>es_fin_de_semana = <span class="tok-bool">True</span>
+es_feriado = <span class="tok-bool">False</span>
+
+<span class="tok-kw">if</span> es_fin_de_semana <span class="tok-kw">or</span> es_feriado:
+    <span class="tok-fn">print</span>(<span class="tok-str">"No hay clases"</span>)
+<span class="tok-kw">else</span>:
+    <span class="tok-fn">print</span>(<span class="tok-str">"Hay clases"</span>)</code></pre>
+
+                <div class="salida" role="status">
+                    <span class="rotulo">Salida esperada</span>
+                    No hay clases
+                </div>
+
+                <p>El programa muestra ese mensaje porque es fin de semana. No es necesario que ambas condiciones sean verdaderas.</p>
+
+                <div class="badge badge-analogia">Analogía</div>
+                <p>
+                    <code>or</code> es como una puerta con dos llaves: basta con tener una de las dos para abrirla.
+                </p>
+
+                <div class="badge badge-reflexiona">Piensa y responde</div>
+                <p>
+                    ¿Qué situaciones de tu vida permiten que “baste con una condición”? Por ejemplo, para obtener un descuento
+                    en una tienda basta con ser estudiante o ser adulto mayor. ¿Se te ocurren otros casos?
+                </p>
+            </div>
+
+            <div class="bloque-didactico">
+                <h4><span class="operador-destacado">not</span> Operador NOT</h4>
+                <p>
+                    El operador <code>not</code> sirve para invertir un valor lógico. A diferencia de <code>and</code> y <code>or</code>,
+                    trabaja con una sola condición.
+                </p>
+                <ul>
+                    <li>Si el valor es <code>True</code>, devuelve <code>False</code>.</li>
+                    <li>Si el valor es <code>False</code>, devuelve <code>True</code>.</li>
+                </ul>
+
+                <div class="tabla-envoltura">
+                    <table class="tabla-verdad">
+                        <caption>Tabla de verdad de NOT</caption>
+                        <thead>
+                            <tr><th>A</th><th>not A</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>True</td><td class="falso">False</td></tr>
+                            <tr><td>False</td><td class="verdadero">True</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="badge badge-ejemplo">Ejemplo en Python</div>
+                <pre class="bloque-codigo"><code>llueve = <span class="tok-bool">False</span>
+<span class="tok-fn">print</span>(<span class="tok-kw">not</span> llueve)</code></pre>
+
+                <div class="salida" role="status">
+                    <span class="rotulo">Salida esperada</span>
+                    True
+                </div>
+
+                <p>Explicación: como <code>llueve</code> vale <code>False</code>, el operador <code>not</code> invierte ese valor y devuelve <code>True</code>.</p>
+
+                <div class="badge badge-error">Error frecuente</div>
+                <p>
+                    Aplicar <code>not</code> a una comparación sin paréntesis. Aunque Python respeta la precedencia,
+                    es más claro escribir <code>not (edad &gt;= 18)</code> que <code>not edad &gt;= 18</code>.
+                </p>
+
+                <div class="badge badge-explora">Explora</div>
+                <p>
+                    Cambia el valor de <code>llueve</code> a <code>True</code> y predice el resultado antes de ejecutar el código.
+                    Luego compruébalo en un intérprete de Python.
+                </p>
+            </div>
+
+            <!-- NIVEL 3 -->
+            <div class="nivel">
+                <span class="nivel-num">Nivel 3 · Aplicación</span>
+                <h3>Combinando operadores en problemas reales</h3>
+            </div>
+
+            <div class="bloque-didactico">
+                <p>Los operadores lógicos pueden combinarse para resolver problemas más completos.</p>
+
+                <h4>Ejemplo 1. Verificar el acceso a una cuenta</h4>
+                <p>Un usuario puede acceder si su nombre de usuario es correcto y su contraseña también es correcta.</p>
+                <pre class="bloque-codigo"><code>usuario_correcto = <span class="tok-bool">True</span>
+contrasena_correcta = <span class="tok-bool">True</span>
+
+<span class="tok-kw">if</span> usuario_correcto <span class="tok-kw">and</span> contrasena_correcta:
+    <span class="tok-fn">print</span>(<span class="tok-str">"Acceso permitido"</span>)
+<span class="tok-kw">else</span>:
+    <span class="tok-fn">print</span>(<span class="tok-str">"Acceso denegado"</span>)</code></pre>
+                <div class="salida" role="status">
+                    <span class="rotulo">Salida</span>
+                    Acceso permitido
+                </div>
+
+                <h4>Ejemplo 2. Aplicar un descuento</h4>
+                <p>Una tienda ofrece un descuento si el cliente es estudiante o es una persona adulta mayor.</p>
+                <pre class="bloque-codigo"><code>es_estudiante = <span class="tok-bool">False</span>
+es_adulto_mayor = <span class="tok-bool">True</span>
+
+<span class="tok-kw">if</span> es_estudiante <span class="tok-kw">or</span> es_adulto_mayor:
+    <span class="tok-fn">print</span>(<span class="tok-str">"Tiene derecho a un descuento"</span>)
+<span class="tok-kw">else</span>:
+    <span class="tok-fn">print</span>(<span class="tok-str">"No tiene derecho a un descuento"</span>)</code></pre>
+                <div class="salida" role="status">
+                    <span class="rotulo">Salida</span>
+                    Tiene derecho a un descuento
+                </div>
+
+                <h4>Ejemplo 3. Validar una edad</h4>
+                <p>Un sitio web permite registrarse a personas que tienen 18 años o más.</p>
+                <pre class="bloque-codigo"><code>edad = <span class="tok-num">16</span>
+
+<span class="tok-kw">if</span> <span class="tok-kw">not</span> (edad &gt;= <span class="tok-num">18</span>):
+    <span class="tok-fn">print</span>(<span class="tok-str">"No puede registrarse"</span>)
+<span class="tok-kw">else</span>:
+    <span class="tok-fn">print</span>(<span class="tok-str">"Registro permitido"</span>)</code></pre>
+                <div class="salida" role="status">
+                    <span class="rotulo">Salida</span>
+                    No puede registrarse
+                </div>
+                <p>
+                    La expresión <code>edad &gt;= 18</code> es falsa porque la edad es 16.
+                    Al aplicar <code>not</code>, el resultado se vuelve verdadero.
+                </p>
+
+                <h4>Ejemplo 4. Comprobar requisitos de aprobación</h4>
+                <p>Un estudiante aprueba si obtiene una nota igual o superior a 7 y tiene una asistencia igual o superior al 80 %.</p>
+                <pre class="bloque-codigo"><code>nota = <span class="tok-num">8</span>
+asistencia = <span class="tok-num">90</span>
+
+<span class="tok-kw">if</span> nota &gt;= <span class="tok-num">7</span> <span class="tok-kw">and</span> asistencia &gt;= <span class="tok-num">80</span>:
+    <span class="tok-fn">print</span>(<span class="tok-str">"Estudiante aprobado"</span>)
+<span class="tok-kw">else</span>:
+    <span class="tok-fn">print</span>(<span class="tok-str">"Estudiante no aprobado"</span>)</code></pre>
+                <div class="salida" role="status">
+                    <span class="rotulo">Salida</span>
+                    Estudiante aprobado
+                </div>
+
+                <div class="badge badge-aplicacion">Aplicación real</div>
+                <p>
+                    Estos patrones se usan en sistemas de matrícula, tiendas en línea, videojuegos (requisitos para subir de nivel)
+                    y aplicaciones móviles (permisos de acceso).
+                </p>
+            </div>
+
+            <!-- NIVEL 4 -->
+            <div class="nivel">
+                <span class="nivel-num">Nivel 4 · Análisis</span>
+                <h3>Comparar operadores y evitar errores</h3>
+            </div>
+
+            <div class="bloque-didactico">
+                <div class="tabla-envoltura">
+                    <table class="tabla-verdad">
+                        <caption>Diferencias entre los operadores lógicos</caption>
+                        <thead>
+                            <tr><th>Operador</th><th>Significado</th><th>¿Cuándo devuelve True?</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>and</code></td><td>Y</td><td>Cuando ambas condiciones son verdaderas.</td></tr>
+                            <tr><td><code>or</code></td><td>O</td><td>Cuando al menos una condición es verdadera.</td></tr>
+                            <tr><td><code>not</code></td><td>NO</td><td>Cuando la condición original es falsa.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    Es importante recordar que los símbolos <strong>∧</strong>, <strong>∨</strong> y <strong>¬</strong>
+                    se utilizan habitualmente en lógica formal para representar AND, OR y NOT, respectivamente.
+                    En Python se escriben con las palabras clave <code>and</code>, <code>or</code> y <code>not</code>.
+                </p>
+
+                <div class="badge badge-error">Error frecuente</div>
+                <p>
+                    Pensar que <code>or</code> es exclusivo, como “uno u otro, pero no ambos”. En Python, <code>or</code> es inclusivo:
+                    si ambas condiciones son verdaderas, el resultado también es <code>True</code>.
+                </p>
+
+                <div class="badge badge-reflexiona">Piensa y responde</div>
+                <p>
+                    Si un sistema exige <code>usuario_correcto and contrasena_correcta</code>, ¿qué pasa si el usuario es correcto
+                    pero la contraseña no? ¿Y si usáramos <code>or</code> en lugar de <code>and</code>? Justifica tu respuesta.
+                </p>
+            </div>
+
+            <!-- NIVEL 5 -->
+            <div class="nivel">
+                <span class="nivel-num">Nivel 5 · Transferencia</span>
+                <h3>Lleva la lógica a situaciones nuevas</h3>
+            </div>
+
+            <div class="bloque-didactico">
+                <p>
+                    Ahora que comprendes los operadores, imagina que debes diseñar la lógica de un sistema de préstamo de libros
+                    en tu colegio. Las reglas son:
+                </p>
+                <ul>
+                    <li>El estudiante puede pedir un libro si está inscrito en la biblioteca <strong>y</strong> no tiene libros pendientes.</li>
+                    <li>También puede pedir si es parte del club de lectura <strong>o</strong> si tiene una autorización especial del docente.</li>
+                </ul>
+                <p>
+                    ¿Cómo combinarías <code>and</code>, <code>or</code> y <code>not</code> para representar estas reglas?
+                    Escribe tu propuesta en papel o en un editor de código y compárala con un compañero.
+                </p>
+
+                <div class="badge badge-explora">Explora</div>
+                <p>
+                    Abre un intérprete de Python (puede ser en línea o en tu computadora) y prueba diferentes combinaciones
+                    de <code>True</code> y <code>False</code> con <code>and</code>, <code>or</code> y <code>not</code>.
+                    Anota los resultados y compáralos con las tablas de verdad.
+                </p>
+
+                <div class="badge badge-recomendacion">Recomendación final</div>
+                <p>
+                    Antes de ejecutar un programa, identifica los valores de cada variable, aplica las reglas de la tabla de verdad
+                    y determina el resultado esperado. Esta práctica ayuda a desarrollar el razonamiento lógico y a detectar errores
+                    en el código.
+                </p>
+            </div>
+
+            <!-- Ejercicios propuestos integrados -->
+            <div class="nivel">
+                <span class="nivel-num">Práctica guiada</span>
+                <h3>Ejercicios propuestos</h3>
+            </div>
+
+            <div class="bloque-didactico">
+                <p>
+                    Resuelve los siguientes ejercicios. Intenta determinar primero el resultado lógico y después ejecuta el código
+                    para comprobar tu respuesta. Las soluciones explicadas están al final de esta sección.
+                </p>
+
+                <h4>Ejercicio 1. Operador AND <span class="badge badge-ejemplo" style="margin-left:0.4rem;">Fácil</span></h4>
+                <p>Determina qué imprime el programa.</p>
+                <pre class="bloque-codigo"><code>a = <span class="tok-bool">True</span>
+b = <span class="tok-bool">False</span>
+<span class="tok-fn">print</span>(a <span class="tok-kw">and</span> b)</code></pre>
+
+                <h4>Ejercicio 2. Operador OR <span class="badge badge-ejemplo" style="margin-left:0.4rem;">Fácil</span></h4>
+                <p>¿Cuál será el resultado?</p>
+                <pre class="bloque-codigo"><code>a = <span class="tok-bool">False</span>
+b = <span class="tok-bool">True</span>
+<span class="tok-fn">print</span>(a <span class="tok-kw">or</span> b)</code></pre>
+
+                <h4>Ejercicio 3. Operador NOT <span class="badge badge-ejemplo" style="margin-left:0.4rem;">Fácil</span></h4>
+                <p>¿Qué valor imprime el programa?</p>
+                <pre class="bloque-codigo"><code>activo = <span class="tok-bool">True</span>
+<span class="tok-fn">print</span>(<span class="tok-kw">not</span> activo)</code></pre>
+
+                <h4>Ejercicio 4. Combinar operadores <span class="badge badge-ejemplo" style="margin-left:0.4rem;">Intermedio</span></h4>
+                <p>Calcula el resultado de esta expresión.</p>
+                <pre class="bloque-codigo"><code>a = <span class="tok-bool">True</span>
+b = <span class="tok-bool">False</span>
+c = <span class="tok-bool">True</span>
+<span class="tok-fn">print</span>(a <span class="tok-kw">and</span> (b <span class="tok-kw">or</span> c))</code></pre>
+
+                <h4>Ejercicio 5. Condición de acceso <span class="badge badge-ejemplo" style="margin-left:0.4rem;">Intermedio</span></h4>
+                <p>Una persona necesita tener 18 años o más y contar con autorización. ¿Qué mensaje aparece?</p>
+                <pre class="bloque-codigo"><code>edad = <span class="tok-num">17</span>
+tiene_autorizacion = <span class="tok-bool">True</span>
+
+<span class="tok-kw">if</span> edad &gt;= <span class="tok-num">18</span> <span class="tok-kw">and</span> tiene_autorizacion:
+    <span class="tok-fn">print</span>(<span class="tok-str">"Acceso permitido"</span>)
+<span class="tok-kw">else</span>:
+    <span class="tok-fn">print</span>(<span class="tok-str">"Acceso denegado"</span>)</code></pre>
+
+                <h4>Soluciones explicadas</h4>
+                <div class="tabla-envoltura">
+                    <table class="tabla-verdad">
+                        <caption>Soluciones de los cinco ejercicios</caption>
+                        <thead>
+                            <tr><th>Ejercicio</th><th>Resultado</th><th>Explicación</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td><code>False</code></td><td>AND necesita dos valores verdaderos.</td></tr>
+                            <tr><td>2</td><td><code>True</code></td><td>OR necesita al menos un valor verdadero.</td></tr>
+                            <tr><td>3</td><td><code>False</code></td><td>NOT invierte <code>True</code> a <code>False</code>.</td></tr>
+                            <tr><td>4</td><td><code>True</code></td><td><code>False or True</code> da <code>True</code>; después, <code>True and True</code> da <code>True</code>.</td></tr>
+                            <tr><td>5</td><td>Acceso denegado</td><td>La edad es menor que 18, por lo que no se cumplen ambas condiciones.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    Para comprobar cada solución, puedes copiar el código en Python y ejecutarlo. En el último ejercicio,
+                    la condición podría modificarse cambiando la edad a 18 o más para permitir el acceso.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== RETO INTEGRADOR ===== -->
+        <section class="bloque" id="reto" aria-labelledby="titulo-reto">
+            <div class="reto-contenedor">
+                <div class="titulo-seccion">
+                    <span class="pildora" style="background:#ffffff;color:var(--color-primary);">Reto integrador</span>
+                </div>
+                <h2 id="titulo-reto">El guardián de la biblioteca</h2>
+                <p>
+                    En tu colegio han decidido automatizar el préstamo de libros de la biblioteca. Te han contratado como
+                    programador junior para diseñar la lógica de decisión. El sistema debe evaluar si un estudiante puede
+                    llevarse un libro a casa.
+                </p>
+
+                <div class="reto-tarjeta">
+                    <h3>Contexto</h3>
+                    <p>
+                        La biblioteca tiene tres reglas principales:
+                    </p>
+                    <ul>
+                        <li>Un estudiante puede pedir un libro si está inscrito en la biblioteca <strong>y</strong> no tiene libros pendientes de devolución.</li>
+                        <li>También puede pedir si pertenece al club de lectura <strong>o</strong> si cuenta con una autorización especial del docente.</li>
+                        <li>Nadie puede pedir libros si su carnet está suspendido, sin importar las otras condiciones.</li>
+                    </ul>
+                </div>
+
+                <div class="reto-tarjeta">
+                    <h3>¿Qué debes lograr?</h3>
+                    <ul>
+                        <li>Escribir una función en Python llamada <code>puede_pedir_libro</code> que reciba las variables necesarias y devuelva <code>True</code> o <code>False</code>.</li>
+                        <li>Utilizar correctamente los operadores <code>and</code>, <code>or</code> y <code>not</code>.</li>
+                        <li>Probar la función con al menos cuatro combinaciones distintas de valores (casos de prueba).</li>
+                        <li>Explicar con tus palabras por qué elegiste esa combinación de operadores.</li>
+                        <li>Entregar el código y una breve justificación escrita.</li>
+                    </ul>
+                </div>
+
+                <div class="reto-tarjeta">
+                    <h3>Criterios de éxito</h3>
+                    <ul>
+                        <li><strong>Comprensión:</strong> la lógica refleja correctamente las reglas de la biblioteca.</li>
+                        <li><strong>Aplicación:</strong> se usan <code>and</code>, <code>or</code> y <code>not</code> de forma adecuada.</li>
+                        <li><strong>Funcionalidad:</strong> la función devuelve los resultados esperados en todos los casos de prueba.</li>
+                        <li><strong>Creatividad:</strong> incluyes casos de prueba interesantes y bien documentados.</li>
+                        <li><strong>Calidad técnica:</strong> el código es legible, está indentado y usa nombres claros.</li>
+                        <li><strong>Argumentación:</strong> explicas tus decisiones y justificas la elección de operadores.</li>
+                        <li><strong>Buenas prácticas:</strong> comentas el código y evitas errores frecuentes.</li>
+                    </ul>
+                </div>
+
+                <div class="reto-tarjeta">
+                    <h3>Restricciones</h3>
+                    <ul>
+                        <li>No uses estructuras condicionales anidadas innecesariamente; busca una expresión lógica clara.</li>
+                        <li>Tu función debe devolver un valor booleano, no imprimir directamente.</li>
+                        <li>Incluye al menos un caso de prueba donde el carnet esté suspendido.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== EVALUACIÓN LÚDICA ===== -->
+        <section class="bloque" id="evaluacion" aria-labelledby="titulo-evaluacion">
+            <div class="titulo-seccion">
+                <span class="pildora">Evaluación</span>
+                <h2 id="titulo-evaluacion">Demuestra lo que aprendiste</h2>
+            </div>
+            <p class="seccion-intro">
+                Responde las siguientes cinco preguntas. Cada una evalúa un nivel cognitivo distinto.
+                Recibirás retroalimentación inmediata después de cada respuesta.
+            </p>
+
+            <div class="quiz-contenedor">
+                <div class="quiz-panel" id="quizPanel">
+                    <div class="quiz-cabecera">
+                        <span class="quiz-contador" id="quizContador">Pregunta 1 de 5</span>
+                        <span class="quiz-puntos" id="quizPuntos">Puntos: 0</span>
+                    </div>
+                    <div class="barra-progreso" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Progreso del cuestionario">
+                        <span id="quizBarra"></span>
+                    </div>
+
+                    <div id="preguntaContenedor">
+                        <span class="pregunta-nivel" id="preguntaNivel"></span>
+                        <p class="pregunta-texto" id="preguntaTexto"></p>
+                        <div class="opciones" id="opcionesContenedor"></div>
+                        <div class="retroalimentacion" id="retroalimentacion" role="status" aria-live="polite"></div>
+                        <div class="quiz-pie">
+                            <button class="boton" id="btnSiguiente" disabled>Siguiente pregunta</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resultado-final" id="resultadoFinal" aria-live="polite">
+                    <h3>¡Cuestionario completado!</h3>
+                    <p class="resultado-puntos" id="resultadoPuntos">0 / 5</p>
+                    <p class="resultado-porcentaje" id="resultadoPorcentaje">0%</p>
+                    <p class="resultado-mensaje" id="resultadoMensaje"></p>
+                    <button class="boton secundario" id="btnReiniciar">Reiniciar cuestionario</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== REFLEXIÓN / METACOGNICIÓN ===== -->
+        <section class="bloque" id="reflexion" aria-labelledby="titulo-reflexion">
+            <div class="titulo-seccion">
+                <span class="pildora">Cierre</span>
+                <h2 id="titulo-reflexion">Antes de terminar... reflexiona</h2>
+            </div>
+            <div class="tarjeta reflexion">
+                <p>
+                    La metacognición es pensar sobre tu propio aprendizaje. Tómate un momento para responder estas preguntas.
+                    Tus respuestas no se envían a ningún servidor; quedan en tu navegador para que puedas releerlas.
+                </p>
+
+                <label for="reflexion1">¿Qué aprendí en este taller?</label>
+                <textarea id="reflexion1" placeholder="Escribe aquí tu respuesta..."></textarea>
+
+                <label for="reflexion2">¿Qué parte me resultó más difícil y cómo la superé?</label>
+                <textarea id="reflexion2" placeholder="Escribe aquí tu respuesta..."></textarea>
+
+                <label for="reflexion3">¿Cómo podría aplicar esto en otro proyecto?</label>
+                <textarea id="reflexion3" placeholder="Escribe aquí tu respuesta..."></textarea>
+
+                <label for="reflexion4">¿Qué necesito seguir practicando?</label>
+                <textarea id="reflexion4" placeholder="Escribe aquí tu respuesta..."></textarea>
+
+                <p class="nota-local">
+                    Sugerencia: guarda tus respuestas en un cuaderno o documento para revisarlas cuando practiques más ejercicios de Python.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="pie">
+        <p class="frase-docente">Taller diseñado con el corazón de un docente y la mente de un programador.</p>
+        <p class="creditos">Diseñado por: Edwin Méndez J.</p>
+    </footer>
+
+    <script>
+        /* ===== Datos del cuestionario ===== */
+        const preguntas = [
+            {
+                nivel: "Comprensión",
+                texto: "¿Qué devuelve el operador and cuando una de las dos condiciones es falsa?",
+                opciones: [
+                    "True, porque una condición es verdadera.",
+                    "False, porque and necesita que ambas sean verdaderas.",
+                    "Depende del orden de las condiciones.",
+                    "Lanza un error en Python."
+                ],
+                correcta: 1,
+                explicacion: "El operador and solo devuelve True cuando ambas condiciones son verdaderas. Si al menos una es falsa, el resultado es False."
+            },
+            {
+                nivel: "Identificación / aplicación",
+                texto: "Observa el código: a = False, b = True. ¿Qué imprime print(a or b)?",
+                opciones: [
+                    "False",
+                    "True",
+                    "Error de sintaxis",
+                    "None"
+                ],
+                correcta: 1,
+                explicacion: "El operador or devuelve True cuando al menos una condición es verdadera. Como b es True, el resultado es True."
+            },
+            {
+                nivel: "Análisis",
+                texto: "¿Qué valor tiene la expresión not (edad >= 18) si edad = 16?",
+                opciones: [
+                    "False, porque 16 no es mayor o igual a 18.",
+                    "True, porque la comparación es falsa y not la invierte.",
+                    "True, porque not siempre devuelve True.",
+                    "No se puede evaluar."
+                ],
+                correcta: 1,
+                explicacion: "La comparación edad >= 18 es False cuando edad es 16. El operador not invierte ese valor y devuelve True."
+            },
+            {
+                nivel: "Resolución de problemas",
+                texto: "Un estudiante aprueba si nota >= 7 y asistencia >= 80. Si nota = 8 y asistencia = 75, ¿qué mensaje se muestra?",
+                opciones: [
+                    "Estudiante aprobado, porque la nota es alta.",
+                    "Estudiante no aprobado, porque no se cumplen ambas condiciones.",
+                    "Estudiante aprobado, porque al menos una condición se cumple.",
+                    "Error en el programa."
+                ],
+                correcta: 1,
+                explicacion: "La condición usa and, por lo que ambas deben cumplirse. La asistencia es 75, menor que 80, así que el resultado es False y se muestra 'Estudiante no aprobado'."
+            },
+            {
+                nivel: "Transferencia / toma de decisiones",
+                texto: "Para un sistema de acceso que exige usuario correcto y contraseña correcta, ¿qué operador lógico es el más adecuado?",
+                opciones: [
+                    "or, porque basta con una condición.",
+                    "not, porque invierte el resultado.",
+                    "and, porque ambas condiciones deben cumplirse.",
+                    "Ninguno, se necesitan condicionales anidados obligatoriamente."
+                ],
+                correcta: 2,
+                explicacion: "El acceso solo debe permitirse si ambas condiciones son verdaderas. Por eso el operador adecuado es and. Con or, bastaría una sola condición, lo cual sería inseguro."
+            }
+        ];
+
+        /* ===== Estado del quiz ===== */
+        let indiceActual = 0;
+        let puntuacion = 0;
+        let respuestaSeleccionada = null;
+        let respondida = false;
+
+        /* ===== Referencias del DOM ===== */
+        const quizPanel = document.getElementById("quizPanel");
+        const resultadoFinal = document.getElementById("resultadoFinal");
+        const contadorEl = document.getElementById("quizContador");
+        const puntosEl = document.getElementById("quizPuntos");
+        const barraEl = document.getElementById("quizBarra");
+        const barraContenedor = barraEl.parentElement;
+        const nivelEl = document.getElementById("preguntaNivel");
+        const textoEl = document.getElementById("preguntaTexto");
+        const opcionesEl = document.getElementById("opcionesContenedor");
+        const retroEl = document.getElementById("retroalimentacion");
+        const btnSiguiente = document.getElementById("btnSiguiente");
+        const btnReiniciar = document.getElementById("btnReiniciar");
+        const resultadoPuntos = document.getElementById("resultadoPuntos");
+        const resultadoPorcentaje = document.getElementById("resultadoPorcentaje");
+        const resultadoMensaje = document.getElementById("resultadoMensaje");
+
+        /* ===== Funciones del quiz ===== */
+        function iniciarQuiz() {
+            indiceActual = 0;
+            puntuacion = 0;
+            respuestaSeleccionada = null;
+            respondida = false;
+            quizPanel.classList.remove("oculto");
+            resultadoFinal.classList.remove("visible");
+            actualizarMarcadores();
+            mostrarPregunta();
+        }
+
+        function actualizarMarcadores() {
+            contadorEl.textContent = "Pregunta " + (indiceActual + 1) + " de " + preguntas.length;
+            puntosEl.textContent = "Puntos: " + puntuacion;
+            const progreso = ((indiceActual) / preguntas.length) * 100;
+            barraEl.style.width = progreso + "%";
+            barraContenedor.setAttribute("aria-valuenow", Math.round(progreso));
+        }
+
+        function mostrarPregunta() {
+            const pregunta = preguntas[indiceActual];
+            respondida = false;
+            respuestaSeleccionada = null;
+
+            nivelEl.textContent = pregunta.nivel;
+            textoEl.textContent = pregunta.texto;
+
+            opcionesEl.innerHTML = "";
+            const letras = ["A", "B", "C", "D"];
+
+            pregunta.opciones.forEach(function (opcion, i) {
+                const boton = document.createElement("button");
+                boton.type = "button";
+                boton.className = "opcion";
+                boton.dataset.indice = i;
+                boton.innerHTML =
+                    '<span class="letra" aria-hidden="true">' + letras[i] + '</span>' +
+                    '<span class="texto-opcion">' + opcion + '</span>';
+                boton.addEventListener("click", function () {
+                    seleccionarRespuesta(i);
+                });
+                opcionesEl.appendChild(boton);
+            });
+
+            retroEl.className = "retroalimentacion";
+            retroEl.innerHTML = "";
+            btnSiguiente.disabled = true;
+            btnSiguiente.textContent = indiceActual === preguntas.length - 1
+                ? "Ver resultado"
+                : "Siguiente pregunta";
+
+            actualizarMarcadores();
+        }
+
+        function seleccionarRespuesta(indice) {
+            if (respondida) return;
+            respondida = true;
+            respuestaSeleccionada = indice;
+            const pregunta = preguntas[indiceActual];
+            const botones = opcionesEl.querySelectorAll(".opcion");
+
+            botones.forEach(function (boton, i) {
+                boton.disabled = true;
+                if (i === pregunta.correcta) {
+                    boton.classList.add("correcta");
+                }
+                if (i === indice && i !== pregunta.correcta) {
+                    boton.classList.add("incorrecta");
+                }
+            });
+
+            const esCorrecta = indice === pregunta.correcta;
+            if (esCorrecta) {
+                puntuacion++;
+            }
+            puntosEl.textContent = "Puntos: " + puntuacion;
+
+            retroEl.classList.add("visible");
+            if (esCorrecta) {
+                retroEl.classList.add("ok");
+                retroEl.innerHTML = "<strong>¡Correcto!</strong>" + pregunta.explicacion;
+            } else {
+                retroEl.classList.add("mal");
+                retroEl.innerHTML = "<strong>No es correcto.</strong>" + pregunta.explicacion;
+            }
+
+            btnSiguiente.disabled = false;
+            const progreso = ((indiceActual + 1) / preguntas.length) * 100;
+            barraEl.style.width = progreso + "%";
+            barraContenedor.setAttribute("aria-valuenow", Math.round(progreso));
+        }
+
+        function siguientePregunta() {
+            if (!respondida) return;
+            if (indiceActual < preguntas.length - 1) {
+                indiceActual++;
+                mostrarPregunta();
+            } else {
+                mostrarResultado();
+            }
+        }
+
+        function mostrarResultado() {
+            quizPanel.classList.add("oculto");
+            resultadoFinal.classList.add("visible");
+
+            const total = preguntas.length;
+            const porcentaje = Math.round((puntuacion / total) * 100);
+
+            resultadoPuntos.textContent = puntuacion + " / " + total;
+            resultadoPorcentaje.textContent = porcentaje + "%";
+
+            let mensaje;
+            if (porcentaje === 100) {
+                mensaje = "¡Excelente! Dominas los operadores lógicos y las tablas de verdad. Estás listo para aplicar esta lógica en proyectos más complejos.";
+            } else if (porcentaje >= 80) {
+                mensaje = "¡Muy bien! Tienes una base sólida. Repasa los casos donde usaste or o not para afinar aún más tu razonamiento lógico.";
+            } else if (porcentaje >= 60) {
+                mensaje = "Vas por buen camino. Revisa las tablas de verdad y practica con ejercicios combinados de and, or y not.";
+            } else if (porcentaje >= 40) {
+                mensaje = "No te desanimes. La lógica booleana requiere práctica. Vuelve a los ejemplos y prueba a predecir resultados antes de ejecutar el código.";
+            } else {
+                mensaje = "Este es un punto de partida. Te recomendamos repasar el taller desde el inicio, especialmente las tablas de verdad y los ejemplos prácticos.";
+            }
+            resultadoMensaje.textContent = mensaje;
+        }
+
+        function reiniciarQuiz() {
+            iniciarQuiz();
+        }
+
+        /* ===== Eventos ===== */
+        btnSiguiente.addEventListener("click", siguientePregunta);
+        btnReiniciar.addEventListener("click", reiniciarQuiz);
+
+        /* ===== Inicio ===== */
+        iniciarQuiz();
+    </script>
+</body>
+</html>
